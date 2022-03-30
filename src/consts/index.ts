@@ -1,0 +1,6 @@
+
+
+const LOCAL_STORAGE_ADDRESS = 'walletAddress'
+const LAYOUT_MAX_WIDTH = '1200px'
+
+export {  LOCAL_STORAGE_ADDRESS, LAYOUT_MAX_WIDTH };

@@ -1,0 +1,24 @@
+.MuiLoadingButton-root {
+  font-size: 12px !important;
+}
+.MuiDialog-paper {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+* {
+  outline: none !important;
+}
+.MuiButton-text {
+  padding: 0px !important;
+}
+button {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.popup-filter {
+  .MuiBackdrop-root {
+    backdrop-filter: blur(20px);
+  }
+}
