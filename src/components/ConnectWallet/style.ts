@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: 760,
     marginLeft:'auto',
     marginRight:'auto',
+    position: 'relative',
+
+    height: '100%',
     "& h2": {
       fontSize: 23,
       fontWeight: 600,
@@ -42,11 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "relative",
     top: 10,
   },
-  qr: {
+  qrContainer: {
     position: "relative",
     height: 90,
     marginTop: 33,
     marginBottom: 45,
+    zIndex: 99,
+    display: 'flex',
+    alignItems:'center',
+    justifyContent:'center',
+    
   },
   input: {
     position: 'relative',
@@ -72,6 +80,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth:360,
     marginLeft:'auto',
     marginRight:'auto'
+  },
+  qrWindow: {
+    position: 'absolute',
+    width: '100%',
+    // height:'300px',
+  },
+  qrImages: {
+    width:'100%',
+    height: '100%',
+    cursor: 'pointer'
+  },
+  qrClose: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+   
+    zIndex: 1
   }
 }));
 

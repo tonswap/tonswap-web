@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Typography } from "@mui/material";
 import { ActionButton, Popup } from "components";
 import QRImage from "assets/images/connect/qr.svg";
 import QRLine from "assets/images/connect/qr-line.svg";
@@ -9,11 +9,22 @@ import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { useStyles } from "./style";
 import LogoWithText from "components/Navbar/LogoWithText";
 import CloseIcon from "@mui/icons-material/Close";
+import QR from "./Qr";
+
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onConnected?: () => void;
+}
+
+
+
+const isValidAddress = (address: string) =>{
+  if(!address){
+    return false
+  }
+  return true
 }
 
 function WalletPopup({ onClose, open, onConnected }: Props) {
@@ -51,10 +62,7 @@ function WalletPopup({ onClose, open, onConnected }: Props) {
         </Box>
         <Box className={classes.popupGrid}>
           <Typography component="h2">Tap to scan your wallet</Typography>
-          <Box className={classes.qr}>
-            <img src={QRImage} className={classes.qrImage} />
-            <img src={QRLine} className={classes.qrLineImg} />
-          </Box>
+          <QR setAddress={setAddress} />
           <Typography component="h3">OR</Typography>
           <Typography component="h3">Enter your wallet address</Typography>
           <Box className={classes.inputBox}>
@@ -65,7 +73,7 @@ function WalletPopup({ onClose, open, onConnected }: Props) {
               onChange={setAddress}
             />
           </Box>
-          <ActionButton isDisabled={!address} onClick={onSubmit}>
+          <ActionButton isDisabled={!isValidAddress(address)} onClick={onSubmit}>
             Done
           </ActionButton>
         </Box>

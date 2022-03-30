@@ -2,7 +2,7 @@ import { ROUTES } from "router/routes";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import useLogic from "./useLogic";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import AppRoutes from "router/Router";
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    height: "100vh",
+    minHeight: "100vh",
     position: "relative",
     paddingLeft: "20px",
     paddingRight: "20px",
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   routes: {
     background: "#FAFAFA",
     borderRadius: 20,
-    maxHeight: "calc(100% - 150px)",
+    maxHeight: "60%",
     width: "100%",
     overflow: "auto",
     flex: 1,
