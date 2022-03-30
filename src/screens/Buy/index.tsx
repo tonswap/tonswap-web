@@ -6,6 +6,8 @@ import { SwapLayout } from "../layouts/SwapLayout";
 import { SwapContentLayout } from "../layouts/SwapContentLayout";
 import { ReactComponent as Arrow } from "assets/images/shared/arrow.svg";
 import { SvgIcon } from "@mui/material";
+import { useEffect } from "react";
+import { Token } from "types";
 
 export const BuyScreen = observer(() => {
   const store = useStore();
@@ -13,6 +15,23 @@ export const BuyScreen = observer(() => {
   const submit = (res: any) => {
     console.log(res);
   };
+
+//   const getBalances = async (token: Token) => {
+//     const result = await  Promise.all([
+//         API.getTonBalance(),
+//         API.getTokenBalance(token.id)
+//     ]);
+//     console.log(result);
+    
+// }
+
+useEffect(() => {
+  
+}, [store.selectedToken])
+
+
+
+
 
   return (
     <SwapLayout

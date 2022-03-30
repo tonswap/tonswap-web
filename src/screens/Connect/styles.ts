@@ -10,13 +10,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    height: "100%",
     paddingTop: 100,
     maxWidth: 400,
     marginLeft:'auto',
     marginRight:'auto',
+    paddingBottom: 100,
     [theme.breakpoints.down('sm')]:{
-      paddingTop: 15
+      paddingTop: 15,
+     flex:1,
+     paddingBottom: 0
     }
   },
   hero: {

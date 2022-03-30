@@ -22,3 +22,20 @@ button {
     backdrop-filter: blur(20px);
   }
 }
+
+
+body, html{
+  // min-height: -webkit-fill-available;
+
+}
+body{
+  display: flex;
+  flex-direction: column;
+}
+#root{
+  display: flex;
+  flex-direction: column;
+  flex:1
+}
+
+

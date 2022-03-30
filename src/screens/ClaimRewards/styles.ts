@@ -3,11 +3,11 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     width: '100%',
+    flex:1
   },
   medal: {
     height: 77,

@@ -9,9 +9,6 @@ import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import useMobile from "hooks/useMobile";
 import { LAYOUT_MAX_WIDTH } from "consts";
-var Buffer = require('buffer/').Buffer  // note: the trailing slash is important!
-global.Buffer = Buffer;
-const TonWeb = require('tonweb');
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -19,32 +16,31 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    minHeight: "100vh",
     position: "relative",
     paddingLeft: "20px",
     paddingRight: "20px",
     paddingBottom: 30,
     maxWidth: LAYOUT_MAX_WIDTH,
-    marginLeft: 'auto',
-    marginRight:'auto'
+    marginLeft: "auto",
+    marginRight: "auto",
+    flex: 1,
   },
-  navbar: {
-    height: 50,
-  },
+
   routes: {
     background: "#FAFAFA",
     borderRadius: 20,
-    maxHeight: "60%",
+    maxHeight: "calc(100vh - 200px)",
     width: "100%",
     overflow: "auto",
-    flex: 1,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
       background: "transparent",
+      flex: 1,
+      maxHeight: "unset",
       borderRadius: 0,
-  },
+    },
   },
 }));
 
@@ -63,11 +59,11 @@ const App = observer(() => {
 
   return (
     <Box className={classes.app}>
-      {!hideNavbar(isMobile, location.pathname) && <Navbar />}
-      <Box className={classes.routes}>
-        <AppRoutes />
+        {!hideNavbar(isMobile, location.pathname) && <Navbar />}
+        <Box className={classes.routes}>
+          <AppRoutes />
+        </Box>
       </Box>
-    </Box>
   );
 });
 

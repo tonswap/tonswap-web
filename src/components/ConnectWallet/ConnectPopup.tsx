@@ -10,6 +10,8 @@ import { useStyles } from "./style";
 import LogoWithText from "components/Navbar/LogoWithText";
 import CloseIcon from "@mui/icons-material/Close";
 import QR from "./Qr";
+var Buffer = require('buffer/').Buffer  // note: the trailing slash is important!
+global.Buffer = Buffer;
 
 
 interface Props {
@@ -24,6 +26,7 @@ const isValidAddress = (address: string) =>{
   if(!address){
     return false
   }
+  // return TonWeb.utils.Address.isValid(address)
   return true
 }
 

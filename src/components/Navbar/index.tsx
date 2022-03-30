@@ -14,7 +14,6 @@ import WalletAddressImg from "assets/images/shared/wallet-address.svg";
 import { observer } from "mobx-react";
 import { useStore } from "store";
 import useMobile from "hooks/useMobile";
-import IncativeToken from "screens/Tokens/Desktop/InactiveToken";
 
 const desktopNavbarHeight = "120px";
 const mobileNavbarHeight = "80px";
@@ -84,7 +83,7 @@ export const Navbar = observer(() => {
         </Toolbar>
         <Menu open={open} hide={() => setOpen(false)} />
       </AppBar>
-      <Box style={{ height: navbarHeight, position:'sticky', width: '100%', top: 0, background:'white', zIndex: 1 }}></Box>
+      <Box style={{ height: navbarHeight, width: '100%', top: 0, background:'white', zIndex: 99, position:'sticky' }}></Box>
     </>
   );
 });

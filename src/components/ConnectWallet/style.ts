@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   qrWindow: {
     position: 'absolute',
     width: '100%',
-    // height:'300px',
+    background: 'black',
   },
   qrImages: {
     width:'100%',

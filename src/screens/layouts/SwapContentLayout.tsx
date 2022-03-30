@@ -5,7 +5,7 @@ import { ActionButton } from "components";
 import { Token } from "types";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
-import Grow from '@mui/material/Grow';
+
 
 interface Props {
   firstCard?: Token;
@@ -27,6 +27,9 @@ export function SwapContentLayout({
   const classes = useStyles({ color: firstCard?.color || "" });
   const [firstCardValue, setFirstCardValue] = useState("");
   const [secondCardValue, setSecondCardValue] = useState("");
+
+
+
 
   const onFirstCardChange = (value: string) => {
     setFirstCardValue(value);

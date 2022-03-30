@@ -43,9 +43,9 @@ const ListToken = observer(({ token, callback }: Props) => {
     } else {
       store.setToken(token);
       callback?.(token);
-      if (ref.current && isMobile) {
-        scroll(ref.current);
-      }
+      // if (ref.current && isMobile) {
+      //   scroll(ref.current);
+      // }
     }
   };
 

@@ -37,6 +37,10 @@ const QR = ({ setAddress }: Props) => {
             </IconButton>
           </Box>
           <QrReader
+          videoStyle={{
+              objectFit:'cover',
+          
+          }}
             constraints={{ facingMode: "user" }}
             onResult={(result: any, error: any) => {
               if (!!result) {

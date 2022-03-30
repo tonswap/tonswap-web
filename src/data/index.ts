@@ -18,7 +18,7 @@ const tokens: Token[] = [
     name: "LUNA",
     id: "luna",
     color: "#E32372",
-    isActive: false
+    isActive: true
   },
   {
     image: Dai,
