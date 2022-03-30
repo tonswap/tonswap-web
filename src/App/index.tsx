@@ -9,6 +9,9 @@ import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import useMobile from "hooks/useMobile";
 import { LAYOUT_MAX_WIDTH } from "consts";
+var Buffer = require('buffer/').Buffer  // note: the trailing slash is important!
+global.Buffer = Buffer;
+const TonWeb = require('tonweb');
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
