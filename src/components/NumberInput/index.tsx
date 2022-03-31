@@ -1,13 +1,14 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import NumberFormat, { FormatInputValueFunction } from "react-number-format";
 import { makeStyles } from "@mui/styles";
-import { InputAdornment } from "@mui/material";
+import ContentLoader from "components/ContentLoader";
 
 interface Props {
-  value: string;
+  value?: number;
   onChange: (val: string) => void;
   title?: string;
-  maxAmount: string;
+  maxAmount: number;
+  isLoading?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -22,10 +23,29 @@ const useStyles = makeStyles({
     alignItems: "center",
     background: "rgba(255,255,255, 0.1)",
     borderRadius: "12px",
+    position: "relative",
+  },
+  inputLoader: {
+    position: "absolute",
+    left: 15,
+    top: "50%",
+    transform: "translate(0, -50%)",
+  },
+  maxLoader: {
+    position: "absolute",
+    right: 15,
+    top: "50%",
+    transform: "translate(0, -50%)",
   },
 });
 
-export function NumberInput({ value, onChange, title, maxAmount }: Props) {
+export function NumberInput({
+  value,
+  onChange,
+  title,
+  maxAmount,
+  isLoading,
+}: Props) {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
@@ -40,13 +60,23 @@ export function NumberInput({ value, onChange, title, maxAmount }: Props) {
         </Typography>
       )}
       <Box className={classes.flex}>
+        {isLoading && (
+          <>
+            <Box className={classes.inputLoader}>
+              <ContentLoader width={140} height={40} borderRadius={3} />
+            </Box>
+            <Box className={classes.maxLoader}>
+              <ContentLoader width={40} height={40} borderRadius={3} />
+            </Box>
+          </>
+        )}
         <NumberFormat
           inputProps={{
             sx: {
               padding: 0,
               height: "50px",
               border: "none",
-              color: "white",
+              color: isLoading ? "transparent" : "white",
               fontSize: "30px",
               textIndent: "16px",
               background: "transparent",
@@ -57,22 +87,29 @@ export function NumberInput({ value, onChange, title, maxAmount }: Props) {
           style={{ width: "100%" }}
           autoComplete="off"
           sx={{ border: "none" }}
-          value={value}
+          value={value || ""}
           customInput={TextField}
           type="text"
           thousandSeparator={","}
-          onValueChange={({ value }) => onChange(value)}
+          onValueChange={({ value }, event: any) => {
+
+            if (event.source !== "prop") {
+              onChange(value);
+            }
+          }}
         />
-        <Button
-          onClick={() => onChange(maxAmount)}
-          sx={{ color: "white", height: "100%" }}
-          variant="text"
-        >
-          <Typography fontSize={12} fontWeight={700}>
-            {" "}
-            MAX
-          </Typography>
-        </Button>
+        {!isLoading && (
+          <Button
+            onClick={() => onChange(maxAmount.toString())}
+            sx={{ color: "white", height: "100%" }}
+            variant="text"
+          >
+            <Typography fontSize={12} fontWeight={700}>
+              {" "}
+              MAX
+            </Typography>
+          </Button>
+        )}
       </Box>
     </Box>
   );

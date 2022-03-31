@@ -6,7 +6,6 @@ var Buffer = require('buffer/').Buffer  // note: the trailing slash is important
 global.Buffer = Buffer;
 
 
-
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 const splitToGroups = (arr: any, size: number) => {
@@ -18,11 +17,11 @@ const splitToGroups = (arr: any, size: number) => {
 };
 
 const getToken = (tokens: Token[], tokenId: string) => {
-  return tokens.find((t) => t.id === tokenId);
+  return tokens.find((t) => t.name === tokenId);
 };
 
 const getIsSelectedTokenMobile = (group: Token[], selected?: string) => {
-  return group.find((g) => g.id === selected);
+  return group.find((g) => g.name === selected);
 };
 
 
@@ -111,7 +110,7 @@ export function sliceToAddress267(s :Slice) {
      const wc = new BN(s.readUint(8));
      const addr = s.readUint(256);
      const address = new Address(wc.toNumber(), addr.toBuffer());
-     return address;
+     return 'address';
  }
 
 export function toDecimals(num: number) {

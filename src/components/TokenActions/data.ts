@@ -18,15 +18,15 @@ import { ROUTES } from "router/routes";
 const createTokenActions = (navigate: NavigateFunction, token?: Token) => {
   if (!token) {
     token = {
-      name: "",
-      id: "tkn",
+      displayName: "",
+      name: "tkn",
       image: "",
       color: "",
       isActive: false
     };
   }
 
-  const id = token!!.id;
+  const id = token!!.name;
 
   return [
     {

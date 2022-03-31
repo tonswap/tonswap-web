@@ -15,57 +15,59 @@ import { Token } from "types";
 const tokens: Token[] = [
   {
     image: Luna,
-    name: "LUNA",
-    id: "luna",
+    displayName: "LUNA",
+    name: "luna",
     color: "#E32372",
-    isActive: true
+    isActive: true,
+    address: 'EQAycqbigAAkekkGG1A_3LSVGS1RfvJb4YavqUcbUg0pYK0u',
+    amm: "EQCSOxDQI94b0vGCN2Lc3DPan8v3P_JRt-z4PJ9Af2_BPHx5"
   },
   {
     image: Dai,
-    name: "DAI",
-    id: "dai",
+    displayName: "DAI",
+    name: "dai",
     color: "#F5AC37",
     isActive: false
   },
   {
     image: BTC,
-    name: "BTC",
-    id: "btc",
+    displayName: "BTC",
+    name: "btc",
     color: "#F7931A",
     isActive: true
   },
   {
     image: ETH,
-    name: "ETH",
-    id: "eth",
+    displayName: "ETH",
+    name: "eth",
     color: "#627EEA",
     isActive: true
   },
   {
     image: Doge,
-    name: "DOGE",
-    id: "doge",
+    displayName: "DOGE",
+    name: "doge",
     color: "#C3A634",
     isActive: true
   },
   {
     image: Dot,
-    name: "DOT",
-    id: "dot",
+    displayName: "DOT",
+    name: "dot",
     color: "#E6007A",
     isActive: true
   },
   {
     image: Usdc,
-    name: "USDC",
-    id: "usdc",
+    displayName: "USDC",
+    name: "usdc",
     color: "#2675C9",
     isActive: true
   },
   {
     image: Usdt,
-    name: "USDT",
-    id: "usdt",
+    displayName: "USDT",
+    name: "usdt",
     color: "#26A17B",
     isActive: true
   },
@@ -75,8 +77,8 @@ const tokens: Token[] = [
 
 const ton: Token = {
   image: Ton,
-  name: "TON",
-  id: "ton",
+  displayName: "TON",
+  name: "ton",
   color: "#1490CD",
   isActive: true
 };

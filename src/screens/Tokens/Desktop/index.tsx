@@ -36,7 +36,7 @@ const Desktop = observer(() => {
     >
       {tokens.map((token) => {
         return (
-          <Grid item sm={4} md={3} key={token.id}>
+          <Grid item sm={4} md={3} key={token.name}>
             <ListToken callback={onTokenSelect} token={token} />
           </Grid>
         );

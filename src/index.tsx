@@ -1,11 +1,12 @@
 import ReactDOM from "react-dom";
 import "./index.css";
+import "setimmediate";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
-import "setimmediate";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 

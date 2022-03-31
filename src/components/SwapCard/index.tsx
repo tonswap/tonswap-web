@@ -1,114 +1,146 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { NumberInput } from "components/NumberInput";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { delay } from "utils";
-import { Theme } from "@mui/material/styles";
-
-
-const useStyles = makeStyles((theme: Theme ) => ({
-  root: ({ color }: { color: string }) => ({
-    background: color,
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    borderRadius: 12,
-    position: "relative",
-    paddingLeft: 18,
-    paddingRight: 18,
-    paddingTop: 42,
-    paddingBottom: 28,
-    "& *": {
-      color: "white",
-    },
-    [theme.breakpoints.up("sm")]: {
-     paddingTop: 30,
-     paddingBottom:13
-    },
-  }),
-  tokenImage: {
-    position: "absolute",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    top: "0%",
-  },
-  inputBox: {
-    width: "100%",
-  },
-  bottomBox: {
-    marginTop: 8,
-    "& p": {
-      fontSize: 12,
-      "& strong": {
-        fontWeight: "bold",
-      },
-    },
-  },
-}))
+import * as API from "services/api";
+import { Token } from "types";
+import ContentLoader from "components/ContentLoader";
+import { calculateTokens } from "screens/layouts/util";
+import { useStyles } from "./styles";
 
 interface Props {
-  image: string;
-  name: string;
-  inputAmount: string;
-  availableAmount: string;
-  color: string;
+  inputAmount?: number;
+  availableAmount: number;
   onChange: (val: string) => void;
-  maxAmount: string;
+  maxAmount: number;
+  opositeTokenValue: number;
+  opositeTokenName: string;
+  getAmountFunc: any;
+  srcTokenName: string;
+  token: Token;
+  balance: number;
+  name: string;
+  updateStore: (name: string, val: number) => void;
 }
 
-const getUsdAmount = async (value: string) => {
-  await delay(200);
-  return (Number(value) * 2.5).toLocaleString();
+const getUsdAmount = async (tokenId: string, amount: number) => {
+  try {
+    const result = await API.getTokenDollarValue(tokenId, amount);
+    return result;
+  } catch (error) {
+    console.log(error);
+
+    return 0;
+  }
 };
 
 function SwapCard({
-  image,
-  name,
   inputAmount,
   availableAmount,
-  color,
   onChange,
-  maxAmount
+  maxAmount,
+  token,
+  opositeTokenValue,
+  srcTokenName,
+  getAmountFunc,
+  opositeTokenName,
+  updateStore,
+  balance,
+  name,
 }: Props) {
-  const classes = useStyles({ color });
-  const [usdAmount, setUsdAmount] = useState("0");
+  const classes = useStyles({ color: token.color });
+  const [usdPrice, setUsdPrice] = useState(0);
+  const [usdLoading, setusdLoading] = useState(false);
+  const [valueLoading, setValueLoading] = useState(false);
 
-  const debounced = useDebouncedCallback(async (value) => {
-    const res = await getUsdAmount(value);
-    setUsdAmount(res);
+  const usdDebounce = useDebouncedCallback(async () => {
+   
+
+    const usd = await getUsdAmount(token.name, balance);
+    setUsdPrice(usd);
+    setusdLoading(false);
+  }, 600);
+
+  const destInputDebounce = useDebouncedCallback(async () => {
+    if (!opositeTokenValue) {
+      return;
+    }
+    let result: any;
+
+    if (opositeTokenName === srcTokenName) {
+      result = await calculateTokens(
+        opositeTokenName,
+        token.name,
+        opositeTokenValue || "0",
+        null,
+        getAmountFunc
+      );
+    } else {
+      result = await calculateTokens(
+        token.name,
+        opositeTokenName,
+        null,
+        opositeTokenValue || "0",
+        getAmountFunc
+      );
+    }
+    const usd = await getUsdAmount(token.name, Number(result));
+    setUsdPrice(usd);
+    setusdLoading(false);
+    setValueLoading(false);
+    updateStore(name, result);
   }, 600);
 
   useEffect(() => {
-    debounced(inputAmount);
-  }, [inputAmount]);
+    if (opositeTokenValue) {
+      setusdLoading(true);
+      setValueLoading(true);
+      destInputDebounce();
+    } else {
+      setusdLoading(false);
+      setValueLoading(false);
+      setUsdPrice(0);
+    }
+  }, [opositeTokenValue]);
+
+  const change = async (val: string) => {
+    onChange(val);
+    updateStore(name, Number(val));
+    setusdLoading(true);
+    usdDebounce()
+  };
 
   return (
     <Box className={classes.root}>
       <Box className={classes.tokenImage}>
-        <img src= {image} />
+        <img src={token.image} />
       </Box>
       <Typography fontSize="14px" marginBottom="4px" fontWeight={500}>
-        {name}
+        {token.displayName}
       </Typography>
 
       <Box className={classes.inputBox}>
         <NumberInput
+          isLoading={valueLoading}
           title="Enter Amount"
           maxAmount={maxAmount}
-          value={inputAmount}
-          onChange={(val) => onChange(val)}
+          value={balance}
+          onChange={(val) => change(val)}
         />
       </Box>
 
       <Grid container className={classes.bottomBox}>
         <Grid item xs={6}>
-          <Typography component="p">~${usdAmount}</Typography>
+          {usdLoading ? (
+            <ContentLoader width={40} height="15px" borderRadius="4px" />
+          ) : (
+            <Typography component="p">~${usdPrice.toLocaleString()}</Typography>
+          )}
         </Grid>
         <Grid item xs={6} justifyContent="flex-end">
           <Typography component="p" textAlign="right">
-            <strong>Available:</strong> {availableAmount} {name}
+            <strong>Available:</strong> {availableAmount.toLocaleString()}{" "}
+            {token.displayName}
           </Typography>
         </Grid>
       </Grid>

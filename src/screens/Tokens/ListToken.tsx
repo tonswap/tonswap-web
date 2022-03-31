@@ -38,7 +38,7 @@ const ListToken = observer(({ token, callback }: Props) => {
   const onSelect = () => {
     if (!token.isActive) {
       setShowIncativePopup(true);
-    } else if (store.selectedToken?.id === token.id) {
+    } else if (store.selectedToken?.name === token.name) {
       store.setToken(undefined);
     } else {
       store.setToken(token);
@@ -61,7 +61,7 @@ const ListToken = observer(({ token, callback }: Props) => {
     }
   };
 
-  const isSelected = store.selectedToken?.id === token.id;
+  const isSelected = store.selectedToken?.name === token.name;
   const background = isSelected || hovering ? token.color : defaultColor;
   const textColor = isSelected || hovering ? "white" : "";
 

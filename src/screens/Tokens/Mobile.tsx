@@ -22,7 +22,7 @@ const Mobile = observer(() => {
       {groups.map((group, index) => {
         const isSelected = getIsSelectedTokenMobile(
           group,
-          store.selectedToken?.id
+          store.selectedToken?.name
         );
 
         return (
@@ -36,7 +36,7 @@ const Mobile = observer(() => {
           >
             {group.map((token: Token) => {
               return (
-                <Grid item xs={6} key={token.id}>
+                <Grid item xs={6} key={token.name}>
                   <ListToken token={token} />
                 </Grid>
               );

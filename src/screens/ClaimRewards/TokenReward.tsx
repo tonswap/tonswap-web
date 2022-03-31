@@ -15,7 +15,7 @@ function TokenReward({ amount, tokenId }: Props) {
   const [token, setToken] = useState<Token | undefined>(undefined);
 
   useEffect(() => {
-    const result = tokens.find((t) => t.id === tokenId);
+    const result = tokens.find((t) => t.name === tokenId);
     setToken(result);
   }, [tokenId]);
 
