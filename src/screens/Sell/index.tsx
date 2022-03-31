@@ -1,32 +1,59 @@
-import { ton } from "data";
+import { ton } from "tokens";
 import { observer } from "mobx-react";
 
 import { useStore } from "store";
 import Icon from "assets/images/shared/sell.svg";
-import { SwapLayout } from "../layouts/SwapLayout";
+import { TokenLayout } from "../layouts/TokenLayout";
 import { ReactComponent as Arrow } from "assets/images/shared/arrow.svg";
 import { SvgIcon } from "@mui/material";
+import TokenOperations from "screens/cmponents/TokenOperations";
+import * as API from "services/api";
+import {
+  TokenOperationsStore,
+  useTokenOperationsStore,
+} from "screens/cmponents/TokenOperations/Context";
 
-export const SellScreen = observer(() => {
+export const SellScreen = () => {
+  return (
+    <TokenOperationsStore>
+      <Sell />
+    </TokenOperationsStore>
+  );
+};
+
+const Sell = observer(() => {
   const store = useStore();
-  const submit = (res: any) => {
-    console.log(res);
+  const { srcTokenAmount } = useTokenOperationsStore();
+  const onSubmit = () => {
+    if (store.selectedToken) {
+      API.generateSellLink(store.selectedToken.name, srcTokenAmount);
+    }
+  };
+
+  const getBalances = () => {
+    return Promise.all([
+      API.getTokenBalance(store.selectedToken!!),
+      API.getTonBalance(),
+    ]);
   };
 
   return (
-    <SwapLayout
+    <TokenLayout
       title={`Swap ${store.selectedToken?.name} to TON`}
       titleImage={Icon}
     >
-      {/* <SwapContentLayout
-        icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
-        disableButton={true}
-        submit={submit}
-        firstCard={store.selectedToken}
-        secondCard={ton}
-        submitButtonText={`Sell ${store.selectedToken?.name}`}
-      /> */}
-    </SwapLayout>
+      {store.selectedToken && (
+        <TokenOperations
+          icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
+          disableButton={false}
+          onSubmit={onSubmit}
+          getAmountFunc={API.getAmountsOut}
+          getBalances={getBalances}
+          srcToken={store.selectedToken}
+          destToken={ton}
+          submitButtonText={`Sell ${store.selectedToken?.displayName}`}
+        />
+      )}
+    </TokenLayout>
   );
 });
-

@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingBottom: 70
   },
   selectedTokenDetails: {
-    marginTop: 43,
+    marginTop: 35,
     textAlign: "center",
     "& img": {
       width: 63,

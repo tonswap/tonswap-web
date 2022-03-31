@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { tokens } from "data";
+import { tokens } from "tokens";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useStore } from "store";

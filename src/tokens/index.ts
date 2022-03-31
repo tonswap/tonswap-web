@@ -17,7 +17,7 @@ const tokens: Token[] = [
     image: Luna,
     displayName: "LUNA",
     name: "luna",
-    color: "#E32372",
+    color: "#32487E",
     isActive: true,
     address: 'EQAycqbigAAkekkGG1A_3LSVGS1RfvJb4YavqUcbUg0pYK0u',
     amm: "EQCSOxDQI94b0vGCN2Lc3DPan8v3P_JRt-z4PJ9Af2_BPHx5"
@@ -26,50 +26,50 @@ const tokens: Token[] = [
     image: Dai,
     displayName: "DAI",
     name: "dai",
-    color: "#F5AC37",
+    color: "#9F8728",
     isActive: false
   },
   {
     image: BTC,
     displayName: "BTC",
     name: "btc",
-    color: "#F7931A",
-    isActive: true
+    color: "#E08618",
+     isActive: false
   },
   {
     image: ETH,
     displayName: "ETH",
     name: "eth",
-    color: "#627EEA",
-    isActive: true
+    color: "#4D67CD",
+     isActive: false
   },
   {
     image: Doge,
     displayName: "DOGE",
     name: "doge",
-    color: "#C3A634",
-    isActive: true
+    color: "#9F8728",
+     isActive: false
   },
   {
     image: Dot,
     displayName: "DOT",
     name: "dot",
-    color: "#E6007A",
-    isActive: true
+    color: "#C20268",
+     isActive: false
   },
   {
     image: Usdc,
     displayName: "USDC",
     name: "usdc",
-    color: "#2675C9",
-    isActive: true
+    color: "#28619E",
+     isActive: false
   },
   {
     image: Usdt,
     displayName: "USDT",
     name: "usdt",
-    color: "#26A17B",
-    isActive: true
+    color: "#1B8362",
+     isActive: false
   },
 
   

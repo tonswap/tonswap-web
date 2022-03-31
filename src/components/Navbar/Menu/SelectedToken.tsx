@@ -35,7 +35,7 @@ function SelectedToken({ token, hideMenu }: Props) {
       <Box className={classes.selectedTokenDetails}>
         <img src={token.image} />
         <Typography color="#060606" fontWeight={500}>
-          {token.name}
+          {token.displayName}
         </Typography>
       </Box>
       <Link onClick={onReplace} to={ROUTES.tokens} className={classes.replace}>

@@ -41,7 +41,6 @@ function WalletPopup({ onClose, open, onConnected }: Props) {
       setError("Please insert wallet address");
     } else {
       store.setAddress(address);
-      localStorage.setItem(LOCAL_STORAGE_ADDRESS, address);
       onConnected?.();
       onClose();
     }

@@ -1,18 +1,43 @@
-import { ton } from "data";
+import { ton } from "tokens";
 import { observer } from "mobx-react-lite";
 import { useStore } from "store";
 import Icon from "assets/images/shared/buy.svg";
-import { SwapLayout } from "../layouts/SwapLayout";
+import { TokenLayout } from "../layouts/TokenLayout";
 import { ReactComponent as Arrow } from "assets/images/shared/arrow.svg";
 import { SvgIcon } from "@mui/material";
 import * as API from "services/api";
 import TokenOperations from "screens/cmponents/TokenOperations";
 
-export const BuyScreen = observer(() => {
+import {
+  TokenOperationsStore,
+  useTokenOperationsStore,
+} from "screens/cmponents/TokenOperations/Context";
+
+export const BuyScreen = () => {
+  return (
+    <TokenOperationsStore>
+      <Buy />
+    </TokenOperationsStore>
+  );
+};
+
+const Buy = observer(() => {
   const store = useStore();
-  const submit = (res: any) => {
-    console.log(res);
+
+  const { srcTokenAmount, destTokenAmount, totalBalances } =
+    useTokenOperationsStore();
+
+  const onSubmit = () => {
+    if (store.selectedToken) {
+      API.generateBuyLink(
+        store.selectedToken.name,
+        srcTokenAmount,
+        destTokenAmount
+      );
+    }
   };
+
+  console.log(totalBalances);
 
   const getBalances = () => {
     return Promise.all([
@@ -22,7 +47,7 @@ export const BuyScreen = observer(() => {
   };
 
   return (
-    <SwapLayout
+    <TokenLayout
       title={`Swap TON to ${store.selectedToken?.name}`}
       titleImage={Icon}
     >
@@ -30,14 +55,14 @@ export const BuyScreen = observer(() => {
         <TokenOperations
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
           disableButton={false}
-          submit={submit}
+          onSubmit={onSubmit}
           getAmountFunc={API.getAmountsOut}
           getBalances={getBalances}
           srcToken={ton}
           destToken={store.selectedToken}
-          submitButtonText={`Buy ${store.selectedToken?.name}`}
+          submitButtonText={`Buy ${store.selectedToken?.displayName}`}
         />
       )}
-    </SwapLayout>
+    </TokenLayout>
   );
 });

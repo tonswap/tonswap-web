@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { action, configure, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
 import { Token } from "types";
@@ -27,6 +28,7 @@ class Store {
 
   setAddress(address: string) {
     this.address = address;
+    localStorage.setItem(LOCAL_STORAGE_ADDRESS, address);
   }
 }
 

@@ -84,7 +84,7 @@ const ListToken = observer(({ token, callback }: Props) => {
               color: textColor,
             }}
           >
-            {token.name}
+            {token.displayName}
           </Typography>
         </div>
       </div>

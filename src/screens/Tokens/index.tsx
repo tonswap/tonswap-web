@@ -5,11 +5,18 @@ import Mobile from "./Mobile";
 import theme from "theme";
 import Desktop from "./Desktop";
 import Fade from "@mui/material/Fade";
+import { useStore } from "store";
+import { useEffect } from "react";
 
 export const Tokens = () => {
   const classes = useStyles();
+  const store = useStore();
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    store.setToken(undefined);
+  }, []);
 
   return (
     <Fade in>

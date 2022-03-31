@@ -15,6 +15,7 @@ import { NavigateFunction } from "react-router-dom";
 import { Token } from "types";
 import { ROUTES } from "router/routes";
 
+
 const createTokenActions = (navigate: NavigateFunction, token?: Token) => {
   if (!token) {
     token = {
@@ -32,14 +33,14 @@ const createTokenActions = (navigate: NavigateFunction, token?: Token) => {
     {
       icon: Buy,
       activeIcon: "",
-      title: `Buy ${token.name}`,
+      title: `Buy ${token.displayName}`,
       func: () => navigate(ROUTES.actions.buy.replace(":id", id)),
       id: 'buy',
     },
     {
       icon: Sell,
       activeIcon: "",
-      title: `Sell ${token.name}`,
+      title: `Sell ${token.displayName}`,
       func: () => navigate(ROUTES.actions.sell.replace(":id", id)),
       id: 'sell',
     },
@@ -61,7 +62,7 @@ const createTokenActions = (navigate: NavigateFunction, token?: Token) => {
       icon: ClaimRewardImg,
       activeIcon: "",
       title: "Claim Rewards",
-      func: () => navigate(ROUTES.actions.claimRewards),
+      func: () => navigate(ROUTES.actions.claimRewards.replace(":id", id)),
       id: 'claim-rewards',
     },
   ];

@@ -1,140 +1,117 @@
 import { Box } from "@mui/material";
-import SwapCard from "components/SwapCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ActionButton } from "components";
 import { Token } from "types";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
-import { TokenOperationsStore } from "./Context";
+import { TokenOperationsStore, useTokenOperationsStore } from "./Context";
+import DestToken from "./DestToken";
+import SrcToken from "./SrcToken";
+import useInterval from "hooks/useInterval";
+import * as API from "services/api";
+import Notification from "components/Notification";
+import useTxPolling from "hooks/useTransactionStatus";
 
 interface Props {
   srcToken: Token;
   destToken: Token;
   submitButtonText: string;
-  submit: (val: any) => void;
   disableButton: boolean;
   icon: any;
-  getBalances: () => Promise<[number, number]>;
+  getBalances: () => Promise<any>;
   getAmountFunc: any;
+  onSubmit: () => void;
 }
-
-const Wrapper = (props: Props) => {
-  return (
-    <TokenOperationsStore>
-      <TokenOperations {...props} />
-    </TokenOperationsStore>
-  );
-};
 
 function TokenOperations({
   srcToken,
   destToken,
   submitButtonText,
-  submit,
-  disableButton,
   icon,
   getBalances,
   getAmountFunc,
+  onSubmit,
 }: Props) {
   const classes = useStyles({ color: srcToken?.color || "" });
-  const [balances, setBalances] = useState({ srcBalance: 0, destBalance: 0 });
-  const [balances2, setBalances2] = useState({ srcBalance: 0, destBalance: 0 });
-  const [totalBalances, setTotalBalances] = useState({
-    srcBalance: 0,
-    destBalance: 0,
-  });
+  const {
+    setTotalBalances,
+    setDestAvailableAmountLoading,
+    setSrcAvailableAmountLoading,
+    srcTokenAmount,
+    totalBalances,
+    destLoading,
+    srcLoading,
+    clearAmounts,
+  } = useTokenOperationsStore();
+
+  const onTxFinished = async () => {
+    await updateBalances();
+    clearAmounts();
+  };
+
+  const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
+
+  const submitted = async () => {
+    onSubmit();
+    pollTx();
+  };
+
+  const updateBalances = async () => {
+    const [srcTokenBalance, destTokenBalance] = await getBalances();
+    setTotalBalances({
+      srcBalance: srcTokenBalance,
+      destBalance: destTokenBalance,
+    });
+    setDestAvailableAmountLoading(false);
+    setSrcAvailableAmountLoading(false);
+  };
+
+  const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
 
   useEffect(() => {
-    const onLoad = async () => {
-      const [srcTokenBalance, destTokenBalance] = await getBalances();
-
-      setTotalBalances({
-        srcBalance: srcTokenBalance,
-        destBalance: destTokenBalance,
-      });
-    };
-    onLoad();
+    updateBalances();
   }, []);
-
-  const onSubmit = () => {};
-
-  const srcChange = (value: string) => {
-    setBalances((prevState) => {
-      return {
-        ...prevState,
-        srcBalance: Number(value),
-      };
-    });
-  };
-
-  const destChange = (value: string) => {
-    setBalances((prevState) => {
-      return {
-        ...prevState,
-        destBalance: Number(value),
-      };
-    });
-  };
-
-  const updateStore = (name: string, value: number) => {
-    setBalances2((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-  };
-
-  console.log(balances2);
 
   return (
     <Box className={classes.content}>
+      <Notification
+        text="Swap Success!"
+        open={txSuccess}
+        onClose={closeSuccess}
+      />
       <Box className={classes.cards}>
-        <SwapCard
-          name="srcBalance"
-          balance={balances2.srcBalance}
-          updateStore={updateStore}
-          onChange={srcChange}
-          inputAmount={balances.srcBalance}
-          availableAmount={totalBalances.srcBalance}
-          maxAmount={totalBalances.srcBalance}
+        <SrcToken
           token={srcToken}
-          opositeTokenValue={balances.destBalance}
-          opositeTokenName={destToken.name}
-          srcTokenName={srcToken.name}
           getAmountFunc={getAmountFunc}
+          destTokenName={destToken.name}
         />
 
         <Box className={classes.svg}>{icon}</Box>
 
-        <SwapCard
-          name="destBalance"
-          balance={balances2.destBalance}
-          updateStore={updateStore}
-          onChange={destChange}
-          inputAmount={balances.destBalance}
-          token={destToken}
-          opositeTokenName={srcToken.name}
-          availableAmount={totalBalances.destBalance}
-          maxAmount={totalBalances.destBalance}
-          opositeTokenValue={balances.srcBalance}
-          srcTokenName={srcToken.name}
+        <DestToken
           getAmountFunc={getAmountFunc}
+          token={destToken}
+          srcTokenName={srcToken.name}
         />
       </Box>
 
       <Box className={classes.button}>
-        {disableButton ? (
-          <ActionButton isDisabled onClick={onSubmit}>
+        {insufficientFunds ? (
+          <ActionButton isDisabled onClick={() => {}}>
             <WarningAmberRoundedIcon style={{ color: "white" }} /> Insufficient
             funds
           </ActionButton>
         ) : (
-          <ActionButton onClick={onSubmit}>{submitButtonText}</ActionButton>
+          <ActionButton
+            isDisabled={!srcTokenAmount || srcLoading || destLoading}
+            onClick={submitted}
+          >
+            {submitButtonText}
+          </ActionButton>
         )}
       </Box>
     </Box>
   );
 }
 
-export default Wrapper;
+export default TokenOperations;

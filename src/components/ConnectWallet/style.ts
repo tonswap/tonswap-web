@@ -82,9 +82,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight:'auto'
   },
   qrWindow: {
-    position: 'absolute',
-    width: '100%',
+    width: '320px',
+    height: '320px',
     background: 'black',
+    position: 'relative',
+    marginLeft:'auto',
+    marginRight:'auto',
+    borderRadius: '50%'
   },
   qrImages: {
     width:'100%',
@@ -93,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   qrClose: {
     position: 'absolute',
-    right: 0,
+    right: -30,
     top: 0,
    
     zIndex: 1

@@ -5,7 +5,7 @@ const ROUTES = {
   actions: {
     sell: "/sell/:id",
     buy: "/buy/:id",
-    claimRewards: "/claim-rewards",
+    claimRewards: "/claim-rewards/:id",
     addLiquidity: "/add-liquidity/:id",
     removeLiquidity: "/remove-liquidity/:id",
   },

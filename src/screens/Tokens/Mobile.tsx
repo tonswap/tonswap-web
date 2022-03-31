@@ -5,7 +5,7 @@ import { useStyles } from "./styles";
 import ListToken from "./ListToken";
 import TokenActions from "components/TokenActions";
 import AnimateHeight from "react-animate-height";
-import { tokens } from "data";
+import { tokens } from "tokens";
 import { getIsSelectedTokenMobile, splitToGroups } from "utils";
 import { Token } from "types";
 

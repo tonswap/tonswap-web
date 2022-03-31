@@ -7,3 +7,4 @@ export interface Token {
     address?: string;
     amm?: string;
 }
+

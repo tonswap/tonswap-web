@@ -5,6 +5,7 @@ import { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/material";
 import Fade from "@mui/material/Fade";
+import { TokenOperationsStore } from "screens/cmponents/TokenOperations/Context";
 
 interface Props {
   children: ReactNode;
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function SwapLayout({ children, titleImage, title, subTitle }: Props) {
+export function TokenLayout({ children, titleImage, title, subTitle }: Props) {
   const classes = useStyles();
   useTokenFromParams();
 

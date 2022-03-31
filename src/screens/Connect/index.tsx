@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import TonLogo from "assets/images/shared/ton-logo.svg";
 import HeroImg from "assets/images/connect/hero.png";
 import { ActionButton } from "components";
-import { useState } from "react";
 import { useStyles } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "store";
@@ -34,15 +33,15 @@ export const ConnectScreen = observer(() => {
 
       <img className={classes.hero} src={HeroImg} />
       <Box className={classes.bottomBox}>
+        <Typography variant="subtitle1" component="h6" style={{opacity: store.address ? 0 : 1}}>
+          Start by
+        </Typography>
         {store.address ? (
           <ActionButton onClick={() => navigate(ROUTES.tokens)}>
             Select tokens to trade
           </ActionButton>
         ) : (
           <>
-            <Typography variant="subtitle1" component="h6">
-              Start by
-            </Typography>
             <ConnectWallet text="Connecting to your wallet" />
           </>
         )}

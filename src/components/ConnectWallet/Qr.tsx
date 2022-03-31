@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import QRImage from "assets/images/connect/qr.svg";
 import QRLine from "assets/images/connect/qr-line.svg";
 import { Grow, Fade } from "@mui/material";
+import { Popup } from "components/Popup";
 
 interface Props {
   setAddress: (val: string) => void;
@@ -17,12 +18,12 @@ const QR = ({ setAddress }: Props) => {
 
   const onResult = (value: string) => {
     setAddress(value);
-    setOpen(false)
+    setOpen(false);
   };
 
   return (
     <div className={classes.qrContainer}>
-      <Grow in={open}>
+      <Popup backgroundColor="rgba(0,0,0, 0.01)" open={open}>
         <Box className={classes.qrWindow}>
           <Box className={classes.qrClose}>
             <IconButton
@@ -31,16 +32,16 @@ const QR = ({ setAddress }: Props) => {
               edge="start"
               color="inherit"
               aria-label="menu"
-              style={{ padding: 0, marginLeft: 0 }}
+              style={{ padding: 0, marginLeft: 0, color:'white' }}
             >
               <CloseIcon fontSize="large" />
             </IconButton>
           </Box>
           <QrReader
-          videoStyle={{
-              objectFit:'cover',
-          
-          }}
+            videoStyle={{
+              objectFit: "cover",
+              borderRadius: '50%'
+            }}
             constraints={{ facingMode: "user" }}
             onResult={(result: any, error: any) => {
               if (!!result) {
@@ -49,7 +50,8 @@ const QR = ({ setAddress }: Props) => {
             }}
           />
         </Box>
-      </Grow>
+      </Popup>
+
       <Fade in={!open}>
         <div className={classes.qrImages} onClick={() => setOpen(true)}>
           <img src={QRImage} className={classes.qrImage} />

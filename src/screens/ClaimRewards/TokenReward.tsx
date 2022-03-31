@@ -1,29 +1,24 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Token } from "types";
-import { tokens } from "data";
+import { customToFixed } from "utils";
 import { useStyles } from "./styles";
 
 interface Props {
   amount: number;
-  tokenId: string;
+  token?: Token;
 }
 
-function TokenReward({ amount, tokenId }: Props) {
+function TokenReward({ amount, token }: Props) {
   const classes = useStyles();
 
-  const [token, setToken] = useState<Token | undefined>(undefined);
 
-  useEffect(() => {
-    const result = tokens.find((t) => t.name === tokenId);
-    setToken(result);
-  }, [tokenId]);
 
   return (
     <Box style={{ background: token?.color || "" }} className={classes.tokenRewardBox}>
       <Typography component='p'>Earned Reward:</Typography>
       <Typography component='p'>
-        <strong>{amount.toLocaleString()} {token?.name}</strong>
+        <strong>{amount.toFixed(7)} {token?.displayName}</strong>
       </Typography>
     </Box>
   );

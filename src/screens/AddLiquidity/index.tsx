@@ -1,64 +1,98 @@
-import { ton } from "data";
+import { ton } from "tokens";
 
 import { Box, SvgIcon, Typography } from "@mui/material";
 import { useStore } from "store";
 import { observer } from "mobx-react";
 import Icon from "assets/images/shared/add-liqudity.svg";
-import { SwapLayout } from "../layouts/SwapLayout";
+import { TokenLayout } from "../layouts/TokenLayout";
 import Shout from "assets/images/shared/shout.svg";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
+import TokenOperations from "screens/cmponents/TokenOperations";
+import * as API from "services/api";
+import { ReactComponent as Plus } from "assets/images/shared/plus.svg";
 
+import {
+  TokenOperationsStore,
+  useTokenOperationsStore,
+} from "screens/cmponents/TokenOperations/Context";
 
 const useStyles = makeStyles((theme: Theme) => ({
-    subTitle: {
-      alignItems:'center',
-      justifyContent:'center',
-      display: 'flex',
-      "& img": {
-        marginRight: 10,
-        position:'relative',
-        top: 2
+  subTitle: {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    "& img": {
+      marginRight: 10,
+      position: "relative",
+      top: 2,
+    },
+    "& p": {
+      fontSize: 18,
+      fontWeight: 700,
+      "& strong": {
+        fontSize: 22,
+        color: "#E42473",
       },
-      "& p": {
-        fontSize: 18,
-        fontWeight: 700,
-        "& strong" :{
-          fontSize: 22,
-          color: '#E42473'
-        }
-      }
-    }
-}))
+    },
+  },
+}));
 
-export const AddLiquidityScreen = observer(() => {
-  const classes = useStyles()
+export const AddLiquidityScreen = () => {
+  return (
+    <TokenOperationsStore>
+      <AddLiquidity />
+    </TokenOperationsStore>
+  );
+};
+
+const AddLiquidity = observer(() => {
+  const classes = useStyles();
   const store = useStore();
+  const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
 
-  const submit = (res: any) => {
-    console.log(res);
+  const onSubmit = () => {
+    if (store.selectedToken) {
+      API.generateAddLiquidityLink(
+        store.selectedToken?.name,
+        srcTokenAmount,
+        destTokenAmount
+      );
+    }
+  };
+
+  const getBalances = () => {
+    return Promise.all([
+      API.getTonBalance(),
+      API.getTokenBalance(store.selectedToken!!),
+    ]);
   };
 
   return (
-    <SwapLayout
+    <TokenLayout
       title="Add Liquidity and earn"
       subTitle={
         <Box className={classes.subTitle}>
           <img src={Shout} />
-          <Typography>and earn <strong>88%</strong> APR</Typography>
+          <Typography>
+            and earn <strong>88%</strong> APR
+          </Typography>
         </Box>
       }
       titleImage={Icon}
     >
-      {/* <SwapContentLayout
-        icon={<SvgIcon component={Plus} viewBox="0 0 12 14" />}
-        disableButton={true}
-        submit={submit}
-        firstCard={store.selectedToken}
-        secondCard={ton}
-        submitButtonText={`Add ${store.selectedToken?.name} & TON liquidity`}
-      /> */}
-    </SwapLayout>
+      {store.selectedToken && (
+        <TokenOperations
+          icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
+          disableButton={false}
+          getAmountFunc={API.getLiquidityAmount}
+          getBalances={getBalances}
+          srcToken={ton}
+          onSubmit={onSubmit}
+          destToken={store.selectedToken}
+          submitButtonText={`Add TON/${store.selectedToken?.displayName} liquidity`}
+        />
+      )}
+    </TokenLayout>
   );
 });
-

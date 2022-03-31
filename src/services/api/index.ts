@@ -2,7 +2,7 @@ import { Address, TonClient } from "ton";
 import TonWeb from "tonweb";
 import { base64StrToCell, cellToString, stripBoc } from "utils";
 import { DexActions } from "./dex";
-import { tokens as supportedTokens } from "data";
+import { tokens as supportedTokens } from "tokens";
 import { Token } from "types";
 const BN = require("bn.js");
 
@@ -52,16 +52,24 @@ export const getTokensOfLPBalances = async (token: string) => {
 
 const parseNumber = (
   num: any,
-  units: number = 1e9,
+  units: number = 9,
   decimalPoints: number = 4
-) => {
-  return parseFloat(
-    parseFloat(
-      num.div(new BN(units)).toString() +
-        "." +
-        num.mod(new BN(units)).toString()
-    ).toFixed(4)
-  );
+): number => {
+  if (num.toString().length <= 9) {
+    return parseFloat(
+      parseFloat(
+        "0." + num.toString().padStart(units).replaceAll(" ", "0")
+      ).toFixed(decimalPoints)
+    );
+  } else {
+    return parseFloat(
+      parseFloat(
+        num.div(new BN(10 ** units)).toString() +
+          "." +
+          num.mod(new BN(10 ** units)).toString()
+      ).toFixed(decimalPoints)
+    );
+  }
 };
 
 const _getTokenBalance = async (tokenAddress: string) => {
@@ -215,7 +223,7 @@ export const getRewards = async (token: string) => {
     ["num", address.toString(10)],
   ]);
 
-  return parseNumber(new BN(eval(res.stack[0][1])));
+  return parseNumber(new BN(eval(res.stack[0][1])), undefined, 7);
 };
 
 export const generateSellLink = async (token: string, tokenAmount: number) => {
@@ -227,12 +235,26 @@ export const generateSellLink = async (token: string, tokenAmount: number) => {
   );
   const transferStr = transfer.toString();
   const bocT = stripBoc(transferStr);
-  const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${
-    0.2 * 1e9
-  }&text=${bocT}`;
 
-  console.log(deeplinkTransfer);
-  return window.open(deeplinkTransfer);
+  const provider = (window as any).ton;
+
+  if (provider) {
+    provider.send("ton_sendTransaction", [
+      {
+        to: tokenObjects.address, // TON Foundation
+        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        data: bocT,
+        dataType: "text",
+      },
+    ]);
+  } else {
+    const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${
+      0.2 * 1e9
+    }&text=${bocT}`;
+
+    console.log(deeplinkTransfer);
+    return window.open(deeplinkTransfer);
+  }
 };
 
 export const generateBuyLink = async (
@@ -246,12 +268,26 @@ export const generateBuyLink = async (
   const transferStr = transfer.toString();
   const bocT = stripBoc(transferStr);
   const tokenObjects: any = getToken(token);
-  const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${
-    tonAmount * 1e9
-  }&text=${bocT}`;
 
-  console.log(deeplinkTransfer);
-  return window.open(deeplinkTransfer);
+  const provider = (window as any).ton;
+
+  if (provider) {
+    provider.send("ton_sendTransaction", [
+      {
+        to: tokenObjects.amm, // TON Foundation
+        value: tonAmount * 1e9, // 10000 nanotons = 0.00001 TONs
+        data: bocT,
+        dataType: "text",
+      },
+    ]);
+  } else {
+    const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${
+      tonAmount * 1e9
+    }&text=${bocT}`;
+
+    console.log(deeplinkTransfer);
+    return window.open(deeplinkTransfer);
+  }
 };
 
 export const generateAddLiquidityLink = async (
@@ -266,12 +302,26 @@ export const generateAddLiquidityLink = async (
     10
   );
   const boc = stripBoc(transferAndLiq.toString());
-  const deeplink = `ton://transfer/${tokenObjects.address}?amount=${
-    (parseFloat(tonAmount + "") + 0.2) * 1e9
-  }&text=${boc}`;
 
-  console.log(deeplink);
-  return window.open(deeplink);
+  const provider = (window as any).ton;
+
+  if (provider) {
+    provider.send("ton_sendTransaction", [
+      {
+        to: tokenObjects.address, // TON Foundation
+        value: (parseFloat(tonAmount + "") + 0.2) * 1e9, // 10000 nanotons = 0.00001 TONs
+        data: boc,
+        dataType: "text",
+      },
+    ]);
+  } else {
+    const deeplink = `ton://transfer/${tokenObjects.address}?amount=${
+      (parseFloat(tonAmount + "") + 0.2) * 1e9
+    }&text=${boc}`;
+
+    console.log(deeplink);
+    return window.open(deeplink);
+  }
 };
 
 export const generateRemoveLiquidityLink = async (
@@ -290,20 +340,46 @@ export const generateRemoveLiquidityLink = async (
 
   const boc = stripBoc(transferAndLiq.toString());
   const tokenObjects: any = getToken(token);
-  const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-    0.2 * 1e9
-  }&text=${boc}`;
+  const provider = (window as any).ton;
 
-  return window.open(deeplink);
+  if (provider) {
+    provider.send("ton_sendTransaction", [
+      {
+        to: tokenObjects.amm, // TON Foundation
+        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        data: boc,
+        dataType: "text",
+      },
+    ]);
+  } else {
+    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
+      0.2 * 1e9
+    }&text=${boc}`;
+
+    return window.open(deeplink);
+  }
 };
 
 export const generateClaimRewards = async (token: string) => {
+  const provider = (window as any).ton;
+
   const claimRewards = await DexActions.claimRewards();
   const boc = stripBoc(claimRewards.toString());
   const tokenObjects: any = getToken(token);
-  const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-    0.2 * 1e9
-  }&text=${boc}`;
 
-  return window.open(deeplink);
+  if (provider) {
+    provider.send("ton_sendTransaction", [
+      {
+        to: tokenObjects.amm, // TON Foundation
+        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        data: boc,
+        dataType: "text",
+      },
+    ]);
+  } else {
+    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
+      0.2 * 1e9
+    }&text=${boc}`;
+    return window.open(deeplink);
+  }
 };

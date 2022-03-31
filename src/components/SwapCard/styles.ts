@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "white",
     },
     [theme.breakpoints.up("sm")]: {
-      paddingTop: 30,
+      paddingTop: 35,
       paddingBottom: 13,
     },
   }),
@@ -28,6 +28,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     top: "0%",
+    width: 60,
+    height: 60,
+    objectFit:'cover',
+    "& img": {
+      width:'100%',
+      height: '100%'
+    }
   },
   inputBox: {
     width: "100%",
