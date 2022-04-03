@@ -65,7 +65,7 @@ export const ClaimRewardsScreen = observer(() => {
       <Box className={classes.button}>
         <ActionButton
           onClick={onSubmit}
-          isDisabled={Number(reward) <= 0 || isLoading}
+          isDisabled={Number(reward) === 0 || isLoading}
         >
           Claim Rewards
         </ActionButton>

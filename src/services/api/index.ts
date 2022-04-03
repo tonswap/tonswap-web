@@ -225,7 +225,7 @@ export const getRewards = async (token: string) => {
     ["num", address.toString(10)],
   ]);
 
-  return parseNumber(new BN(eval(res.stack[0][1])), undefined, 7);
+  return parseNumber(new BN(eval(res.stack[0][1])), undefined, 10);
 };
 
 export const generateSellLink = async (token: string, tokenAmount: number) => {
