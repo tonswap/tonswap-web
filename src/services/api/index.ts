@@ -10,6 +10,8 @@ const client = new TonClient({
   endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
 });
 
+const gasFee = 0.2
+
 const tonweb = new TonWeb(
   new TonWeb.HttpProvider("https://scalable-api.tonwhales.com/jsonRPC")
 );
@@ -275,7 +277,7 @@ export const generateBuyLink = async (
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: tonAmount * 1e9, // 10000 nanotons = 0.00001 TONs
+        value: (tonAmount + gasFee)  * 1e9, // 10000 nanotons = 0.00001 TONs
         data: bocT,
         dataType: "text",
       },
@@ -309,14 +311,14 @@ export const generateAddLiquidityLink = async (
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.address, // TON Foundation
-        value: (parseFloat(tonAmount + "") + 0.2) * 1e9, // 10000 nanotons = 0.00001 TONs
+        value: (parseFloat(tonAmount + "") + gasFee) * 1e9, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.address}?amount=${
-      (parseFloat(tonAmount + "") + 0.2) * 1e9
+      (parseFloat(tonAmount.toString()) + gasFee) * 1e9
     }&text=${boc}`;
 
     console.log(deeplink);
@@ -346,14 +348,14 @@ export const generateRemoveLiquidityLink = async (
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        value: gasFee * 1e9, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-      0.2 * 1e9
+      gasFee * 1e9
     }&text=${boc}`;
 
     return window.open(deeplink);
@@ -371,14 +373,14 @@ export const generateClaimRewards = async (token: string) => {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        value: gasFee * 1e9, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-      0.2 * 1e9
+      gasFee * 1e9
     }&text=${boc}`;
     return window.open(deeplink);
   }
