@@ -49,7 +49,12 @@ export const AddLiquidityScreen = () => {
 const AddLiquidity = observer(() => {
   const classes = useStyles();
   const store = useStore();
-  const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
+  const {
+    srcTokenAmount,
+    destTokenAmount,
+    srcTokenAmountCopy,
+    destTokenAmountCopy,
+  } = useTokenOperationsStore();
 
   const onSubmit = () => {
     if (store.selectedToken) {
@@ -73,7 +78,7 @@ const AddLiquidity = observer(() => {
       title="Add Liquidity and earn"
       subTitle={
         <Box className={classes.subTitle}>
-          <img src={Shout} alt='shout' />
+          <img src={Shout} alt="shout" />
           <Typography>
             and earn <strong>88%</strong> APR
           </Typography>
@@ -83,6 +88,7 @@ const AddLiquidity = observer(() => {
     >
       {store.selectedToken && (
         <TokenOperations
+          successText={`Successfully added ${srcTokenAmountCopy} TON and ${destTokenAmountCopy} ${store.selectedToken.displayName} liquidity`}
           icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
           disableButton={false}
           getAmountFunc={API.getLiquidityAmount}

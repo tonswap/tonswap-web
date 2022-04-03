@@ -25,6 +25,10 @@ interface IState {
   destAvailableAmountLoading: boolean;
   setDestAvailableAmountLoading: (val: boolean) => void;
   clearAmounts: () => void;
+  createAmountsCopyForSnackbar: () => void;
+  destTokenAmountCopy: number;
+  srcTokenAmountCopy: number;
+  clearAmountsCopyForSnackbar: () => void;
 }
 
 const Context = createContext<IState>({} as IState);
@@ -48,14 +52,25 @@ const TokenOperationsStore = ({ children }: IProps) => {
     useState(true);
   const [destAvailableAmountLoading, setDestAvailableAmountLoading] =
     useState(true);
+  const [destTokenAmountCopy, setDestTokenAmountCopy] = useState(0);
+  const [srcTokenAmountCopy, setSrcTokenAmountCopy] = useState(0);
 
-    const clearAmounts = () => {
-      setDestUsdPrice(0)
-      setSrcUsdPrice(0)
-      setdestTokenAmount(0)
-      setsrcTokenAmount(0)
-    }
+  const clearAmounts = () => {
+    setDestUsdPrice(0);
+    setSrcUsdPrice(0);
+    setdestTokenAmount(0);
+    setsrcTokenAmount(0);
+  };
 
+  const createAmountsCopyForSnackbar = () => {
+    setDestTokenAmountCopy(destTokenAmount);
+    setSrcTokenAmountCopy(srcTokenAmount);
+  };
+
+  const clearAmountsCopyForSnackbar = () => {
+    setDestTokenAmountCopy(0);
+    setSrcTokenAmountCopy(0);
+  };
 
   const value = {
     totalBalances,
@@ -76,11 +91,12 @@ const TokenOperationsStore = ({ children }: IProps) => {
     setSrcAvailableAmountLoading,
     destAvailableAmountLoading,
     setDestAvailableAmountLoading,
-    clearAmounts
+    clearAmounts,
+    createAmountsCopyForSnackbar,
+    destTokenAmountCopy,
+    srcTokenAmountCopy,
+    clearAmountsCopyForSnackbar
   };
-
-
-
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };

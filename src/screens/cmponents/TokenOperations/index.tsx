@@ -9,6 +9,7 @@ import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "hooks/useTransactionStatus";
+import { delay } from "utils";
 
 interface Props {
   srcToken: Token;
@@ -19,6 +20,7 @@ interface Props {
   getBalances: () => Promise<any>;
   getAmountFunc: any;
   onSubmit: () => void;
+  successText: string;
 }
 
 function TokenOperations({
@@ -29,6 +31,7 @@ function TokenOperations({
   getBalances,
   getAmountFunc,
   onSubmit,
+  successText,
 }: Props) {
   const classes = useStyles({ color: srcToken?.color || "" });
   const {
@@ -40,9 +43,12 @@ function TokenOperations({
     destLoading,
     srcLoading,
     clearAmounts,
+    createAmountsCopyForSnackbar,
+    clearAmountsCopyForSnackbar,
   } = useTokenOperationsStore();
 
   const onTxFinished = async () => {
+    createAmountsCopyForSnackbar();
     await updateBalances();
     clearAmounts();
   };
@@ -52,6 +58,12 @@ function TokenOperations({
   const submitted = async () => {
     onSubmit();
     pollTx();
+  };
+
+  const onCloseSuccessSnackbar = async () => {
+    closeSuccess();
+    await delay(500);
+    clearAmountsCopyForSnackbar();
   };
 
   const updateBalances = async () => {
@@ -74,9 +86,9 @@ function TokenOperations({
   return (
     <Box className={classes.content}>
       <Notification
-        text="Swap Success!"
+        text={successText}
         open={txSuccess}
-        onClose={closeSuccess}
+        onClose={onCloseSuccessSnackbar}
       />
       <Box className={classes.cards}>
         <SrcToken
@@ -97,8 +109,10 @@ function TokenOperations({
       <Box className={classes.button}>
         {insufficientFunds ? (
           <ActionButton isDisabled onClick={() => {}}>
-            <WarningAmberRoundedIcon style={{ color: "#7D7D7D", top: '-2px', position:'relative' }} /> Insufficient
-            funds
+            <WarningAmberRoundedIcon
+              style={{ color: "#7D7D7D", top: "-2px", position: "relative" }}
+            />{" "}
+            Insufficient funds
           </ActionButton>
         ) : (
           <ActionButton

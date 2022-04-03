@@ -23,13 +23,14 @@ export const SellScreen = () => {
 
 const Sell = observer(() => {
   const store = useStore();
-  const { srcTokenAmount } = useTokenOperationsStore();
-
+  const {
+    srcTokenAmount,
+    srcTokenAmountCopy,
+    destTokenAmountCopy,
+  } = useTokenOperationsStore();
 
   const onSubmit = () => {
     if (store.selectedToken) {
-      
-      
       API.generateSellLink(store.selectedToken.name, srcTokenAmount);
     }
   };
@@ -48,6 +49,7 @@ const Sell = observer(() => {
     >
       {store.selectedToken && (
         <TokenOperations
+          successText={`Successfully swapped ${srcTokenAmountCopy} ${store.selectedToken.displayName} for ${destTokenAmountCopy} TON`}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
           disableButton={false}
           onSubmit={onSubmit}

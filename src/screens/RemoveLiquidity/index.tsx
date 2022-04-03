@@ -7,7 +7,10 @@ import TokenOperations from "screens/cmponents/TokenOperations";
 import * as API from "services/api";
 import { SvgIcon } from "@mui/material";
 import { ReactComponent as Minus } from "assets/images/shared/minus.svg";
-import { TokenOperationsStore, useTokenOperationsStore } from "screens/cmponents/TokenOperations/Context";
+import {
+  TokenOperationsStore,
+  useTokenOperationsStore,
+} from "screens/cmponents/TokenOperations/Context";
 
 export const RemoveLiquidityScreen = () => {
   return (
@@ -19,11 +22,18 @@ export const RemoveLiquidityScreen = () => {
 
 const RemoveLiquidity = observer(() => {
   const store = useStore();
-  const { srcTokenAmount } = useTokenOperationsStore()
+  const {
+    srcTokenAmount,
+    destTokenAmountCopy,
+    srcTokenAmountCopy,
+  } = useTokenOperationsStore();
 
   const onSubmit = () => {
-    if(store.selectedToken){
-      API.generateRemoveLiquidityLink(store.selectedToken?.name, srcTokenAmount)
+    if (store.selectedToken) {
+      API.generateRemoveLiquidityLink(
+        store.selectedToken?.name,
+        srcTokenAmount
+      );
     }
   };
 
@@ -35,6 +45,7 @@ const RemoveLiquidity = observer(() => {
     <TokenLayout title="Remove Liquidity" titleImage={Icon}>
       {store.selectedToken && (
         <TokenOperations
+          successText={`Successfully removed ${srcTokenAmountCopy} TON and ${destTokenAmountCopy} ${store.selectedToken.displayName} liquidity`}
           icon={<SvgIcon component={Minus} viewBox="0 0 13 22" />}
           disableButton={false}
           onSubmit={onSubmit}

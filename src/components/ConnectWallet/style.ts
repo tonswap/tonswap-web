@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       transform: "translateY(0%)",
     },
     "100%": {
-      transform: "translateY(300%)",
+      transform: "translateY(50%)",
     },
   },
   qrImage: {
     position: "absolute",
     height: "100%",
     objectFit: "contain",
+  
   },
   qrLineImg: {
     animation: `$myEffect 1500ms  infinite  ease alternate`,
@@ -93,7 +94,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   qrImages: {
     width:'100%',
     height: '100%',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent:'center'
   },
   qrClose: {
     position: 'absolute',

@@ -24,8 +24,12 @@ export const BuyScreen = () => {
 const Buy = observer(() => {
   const store = useStore();
 
-  const { srcTokenAmount, destTokenAmount } =
-    useTokenOperationsStore();
+  const {
+    srcTokenAmount,
+    destTokenAmount,
+    destTokenAmountCopy,
+    srcTokenAmountCopy,
+  } = useTokenOperationsStore();
 
   const onSubmit = () => {
     if (store.selectedToken) {
@@ -37,7 +41,6 @@ const Buy = observer(() => {
     }
   };
 
-
   const getBalances = () => {
     return Promise.all([
       API.getTonBalance(),
@@ -47,11 +50,12 @@ const Buy = observer(() => {
 
   return (
     <TokenLayout
-      title={`Swap TON to ${store.selectedToken?.name}`}
+      title={`Swap TON to ${store.selectedToken?.displayName}`}
       titleImage={Icon}
     >
       {store.selectedToken && (
         <TokenOperations
+          successText={`Successfully swapped ${srcTokenAmountCopy} TON for ${destTokenAmountCopy} ${store.selectedToken.displayName}`}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
           disableButton={false}
           onSubmit={onSubmit}

@@ -11,6 +11,7 @@ import { useStore } from "store";
 import { useEffect, useRef, useState } from "react";
 import useTxPolling from "hooks/useTransactionStatus";
 import Notification from "components/Notification";
+import { delay } from "utils";
 
 export const ClaimRewardsScreen = observer(() => {
   const classes = useStyles();
@@ -18,6 +19,7 @@ export const ClaimRewardsScreen = observer(() => {
   const getBalanceFired = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
   const [reward, setReward] = useState(0);
+  const [rewardCopyForSnackbar, setRewardCopyForSnackbar] = useState(0)
 
   const onTxFinished = async () => {
     const tokenBalance = await API.getRewards(store.selectedToken!!.name);
@@ -33,6 +35,13 @@ export const ClaimRewardsScreen = observer(() => {
     }
   };
 
+
+  const onCloseSnackbar = async() => {
+    closeSuccess()
+    await delay(500)
+    setRewardCopyForSnackbar(0)
+  }
+
   const getBalance = async (tokenName: string) => {
     if (getBalanceFired.current) {
       return;
@@ -41,21 +50,21 @@ export const ClaimRewardsScreen = observer(() => {
     setIsLoading(true);
     const tokenBalance = await API.getRewards(tokenName);
     setReward(tokenBalance);
+    setRewardCopyForSnackbar(tokenBalance)
     setIsLoading(false);
   };
-
 
   useEffect(() => {
     if (store.selectedToken) {
       getBalance(store.selectedToken.name);
       getBalanceFired.current = true;
     }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.selectedToken?.name]);
 
   return (
     <TokenLayout title="Claim earned rewards" titleImage={Icon}>
-      <img className={classes.medal} src={MedalImage} alt='medal' />
+      <img className={classes.medal} src={MedalImage} alt="medal" />
       <Box className={classes.infoText}>
         <Typography component="p">
           Claim rewards {store.selectedToken?.displayName}
@@ -71,9 +80,9 @@ export const ClaimRewardsScreen = observer(() => {
         </ActionButton>
       </Box>
       <Notification
-        text="Claim Success!"
+        text={`Successfully claimed ${rewardCopyForSnackbar} ${store.selectedToken?.displayName} reward`}
         open={txSuccess}
-        onClose={closeSuccess}
+        onClose={onCloseSnackbar}
       />
     </TokenLayout>
   );

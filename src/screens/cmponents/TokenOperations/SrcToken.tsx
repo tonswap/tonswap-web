@@ -31,34 +31,42 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
     if (!balanceRef.current) {
       return;
     }
+    let result = 0;
+    try {
+      result = await calculateTokens(
+        token.name,
+        destTokenName,
+        balanceRef.current || "0",
+        null,
+        getAmountFunc
+      );
 
-    const result = await calculateTokens(
-      token.name,
-      destTokenName,
-      balanceRef.current || "0",
-      null,
-      getAmountFunc
-    );
+      const usdAmounts = await Promise.all([
+        getUsdAmount(token.name, balanceRef.current),
+        getUsdAmount(destTokenName, Number(result)),
+      ]);
 
-    const usdAmounts = await Promise.all([
-      getUsdAmount(token.name, balanceRef.current),
-      getUsdAmount(destTokenName, Number(result)),
-    ]);
-
-    if (!balanceRef.current) {
-      return;
+      if (!balanceRef.current) {
+        return;
+      }
+      setSrcUsdPrice(usdAmounts[0]);
+      setDestUsdPrice(usdAmounts[1]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (!balanceRef.current) {
+        return;
+      }
+      setUsdLoading(false);
+      setDestLoading(false);
+      setdestTokenAmount(result);
     }
-    setSrcUsdPrice(usdAmounts[0]);
-    setDestUsdPrice(usdAmounts[1]);
-    setUsdLoading(false);
-    setDestLoading(false);
-    setdestTokenAmount(result);
   }, 600);
 
   const onChange = (value: string) => {
-    setsrcTokenAmount( Number(value));
+    setsrcTokenAmount(Number(value));
     balanceRef.current = Number(value);
-    
+
     if (!value || Number(value) === 0) {
       setdestTokenAmount(0);
       setDestUsdPrice(0);

@@ -23,7 +23,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     setSrcUsdPrice,
     setDestUsdPrice,
     destUsdPrice,
-    destAvailableAmountLoading
+    destAvailableAmountLoading,
   } = useTokenOperationsStore();
   const [usdLoading, setUsdLoading] = useState(false);
   const balanceRef = useRef(0);
@@ -31,27 +31,36 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     if (!balanceRef.current) {
       return;
     }
-    const result = await calculateTokens(
-      srcTokenName,
-      token.name,
-      null,
-      balanceRef.current || "0",
-      getAmountFunc
-    );
-    const usdAmounts = await Promise.all([
-      getUsdAmount(token.name, balanceRef.current),
-      getUsdAmount(srcTokenName, Number(result)),
-    ]);
+    let result = 0;
+    try {
+      result = await calculateTokens(
+        srcTokenName,
+        token.name,
+        null,
+        balanceRef.current || "0",
+        getAmountFunc
+      );
+      const usdAmounts = await Promise.all([
+        getUsdAmount(token.name, balanceRef.current),
+        getUsdAmount(srcTokenName, Number(result)),
+      ]);
 
-    if (!balanceRef.current) {
-      return;
+      if (!balanceRef.current) {
+        return;
+      }
+
+      setDestUsdPrice(usdAmounts[0]);
+      setSrcUsdPrice(usdAmounts[1]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      if (!balanceRef.current) {
+        return;
+      }
+      setUsdLoading(false);
+      setSrcLoading(false);
+      setsrcTokenAmount(result);
     }
-
-    setDestUsdPrice(usdAmounts[0]);
-    setSrcUsdPrice(usdAmounts[1]);
-    setUsdLoading(false);
-    setSrcLoading(false);
-    setsrcTokenAmount(result);
   }, 600);
 
   const onChange = (value: string) => {
@@ -80,7 +89,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       token={token}
       availableAmount={totalBalances.destBalance}
       maxAmount={totalBalances.destBalance}
-      availableAmountLoading = {destAvailableAmountLoading}
+      availableAmountLoading={destAvailableAmountLoading}
     />
   );
 }

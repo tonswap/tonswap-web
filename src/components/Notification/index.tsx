@@ -36,10 +36,11 @@ function Notification({ open, autoHideDuration = 5000, onClose, text }: Props) {
       open={open}
       autoHideDuration={autoHideDuration}
       onClose={onClose}
+      
       dir=""
     >
       <SnackbarContent
-        sx={{ background: theme.palette.primary.main }}
+        sx={{ background: theme.palette.primary.main, maxWidth:'600px' }}
         message={<Typography sx={{ color: "white" }}>{text}</Typography>}
         action={action}
       />

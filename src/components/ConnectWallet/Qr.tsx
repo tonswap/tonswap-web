@@ -59,7 +59,9 @@ const QR = ({ setAddress }: Props) => {
       <Fade in={!open}>
         <div className={classes.qrImages} onClick={() => setOpen(true)}>
           <img src={QRImage} className={classes.qrImage} alt='qr' />
-          <img src={QRLine} className={classes.qrLineImg} alt='qr' />
+         <Box className={classes.qrLineImg}>
+         <img src={QRLine}  alt='qr' />
+         </Box>
         </div>
       </Fade>
     </div>
