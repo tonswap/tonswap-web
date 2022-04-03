@@ -97,7 +97,7 @@ function TokenOperations({
       <Box className={classes.button}>
         {insufficientFunds ? (
           <ActionButton isDisabled onClick={() => {}}>
-            <WarningAmberRoundedIcon style={{ color: "#7D7D7D" }} /> Insufficient
+            <WarningAmberRoundedIcon style={{ color: "#7D7D7D", top: '-2px', position:'relative' }} /> Insufficient
             funds
           </ActionButton>
         ) : (

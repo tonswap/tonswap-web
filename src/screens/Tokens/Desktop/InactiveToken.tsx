@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import { Popup } from "components";
+import { Box, Typography } from "@mui/material";
+import { ActionButton, Popup } from "components";
 import { makeStyles } from "@mui/styles";
 import { Token } from "types";
 
@@ -7,10 +7,22 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: "#FFFFFF",
     border: "1px solid #B4B4B4",
-    padding: "12px 20px",
+    padding: "30px 33px",
     borderRadius: 12,
-   
+    maxWidth: 380,
+    width:'100%',
+    marginLeft:'auto',
+    marginRight:'auto',
+    textAlign:'center'
   },
+  header: {
+    borderBottom: '0.5px solid #9E9E9E',
+    paddingBottom: 18,
+    marginBottom: 40
+  },
+  button: {
+    marginTop: 30
+  }
 }));
 
 interface Props {
@@ -28,7 +40,13 @@ const IncativeToken = ({ onClose, open, token }: Props) => {
       onClose={onClose}
     >
       <Box className={classes.root}>
-        {token?.name} will be available soon
+        <Box className={classes.header}>
+        <Typography component="h3" fontSize='18px' fontWeight='700'>Pay Attention</Typography>
+        </Box>
+        <Typography component="p" fontSize='16px' fontWeight={500}>  
+          <strong>{token?.displayName}</strong> will be available soon
+        </Typography>
+        <Box className={classes.button}><ActionButton onClick={onClose}>Close</ActionButton></Box>
       </Box>
     </Popup>
   );
