@@ -57,6 +57,7 @@ const App = observer(() => {
   const location = useLocation();
   useLogic();
 
+  
   return (
     <Box className={classes.app}>
         {!hideNavbar(isMobile, location.pathname) && <Navbar />}

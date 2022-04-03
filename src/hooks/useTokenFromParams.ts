@@ -1,14 +1,15 @@
 import { tokens } from "tokens";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
 import { getToken } from "utils";
 
 function useTokenFromParams() {
-  const { id } = useParams();
+  const  params = useParams();
+  const {id} = params
   const store = useStore();
-  const navigate = useNavigate();
+  const navigate = useNavigate();    
 
   useEffect(() => {
     if (id) {

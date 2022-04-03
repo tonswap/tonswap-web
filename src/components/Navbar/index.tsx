@@ -75,7 +75,7 @@ export const Navbar = observer(() => {
                   className={classes.menuIcon}
                 />
               </IconButton>
-              <Link className={classes.link} to={ROUTES.connect}>
+              <Link className={classes.link} to={ store.address ?  ROUTES.tokens : ROUTES.connect}>
                 <LogoWithText onClick={() => navigate(ROUTES.tokens)} />
               </Link>
             </Grid>
