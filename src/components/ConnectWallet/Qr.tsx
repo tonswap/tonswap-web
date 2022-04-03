@@ -27,7 +27,7 @@ const QR = ({ setAddress }: Props) => {
 
   return (
     <div className={classes.qrContainer}>
-      <Popup backgroundColor="rgba(0,0,0, 0.01)" open={open}>
+      <Popup backgroundColor="rgba(0,0,0, 0.01)" open={open} className={classes.qrPoup}>
         <Box className={classes.qrWindow}>
           <Box className={classes.qrClose}>
             <IconButton
@@ -46,7 +46,7 @@ const QR = ({ setAddress }: Props) => {
               objectFit: "cover",
               borderRadius: "50%",
             }}
-            constraints={{ facingMode: "user" }}
+            constraints={{ facingMode: "environment" }}
             onResult={(result: any, error: any) => {
               if (result) {
                 onResult(qrResultMidifier(result.text));

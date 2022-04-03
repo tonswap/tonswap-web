@@ -7,13 +7,20 @@ export interface Props {
   children: ReactNode;
   backgroundColor?: string;
   blur?: boolean;
+  className?: string;
 }
 
-export function Popup({ open, onClose, children, backgroundColor = 'rgba(48, 48, 48, 0.8)', blur=true }: Props) {
-
+export function Popup({
+  open,
+  onClose,
+  children,
+  backgroundColor = "rgba(48, 48, 48, 0.8)",
+  blur = true,
+  className = "",
+}: Props) {
   return (
     <Dialog
-      className={blur ? 'popup-filter' : ''}
+      className={`${className} ${blur && "popup-filter"}`}
       fullWidth
       onClose={onClose}
       open={open}

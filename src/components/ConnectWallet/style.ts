@@ -97,10 +97,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   qrClose: {
     position: 'absolute',
-    right: -30,
-    top: 0,
-   
+    right: 0,
+    top: -30,
     zIndex: 1
+  },
+  qrPoup: {
+    "& .MuiPaper-root": {
+      height: '100%',
+      alighItems: 'center',
+      display:'flex',
+      justifyContent:'center'
+    }
   }
 }));
 
