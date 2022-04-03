@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tonswap-web-new/static/css/main.0f21c523.css",
-    "main.js": "/tonswap-web-new/static/js/main.ce0dd4f7.js",
+    "main.js": "/tonswap-web-new/static/js/main.9ff4e3bc.js",
     "static/js/787.d9341bba.chunk.js": "/tonswap-web-new/static/js/787.d9341bba.chunk.js",
     "static/media/hero.png": "/tonswap-web-new/static/media/hero.6d14a30059a98d69c952.png",
     "static/media/medal.svg": "/tonswap-web-new/static/media/medal.72a6e86054f8d2353b1a61611f07be3d.svg",
@@ -10,12 +10,12 @@
     "static/media/shout.svg": "/tonswap-web-new/static/media/shout.ad00572ebdcc4cbbae5e79b8cbe63cb9.svg",
     "static/media/DAI.svg": "/tonswap-web-new/static/media/DAI.e462f785b28b98bcb8ff18e1384fe454.svg",
     "static/media/dot.svg": "/tonswap-web-new/static/media/dot.27b6df55cb58e3a7798214d4fb549907.svg",
-    "index.html": "/tonswap-web-new/index.html",
     "static/media/arrow.svg": "/tonswap-web-new/static/media/arrow.520c234996021da2685f9ae4d51a582b.svg",
     "static/media/qr.svg": "/tonswap-web-new/static/media/qr.69524bf5d8deff2e62364b768e7e775b.svg",
     "static/media/BTC.svg": "/tonswap-web-new/static/media/BTC.bf9ee2ccdb5cb188aeed891c143921a7.svg",
     "static/media/ton.svg": "/tonswap-web-new/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
     "static/media/add-liqudity.svg": "/tonswap-web-new/static/media/add-liqudity.864c89c14b611b5d00642c33539554b5.svg",
+    "index.html": "/tonswap-web-new/index.html",
     "static/media/wallet-address.svg": "/tonswap-web-new/static/media/wallet-address.57b60a11e4d5fd39eac76f18f88060ee.svg",
     "static/media/remove-liquidity.svg": "/tonswap-web-new/static/media/remove-liquidity.a9ae63435e53a5a5b06e4c3c3b754e4d.svg",
     "static/media/Luna.svg": "/tonswap-web-new/static/media/Luna.f8cec03c9c60e58d65da9d652dc5149c.svg",
@@ -29,11 +29,11 @@
     "static/media/minus.svg": "/tonswap-web-new/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/tonswap-web-new/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "main.0f21c523.css.map": "/tonswap-web-new/static/css/main.0f21c523.css.map",
-    "main.ce0dd4f7.js.map": "/tonswap-web-new/static/js/main.ce0dd4f7.js.map",
+    "main.9ff4e3bc.js.map": "/tonswap-web-new/static/js/main.9ff4e3bc.js.map",
     "787.d9341bba.chunk.js.map": "/tonswap-web-new/static/js/787.d9341bba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0f21c523.css",
-    "static/js/main.ce0dd4f7.js"
+    "static/js/main.9ff4e3bc.js"
   ]
 }
