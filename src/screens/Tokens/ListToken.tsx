@@ -14,18 +14,18 @@ interface Props {
   callback?: (token: Token) => void;
 }
 
-const scroll = (element: any) => {
-  const offset = 90;
-  const bodyRect = document.body.getBoundingClientRect().top;
-  const elementRect = element.getBoundingClientRect().top;
-  const elementPosition = elementRect - bodyRect;
-  const offsetPosition = elementPosition - offset;
+// const scroll = (element: any) => {
+//   const offset = 90;
+//   const bodyRect = document.body.getBoundingClientRect().top;
+//   const elementRect = element.getBoundingClientRect().top;
+//   const elementPosition = elementRect - bodyRect;
+//   const offsetPosition = elementPosition - offset;
 
-  window.scrollTo({
-    top: offsetPosition,
-    behavior: "smooth",
-  });
-};
+//   window.scrollTo({
+//     top: offsetPosition,
+//     behavior: "smooth",
+//   });
+// };
 
 const ListToken = observer(({ token, callback }: Props) => {
   const classes = useStyles();
@@ -78,7 +78,7 @@ const ListToken = observer(({ token, callback }: Props) => {
         onMouseLeave={onMouseLeave}
       >
         <div style={{ position: "relative" }}>
-          <img src={token.image} />
+          <img src={token.image} alt='token' />
           <Typography
             style={{
               color: textColor,

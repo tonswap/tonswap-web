@@ -22,7 +22,7 @@ export const ConnectScreen = observer(() => {
   return (
     <Box className={classes.root}>
       <Box className={classes.topContainer}>
-        {isMobile && <img className={classes.logo} src={TonLogo} />}
+        {isMobile && <img className={classes.logo} src={TonLogo} alt='logo' />}
         <Typography component="h2">
           <strong>Welcome to</strong>
         </Typography>
@@ -31,7 +31,7 @@ export const ConnectScreen = observer(() => {
         </Typography>
       </Box>
 
-      <img className={classes.hero} src={HeroImg} />
+      <img className={classes.hero} src={HeroImg} alt='hero' />
       <Box className={classes.bottomBox}>
         <Typography variant="subtitle1" component="h6" style={{opacity: store.address ? 0 : 1}}>
           Start by

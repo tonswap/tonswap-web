@@ -1,5 +1,4 @@
 import { ActionButton } from "components/ActionButton";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { useState } from "react";
 import { useStore } from "store";
 import ConnectPopup from "./ConnectPopup";

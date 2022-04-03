@@ -3,14 +3,6 @@ import AddLiquidityImg from "assets/images/shared/add-liqudity.svg";
 import RemoveLiquidityImg from "assets/images/shared/remove-liquidity.svg";
 import ClaimRewardImg from "assets/images/shared/claim-rewards.svg";
 import Buy from "assets/images/shared/buy.svg";
-
-import SellActive from "assets/images/shared/swap-to-ton.svg";
-import AddLiquidityImgActive from "assets/images/shared/add-liqudity.svg";
-import RemoveLiquidityImgActive from "assets/images/shared/remove-liquidity.svg";
-import ClaimRewardImgActive from "assets/images/shared/claim-reward.svg";
-import BuyActive from "assets/images/shared/swap-from-ton.svg";
-
-import { v4 as uuidv4 } from "uuid";
 import { NavigateFunction } from "react-router-dom";
 import { Token } from "types";
 import { ROUTES } from "router/routes";

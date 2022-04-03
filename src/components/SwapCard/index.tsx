@@ -32,7 +32,7 @@ function SwapCard({
   return (
     <Box className={classes.root}>
       <Box className={classes.tokenImage}>
-        <img src={token.image} />
+        <img src={token.image} alt='token' />
       </Box>
       <Typography fontSize="14px" marginBottom="4px" fontWeight={500}>
         {token.displayName}

@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import { ActionButton } from "components/ActionButton";
 import { ROUTES } from "router/routes";
 import { useNavigate } from "react-router-dom";
-import { delay } from "utils";
 import { useStyles } from "./style";
 
 interface Props {

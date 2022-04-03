@@ -50,11 +50,12 @@ export const ClaimRewardsScreen = observer(() => {
       getBalance(store.selectedToken.name);
       getBalanceFired.current = true;
     }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.selectedToken?.name]);
 
   return (
     <TokenLayout title="Claim earned rewards" titleImage={Icon}>
-      <img className={classes.medal} src={MedalImage} />
+      <img className={classes.medal} src={MedalImage} alt='medal' />
       <Box className={classes.infoText}>
         <Typography component="p">
           Claim rewards {store.selectedToken?.displayName}

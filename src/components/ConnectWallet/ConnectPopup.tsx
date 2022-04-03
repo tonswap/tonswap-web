@@ -1,11 +1,8 @@
-import { Box, IconButton, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { ActionButton, Popup } from "components";
-import QRImage from "assets/images/connect/qr.svg";
-import QRLine from "assets/images/connect/qr-line.svg";
 import { useState } from "react";
 import { useStore } from "store";
 import AddressInput from "../../screens/Connect/AddressInput";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { useStyles } from "./style";
 import LogoWithText from "components/Navbar/LogoWithText";
 import CloseIcon from "@mui/icons-material/Close";

@@ -5,7 +5,7 @@ import { DexActions } from "./dex";
 import { tokens as supportedTokens } from "tokens";
 import { Token } from "types";
 const BN = require("bn.js");
-
+/* eslint no-eval: 0 */
 const client = new TonClient({
   endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
 });

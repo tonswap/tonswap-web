@@ -1,5 +1,5 @@
 import { LOCAL_STORAGE_ADDRESS } from "consts";
-import { action, configure, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
 import { Token } from "types";
 

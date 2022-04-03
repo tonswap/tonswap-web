@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { useStyles } from "./style";
 import TokenActions from "components/TokenActions";
 import { Token } from "types";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useStore } from "store";
 import { ROUTES } from "router/routes";
 
@@ -33,7 +33,7 @@ function SelectedToken({ token, hideMenu }: Props) {
         Selected Token
       </Typography>
       <Box className={classes.selectedTokenDetails}>
-        <img src={token.image} />
+        <img src={token.image} alt='token' />
         <Typography color="#060606" fontWeight={500}>
           {token.displayName}
         </Typography>

@@ -73,7 +73,7 @@ const AddLiquidity = observer(() => {
       title="Add Liquidity and earn"
       subTitle={
         <Box className={classes.subTitle}>
-          <img src={Shout} />
+          <img src={Shout} alt='shout' />
           <Typography>
             and earn <strong>88%</strong> APR
           </Typography>

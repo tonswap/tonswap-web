@@ -24,7 +24,7 @@ export const BuyScreen = () => {
 const Buy = observer(() => {
   const store = useStore();
 
-  const { srcTokenAmount, destTokenAmount, totalBalances } =
+  const { srcTokenAmount, destTokenAmount } =
     useTokenOperationsStore();
 
   const onSubmit = () => {

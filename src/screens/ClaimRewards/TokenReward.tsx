@@ -1,7 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { Token } from "types";
-import { customToFixed } from "utils";
 import { useStyles } from "./styles";
 
 interface Props {

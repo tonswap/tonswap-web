@@ -1,14 +1,12 @@
 import { Box } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { ActionButton } from "components";
 import { Token } from "types";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
-import { TokenOperationsStore, useTokenOperationsStore } from "./Context";
+import { useTokenOperationsStore } from "./Context";
 import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
-import useInterval from "hooks/useInterval";
-import * as API from "services/api";
 import Notification from "components/Notification";
 import useTxPolling from "hooks/useTransactionStatus";
 
@@ -70,6 +68,7 @@ function TokenOperations({
 
   useEffect(() => {
     updateBalances();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

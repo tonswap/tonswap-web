@@ -46,7 +46,7 @@ function TokenActions({ token, onActionClick }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const actions = useMemo(() => createTokenActions(navigate, token), [token]);
+  const actions = useMemo(() => createTokenActions(navigate, token), [token, navigate]);
 
   const onClick = (func: () => void) => {
     if (onActionClick) {
@@ -73,7 +73,7 @@ function TokenActions({ token, onActionClick }: Props) {
                   paddingBottom: "14px",
                 }}
               >
-                <img src={action.icon} />
+                <img src={action.icon} alt='action' />
                 <Typography fontWeight={500} color={isActive ? "primary" : ""}>
                   {action.title}
                 </Typography>

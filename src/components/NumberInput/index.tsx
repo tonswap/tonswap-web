@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import NumberFormat, { FormatInputValueFunction } from "react-number-format";
+import NumberFormat from "react-number-format";
 import { makeStyles } from "@mui/styles";
 import ContentLoader from "components/ContentLoader";
 

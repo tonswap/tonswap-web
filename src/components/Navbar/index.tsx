@@ -75,7 +75,7 @@ export const Navbar = observer(() => {
             </Grid>
             {store.address && (
               <Grid item className={classes.rightGrid}>
-                <img src={WalletAddressImg} />
+                <img src={WalletAddressImg} alt='wallet' />
                 <Typography fontSize="12px">{store.address}</Typography>
               </Grid>
             )}

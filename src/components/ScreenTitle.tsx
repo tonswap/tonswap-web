@@ -34,7 +34,7 @@ export function ScreenTitle({ titleImage, title, subTitle }: Props) {
   return (
     <Box className={classes.titleBox}>
       <Box className={classes.title}>
-        <img src={titleImage} />
+        <img src={titleImage} alt='title' />
         <Typography component="h3">{title}</Typography>
       </Box>
       {subTitle && <Box className={classes.subTitle}>{subTitle}</Box>}

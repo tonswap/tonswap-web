@@ -19,7 +19,8 @@ function useTokenFromParams() {
         navigate(ROUTES.tokens);
       }
     }
-  }, [id]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, navigate]);
 }
 
 export default useTokenFromParams;

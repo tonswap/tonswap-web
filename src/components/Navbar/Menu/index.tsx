@@ -8,7 +8,7 @@ import NoToken from "./NoToken";
 import SelectedToken from "./SelectedToken";
 import { useStore } from "store";
 import ConnectWallet from "components/ConnectWallet";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 interface Props {
   open: boolean;
@@ -26,6 +26,7 @@ function Menu({ open, hide }: Props) {
       return <SelectedToken hideMenu={hide} token={store.selectedToken} />;
     }
     return <NoToken hideMenu={hide} />;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.address, store.selectedToken]);
 
   return (

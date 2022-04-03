@@ -24,6 +24,7 @@ function Notification({ open, autoHideDuration = 5000, onClose, text }: Props) {
         <CloseIcon />
       </Button>
     ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

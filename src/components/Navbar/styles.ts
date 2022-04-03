@@ -1,6 +1,5 @@
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-import { LAYOUT_MAX_WIDTH } from "consts";
 
 const useStyles = makeStyles((theme: Theme) => ({
   logoBox: {
