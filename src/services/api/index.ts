@@ -10,7 +10,7 @@ const client = new TonClient({
   endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
 });
 
-const gasFee = 0.2
+const gasFee = 0.2;
 
 const tonweb = new TonWeb(
   new TonWeb.HttpProvider("https://scalable-api.tonwhales.com/jsonRPC")
@@ -272,20 +272,18 @@ export const generateBuyLink = async (
   const tokenObjects: any = getToken(token);
 
   const provider = (window as any).ton;
-
+  const value = (tonAmount + gasFee) * 1e9;
   if (provider) {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: (tonAmount + gasFee)  * 1e9, // 10000 nanotons = 0.00001 TONs
+        value, // 10000 nanotons = 0.00001 TONs
         data: bocT,
         dataType: "text",
       },
     ]);
   } else {
-    const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${
-      tonAmount * 1e9
-    }&text=${bocT}`;
+    const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${bocT}`;
 
     console.log(deeplinkTransfer);
     return window.open(deeplinkTransfer);
@@ -306,20 +304,18 @@ export const generateAddLiquidityLink = async (
   const boc = stripBoc(transferAndLiq.toString());
 
   const provider = (window as any).ton;
-
+  const value = (parseFloat(tonAmount.toString()) + gasFee) * 1e9;
   if (provider) {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.address, // TON Foundation
-        value: (parseFloat(tonAmount + "") + gasFee) * 1e9, // 10000 nanotons = 0.00001 TONs
+        value, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
-    const deeplink = `ton://transfer/${tokenObjects.address}?amount=${
-      (parseFloat(tonAmount.toString()) + gasFee) * 1e9
-    }&text=${boc}`;
+    const deeplink = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${boc}`;
 
     console.log(deeplink);
     return window.open(deeplink);
@@ -343,20 +339,18 @@ export const generateRemoveLiquidityLink = async (
   const boc = stripBoc(transferAndLiq.toString());
   const tokenObjects: any = getToken(token);
   const provider = (window as any).ton;
-
+  const value = gasFee * 1e9;
   if (provider) {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: gasFee * 1e9, // 10000 nanotons = 0.00001 TONs
+        value, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
-    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-      gasFee * 1e9
-    }&text=${boc}`;
+    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
 
     return window.open(deeplink);
   }
@@ -368,20 +362,18 @@ export const generateClaimRewards = async (token: string) => {
   const claimRewards = await DexActions.claimRewards();
   const boc = stripBoc(claimRewards.toString());
   const tokenObjects: any = getToken(token);
-
+  const value = gasFee * 1e9;
   if (provider) {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.amm, // TON Foundation
-        value: gasFee * 1e9, // 10000 nanotons = 0.00001 TONs
+        value, // 10000 nanotons = 0.00001 TONs
         data: boc,
         dataType: "text",
       },
     ]);
   } else {
-    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${
-      gasFee * 1e9
-    }&text=${boc}`;
+    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
     return window.open(deeplink);
   }
 };
