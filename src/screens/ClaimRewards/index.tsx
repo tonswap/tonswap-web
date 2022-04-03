@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "store";
 import { useEffect, useRef, useState } from "react";
 import useTxPolling from "hooks/useTransactionStatus";
+import Notification from "components/Notification";
 
 export const ClaimRewardsScreen = observer(() => {
   const classes = useStyles();
@@ -18,18 +19,17 @@ export const ClaimRewardsScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [reward, setReward] = useState(0);
 
-const onTxFinished = async () => {
-  const tokenBalance = await API.getRewards(store.selectedToken!!.name);
-  setReward(tokenBalance);
-}
+  const onTxFinished = async () => {
+    const tokenBalance = await API.getRewards(store.selectedToken!!.name);
+    setReward(tokenBalance);
+  };
 
   const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
-
 
   const onSubmit = () => {
     if (store.selectedToken) {
       API.generateClaimRewards(store.selectedToken.name);
-      pollTx()
+      pollTx();
     }
   };
 
@@ -44,9 +44,6 @@ const onTxFinished = async () => {
     setIsLoading(false);
   };
 
-
-
-  console.log(reward);
 
   useEffect(() => {
     if (store.selectedToken) {
@@ -72,6 +69,11 @@ const onTxFinished = async () => {
           Claim Rewards
         </ActionButton>
       </Box>
+      <Notification
+        text="Claim Success!"
+        open={txSuccess}
+        onClose={closeSuccess}
+      />
     </TokenLayout>
   );
 });

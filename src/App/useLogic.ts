@@ -10,7 +10,6 @@ function useLogic() {
 
   useEffect(() => {
     const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
-    console.log(address);
     
     if (address) {
       store.setAddress(address);

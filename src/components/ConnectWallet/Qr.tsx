@@ -5,9 +5,13 @@ import { useStyles } from "./style";
 import CloseIcon from "@mui/icons-material/Close";
 import QRImage from "assets/images/connect/qr.svg";
 import QRLine from "assets/images/connect/qr-line.svg";
-import { Grow, Fade } from "@mui/material";
+import {  Fade } from "@mui/material";
 import { Popup } from "components/Popup";
 
+const qrResultMidifier = (result: string) => {
+  const splitted = result.split("/");
+  return splitted[splitted.length - 1];
+};
 interface Props {
   setAddress: (val: string) => void;
 }
@@ -32,7 +36,7 @@ const QR = ({ setAddress }: Props) => {
               edge="start"
               color="inherit"
               aria-label="menu"
-              style={{ padding: 0, marginLeft: 0, color:'white' }}
+              style={{ padding: 0, marginLeft: 0, color: "white" }}
             >
               <CloseIcon fontSize="large" />
             </IconButton>
@@ -40,12 +44,12 @@ const QR = ({ setAddress }: Props) => {
           <QrReader
             videoStyle={{
               objectFit: "cover",
-              borderRadius: '50%'
+              borderRadius: "50%",
             }}
             constraints={{ facingMode: "user" }}
             onResult={(result: any, error: any) => {
-              if (!!result) {
-                onResult(result?.text);
+              if (result) {
+                onResult(qrResultMidifier(result.text));
               }
             }}
           />

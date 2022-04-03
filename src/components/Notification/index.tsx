@@ -5,6 +5,7 @@ import Slide, { SlideProps } from "@mui/material/Slide";
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
+import { useMemo } from "react";
 interface Props {
   open: boolean;
   autoHideDuration?: number;
@@ -16,13 +17,16 @@ function TransitionRight(props: SlideProps) {
   return <Slide {...props} direction="down" />;
 }
 
-const action = (
-  <Button sx={{ color: "white" }} size="small">
-    <CloseIcon />
-  </Button>
-);
-
 function Notification({ open, autoHideDuration = 5000, onClose, text }: Props) {
+  const action = useMemo(
+    () => (
+      <Button sx={{ color: "white" }} size="small" onClick={onClose}>
+        <CloseIcon />
+      </Button>
+    ),
+    []
+  );
+
   const theme = useTheme();
   return (
     <Snackbar

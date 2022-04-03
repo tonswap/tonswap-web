@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import * as API from "services/api";
 import useInterval from "./useInterval";
 
@@ -23,12 +23,17 @@ function useTxPolling(onTxFinished: () => Promise<void>) {
   };
 
   const pollTx = async () => {
+    stopInterval();
     const res = await getTon();
     tonBalance.current = res;
     startInterval(pollInterval);
   };
 
-  return { pollTx, closeSuccess: () => setTxSuccess(false), txSuccess };
+  const closeSuccess = () => {
+    setTxSuccess(false);
+  };
+
+  return { pollTx, closeSuccess, txSuccess };
 }
 
 export default useTxPolling;

@@ -37,7 +37,6 @@ const Buy = observer(() => {
     }
   };
 
-  console.log(totalBalances);
 
   const getBalances = () => {
     return Promise.all([

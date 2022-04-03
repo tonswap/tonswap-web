@@ -58,7 +58,6 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
   const onChange = (value: string) => {
     setsrcTokenAmount( Number(value));
     balanceRef.current = Number(value);
-    console.log(value);
     
     if (!value || Number(value) === 0) {
       setdestTokenAmount(0);
