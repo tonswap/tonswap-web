@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { Box, Grid, Typography } from "@mui/material";
@@ -51,10 +51,10 @@ export const Navbar = observer(() => {
           <Grid
             container
             style={{
-              justifyContent:"space-between",
-              alignItems: isMobile ? "center" : 'flex-end',
+              justifyContent: "space-between",
+              alignItems: isMobile ? "center" : "flex-end",
               height: "100%",
-              paddingBottom: isMobile ? 0 : 27
+              paddingBottom: isMobile ? 0 : 27,
             }}
           >
             <Grid item className={classes.leftGrid}>
@@ -64,18 +64,24 @@ export const Navbar = observer(() => {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                style={{ padding: 0, marginLeft: 0, marginRight: isMobile ? 10 : 28 }}
+                style={{
+                  padding: 0,
+                  marginLeft: 0,
+                  marginRight: isMobile ? 10 : 28,
+                }}
               >
                 <MenuRoundedIcon
                   fontSize="large"
                   className={classes.menuIcon}
                 />
               </IconButton>
-              <LogoWithText onClick={() => navigate(ROUTES.tokens)} />
+              <Link className={classes.link} to={ROUTES.connect}>
+                <LogoWithText onClick={() => navigate(ROUTES.tokens)} />
+              </Link>
             </Grid>
             {store.address && (
               <Grid item className={classes.rightGrid}>
-                <img src={WalletAddressImg} alt='wallet' />
+                <img src={WalletAddressImg} alt="wallet" />
                 <Typography fontSize="12px">{store.address}</Typography>
               </Grid>
             )}
@@ -83,7 +89,16 @@ export const Navbar = observer(() => {
         </Toolbar>
         <Menu open={open} hide={() => setOpen(false)} />
       </AppBar>
-      <Box style={{ height: navbarHeight, width: '100%', top: 0, background:'white', zIndex: 99, position:'sticky' }}></Box>
+      <Box
+        style={{
+          height: navbarHeight,
+          width: "100%",
+          top: 0,
+          background: "white",
+          zIndex: 99,
+          position: "sticky",
+        }}
+      ></Box>
     </>
   );
 });

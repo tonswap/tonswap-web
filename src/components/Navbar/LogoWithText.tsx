@@ -13,7 +13,7 @@ const LogoWithText = ({onClick}:Props ) => {
   return (
     <Box onClick={onClick} className={classes.logoBox}>
       <img className={classes.logo} src={TonLogo} alt="" />
-      <Typography>
+      <Typography fontSize='18px'>
         <strong>Ton</strong>Swap
       </Typography>
     </Box>

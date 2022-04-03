@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       textOverflow: "ellipsis",
     },
   },
+  link: {
+    textDecoration:'none',
+    color: '#6D6D6D'
+  }
 }));
 
 export { useStyles };
