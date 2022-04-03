@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: "#FFFFFF",
     border: "1px solid #B4B4B4",
-    padding: "30px 33px",
+    padding: "10px 33px 30px 33px",
     borderRadius: 12,
     maxWidth: 380,
     width:'100%',
@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     borderBottom: '0.5px solid #9E9E9E',
-    paddingBottom: 18,
-    marginBottom: 40
+    paddingBottom: 5,
+    marginBottom: 15
   },
   button: {
     marginTop: 30
@@ -41,7 +41,7 @@ const IncativeToken = ({ onClose, open, token }: Props) => {
     >
       <Box className={classes.root}>
         <Box className={classes.header}>
-        <Typography component="h3" fontSize='18px' fontWeight='700'>Pay Attention</Typography>
+        <Typography component="h3" fontSize='50px' fontWeight='700'>⚠️</Typography>
         </Box>
         <Typography component="p" fontSize='16px' fontWeight={500}>  
           <strong>{token?.displayName}</strong> will be available soon
