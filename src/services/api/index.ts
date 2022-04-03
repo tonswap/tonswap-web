@@ -322,7 +322,6 @@ export const generateRemoveLiquidityLink = async (
   token: string,
   tonAmount: number | string
 ) => {
-  alert('start')
 try {
   const data = await getData(token);
   const ratio =
@@ -349,11 +348,9 @@ try {
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-    alert(deeplink)
     return window.location.href = deeplink;
   }
 } catch (error: any) {
-  alert(error.message)
 }
 };
 
