@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   rightGrid: {
     display: "flex",
     alignItems: "center",
-    border: `0.5px solid ${theme.palette.primary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
     height: 35,
     paddingLeft: 15,
     paddingRight: 15,
