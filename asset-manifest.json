@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tonswap-web-new/static/css/main.1a773754.css",
-    "main.js": "/tonswap-web-new/static/js/main.8d8ac5f3.js",
+    "main.js": "/tonswap-web-new/static/js/main.27e25665.js",
     "static/js/787.d9341bba.chunk.js": "/tonswap-web-new/static/js/787.d9341bba.chunk.js",
     "static/media/hero.png": "/tonswap-web-new/static/media/hero.6d14a30059a98d69c952.png",
     "static/media/medal.svg": "/tonswap-web-new/static/media/medal.72a6e86054f8d2353b1a61611f07be3d.svg",
@@ -14,6 +14,7 @@
     "index.html": "/tonswap-web-new/index.html",
     "static/media/qr.svg": "/tonswap-web-new/static/media/qr.69524bf5d8deff2e62364b768e7e775b.svg",
     "static/media/BTC.svg": "/tonswap-web-new/static/media/BTC.bf9ee2ccdb5cb188aeed891c143921a7.svg",
+    "static/media/ton.svg": "/tonswap-web-new/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
     "static/media/add-liqudity.svg": "/tonswap-web-new/static/media/add-liqudity.864c89c14b611b5d00642c33539554b5.svg",
     "static/media/wallet-address.svg": "/tonswap-web-new/static/media/wallet-address.57b60a11e4d5fd39eac76f18f88060ee.svg",
     "static/media/remove-liquidity.svg": "/tonswap-web-new/static/media/remove-liquidity.a9ae63435e53a5a5b06e4c3c3b754e4d.svg",
@@ -25,15 +26,14 @@
     "static/media/ETH.svg": "/tonswap-web-new/static/media/ETH.f827adddcf99941a48898b6adf11dcf1.svg",
     "static/media/qr-line.svg": "/tonswap-web-new/static/media/qr-line.4b2c7509df954d914dc23731ca6b4c5c.svg",
     "static/media/ton-logo.svg": "/tonswap-web-new/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
-    "static/media/ton.svg": "/tonswap-web-new/static/media/ton.7a380671780c3353900722237a105ecd.svg",
     "static/media/minus.svg": "/tonswap-web-new/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/tonswap-web-new/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "main.1a773754.css.map": "/tonswap-web-new/static/css/main.1a773754.css.map",
-    "main.8d8ac5f3.js.map": "/tonswap-web-new/static/js/main.8d8ac5f3.js.map",
+    "main.27e25665.js.map": "/tonswap-web-new/static/js/main.27e25665.js.map",
     "787.d9341bba.chunk.js.map": "/tonswap-web-new/static/js/787.d9341bba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1a773754.css",
-    "static/js/main.8d8ac5f3.js"
+    "static/js/main.27e25665.js"
   ]
 }
