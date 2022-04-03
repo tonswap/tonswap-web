@@ -253,7 +253,7 @@ export const generateSellLink = async (token: string, tokenAmount: number) => {
     const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${bocT}`;
 
     console.log(deeplinkTransfer);
-    return window.open(deeplinkTransfer);
+    return window.location.href = deeplinkTransfer
   }
 };
 
@@ -283,8 +283,7 @@ export const generateBuyLink = async (
   } else {
     const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${bocT}`;
 
-    console.log(deeplinkTransfer);
-    return window.open(deeplinkTransfer);
+    return window.location.href = deeplinkTransfer
   }
 };
 
@@ -315,8 +314,7 @@ export const generateAddLiquidityLink = async (
   } else {
     const deeplink = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${boc}`;
 
-    console.log(deeplink);
-    return window.open(deeplink);
+    return window.location.href = deeplink
   }
 };
 
@@ -324,6 +322,8 @@ export const generateRemoveLiquidityLink = async (
   token: string,
   tonAmount: number | string
 ) => {
+  alert('start')
+try {
   const data = await getData(token);
   const ratio =
     parseFloat(tonAmount.toString()) /
@@ -349,9 +349,12 @@ export const generateRemoveLiquidityLink = async (
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-
-    return window.open(deeplink);
+    alert(deeplink)
+    return window.location.href = deeplink;
   }
+} catch (error: any) {
+  alert(error.message)
+}
 };
 
 export const generateClaimRewards = async (token: string) => {
@@ -372,6 +375,6 @@ export const generateClaimRewards = async (token: string) => {
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-    return window.open(deeplink);
+    return  window.location.href = deeplink 
   }
 };
