@@ -239,20 +239,18 @@ export const generateSellLink = async (token: string, tokenAmount: number) => {
   const bocT = stripBoc(transferStr);
 
   const provider = (window as any).ton;
-
+  const value = gasFee * 1e9;
   if (provider) {
     provider.send("ton_sendTransaction", [
       {
         to: tokenObjects.address, // TON Foundation
-        value: 0.2 * 1e9, // 10000 nanotons = 0.00001 TONs
+        value, // 10000 nanotons = 0.00001 TONs
         data: bocT,
         dataType: "text",
       },
     ]);
   } else {
-    const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${
-      0.2 * 1e9
-    }&text=${bocT}`;
+    const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${bocT}`;
 
     console.log(deeplinkTransfer);
     return window.open(deeplinkTransfer);

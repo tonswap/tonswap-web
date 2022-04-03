@@ -24,8 +24,12 @@ export const SellScreen = () => {
 const Sell = observer(() => {
   const store = useStore();
   const { srcTokenAmount } = useTokenOperationsStore();
+
+
   const onSubmit = () => {
     if (store.selectedToken) {
+      
+      
       API.generateSellLink(store.selectedToken.name, srcTokenAmount);
     }
   };
@@ -39,7 +43,7 @@ const Sell = observer(() => {
 
   return (
     <TokenLayout
-      title={`Swap ${store.selectedToken?.name} to TON`}
+      title={`Swap ${store.selectedToken?.displayName} to TON`}
       titleImage={Icon}
     >
       {store.selectedToken && (

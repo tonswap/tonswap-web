@@ -35,7 +35,7 @@ export const customToFixed = (num: number, padding?: number) => {
       .match(re)!![0]
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   } catch (error) {
-    return '0';
+    return "0";
   }
 };
 
@@ -115,20 +115,20 @@ export function addressToSlice264(a: Address) {
   let c = new Cell();
   c.bits.writeAddress(a);
   const s = c.beginParse();
-  // const _anyCast = s.readUint(3);
+  s.readUint(3);
   const addr = s.readUint(264);
   return addr;
 }
 
 export function sliceToAddress267(s: Slice) {
-  // const _anyCast = new BN(s.readUint(3)); //ignore anycast bits
+  new BN(s.readUint(3)); //ignore anycast bits
   return sliceToAddress(s);
 }
 
 export function sliceToAddress(s: Slice) {
-  // const wc = new BN(s.readUint(8));
-  // const addr = s.readUint(256);
-  // const address = new Address(wc.toNumber(), addr.toBuffer());
+  const wc = new BN(s.readUint(8));
+  const addr = s.readUint(256);
+  new Address(wc.toNumber(), addr.toBuffer());
   return "address";
 }
 
