@@ -1,6 +1,6 @@
 const ROUTES = {
-  connect: "/connect",
-  tokens: "/",
+  connect: "/",
+  tokens: "/select-token",
   connected: "/*",
   actions: {
     sell: "/sell/:id",
