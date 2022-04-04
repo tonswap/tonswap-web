@@ -16,6 +16,14 @@ const tonweb = new TonWeb(
   new TonWeb.HttpProvider("https://scalable-api.tonwhales.com/jsonRPC")
 );
 
+const callWithRetry = (address: any, method: any, params: any) => {
+  try {
+    return tonweb.call(address, method, params);
+  } catch (ignore) {
+    return tonweb.call(address, method, params);
+  }
+}
+
 const getToken = (token: string) => {
   return supportedTokens.find((t: any) => t.name === token);
 };
@@ -78,7 +86,7 @@ const _getTokenBalance = async (tokenAddress: string) => {
   const owner = Address.parse(localStorage.getItem("address") as string);
   let wc = owner.workChain;
   let address = new BN(owner.hash);
-  const res = await tonweb.call(tokenAddress, "ibalance_of", [
+  const res = await callWithRetry(tokenAddress, "ibalance_of", [
     ["num", wc.toString(10)],
     ["num", address.toString(10)],
   ]);
@@ -105,14 +113,14 @@ export const getAmountsOut = async (
   if (srcAmount != null) {
     const amountIn = srcAmount * 1e9;
     const isTokenSource = srcToken !== "ton"; // && srcAmount != null || destToken === "ton" && destAmount != null;
-    res = await tonweb.call(tokenObjects.amm, "get_amount_out_lp", [
+    res = await callWithRetry(tokenObjects.amm, "get_amount_out_lp", [
       ["num", amountIn.toString(10)],
       ["num", isTokenSource ? "1" : "0"],
     ]);
   } else if (destAmount != null) {
     const amountIn = (destAmount || 0) * 1e9;
     const isTokenSource = srcToken !== "ton"; // && srcAmount != null || destToken === "ton" && destAmount != null;
-    res = await tonweb.call(tokenObjects.amm, "get_amount_in_lp", [
+    res = await callWithRetry(tokenObjects.amm, "get_amount_in_lp", [
       ["num", amountIn.toString(10)],
       ["num", isTokenSource ? "1" : "0"],
     ]);
@@ -220,7 +228,7 @@ export const getRewards = async (token: string) => {
   let wc = owner.workChain;
   let address = new BN(owner.hash);
   const tokenObjects: any = getToken(token);
-  const res = await tonweb.call(tokenObjects.amm, "get_rewards_of", [
+  const res = await callWithRetry(tokenObjects.amm, "get_rewards_of", [
     ["num", wc.toString(10)],
     ["num", address.toString(10)],
   ]);
@@ -372,6 +380,6 @@ export const generateClaimRewards = async (token: string) => {
     ]);
   } else {
     const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-    return  window.location.href = deeplink 
+    return  window.location.href = deeplink
   }
 };
