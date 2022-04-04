@@ -1,4 +1,3 @@
-import { ROUTES } from "router/routes";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "react-router-dom";
 import useLogic from "./useLogic";
@@ -45,7 +44,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const hideNavbar = (isMobile: boolean, pathname: string) => {
-  if (isMobile && pathname.indexOf(ROUTES.connect) > -1) {
+  console.log(pathname);
+  
+  if (isMobile && pathname === '/') {
     return true;
   }
   return false;
@@ -56,6 +57,9 @@ const App = observer(() => {
   const classes = useStyles();
   const location = useLocation();
   useLogic();
+
+  console.log(navigator.userAgent);
+  
 
   
   return (
