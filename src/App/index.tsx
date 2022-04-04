@@ -1,12 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { useLocation } from "react-router-dom";
 import useLogic from "./useLogic";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import useMobile from "hooks/useMobile";
 import { LAYOUT_MAX_WIDTH } from "consts";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -43,32 +41,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const hideNavbar = (isMobile: boolean, pathname: string) => {
-  console.log(pathname);
-  
-  if (isMobile && pathname === '/') {
-    return true;
-  }
-  return false;
-};
-
 const App = observer(() => {
-  const isMobile = useMobile();
   const classes = useStyles();
-  const location = useLocation();
   useLogic();
 
-  console.log(navigator.userAgent);
-  
-
-  
   return (
     <Box className={classes.app}>
-        {!hideNavbar(isMobile, location.pathname) && <Navbar />}
-        <Box className={classes.routes}>
-          <AppRoutes />
-        </Box>
+      <Navbar />
+      <Box className={classes.routes}>
+        <AppRoutes />
       </Box>
+    </Box>
   );
 });
 

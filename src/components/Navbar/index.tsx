@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { Box, Grid, Typography } from "@mui/material";
@@ -14,19 +14,53 @@ import WalletAddressImg from "assets/images/shared/wallet-address.svg";
 import { observer } from "mobx-react";
 import { useStore } from "store";
 import useMobile from "hooks/useMobile";
+import useQuery from "hooks/useQuery";
 
 const desktopNavbarHeight = "120px";
 const mobileNavbarHeight = "80px";
+
+const hideNavbar = (
+  isMobile: boolean,
+  pathname: string,
+  query: URLSearchParams
+) => {
+  const telegram = query.get("telegram");
+  if (isMobile && telegram) {
+    return { hide: true, placeholder: true };
+  }
+  if (isMobile && pathname === "/") {
+    return { hide: true, placeholder: false };
+  }
+  return { hide: false };
+};
 
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const store = useStore();
-
   const isMobile = useMobile();
-
+  const location = useLocation();
+  const query = useQuery();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
+
+  const { hide, placeholder } = hideNavbar(isMobile, location.pathname, query);
+
+  if (hide) {
+    return (
+      <Box
+        style={{
+          height: 30,
+          width: "100%",
+          top: 0,
+          background: "white",
+          zIndex: 99,
+          display: placeholder ? "block" : "none",
+        }}
+      ></Box>
+    );
+  }
+
   return (
     <>
       <AppBar
