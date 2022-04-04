@@ -16,10 +16,15 @@ const tonweb = new TonWeb(
   new TonWeb.HttpProvider("https://scalable-api.tonwhales.com/jsonRPC")
 );
 
-const callWithRetry = (address: any, method: any, params: any) => {
+const sleep = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+const callWithRetry = async (address: any, method: any, params: any) => {
   try {
-    return tonweb.call(address, method, params);
+    return await tonweb.call(address, method, params);
   } catch (ignore) {
+    await sleep(500);
     return tonweb.call(address, method, params);
   }
 }
