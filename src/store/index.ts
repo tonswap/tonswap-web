@@ -15,7 +15,7 @@ class Store {
       selectedToken: observable,
       setToken: action,
       setAddress: action,
-      navMenuOpen: observable
+      navMenuOpen: observable,
     });
   }
 
@@ -30,6 +30,8 @@ class Store {
     this.address = address;
     localStorage.setItem(LOCAL_STORAGE_ADDRESS, address);
   }
+ 
+
 }
 
 const store = new Store();

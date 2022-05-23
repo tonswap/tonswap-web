@@ -9,8 +9,10 @@ import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "hooks/useTransactionStatus";
-import { delay } from "utils";
+import { delay, isTelegramWebApp } from "utils";
 import { fromNano } from "ton";
+import useTelegramWebAppButton from "hooks/useTelegramWebAppButton";
+import useWebAppResize from "hooks/useWebAppResize";
 
 interface Props {
   srcToken: Token;
@@ -34,7 +36,8 @@ function TokenOperations({
   onSubmit,
   successText,
 }: Props) {
-  const classes = useStyles({ color: srcToken?.color || "" });
+  const expanded = useWebAppResize()
+  const classes = useStyles({ color: srcToken?.color || "", expanded });
   const {
     setTotalBalances,
     setDestAvailableAmountLoading,
@@ -53,8 +56,16 @@ function TokenOperations({
     await updateBalances();
     clearAmounts();
   };
+  const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
+  const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
   const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
+  useTelegramWebAppButton({
+    onSubmit,
+    submitButtonText,
+    insufficientFunds,
+    isDisabled,
+  });
 
   const submitted = async () => {
     onSubmit();
@@ -69,8 +80,14 @@ function TokenOperations({
 
   const updateBalances = async () => {
     const [srcTokenBalance, destTokenBalance] = await getBalances();
-    const srcBalance = typeof srcTokenBalance == 'object' ? parseFloat(fromNano(srcTokenBalance.balance)) : srcTokenBalance;
-    const destBalance = typeof destTokenBalance == 'object' ? parseFloat(fromNano(destTokenBalance.balance)) : destTokenBalance;
+    const srcBalance =
+      typeof srcTokenBalance == "object"
+        ? parseFloat(fromNano(srcTokenBalance.balance))
+        : srcTokenBalance;
+    const destBalance =
+      typeof destTokenBalance == "object"
+        ? parseFloat(fromNano(destTokenBalance.balance))
+        : destTokenBalance;
     setTotalBalances({
       srcBalance: srcBalance,
       destBalance: destBalance,
@@ -78,8 +95,6 @@ function TokenOperations({
     setDestAvailableAmountLoading(false);
     setSrcAvailableAmountLoading(false);
   };
-
-  const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
 
   useEffect(() => {
     updateBalances();
@@ -109,23 +124,22 @@ function TokenOperations({
         />
       </Box>
 
-      <Box className={classes.button}>
-        {insufficientFunds ? (
-          <ActionButton isDisabled onClick={() => {}}>
-            <WarningAmberRoundedIcon
-              style={{ color: "#7D7D7D", top: "-2px", position: "relative" }}
-            />{" "}
-            Insufficient funds
-          </ActionButton>
-        ) : (
-          <ActionButton
-            isDisabled={!srcTokenAmount || srcLoading || destLoading}
-            onClick={submitted}
-          >
-            {submitButtonText}
-          </ActionButton>
-        )}
-      </Box>
+      {!isTelegramWebApp() && (
+        <Box className={classes.button}>
+          {insufficientFunds ? (
+            <ActionButton isDisabled onClick={() => {}}>
+              <WarningAmberRoundedIcon
+                style={{ color: "#7D7D7D", top: "-2px", position: "relative" }}
+              />{" "}
+              Insufficient funds
+            </ActionButton>
+          ) : (
+            <ActionButton isDisabled={isDisabled} onClick={submitted}>
+              {submitButtonText}
+            </ActionButton>
+          )}
+        </Box>
+      )}
     </Box>
   );
 }

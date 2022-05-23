@@ -63,10 +63,10 @@ export function NumberInput({
         {isLoading && (
           <>
             <Box className={classes.inputLoader}>
-              <ContentLoader width={140} height={40} borderRadius={3} />
+              <ContentLoader width={140} height='100%' borderRadius={3} />
             </Box>
             <Box className={classes.maxLoader}>
-              <ContentLoader width={40} height={40} borderRadius={3} />
+              <ContentLoader width={40} height='100%' borderRadius={3} />
             </Box>
           </>
         )}
@@ -74,23 +74,24 @@ export function NumberInput({
           inputProps={{
             sx: {
               padding: 0,
-              height: "50px",
+              height: "100%",
               border: "none",
               color: isLoading ? "transparent" : "white",
-              fontSize: "30px",
               textIndent: "16px",
               background: "transparent",
 
               width: "100%",
             },
+            inputMode: 'decimal'
+            
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", height:'100%' }}
           autoComplete="off"
           sx={{ border: "none" }}
-          value={value || ""}
+          value={value || ''}
           customInput={TextField}
-          type="text"
-          thousandSeparator={","}
+          decimalSeparator="."
+          thousandSeparator=","
           onValueChange={({ value }, event: any) => {
 
             if (event.source !== "prop") {

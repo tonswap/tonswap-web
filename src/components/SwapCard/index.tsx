@@ -3,6 +3,7 @@ import { NumberInput } from "components/NumberInput";
 import { Token } from "types";
 import ContentLoader from "components/ContentLoader";
 import { useStyles } from "./styles";
+import useWebAppResize from "hooks/useWebAppResize";
 
 interface Props {
   inputAmount?: number;
@@ -27,7 +28,9 @@ function SwapCard({
   isLoading,
   availableAmountLoading,
 }: Props) {
-  const classes = useStyles({ color: token.color });
+  const expanded = useWebAppResize()
+  const classes = useStyles({ color: token.color, expanded });
+
 
   return (
     <Box className={classes.root}>

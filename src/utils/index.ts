@@ -2,6 +2,7 @@ import { Token } from "types";
 //https://github.com/tonwhales/ton-nft/blob/main/packages/utils/parseActionsList.ts
 import BN from "bn.js";
 import { Address, Cell, RawCurrencyCollection, RawMessage, Slice } from "ton";
+import { TELEGRAM_WEBAPP_PARAM } from "consts";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
 
@@ -151,4 +152,13 @@ export function stripBoc(bocStr: string) {
     return bocStr.substr(2, bocStr.length - 4);
 }
 
-export { delay, splitToGroups, getToken, getIsSelectedTokenMobile };
+
+export const getParamsFromUrl = (name: string) => {
+    const query = new URLSearchParams(window.location.search);
+    return query.get(name);
+  };
+
+  const isTelegramWebApp = () =>  getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
+
+
+export { delay, splitToGroups, getToken, getIsSelectedTokenMobile, isTelegramWebApp };

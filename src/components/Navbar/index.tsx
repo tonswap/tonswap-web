@@ -2,7 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
@@ -15,23 +15,22 @@ import { observer } from "mobx-react";
 import { useStore } from "store";
 import useMobile from "hooks/useMobile";
 import useQuery from "hooks/useQuery";
+import { isTelegramWebApp } from "utils";
 
-const desktopNavbarHeight = "120px";
-const mobileNavbarHeight = "80px";
+const desktopNavbarHeight = "90px";
+const mobileNavbarHeight = "70px";
 
 const hideNavbar = (
   isMobile: boolean,
   pathname: string,
-  query: URLSearchParams
 ) => {
-  const telegram = query.get("telegram");
-  if (isMobile && telegram) {
-    return { hide: true, placeholder: true };
+  if (isTelegramWebApp()) {
+    return true
   }
   if (isMobile && pathname === "/") {
-    return { hide: true, placeholder: false };
+    return true
   }
-  return { hide: false };
+  return false
 };
 
 export const Navbar = observer(() => {
@@ -44,18 +43,20 @@ export const Navbar = observer(() => {
   const query = useQuery();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
 
-  const { hide, placeholder } = hideNavbar(isMobile, location.pathname, query);
+  const hide = useMemo(
+    () => hideNavbar(isMobile, location.pathname),
+    [isMobile, location, query]
+  );
 
   if (hide) {
     return (
       <Box
         style={{
-          height: 30,
+          height: '10px',
           width: "100%",
           top: 0,
           background: "white",
           zIndex: 99,
-          display: placeholder ? "block" : "none",
         }}
       ></Box>
     );

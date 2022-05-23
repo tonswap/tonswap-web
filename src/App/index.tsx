@@ -6,6 +6,9 @@ import { Theme } from "@mui/material/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
+import { telegramWebApp } from "services/telegram";
+import useWebAppResize from "hooks/useWebAppResize";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   routes: {
     background: "#FAFAFA",
     borderRadius: 20,
-    maxHeight: "calc(100vh - 200px)",
+    maxHeight: "calc(100vh - 130px)",
     width: "100%",
     overflow: "auto",
     display: "flex",

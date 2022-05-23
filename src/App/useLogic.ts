@@ -1,21 +1,22 @@
-import { LOCAL_STORAGE_ADDRESS } from "consts";
+import {
+  ADDRESS_PARAM,
+  LOCAL_STORAGE_ADDRESS,
+} from "consts";
 import useQuery from "hooks/useQuery";
-import { useEffect  } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
-
 
 function useLogic() {
   const store = useStore();
   const navigate = useNavigate();
 
-
   let query = useQuery();
 
   useEffect(() => {
     const localStorageAddress = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
-    const queryAddress = query.get("address");
+    const queryAddress = query.get(ADDRESS_PARAM);
     const address = queryAddress || localStorageAddress;
 
     if (address) {
@@ -25,6 +26,8 @@ function useLogic() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 }
 
 export default useLogic;
