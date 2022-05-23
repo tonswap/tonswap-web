@@ -22,15 +22,16 @@ export const ClaimRewardsScreen = observer(() => {
   const [rewardCopyForSnackbar, setRewardCopyForSnackbar] = useState(0)
 
   const onTxFinished = async () => {
-    const tokenBalance = await API.getRewards(store.selectedToken!!.name);
-    setReward(tokenBalance);
+    // const tokenBalance = await API.getRewards(store.selectedToken!!.name);
+    // setReward(tokenBalance);
   };
 
   const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
 
   const onSubmit = () => {
+
     if (store.selectedToken) {
-      API.generateClaimRewards(store.selectedToken.name);
+     // API.generateClaimRewards(store.selectedToken.name);
       pollTx();
     }
   };
@@ -48,7 +49,7 @@ export const ClaimRewardsScreen = observer(() => {
     }
 
     setIsLoading(true);
-    const tokenBalance = await API.getRewards(tokenName);
+    const tokenBalance = 0; // await API.getRewards(tokenName);
     setReward(tokenBalance);
     setRewardCopyForSnackbar(tokenBalance)
     setIsLoading(false);

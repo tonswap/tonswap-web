@@ -27,11 +27,13 @@ const Sell = observer(() => {
     srcTokenAmount,
     srcTokenAmountCopy,
     destTokenAmountCopy,
+    destTokenAmount
   } = useTokenOperationsStore();
 
   const onSubmit = () => {
     if (store.selectedToken) {
-      API.generateSellLink(store.selectedToken.name, srcTokenAmount);
+      // TODO
+      API.generateSellLink(store.selectedToken.name, srcTokenAmount, destTokenAmount);
     }
   };
 

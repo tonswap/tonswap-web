@@ -10,6 +10,7 @@ import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "hooks/useTransactionStatus";
 import { delay } from "utils";
+import { fromNano } from "ton";
 
 interface Props {
   srcToken: Token;
@@ -68,9 +69,11 @@ function TokenOperations({
 
   const updateBalances = async () => {
     const [srcTokenBalance, destTokenBalance] = await getBalances();
+    const srcBalance = typeof srcTokenBalance == 'object' ? parseFloat(fromNano(srcTokenBalance.balance)) : srcTokenBalance;
+    const destBalance = typeof destTokenBalance == 'object' ? parseFloat(fromNano(destTokenBalance.balance)) : destTokenBalance;
     setTotalBalances({
-      srcBalance: srcTokenBalance,
-      destBalance: destTokenBalance,
+      srcBalance: srcBalance,
+      destBalance: destBalance,
     });
     setDestAvailableAmountLoading(false);
     setSrcAvailableAmountLoading(false);

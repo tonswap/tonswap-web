@@ -1,390 +1,384 @@
-import { Address, TonClient } from "ton";
-import TonWeb from "tonweb";
-import { base64StrToCell, cellToString, stripBoc } from "utils";
+import { Address, Cell, toNano, TonClient, fromNano } from "ton";
+
+import { hexToBn, stripBoc } from "utils";
 import { DexActions } from "./dex";
 import { tokens as supportedTokens } from "tokens";
 import { Token } from "types";
-const BN = require("bn.js");
+import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
+import BN from "bn.js";
+import { OPS } from "./ops";
+
+let rpcUrl = "https://scalable-api.tonwhales.com/jsonRPC";
+if (document.location.href.indexOf("testnet=") > -1) {
+    rpcUrl = "https://testnet.tonhubapi.com/jsonRPC";
+} else if (document.location.href.indexOf("sandbox=") > -1) {
+    rpcUrl = "https://sandbox.tonhubapi.com/jsonRPC";
+}
+
 /* eslint no-eval: 0 */
 const client = new TonClient({
-  endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
+    endpoint: rpcUrl,
 });
 
-const gasFee = 0.2;
-
-const tonweb = new TonWeb(
-  new TonWeb.HttpProvider("https://scalable-api.tonwhales.com/jsonRPC")
-);
+enum GAS_FEE {
+    SWAP = 0.2,
+    FORWARD_TON = 0.05,
+    ADD_LIQUIDITY = 0.2,
+}
 
 const sleep = (milliseconds: number) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-}
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
-const callWithRetry = async (address: any, method: any, params: any) => {
-  try {
-    return await tonweb.call(address, method, params);
-  } catch (ignore) {
-    await sleep(500);
-    return tonweb.call(address, method, params);
-  }
-}
-
-const getToken = (token: string) => {
-  return supportedTokens.find((t: any) => t.name === token);
+const callWithRetry = async (address: Address, method: string, params: any) => {
+    try {
+        return await client.callGetMethod(address, method, params);
+    } catch (ignore) {
+        await sleep(500);
+        return client.callGetMethod(address, method, params);
+    }
 };
 
 export const getTokenBalance = async (token: Token) => {
-  return _getTokenBalance(token.address!!);
+    const tokenData = await getToken(client, token.name, getOwner());
+    //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
+    return _getTokenBalance(tokenData.tokenMinter);
 };
 
 export const getLPTokenBalance = async (token: string) => {
-  const tokenObjects: any = getToken(token);
-  return _getTokenBalance(tokenObjects.amm);
+    const tokenData = await getToken(client, token, getOwner());
+    return _getTokenBalance(tokenData.lpWallet);
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
-  const [data, lpBalance] = await Promise.all([
-    getData(token),
-    getLPTokenBalance(token),
-  ]);
+    const tokenObjects = await getToken(client, token, getOwner());
+    const [jettonData, lpBalance] = await Promise.all([getJettonData(tokenObjects.ammMinter), getLPTokenBalance(token)]);
 
-  const totalLPs = parseNumber(new BN(eval(data.totalSupply)));
-  const ratio = lpBalance / totalLPs;
+    const ratio = lpBalance.balance.div(jettonData.totalSupply);
 
-  return [
-    parseNumber(
-      new BN(eval(data.tonReserves)).mul(new BN(ratio * 1e9)).div(new BN(1e9))
-    ),
-    parseNumber(
-      new BN(eval(data.tokenReserves)).mul(new BN(ratio * 1e9)).div(new BN(1e9))
-    ),
-  ];
+    return [jettonData.tonReserves.mul(ratio.mul(new BN(1e9)).div(new BN(1e9))), jettonData.tokenReserves.mul(ratio.mul(new BN(1e9)).div(new BN(1e9)))];
 };
 
 // TODO: Remove later
 (window as any).getLPTokenBalance = getLPTokenBalance;
-(window as any).getData = getData;
+(window as any).getData = getJettonData;
 
-const parseNumber = (
-  num: any,
-  units: number = 9,
-  decimalPoints: number = 4
-): number => {
-  if (num.toString().length <= 9) {
-    return parseFloat(
-      parseFloat(
-        "0." + num.toString().padStart(units).replaceAll(" ", "0")
-      ).toFixed(decimalPoints)
-    );
-  } else {
-    return parseFloat(
-      parseFloat(
-        num.div(new BN(10 ** units)).toString() +
-          "." +
-          num.mod(new BN(10 ** units)).toString()
-      ).toFixed(decimalPoints)
-    );
-  }
+const parseNumber = (num: any, units: number = 9, decimalPoints: number = 4): number => {
+    if (num.toString().length <= 9) {
+        return parseFloat(parseFloat("0." + num.toString().padStart(units).replaceAll(" ", "0")).toFixed(decimalPoints));
+    } else {
+        return parseFloat(parseFloat(num.div(new BN(10 ** units)).toString() + "." + num.mod(new BN(10 ** units)).toString()).toFixed(decimalPoints));
+    }
 };
 
-const _getTokenBalance = async (tokenAddress: string) => {
-  const owner = Address.parse(localStorage.getItem("address") as string);
-  let wc = owner.workChain;
-  let address = new BN(owner.hash);
-  const res = await callWithRetry(tokenAddress, "ibalance_of", [
-    ["num", wc.toString(10)],
-    ["num", address.toString(10)],
-  ]);
+function getOwner() {
+    return Address.parse(localStorage.getItem("address") as string);
+}
 
-  return parseNumber(new BN(eval(res.stack[0][1])));
+const _getWalletData = async (jettonWallet: Address) => {
+    let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
+
+    const balance = hexToBn(res.stack[0][1]);
+    const walletOwner = bytesToAddress(res.stack[1][1].bytes);
+    const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
+
+    return {
+        balance,
+        walletOwner,
+        jettonMaster,
+    };
+};
+
+const _getTokenBalance = async (minterAddress: Address) => {
+    let cell = new Cell();
+    cell.bits.writeAddress(getOwner());
+    const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
+    const jettonWallet = await callWithRetry(minterAddress, "get_wallet_address", [["tvm.Slice", b64data]]);
+
+    let jettonWalletAddress = bytesToAddress(jettonWallet.stack[0][1].bytes);
+    // jettonWalletAddress = Address.parse("kQBaIvo07zP5git3cfVmImayYzTfhKT3L2wZmE2qBIVbaCXv");
+    try {
+        console.log(`fetching wallet_data from jettonWallet ${jettonWalletAddress.toFriendly()}`);
+
+        let res = await client.callGetMethod(jettonWalletAddress, "get_wallet_data", []);
+        const balance = hexToBn(res.stack[0][1]);
+        const walletOwner = bytesToAddress(res.stack[1][1].bytes);
+        const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
+        return {
+            balance,
+            walletOwner,
+            jettonMaster,
+        };
+    } catch (e) {
+        return {
+            balance: new BN(0),
+            walletOwner: getOwner(),
+            jettonMaster: minterAddress,
+        };
+    }
 };
 
 export const getTonBalance = async () => {
-  const address = localStorage.getItem("address") as string;
-  const balance = await tonweb.getBalance(address);
+    const address = localStorage.getItem("address") as string;
+    const balance = await client.getBalance(Address.parse(address));
 
-  return parseNumber(new BN(balance));
+    return parseNumber(new BN(balance));
 };
 
-export const getAmountsOut = async (
-  srcToken: string,
-  destToken: string,
-  srcAmount: number | null,
-  destAmount: number | null
-) => {
-  let res;
-  const tokenObjects: any = getToken(srcToken !== "ton" ? srcToken : destToken);
+async function getAmountOut(minterAddress: Address, amountIn: BN, reserveIn: BN, reserveOut: BN) {
+    console.log(`fromNano(amountIn), fromNano(reserveIn), fromNano(reserveOut)`);
+    console.log(fromNano(amountIn), fromNano(reserveIn), fromNano(reserveOut));
 
-  if (srcAmount != null) {
-    const amountIn = srcAmount * 1e9;
-    const isTokenSource = srcToken !== "ton"; // && srcAmount != null || destToken === "ton" && destAmount != null;
-    res = await callWithRetry(tokenObjects.amm, "get_amount_out_lp", [
-      ["num", amountIn.toString(10)],
-      ["num", isTokenSource ? "1" : "0"],
+    let res = await client.callGetMethod(minterAddress, "get_amount_out", [
+        ["num", amountIn.toString()],
+        ["num", reserveIn.toString()],
+        ["num", reserveOut.toString()],
     ]);
-  } else if (destAmount != null) {
-    const amountIn = (destAmount || 0) * 1e9;
-    const isTokenSource = srcToken !== "ton"; // && srcAmount != null || destToken === "ton" && destAmount != null;
-    res = await callWithRetry(tokenObjects.amm, "get_amount_in_lp", [
-      ["num", amountIn.toString(10)],
-      ["num", isTokenSource ? "1" : "0"],
-    ]);
-  }
 
-  if (res.stack[0][1].indexOf("-") === 0) {
-    const data = await getData(tokenObjects.name);
-    if (srcToken === "ton") {
-      return parseNumber(new BN(eval(data.tonReserves)));
+    return hexToBn(res.stack[0][1]).toString();
+}
+
+export const getAmountsOut = async (token: string, isSourceToken: boolean, srcAmount: number | null, destAmount: number | null) => {
+    const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
+    const tokenData = await getJettonData(tokenAmm);
+
+    if (srcAmount) {
+        // TODO
+        const amountIn = toNano(srcAmount);
+        if (isSourceToken) {
+            return getAmountOut(tokenAmm, new BN(amountIn), new BN(tokenData.tokenReserves), new BN(tokenData.tonReserves));
+        } else {
+            return getAmountOut(tokenAmm, new BN(amountIn), new BN(tokenData.tonReserves), new BN(tokenData.tokenReserves));
+        }
     } else {
-      return parseNumber(new BN(eval(data.tokenReserves)));
+        // TODO
+        const amountIn = toNano(destAmount || 0);
+        if (isSourceToken) {
+            return getAmountOut(tokenAmm, new BN(amountIn), new BN(tokenData.tokenReserves), new BN(tokenData.tonReserves));
+        } else {
+            return getAmountOut(tokenAmm, new BN(amountIn), new BN(tokenData.tonReserves), new BN(tokenData.tokenReserves));
+        }
     }
-  } else {
-    return parseNumber(new BN(eval(res.stack[0][1])));
-  }
 };
 
-async function getData(token: string) {
-  const tokenObjects: any = getToken(token);
-  const res = await client.callGetMethod(
-    Address.parse(tokenObjects.amm),
-    "get_token_data",
-    []
-  );
-  const cellName = base64StrToCell(res.stack[0][1].bytes);
-  const name = cellToString(cellName[0]);
-  const cSymbol = base64StrToCell(res.stack[1][1].bytes);
-  const symbol = cellToString(cSymbol[0]);
-  const decimals = res.stack[2][1];
-  const totalSupply = res.stack[3][1];
-  const tokenReserves = res.stack[4][1];
-  const tonReserves = res.stack[5][1];
-  const initialized = res.stack[7][1];
+async function getJettonData(ammMinter: Address) {
+    let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
 
-  return {
-    name,
-    symbol,
-    decimals,
-    totalSupply,
-    tokenReserves,
-    tonReserves,
-    initialized,
-  };
+    const totalSupply = hexToBn(res.stack[0][1]);
+    const mintable = res.stack[1][1] as string;
+    const jettonWalletAddressBytes = res.stack[2][1].bytes as string;
+    const tonReserves = hexToBn(res.stack[3][1]);
+    const tokenReserves = hexToBn(res.stack[4][1]);
+    return {
+        totalSupply,
+        jettonWalletAddress: bytesToAddress(jettonWalletAddressBytes),
+        mintable,
+        tonReserves,
+        tokenReserves,
+    };
 }
 
-export const getLiquidityAmount = async (
-  srcToken: string,
-  destToken: string,
-  srcAmount: number | null,
-  destAmount: number | null
-): Promise<number> => {
-  const tokenObjects: any = getToken(srcToken !== "ton" ? srcToken : destToken);
-  const lpTokenData = await getData(tokenObjects.name);
+export const getLiquidityAmount = async (srcToken: string, destToken: string, srcAmount: number | null, destAmount: number | null): Promise<number> => {
+    const tokenObjects: any = getToken(client, srcToken !== "ton" ? srcToken : destToken, getOwner());
+    const lpTokenData = await getJettonData(tokenObjects.name);
 
-  const tokenReserves = new BN(BigInt(lpTokenData.tokenReserves));
-  const tonReserves = new BN(BigInt(lpTokenData.tonReserves));
+    const tokenReserves = lpTokenData.tokenReserves;
+    const tonReserves = lpTokenData.tonReserves;
 
-  const ratio =
-    tonReserves.mul(new BN(1e9)).div(tokenReserves).toString() / 1e9;
+    const ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).div(new BN(1e9));
 
-  if (srcToken === "ton") {
-    if (srcAmount != null) {
-      return srcAmount / ratio;
-    } else if (destAmount != null) {
-      return destAmount * ratio;
+    if (srcToken === "ton") {
+        if (srcAmount != null) {
+            return srcAmount / ratio.toNumber();
+        } else if (destAmount != null) {
+            return destAmount * ratio.toNumber();
+        }
+    } else {
+        if (srcAmount != null) {
+            return srcAmount * ratio.toNumber();
+        } else if (destAmount != null) {
+            return destAmount / ratio.toNumber();
+        }
     }
-  } else {
-    if (srcAmount != null) {
-      return srcAmount * ratio;
-    } else if (destAmount != null) {
-      return destAmount / ratio;
+    return 0;
+};
+
+export const getTokenDollarValue = async (token: string, amount: number): Promise<number> => {
+    let ratio = 1;
+
+    if (token !== "ton") {
+        const tokenData = await getToken(client, token, getOwner());
+        const lpTokenData = await getJettonData(tokenData.ammMinter);
+
+        const tokenReserves = lpTokenData.tokenReserves;
+        const tonReserves = lpTokenData.tonReserves;
+
+        ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
     }
-  }
-  return 0;
+
+    const coinsResponse = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
+    );
+    const result = await coinsResponse.json();
+    const tonPriceWithAmount = parseFloat((parseFloat(result["the-open-network"].usd) * amount).toPrecision(4));
+
+    return parseFloat((tonPriceWithAmount * ratio).toFixed(4));
 };
 
-export const getTokenDollarValue = async (
-  token: string,
-  amount: number
-): Promise<number> => {
-  let ratio = 1;
+// export const getRewards = async (token: string) => {
+//     const owner = Address.parse(localStorage.getItem("address") as string);
+//     let wc = owner.workChain;
+//     let address = new BN(owner.hash);
+//     const tokenObjects: any = getToken(client, token, getOwner());
+//     const res = await callWithRetry(tokenObjects.amm, "get_rewards_of", [
+//         ["num", wc.toString(10)],
+//         ["num", address.toString(10)],
+//     ]);
 
-  if (token !== "ton") {
-    const lpTokenData = await getData(token);
+//     return hexToBn(res.stack[0][1]);
+// };
 
-    const tokenReserves = new BN(BigInt(lpTokenData.tokenReserves));
-    const tonReserves = new BN(BigInt(lpTokenData.tonReserves));
+export const generateSellLink = async (token: string, tokenAmount: number, minAmountOut: number) => {
+    const tokenData = await getToken(client, token, getOwner());
 
-    ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toString() / 1e9;
-  }
+    let transfer = DexActions.transferOverload(tokenData.ammMinter, toNano(tokenAmount), tokenData.ammMinter, toNano(GAS_FEE.FORWARD_TON), OPS.SWAP_TOKEN, toNano(minAmountOut));
+    const boc64 = transfer.toBoc().toString("base64");
 
-  const coinsResponse = await fetch(
-    `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
-  );
-  const result = await coinsResponse.json();
-  const tonPriceWithAmount = parseFloat(
-    (parseFloat(result["the-open-network"].usd) * amount).toPrecision(4)
-  );
+    const provider = (window as any).ton;
+    const value = toNano(GAS_FEE.SWAP);
+    if (provider) {
+        provider.send("ton_sendTransaction", [
+            {
+                to: tokenData.jettonWallet.toFriendly(),
+                value: toNano(GAS_FEE.SWAP).toString(), // 10000 :
+                data: boc64,
+                dataType: "boc",
+            },
+        ]);
+    } else {
+        const deeplinkTransfer = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
 
-  return parseFloat((tonPriceWithAmount * ratio).toFixed(4));
+        console.log(deeplinkTransfer);
+        return (window.location.href = deeplinkTransfer);
+    }
 };
 
-export const getRewards = async (token: string) => {
-  const owner = Address.parse(localStorage.getItem("address") as string);
-  let wc = owner.workChain;
-  let address = new BN(owner.hash);
-  const tokenObjects: any = getToken(token);
-  const res = await callWithRetry(tokenObjects.amm, "get_rewards_of", [
-    ["num", wc.toString(10)],
-    ["num", address.toString(10)],
-  ]);
+export const generateBuyLink = async (token: string, tonAmount: number, tokenAmount: number) => {
+    // 0.5% slippage
+    //TODO add slippage explicit
+    console.log(`tonAmount:${tonAmount} expecting tokens: ${tokenAmount}`);
 
-  return parseNumber(new BN(eval(res.stack[0][1])), undefined, 10);
+    let transfer = await DexActions.swapTon(new BN(Math.floor(tonAmount * 1e9)), new BN(Math.floor(tokenAmount * 0.995 * 1e9)));
+    const transferStr = transfer.toString();
+    // let bocHex = stripBoc(transferStr);
+    // console.log(`buy buffer ${bocHex}`);
+
+    const boc64 = transfer.toBoc().toString("base64");
+    const tokenObjects = await getToken(client, token, getOwner());
+
+    const provider = (window as any).ton;
+    const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
+    if (provider) {
+        provider.send("ton_sendTransaction", [
+            {
+                to: tokenObjects.ammMinter.toFriendly(),
+                value: value.toString(),
+                data: boc64,
+                dataType: "boc",
+            },
+        ]);
+    } else {
+        const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
+        console.log(deeplinkTransfer);
+
+        return (window.location.href = deeplinkTransfer);
+    }
 };
 
-export const generateSellLink = async (token: string, tokenAmount: number) => {
-  const tokenObjects: any = getToken(token);
-  let transfer = await DexActions.transferAndSwapOut(
-    Address.parse(tokenObjects.amm),
-    new BN(tokenAmount * 1e9),
-    new BN(2)
-  );
-  const transferStr = transfer.toString();
-  const bocT = stripBoc(transferStr);
+export const generateAddLiquidityLink = async (token: string, tonAmount: number, tokenAmount: number) => {
+    const tokenData = await getToken(client, token, getOwner());
 
-  const provider = (window as any).ton;
-  const value = gasFee * 1e9;
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.address, // TON Foundation
-        value, // 10000 nanotons = 0.00001 TONs
-        data: bocT,
-        dataType: "text",
-      },
-    ]);
-  } else {
-    const deeplinkTransfer = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${bocT}`;
+    const slippage = new BN(5);
+    const transferAndLiq = await DexActions.addLiquidity(
+        tokenData.ammMinter,
+        toNano(tokenAmount),
+        tokenData.ammMinter,
+        toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY)),
+        slippage,
+        toNano(tonAmount)
+    );
+    const bocHex = stripBoc(transferAndLiq.toString());
+    const boc64 = transferAndLiq.toBoc().toString("base64");
 
-    console.log(deeplinkTransfer);
-    return window.location.href = deeplinkTransfer
-  }
+    const provider = (window as any).ton;
+    const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY));
+
+    if (provider) {
+        provider.send("ton_sendTransaction", [
+            {
+                to: tokenData.jettonWallet.toFriendly(),
+                value: value.toString(),
+                data: boc64,
+                dataType: "boc",
+            },
+        ]);
+    } else {
+        const deeplink = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
+
+        return (window.location.href = deeplink);
+    }
 };
 
-export const generateBuyLink = async (
-  token: string,
-  tonAmount: number,
-  tokenAmount: number
-) => {
-  // 0.5% slippage
-  const minAmount = tokenAmount * 0.995 * 1e9;
-  let transfer = await DexActions.swapIn(new BN(minAmount));
-  const transferStr = transfer.toString();
-  const bocT = stripBoc(transferStr);
-  const tokenObjects: any = getToken(token);
+export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
+    try {
+        const tokenData = await getToken(client, token, getOwner());
 
-  const provider = (window as any).ton;
-  const value = (tonAmount + gasFee) * 1e9;
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.amm, // TON Foundation
-        value, // 10000 nanotons = 0.00001 TONs
-        data: bocT,
-        dataType: "text",
-      },
-    ]);
-  } else {
-    const deeplinkTransfer = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${bocT}`;
+        const jettonData = await getJettonData(tokenData.ammMinter);
+        const walletData = _getWalletData(tokenData.lpWallet);
 
-    return window.location.href = deeplinkTransfer
-  }
+        const ratio = toNano(tonAmount).div(jettonData.tonReserves);
+        const totalLPs = jettonData.totalSupply;
+
+        const transferAndLiq = await DexActions.removeLiquidity(totalLPs.mul(ratio), getOwner());
+
+        const boc = stripBoc(transferAndLiq.toString());
+        const tokenObjects: any = await getToken(client, token, getOwner());
+        const provider = (window as any).ton;
+        const value = toNano(GAS_FEE.ADD_LIQUIDITY);
+        if (provider) {
+            provider.send("ton_sendTransaction", [
+                {
+                    to: tokenObjects.amm,
+                    value,
+                    data: boc,
+                    dataType: "text",
+                },
+            ]);
+        } else {
+            const deeplink = `https://test.tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
+            return (window.location.href = deeplink);
+        }
+    } catch (error: any) {}
 };
 
-export const generateAddLiquidityLink = async (
-  token: string,
-  tonAmount: number | string,
-  tokenAmount: number
-) => {
-  const tokenObjects: any = getToken(token);
-  const transferAndLiq = await DexActions.transferAndAddLiquidity(
-    Address.parse(tokenObjects.amm),
-    new BN(tokenAmount * 1e9),
-    10
-  );
-  const boc = stripBoc(transferAndLiq.toString());
+// export const generateClaimRewards = async (token: string) => {
+//     const provider = (window as any).ton;
 
-  const provider = (window as any).ton;
-  const value = (parseFloat(tonAmount.toString()) + gasFee) * 1e9;
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.address, // TON Foundation
-        value, // 10000 nanotons = 0.00001 TONs
-        data: boc,
-        dataType: "text",
-      },
-    ]);
-  } else {
-    const deeplink = `ton://transfer/${tokenObjects.address}?amount=${value}&text=${boc}`;
-
-    return window.location.href = deeplink
-  }
-};
-
-export const generateRemoveLiquidityLink = async (
-  token: string,
-  tonAmount: number | string
-) => {
-try {
-  const data = await getData(token);
-  const ratio =
-    parseFloat(tonAmount.toString()) /
-    parseNumber(new BN(eval(data.tonReserves)));
-  const totalLPs = parseNumber(new BN(eval(data.totalSupply)));
-
-  const transferAndLiq = await DexActions.removeLiquidity(
-    new BN(totalLPs * ratio * 1e9)
-  );
-
-  const boc = stripBoc(transferAndLiq.toString());
-  const tokenObjects: any = getToken(token);
-  const provider = (window as any).ton;
-  const value = gasFee * 1e9;
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.amm, // TON Foundation
-        value, // 10000 nanotons = 0.00001 TONs
-        data: boc,
-        dataType: "text",
-      },
-    ]);
-  } else {
-    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-    return window.location.href = deeplink;
-  }
-} catch (error: any) {
-}
-};
-
-export const generateClaimRewards = async (token: string) => {
-  const provider = (window as any).ton;
-
-  const claimRewards = await DexActions.claimRewards();
-  const boc = stripBoc(claimRewards.toString());
-  const tokenObjects: any = getToken(token);
-  const value = gasFee * 1e9;
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.amm, // TON Foundation
-        value, // 10000 nanotons = 0.00001 TONs
-        data: boc,
-        dataType: "text",
-      },
-    ]);
-  } else {
-    const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-    return  window.location.href = deeplink
-  }
-};
+//     const claimRewards = await DexActions.claimRewards();
+//     const boc = stripBoc(claimRewards.toString());
+//     const tokenObjects: any = getToken(client, token, getOwner());
+//     const value = gasFee * 1e9;
+//     if (provider) {
+//         provider.send("ton_sendTransaction", [
+//             {
+//                 to: tokenObjects.amm,
+// .00001 TONs
+//                 data: boc,
+//                 dataType: "text",
+//             },
+//         ]);
+//     } else {
+//         const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
+//         return (window.location.href = deeplink);
+//     }
+// };

@@ -32,10 +32,11 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       return;
     }
     let result = 0;
+    const jetton = srcTokenName == 'ton' ? token.name : srcTokenName;
     try {
       result = await calculateTokens(
-        srcTokenName,
-        token.name,
+        jetton,
+        srcTokenName != 'ton',
         null,
         balanceRef.current || "0",
         getAmountFunc
