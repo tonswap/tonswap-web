@@ -259,7 +259,8 @@ export const generateSellLink = async (token: string, tokenAmount: number, minAm
         const deeplinkTransfer = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
 
         console.log(deeplinkTransfer);
-        return (window.location.href = deeplinkTransfer);
+        window.open(deeplinkTransfer, '_blank')
+
     }
 };
 
@@ -291,7 +292,7 @@ export const generateBuyLink = async (token: string, tonAmount: number, tokenAmo
         const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
         console.log(deeplinkTransfer);
 
-        return (window.location.href = deeplinkTransfer);
+        window.open(deeplinkTransfer, '_blank')
     }
 };
 
@@ -325,7 +326,7 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
     } else {
         const deeplink = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
 
-        return (window.location.href = deeplink);
+        window.open(deeplink, '_blank')
     }
 };
 
@@ -356,7 +357,7 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
             ]);
         } else {
             const deeplink = `https://test.tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-            return (window.location.href = deeplink);
+            window.open(deeplink, '_blank')
         }
     } catch (error: any) {}
 };
