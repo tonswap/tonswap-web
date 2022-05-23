@@ -179,8 +179,8 @@ async function getJettonData(ammMinter: Address) {
 }
 
 export const getLiquidityAmount = async (srcToken: string, destToken: string, srcAmount: number | null, destAmount: number | null): Promise<number> => {
-    const tokenObjects: any = getToken(client, srcToken !== "ton" ? srcToken : destToken, getOwner());
-    const lpTokenData = await getJettonData(tokenObjects.name);
+    const tokenObjects: any = await getToken(client, srcToken !== "ton" ? srcToken : destToken, getOwner());
+    const lpTokenData = await getJettonData(tokenObjects.ammMinter);
 
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
