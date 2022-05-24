@@ -54,18 +54,13 @@ export const getLPTokenBalance = async (token: string) => {
 export const getTokensOfLPBalances = async (token: string) => {
     const tokenObjects = await getToken(client, token, getOwner());
     const [jettonData, lpBalance] = await Promise.all([getJettonData(tokenObjects.ammMinter), getLPTokenBalance(token)]);
-
-    //const ratio = lpBalance.balance.div(jettonData.totalSupply);
     if (lpBalance.balance.toString() == "0") {
         return [fromNano("0"), fromNano("0")];
     }
+    const tonSide2 = lpBalance.balance.mul(jettonData.tonReserves).div(jettonData.totalSupply);
+    const tokenSide2 = lpBalance.balance.mul(jettonData.tokenReserves).div(jettonData.totalSupply);
 
-    const ratio = jettonData.totalSupply.div(lpBalance.balance); // 10
-
-    const tonSide = jettonData.tonReserves.div(new BN(100).div(ratio));
-    const tokenSide = jettonData.tokenReserves.div(new BN(100).div(ratio));
-
-    return [fromNano(tonSide), fromNano(tokenSide)];
+    return [fromNano(tonSide2), fromNano(tokenSide2)];
 };
 
 // TODO: Remove later
@@ -304,8 +299,6 @@ export const generateBuyLink = async (token: string, tonAmount: number, tokenAmo
         ]);
     } else {
         const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
-        //const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
-
         return (window.location.href = deeplinkTransfer);
     }
 };
@@ -340,25 +333,13 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
 export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
     try {
         const tokenData = await getToken(client, token, getOwner());
-
         const jettonData = await getJettonData(tokenData.ammMinter);
-        const walletData = await _getWalletData(tokenData.lpWallet);
 
-        console.log(`toNano(tonAmount) : ${toNano(tonAmount)}, jettonData.tonReserves: ${jettonData.tonReserves}`);
-
-        const userShare = jettonData.tonReserves.div(toNano(tonAmount));
-        const totalLPs = jettonData.totalSupply;
-
-        console.log(`user's LP : ${walletData.balance} jettonData.totalSupply: ${jettonData.totalSupply}, userShare:${userShare}, totalLPs: ${totalLPs.mul(userShare)}`);
-
-        let shareToRemove = totalLPs.div(new BN(100).div(userShare));
-        // in case of dust take the max amount
-        shareToRemove = shareToRemove.gte(walletData.balance) ? walletData.balance : shareToRemove;
-
+        let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
+        console.log(`lpAmount2: ${shareToRemove.toString()}`);
         const transferAndLiq = await DexActions.removeLiquidity(shareToRemove, getOwner());
 
         const boc64 = transferAndLiq.toBoc().toString("base64");
-        console.log(boc64);
 
         const tokenObjects: any = await getToken(client, token, getOwner());
         const provider = (window as any).ton;
