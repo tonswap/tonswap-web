@@ -292,7 +292,7 @@ export const generateBuyLink = async (token: string, tonAmount: number, tokenAmo
             },
         ]);
     } else {
-        const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
+        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
         return (window.location.href = deeplinkTransfer);
     }
 };
@@ -347,7 +347,7 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
                 },
             ]);
         } else {
-            const deeplink = `https://test.tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc64}`;
+            const deeplink = `https://tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc64}`;
             return (window.location.href = deeplink);
         }
     } catch (error: any) {}
