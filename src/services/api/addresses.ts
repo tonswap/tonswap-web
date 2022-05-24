@@ -28,7 +28,7 @@ const MainNetPools: { [key: string]: PoolInfo } = {
 
 let isTestNet = true;
 let Pools: { [key: string]: PoolInfo } = isTestNet ? TestNetPools : SandBoxPools;
-if (process.env.NODE_ENV == "production") {
+if (process.env.NODE_ENV === "production") {
     Pools = MainNetPools;
 }
 

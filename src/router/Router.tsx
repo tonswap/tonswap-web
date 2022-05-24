@@ -4,7 +4,6 @@ import {
   Tokens,
   BuyScreen,
   SellScreen,
-  ClaimRewardsScreen,
   RemoveLiquidityScreen,
   AddLiquidityScreen,
 } from "screens";

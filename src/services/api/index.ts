@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-import { hexToBn, stripBoc } from "utils";
+import { hexToBn } from "utils";
 import { DexActions } from "./dex";
 import { Token } from "types";
 import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
@@ -302,7 +302,6 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
 
     const slippage = new BN(5);
     const transferAndLiq = await DexActions.addLiquidity(tokenData.ammMinter, toNano(tokenAmount), tokenData.ammMinter, toNano(tonAmount + GAS_FEE.FORWARD_TON), slippage, toNano(tonAmount));
-    const bocHex = stripBoc(transferAndLiq.toString());
     const boc64 = transferAndLiq.toBoc().toString("base64");
 
     const provider = (window as any).ton;

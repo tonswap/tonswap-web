@@ -35,10 +35,10 @@ export class DexActions {
         messageBody.bits.writeCoins(forwardTonAmount);
         messageBody.bits.writeBit(false); // forward_payload in this slice, not separate messageBody
         messageBody.bits.writeUint(new BN(overloadOp), 32);
-        if (overloadOp == OPS.ADD_LIQUIDITY && tonLiquidity) {
+        if (overloadOp === OPS.ADD_LIQUIDITY && tonLiquidity) {
             messageBody.bits.writeUint(overloadValue, 32); // slippage
             messageBody.bits.writeCoins(tonLiquidity);
-        } else if (overloadOp == OPS.SWAP_TOKEN) {
+        } else if (overloadOp === OPS.SWAP_TOKEN) {
             messageBody.bits.writeCoins(overloadValue); // min amount out
         }
         return messageBody;

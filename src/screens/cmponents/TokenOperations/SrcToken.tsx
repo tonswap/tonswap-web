@@ -1,7 +1,6 @@
 import SwapCard from "components/SwapCard";
 import { useRef, useState } from "react";
 import { calculateTokens } from "screens/layouts/util";
-import { fromNano } from "ton";
 import { Token } from "types";
 import { useDebouncedCallback } from "use-debounce";
 import { useTokenOperationsStore } from "./Context";
@@ -33,11 +32,11 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       return;
     }
     let result = 0;
-    const jetton = token.name == 'ton' ?  destTokenName : token.name;
+    const jetton = token.name === 'ton' ?  destTokenName : token.name;
     try {
       result = await calculateTokens(
         jetton,
-        token.name != 'ton',
+        token.name !== 'ton',
         balanceRef.current || "0",
         null,
         getAmountFunc
