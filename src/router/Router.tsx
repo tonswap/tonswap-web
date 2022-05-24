@@ -20,10 +20,6 @@ function AppRoutes() {
         <Route path={ROUTES.actions.buy} element={<BuyScreen />} />
         <Route path={ROUTES.actions.sell} element={<SellScreen />} />
         <Route
-          path={ROUTES.actions.claimRewards}
-          element={<ClaimRewardsScreen />}
-        />
-        <Route
           path={ROUTES.actions.removeLiquidity}
           element={<RemoveLiquidityScreen />}
         />

@@ -1,8 +1,6 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-
 import { hexToBn, stripBoc } from "utils";
 import { DexActions } from "./dex";
-import { tokens as supportedTokens } from "tokens";
 import { Token } from "types";
 import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
 import BN from "bn.js";
@@ -54,7 +52,7 @@ export const getLPTokenBalance = async (token: string) => {
 export const getTokensOfLPBalances = async (token: string) => {
     const tokenObjects = await getToken(client, token, getOwner());
     const [jettonData, lpBalance] = await Promise.all([getJettonData(tokenObjects.ammMinter), getLPTokenBalance(token)]);
-    if (lpBalance.balance.toString() == "0") {
+    if (lpBalance.balance.toString() === "0") {
         return [fromNano("0"), fromNano("0")];
     }
     const tonSide2 = lpBalance.balance.mul(jettonData.tonReserves).div(jettonData.totalSupply);
@@ -79,19 +77,19 @@ function getOwner() {
     return Address.parse(localStorage.getItem("address") as string);
 }
 
-const _getWalletData = async (jettonWallet: Address) => {
-    let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
+// const _getWalletData = async (jettonWallet: Address) => {
+//     let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
 
-    const balance = hexToBn(res.stack[0][1]);
-    const walletOwner = bytesToAddress(res.stack[1][1].bytes);
-    const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
+//     const balance = hexToBn(res.stack[0][1]);
+//     const walletOwner = bytesToAddress(res.stack[1][1].bytes);
+//     const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
 
-    return {
-        balance,
-        walletOwner,
-        jettonMaster,
-    };
-};
+//     return {
+//         balance,
+//         walletOwner,
+//         jettonMaster,
+//     };
+// };
 
 export async function _getJettonBalance(jettonWallet: Address, minterAddress: Address) {
     try {
@@ -279,10 +277,6 @@ export const generateBuyLink = async (token: string, tonAmount: number, tokenAmo
     console.log(`tonAmount:${tonAmount} expecting tokens: ${tokenAmount}`);
 
     let transfer = await DexActions.swapTon(new BN(Math.floor(tonAmount * 1e9)), new BN(Math.floor(tokenAmount * 0.995 * 1e9)));
-    const transferStr = transfer.toString();
-    // let bocHex = stripBoc(transferStr);
-    // console.log(`buy buffer ${bocHex}`);
-
     const boc64 = transfer.toBoc().toString("base64");
     const tokenObjects = await getToken(client, token, getOwner());
 
