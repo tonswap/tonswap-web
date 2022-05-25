@@ -224,27 +224,26 @@ export const getTokenDollarValue = async (token: string, amount: number): Promis
         ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
     }
 
-    const coinsResponse = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
-    );
-    const result = await coinsResponse.json();
-    const tonPriceWithAmount = parseFloat((parseFloat(result["the-open-network"].usd) * amount).toPrecision(4));
+    const cgPrice = await fetchPrice();
+    const tonPriceWithAmount = cgPrice * amount;
 
     return parseFloat((tonPriceWithAmount * ratio).toFixed(4));
 };
 
-// export const getRewards = async (token: string) => {
-//     const owner = Address.parse(localStorage.getItem("address") as string);
-//     let wc = owner.workChain;
-//     let address = new BN(owner.hash);
-//     const tokenObjects: any = getToken(client, token, getOwner());
-//     const res = await callWithRetry(tokenObjects.amm, "get_rewards_of", [
-//         ["num", wc.toString(10)],
-//         ["num", address.toString(10)],
-//     ]);
+let tonPrice = 0;
 
-//     return hexToBn(res.stack[0][1]);
-// };
+async function fetchPrice() {
+    if (tonPrice) {
+        return tonPrice;
+    }
+    const coinsResponse = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
+    );
+    const result = await coinsResponse.json();
+    tonPrice = parseFloat(result["the-open-network"].usd);
+    setTimeout(() => (tonPrice = 0), 60 * 1000);
+    return tonPrice;
+}
 
 export const generateSellLink = async (token: string, tokenAmount: number, minAmountOut: number) => {
     const tokenData = await getToken(client, token, getOwner());
@@ -264,9 +263,8 @@ export const generateSellLink = async (token: string, tokenAmount: number, minAm
             },
         ]);
     } else {
-        const deeplinkTransfer = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
+        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
 
-        console.log(deeplinkTransfer);
         return (window.location.href = deeplinkTransfer);
     }
 };
@@ -317,7 +315,7 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
             },
         ]);
     } else {
-        const deeplink = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
+        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
 
         return (window.location.href = deeplink);
     }
@@ -352,25 +350,3 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
         }
     } catch (error: any) {}
 };
-
-// export const generateClaimRewards = async (token: string) => {
-//     const provider = (window as any).ton;
-
-//     const claimRewards = await DexActions.claimRewards();
-//     const boc = stripBoc(claimRewards.toString());
-//     const tokenObjects: any = getToken(client, token, getOwner());
-//     const value = gasFee * 1e9;
-//     if (provider) {
-//         provider.send("ton_sendTransaction", [
-//             {
-//                 to: tokenObjects.amm,
-// .00001 TONs
-//                 data: boc,
-//                 dataType: "text",
-//             },
-//         ]);
-//     } else {
-//         const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-//         return (window.location.href = deeplink);
-//     }
-// };

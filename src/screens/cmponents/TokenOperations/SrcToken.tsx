@@ -1,6 +1,7 @@
 import SwapCard from "components/SwapCard";
 import { useRef, useState } from "react";
 import { calculateTokens } from "screens/layouts/util";
+import { fromNano } from "ton";
 import { Token } from "types";
 import { useDebouncedCallback } from "use-debounce";
 import { useTokenOperationsStore } from "./Context";
@@ -44,7 +45,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
 
       const usdAmounts = await Promise.all([
         getUsdAmount(token.name, balanceRef.current),
-        getUsdAmount(destTokenName, Number(result)),
+        getUsdAmount(destTokenName, Number(fromNano(result))),
       ]);
 
       if (!balanceRef.current) {
