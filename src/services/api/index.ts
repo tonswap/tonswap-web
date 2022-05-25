@@ -6,7 +6,8 @@ import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
 
-let rpcUrl = "https://scalable-api.tonwhales.com/jsonRPC";
+let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
+
 if (document.location.href.indexOf("testnet=") > -1) {
     rpcUrl = "https://testnet.tonhubapi.com/jsonRPC";
 } else if (document.location.href.indexOf("sandbox=") > -1) {
@@ -263,7 +264,7 @@ export const generateSellLink = async (token: string, tokenAmount: number, minAm
             },
         ]);
     } else {
-        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
+        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${boc64}`;
 
         return (window.location.href = deeplinkTransfer);
     }
@@ -315,7 +316,7 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
             },
         ]);
     } else {
-        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
+        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${boc64}`;
 
         return (window.location.href = deeplink);
     }
@@ -345,7 +346,7 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
                 },
             ]);
         } else {
-            const deeplink = `https://tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc64}`;
+            const deeplink = `https://tonhub.com/transfer/${tokenObjects.amm.toFriendly()}?amount=${value}&text=${boc64}`;
             return (window.location.href = deeplink);
         }
     } catch (error: any) {}
