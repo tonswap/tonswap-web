@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-import { hexToBn } from "utils";
+import { base64UrlEncode, hexToBn } from "utils";
 import { DexActions } from "./dex";
 import { Token } from "types";
 import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
@@ -251,7 +251,6 @@ export const generateSellLink = async (token: string, tokenAmount: number, minAm
 
     let transfer = DexActions.transferOverload(tokenData.ammMinter, toNano(tokenAmount), tokenData.ammMinter, toNano(GAS_FEE.FORWARD_TON), OPS.SWAP_TOKEN, toNano(minAmountOut));
     const boc64 = transfer.toBoc().toString("base64");
-
     const provider = (window as any).ton;
     const value = toNano(GAS_FEE.SWAP);
     if (provider) {
@@ -264,8 +263,8 @@ export const generateSellLink = async (token: string, tokenAmount: number, minAm
             },
         ]);
     } else {
-        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${boc64}`;
-
+        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value.toString()}&bin=${base64UrlEncode(boc64)}`;
+        alert(deeplinkTransfer);
         return (window.location.href = deeplinkTransfer);
     }
 };
@@ -291,7 +290,8 @@ export const generateBuyLink = async (token: string, tonAmount: number, tokenAmo
             },
         ]);
     } else {
-        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
+        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
+        alert(deeplinkTransfer);
         return (window.location.href = deeplinkTransfer);
     }
 };
@@ -316,7 +316,7 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: number,
             },
         ]);
     } else {
-        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${boc64}`;
+        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
 
         return (window.location.href = deeplink);
     }
@@ -329,9 +329,10 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
 
         let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
         console.log(`lpAmount2: ${shareToRemove.toString()}`);
-        const transferAndLiq = await DexActions.removeLiquidity(shareToRemove, getOwner());
+        const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
+        console.log(removeLiquidity.toBoc());
 
-        const boc64 = transferAndLiq.toBoc().toString("base64");
+        const boc64 = removeLiquidity.toBoc().toString("base64");
 
         const tokenObjects: any = await getToken(client, token, getOwner());
         const provider = (window as any).ton;
@@ -346,8 +347,53 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
                 },
             ]);
         } else {
-            const deeplink = `https://tonhub.com/transfer/${tokenObjects.amm.toFriendly()}?amount=${value}&text=${boc64}`;
+            const deeplink = `https://tonhub.com/transfer/${tokenObjects.lpWallet.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
             return (window.location.href = deeplink);
         }
     } catch (error: any) {}
 };
+
+// export function bytesToBase64(bytes: any) {
+//     let result = "";
+//     let i;
+//     const l = bytes.length;
+//     for (i = 2; i < l; i += 3) {
+//         result += base64abc[bytes[i - 2] >> 2];
+//         result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+//         result += base64abc[((bytes[i - 1] & 0x0f) << 2) | (bytes[i] >> 6)];
+//         result += base64abc[bytes[i] & 0x3f];
+//     }
+//     if (i === l + 1) {
+//         // 1 octet missing
+//         result += base64abc[bytes[i - 2] >> 2];
+//         result += base64abc[(bytes[i - 2] & 0x03) << 4];
+//         result += "==";
+//     }
+//     if (i === l) {
+//         // 2 octets missing
+//         result += base64abc[bytes[i - 2] >> 2];
+//         result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+//         result += base64abc[(bytes[i - 1] & 0x0f) << 2];
+//         result += "=";
+//     }
+//     return result;
+// }
+
+// const base64abc = (() => {
+//     const abc = [];
+//     const A = "A".charCodeAt(0);
+//     const a = "a".charCodeAt(0);
+//     const n = "0".charCodeAt(0);
+//     for (let i = 0; i < 26; ++i) {
+//         abc.push(String.fromCharCode(A + i));
+//     }
+//     for (let i = 0; i < 26; ++i) {
+//         abc.push(String.fromCharCode(a + i));
+//     }
+//     for (let i = 0; i < 10; ++i) {
+//         abc.push(String.fromCharCode(n + i));
+//     }
+//     abc.push("+");
+//     abc.push("/");
+//     return abc;
+// })();

@@ -151,4 +151,16 @@ export function stripBoc(bocStr: string) {
     return bocStr.substr(2, bocStr.length - 4);
 }
 
+const ENC: any = {
+    "+": "-",
+    "/": "_",
+    "=": ".",
+};
+
+export function base64UrlEncode(base64: string) {
+    return base64.replace(/[+/=]/g, (m) => {
+        return ENC[m];
+    });
+}
+
 export { delay, splitToGroups, getToken, getIsSelectedTokenMobile };
