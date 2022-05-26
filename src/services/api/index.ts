@@ -218,10 +218,8 @@ export const getTokenDollarValue = async (token: string, amount: number): Promis
     if (token !== "ton") {
         const tokenData = await getToken(client, token, getOwner());
         const lpTokenData = await getJettonData(tokenData.ammMinter);
-
         const tokenReserves = lpTokenData.tokenReserves;
         const tonReserves = lpTokenData.tonReserves;
-
         ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
     }
 
@@ -248,152 +246,55 @@ async function fetchPrice() {
 
 export const generateSellLink = async (token: string, tokenAmount: number, minAmountOut: number) => {
     const tokenData = await getToken(client, token, getOwner());
-
     let transfer = DexActions.transferOverload(tokenData.ammMinter, toNano(tokenAmount), tokenData.ammMinter, toNano(GAS_FEE.FORWARD_TON), OPS.SWAP_TOKEN, toNano(minAmountOut));
     const boc64 = transfer.toBoc().toString("base64");
-    const provider = (window as any).ton;
     const value = toNano(GAS_FEE.SWAP);
-    if (provider) {
-        provider.send("ton_sendTransaction", [
-            {
-                to: tokenData.jettonWallet.toFriendly(),
-                value: toNano(GAS_FEE.SWAP).toString(), // 10000 :
-                data: boc64,
-                dataType: "boc",
-            },
-        ]);
-    } else {
-        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value.toString()}&bin=${base64UrlEncode(boc64)}`;
-        alert(deeplinkTransfer);
-        return (window.location.href = deeplinkTransfer);
-    }
+    sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
 export const generateBuyLink = async (token: string, tonAmount: number, tokenAmount: number) => {
     // 0.5% slippage
     //TODO add slippage explicit
-    console.log(`tonAmount:${tonAmount} expecting tokens: ${tokenAmount}`);
-
     let transfer = await DexActions.swapTon(new BN(Math.floor(tonAmount * 1e9)), new BN(Math.floor(tokenAmount * 0.995 * 1e9)));
     const boc64 = transfer.toBoc().toString("base64");
     const tokenObjects = await getToken(client, token, getOwner());
-
-    const provider = (window as any).ton;
     const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
-    if (provider) {
-        provider.send("ton_sendTransaction", [
-            {
-                to: tokenObjects.ammMinter.toFriendly(),
-                value: value.toString(),
-                data: boc64,
-                dataType: "boc",
-            },
-        ]);
-    } else {
-        const deeplinkTransfer = `https://tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
-        alert(deeplinkTransfer);
-        return (window.location.href = deeplinkTransfer);
-    }
+    sendTransaction(tokenObjects.ammMinter, value, boc64);
 };
 
 export const generateAddLiquidityLink = async (token: string, tonAmount: number, tokenAmount: number) => {
     const tokenData = await getToken(client, token, getOwner());
-
     const slippage = new BN(5);
     const transferAndLiq = await DexActions.addLiquidity(tokenData.ammMinter, toNano(tokenAmount), tokenData.ammMinter, toNano(tonAmount + GAS_FEE.FORWARD_TON), slippage, toNano(tonAmount));
     const boc64 = transferAndLiq.toBoc().toString("base64");
-
-    const provider = (window as any).ton;
     const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY * 2));
+    sendTransaction(tokenData.jettonWallet, value, boc64);
+};
 
+export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
+    const tokenData = await getToken(client, token, getOwner());
+    const jettonData = await getJettonData(tokenData.ammMinter);
+    let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
+    const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
+    const boc64 = removeLiquidity.toBoc().toString("base64");
+    const tokenObjects: any = await getToken(client, token, getOwner());
+    const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
+    sendTransaction(tokenObjects.lpWallet, value, boc64);
+};
+
+function sendTransaction(to: Address, value: BN, data: string) {
+    const provider = (window as any).ton;
     if (provider) {
         provider.send("ton_sendTransaction", [
             {
-                to: tokenData.jettonWallet.toFriendly(),
+                to: to.toFriendly(),
                 value: value.toString(),
-                data: boc64,
+                data: data,
                 dataType: "boc",
             },
         ]);
     } else {
-        const deeplink = `https://tonhub.com/transfer/${tokenData.jettonWallet.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
-
-        return (window.location.href = deeplink);
+        const link = `https://tonhub.com/transfer/${to.toFriendly()}?amount=${value}&bin=${base64UrlEncode(data)}`;
+        return (window.location.href = link);
     }
-};
-
-export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
-    try {
-        const tokenData = await getToken(client, token, getOwner());
-        const jettonData = await getJettonData(tokenData.ammMinter);
-
-        let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
-        console.log(`lpAmount2: ${shareToRemove.toString()}`);
-        const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
-        console.log(removeLiquidity.toBoc());
-
-        const boc64 = removeLiquidity.toBoc().toString("base64");
-
-        const tokenObjects: any = await getToken(client, token, getOwner());
-        const provider = (window as any).ton;
-        const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
-        if (provider) {
-            provider.send("ton_sendTransaction", [
-                {
-                    to: tokenObjects.lpWallet.toFriendly(),
-                    value: value.toString(),
-                    data: boc64,
-                    dataType: "boc",
-                },
-            ]);
-        } else {
-            const deeplink = `https://tonhub.com/transfer/${tokenObjects.lpWallet.toFriendly()}?amount=${value}&bin=${base64UrlEncode(boc64)}`;
-            return (window.location.href = deeplink);
-        }
-    } catch (error: any) {}
-};
-
-// export function bytesToBase64(bytes: any) {
-//     let result = "";
-//     let i;
-//     const l = bytes.length;
-//     for (i = 2; i < l; i += 3) {
-//         result += base64abc[bytes[i - 2] >> 2];
-//         result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-//         result += base64abc[((bytes[i - 1] & 0x0f) << 2) | (bytes[i] >> 6)];
-//         result += base64abc[bytes[i] & 0x3f];
-//     }
-//     if (i === l + 1) {
-//         // 1 octet missing
-//         result += base64abc[bytes[i - 2] >> 2];
-//         result += base64abc[(bytes[i - 2] & 0x03) << 4];
-//         result += "==";
-//     }
-//     if (i === l) {
-//         // 2 octets missing
-//         result += base64abc[bytes[i - 2] >> 2];
-//         result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-//         result += base64abc[(bytes[i - 1] & 0x0f) << 2];
-//         result += "=";
-//     }
-//     return result;
-// }
-
-// const base64abc = (() => {
-//     const abc = [];
-//     const A = "A".charCodeAt(0);
-//     const a = "a".charCodeAt(0);
-//     const n = "0".charCodeAt(0);
-//     for (let i = 0; i < 26; ++i) {
-//         abc.push(String.fromCharCode(A + i));
-//     }
-//     for (let i = 0; i < 26; ++i) {
-//         abc.push(String.fromCharCode(a + i));
-//     }
-//     for (let i = 0; i < 10; ++i) {
-//         abc.push(String.fromCharCode(n + i));
-//     }
-//     abc.push("+");
-//     abc.push("/");
-//     return abc;
-// })();
+}
