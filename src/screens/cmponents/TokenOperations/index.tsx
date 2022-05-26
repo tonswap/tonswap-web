@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ActionButton } from "components";
 import { Token } from "types";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
@@ -36,8 +36,9 @@ function TokenOperations({
   onSubmit,
   successText,
 }: Props) {
-  const expanded = useWebAppResize()
+  const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
+  const [loading, setLoading] = useState(false);
   const {
     setTotalBalances,
     setDestAvailableAmountLoading,
@@ -51,26 +52,34 @@ function TokenOperations({
     clearAmountsCopyForSnackbar,
   } = useTokenOperationsStore();
 
-  const onTxFinished = async () => {
-    createAmountsCopyForSnackbar();
-    await updateBalances();
-    clearAmounts();
+  const onPollingFinished = async (fetchBalances?: boolean) => {
+    setLoading(false);
+    if (fetchBalances) {
+      createAmountsCopyForSnackbar();
+      await updateBalances();
+      clearAmounts();
+    }
   };
   const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
   const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
-  const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
-  useTelegramWebAppButton({
-    onSubmit,
-    submitButtonText,
-    insufficientFunds,
-    isDisabled,
-  });
 
   const submitted = async () => {
     onSubmit();
+    setLoading(true);
     pollTx();
   };
+
+
+  useTelegramWebAppButton({
+    submitted,
+    submitButtonText,
+    insufficientFunds,
+    isDisabled,
+    loading,
+  });
+
+
 
   const onCloseSuccessSnackbar = async () => {
     closeSuccess();
@@ -100,6 +109,10 @@ function TokenOperations({
     updateBalances();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
+  const { txSuccess, pollTx, closeSuccess } = useTxPolling(onPollingFinished);
+
 
   return (
     <Box className={classes.content}>
@@ -134,7 +147,7 @@ function TokenOperations({
               Insufficient funds
             </ActionButton>
           ) : (
-            <ActionButton isDisabled={isDisabled} onClick={submitted}>
+            <ActionButton isLoading={loading} isDisabled={isDisabled} onClick={submitted}>
               {submitButtonText}
             </ActionButton>
           )}

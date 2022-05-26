@@ -31,8 +31,8 @@ const useStyles = makeStyles({
     left: "50%",
     transform: "translate(-50%, -50%)",
     top: "0%",
-    width: (props: Props) => props.expanded ? 60 : 48,
-    height: (props: Props) => props.expanded ? 60 : 48,
+    width: (props: Props) => props.expanded ? 60 : 45,
+    height: (props: Props) => props.expanded ? 60 : 45,
     objectFit:'cover',
     "& img": {
       width:'100%',
@@ -43,8 +43,8 @@ const useStyles = makeStyles({
     width: "100%",
     "& input": {
       transition:'0.2s all',
-      height: (props: Props) => props.expanded ? '50px' : '34px',
-      fontSize: (props: Props) => props.expanded ? '28px' : '18px'
+      height: (props: Props) => props.expanded ? '50px' : '32px',
+      fontSize: (props: Props) => props.expanded ? '28px' : '16px'
     }
   },
   bottomBox: {

@@ -1,14 +1,19 @@
 import { observer } from "mobx-react-lite";
-import useLogic from "./useLogic";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { LAYOUT_MAX_WIDTH } from "consts";
-import { telegramWebApp } from "services/telegram";
-import useWebAppResize from "hooks/useWebAppResize";
-import { useEffect, useState } from "react";
+import { ADDRESS_PARAM, LAYOUT_MAX_WIDTH, LOCAL_STORAGE_ADDRESS } from "consts";
+import useQuery from "hooks/useQuery";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "router/routes";
+import { useStore } from "store";
+import { TonhubConnector } from "connectors/ton-hub";
+
+
+TonhubConnector.initSession()
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -46,7 +51,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const App = observer(() => {
   const classes = useStyles();
-  useLogic();
+  const store = useStore();
+  const navigate = useNavigate();
+
+  let query = useQuery();
+
+  useEffect(() => {
+    const localStorageAddress = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
+    const queryAddress = query.get(ADDRESS_PARAM);
+    const address = queryAddress || localStorageAddress;
+
+    if (address) {
+      store.setAddress(address);
+    } else {
+      navigate(ROUTES.connect);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
+  }, []);
 
   return (
     <Box className={classes.app}>

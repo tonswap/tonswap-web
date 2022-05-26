@@ -52,7 +52,7 @@ export const Navbar = observer(() => {
     return (
       <Box
         style={{
-          height: '10px',
+          height: '6px',
           width: "100%",
           top: 0,
           background: "white",

@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   svg:{
    
-    marginTop: (props: StyleProps) => props.color ? 15 : 13,
-    marginBottom: (props: StyleProps) => props.color ? 40 : 22,
+    marginTop: (props: StyleProps) => props.expanded ? 15 : 10,
+    marginBottom: (props: StyleProps) => props.expanded ? 40 : 22,
     textAlign:'center',
     "& svg": {
       "& path": {

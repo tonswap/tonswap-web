@@ -2,20 +2,22 @@ import React, { useEffect } from "react";
 import { telegramWebApp } from "services/telegram";
 
 interface Props {
-  onSubmit: () => void;
+  submitted: () => void;
   submitButtonText: string;
   insufficientFunds: boolean;
   isDisabled: boolean;
+  loading: boolean;
 }
 
 function useTelegramWebAppButton({
-  onSubmit,
+  submitted,
   submitButtonText,
   insufficientFunds,
   isDisabled,
+  loading
 }: Props) {
   useEffect(() => {
-    telegramWebApp.addClickEventToButton(onSubmit);
+    telegramWebApp.addClickEventToButton(submitted);
     telegramWebApp.setButtonText(submitButtonText);
   }, []);
 
@@ -34,6 +36,17 @@ function useTelegramWebAppButton({
       telegramWebApp.enableButton();
     }
   }, [isDisabled]);
+
+
+    useEffect(() => {
+    if (loading) {
+      telegramWebApp.activateButtonLoader();
+    } else {
+      telegramWebApp.disableButtonLoader();
+    }
+  }, [loading]);
+
+
 }
 
 export default useTelegramWebAppButton;

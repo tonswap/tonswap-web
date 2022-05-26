@@ -5,7 +5,7 @@ console.log(provider);
 
 provider.MainButton.show()
 
-const setButtonText = (text: string) => {
+const setButtonText = (text?: string) => {
   provider.MainButton.setText(text);
 };
 
@@ -34,7 +34,13 @@ const addClickEventToButton = (event: () => void) => {
   provider.MainButton.onClick(event);
 };
 
+const activateButtonLoader = () => {
+  provider.MainButton.showProgress()
+};
 
+const disableButtonLoader = () => {
+  provider.MainButton.hideProgress()
+};
 
 const telegramWebApp = {
   setButtonText,
@@ -42,7 +48,9 @@ const telegramWebApp = {
   disableButton,
   enableButton,
   addClickEventToButton,
-  provider
+  provider,
+  activateButtonLoader,
+  disableButtonLoader
 };
 
 export { telegramWebApp };

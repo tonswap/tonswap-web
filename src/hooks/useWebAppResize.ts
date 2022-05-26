@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { telegramWebApp } from "services/telegram";
-import { delay, isTelegramWebApp } from "utils";
+import { isTelegramWebApp } from "utils";
 
 function useWebAppResize() {
   const [expanded, setExpanded] = useState(true);
 
+
   useEffect(() => {
     if (isTelegramWebApp()) {
+      setExpanded(telegramWebApp.provider.isExpanded);
       telegramWebApp.provider.onEvent("viewportChanged", async () => {
         
         setExpanded(telegramWebApp.provider.isExpanded);
@@ -20,7 +22,7 @@ function useWebAppResize() {
     };
   }, []);
 
-  return expanded;
+  return expanded ;
 }
 
 export default useWebAppResize;

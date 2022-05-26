@@ -3,11 +3,11 @@ import { action, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
 import { Token } from "types";
 
-
 class Store {
   address = "";
   selectedToken?: Token;
-  navMenuOpen  = false
+  navMenuOpen = false;
+  seqno?: string;
 
   constructor() {
     makeObservable(this, {
@@ -16,22 +16,25 @@ class Store {
       setToken: action,
       setAddress: action,
       navMenuOpen: observable,
+      seqno: observable,
     });
   }
 
   setToken(token?: Token) {
-    this.selectedToken = token
+    this.selectedToken = token;
   }
-  setNavbarMenuOpen(value: boolean){
-      this.navMenuOpen = value
+  setNavbarMenuOpen(value: boolean) {
+    this.navMenuOpen = value;
   }
 
   setAddress(address: string) {
     this.address = address;
     localStorage.setItem(LOCAL_STORAGE_ADDRESS, address);
   }
- 
 
+  setSeqno(value: string) {
+    this.seqno = value;
+  }
 }
 
 const store = new Store();
