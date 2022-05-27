@@ -1,11 +1,10 @@
 import { ton } from "tokens";
 
-import { Box, SvgIcon, Typography } from "@mui/material";
+import { Box, SvgIcon } from "@mui/material";
 import { useStore } from "store";
 import { observer } from "mobx-react";
 import Icon from "assets/images/shared/add-liqudity.svg";
 import { TokenLayout } from "../layouts/TokenLayout";
-import Shout from "assets/images/shared/shout.svg";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import TokenOperations from "screens/cmponents/TokenOperations";
