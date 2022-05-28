@@ -2,7 +2,7 @@
   "name": "tonswap-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tonswap.github.io/tonswap-web-new/",
+  "homepage": "https://tonswap.github.io/tonswap-web/",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -37,7 +37,6 @@
     "setimmediate": "^1.0.5",
     "stream-browserify": "^3.0.0",
     "ton": "^11.6.0",
-    "tonweb": "^0.0.35",
     "typescript": "^4.6.2",
     "use-debounce": "^7.0.1",
     "uuid": "^8.3.2",
