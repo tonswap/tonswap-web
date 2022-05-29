@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import QRCode from "react-qr-code";
 import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
-import Title from "./Title";
+import Title from "../Title";
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -16,8 +16,6 @@ const StyledContainer = styled(Box)({
   transform: "translate(-50%, -50%)",
   background: "white",
 });
-
-
 
 const StyledQrBox = styled(Box)({
   width: "260px",
@@ -34,29 +32,25 @@ interface Props {
 }
 
 function QR({ onClose, link, open }: Props) {
-
+  if (!open) {
+    return null;
+  }
 
   return (
-    <Fade in={open}>
-     
-        <StyledContainer>
-         <Title onClose={onClose} text='Connect Tonhub' />
-          <StyledQrBox>
-            {link ? (
-              <Fade in={true}>
-                <Box>
-                  <QRCode
-                    style={{ width: "100%", height: "100%" }}
-                    value={link}
-                  />
-                </Box>
-              </Fade>
-            ) : (
-              <CircularProgress />
-            )}
-          </StyledQrBox>
-        </StyledContainer>
-    </Fade>
+    <StyledContainer>
+      <Title onClose={onClose} text="Connect Tonhub" />
+      <StyledQrBox>
+        {link ? (
+          <Fade in={true}>
+            <Box>
+              <QRCode style={{ width: "100%", height: "100%" }} value={link} />
+            </Box>
+          </Fade>
+        ) : (
+          <CircularProgress />
+        )}
+      </StyledQrBox>
+    </StyledContainer>
   );
 }
 

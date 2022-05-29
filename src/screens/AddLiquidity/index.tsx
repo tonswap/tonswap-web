@@ -1,11 +1,10 @@
 import { ton } from "tokens";
 
-import { Box, SvgIcon, Typography } from "@mui/material";
+import { Box, SvgIcon } from "@mui/material";
 import { useStore } from "store";
 import { observer } from "mobx-react";
 import Icon from "assets/images/shared/add-liqudity.svg";
 import { TokenLayout } from "../layouts/TokenLayout";
-import Shout from "assets/images/shared/shout.svg";
 import { makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
 import TokenOperations from "screens/cmponents/TokenOperations";
@@ -56,9 +55,9 @@ const AddLiquidity = observer(() => {
     destTokenAmountCopy,
   } = useTokenOperationsStore();
 
-  const onSubmit = () => {
+  const getTxRequest = () => {
     if (store.selectedToken) {
-      API.generateAddLiquidityLink(
+      return API.generateAddLiquidityLink(
         store.selectedToken?.name,
         srcTokenAmount,
         destTokenAmount
@@ -78,10 +77,7 @@ const AddLiquidity = observer(() => {
       title="Add Liquidity and earn"
       subTitle={
         <Box className={classes.subTitle}>
-          <img src={Shout} alt="shout" />
-          <Typography>
-            and earn <strong>88%</strong> APR
-          </Typography>
+          
         </Box>
       }
       titleImage={Icon}
@@ -94,7 +90,7 @@ const AddLiquidity = observer(() => {
           getAmountFunc={API.getLiquidityAmount}
           getBalances={getBalances}
           srcToken={ton}
-          onSubmit={onSubmit}
+          getTxRequest={getTxRequest}
           destToken={store.selectedToken}
           submitButtonText={`Add TON/${store.selectedToken?.displayName} liquidity`}
         />

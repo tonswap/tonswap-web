@@ -1,3 +1,4 @@
+import { APP_NAME } from 'consts';
 import { Cell, ConfigStore } from 'ton';
 import { TonhubConnector } from 'ton-x';
 import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
@@ -15,7 +16,7 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
     const { location } = document;
 
     return this.tonhubConnector.createNewSession({
-      name: 'Scaleton',
+      name: APP_NAME,
       url: `${location.protocol}//${location.host}`,
     });
   }
@@ -46,7 +47,7 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
 
   async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
     const state = await this.tonhubConnector.getSessionState(session.id);
-    console.log(session.seed);
+    console.log(session);
     
     if (state.state !== 'ready') return;
 
@@ -78,6 +79,7 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
     }
 
     if (response.type === 'success') {
+      
       // Handle successful transaction
       // const externalMessage = response.response; // Signed external message that was sent to the network
     }

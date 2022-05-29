@@ -65,19 +65,21 @@ class Store {
   reset() {
     this.setSession(null);
     this.setWallet(null);
+    this.setAddress(undefined)
   }
 
-  setSession(_session: any) {
-    this.session = _session ? JSON.parse(_session) : null
+  setSession(_session: any) {        
+    this.session =  typeof _session === 'string' ?  JSON.parse(_session) : _session
   }
+
+  
 
   async createWalletSession(adapterId: Adapters) {
     const _session = await walletService.createSession(adapterId);
-    this.session = _session;
+    this.setSession(_session)
 
     try {
       const _wallet = await walletService.awaitReadiness(adapterId, _session);
-      
       this.setWallet(_wallet, adapterId);
       localStorage.setItem("wallet:adapter-id", adapterId);
       localStorage.setItem("wallet:session", JSON.stringify(_session));
@@ -94,22 +96,24 @@ class Store {
 
   async restoreSession() {
     const adapterId = localStorage.getItem("wallet:adapter-id");
-    const session = localStorage.getItem("wallet:session");
-    if (!adapterId || !session) {
+    const _session = localStorage.getItem("wallet:session");
+    if (!adapterId || !_session) {
       throw new Error("Nothing to restore.");
     }
     
-    this.setSession(session)
+    this.setSession(_session)
 
     try {
       const _wallet = await walletService.awaitReadiness(
         adapterId,
-        JSON.parse(session)
+        JSON.parse(_session)
       );
     
       this.setWallet(_wallet, adapterId);
       return _wallet.address
     } catch {
+      console.log('');
+      
       this.reset();
       
     }

@@ -27,13 +27,16 @@ const Sell = observer(() => {
     srcTokenAmount,
     srcTokenAmountCopy,
     destTokenAmountCopy,
-    destTokenAmount
+    destTokenAmount,
   } = useTokenOperationsStore();
 
-  const onSubmit = () => {
+  const getTxRequest = () => {
     if (store.selectedToken) {
-      // TODO
-      API.generateSellLink(store.selectedToken.name, srcTokenAmount, destTokenAmount);
+      return API.generateSellLink(
+        store.selectedToken.name,
+        srcTokenAmount,
+        destTokenAmount
+      );
     }
   };
 
@@ -54,7 +57,7 @@ const Sell = observer(() => {
           successText={`Successfully swapped ${srcTokenAmountCopy} ${store.selectedToken.displayName} for ${destTokenAmountCopy} TON`}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
           disableButton={false}
-          onSubmit={onSubmit}
+          getTxRequest={getTxRequest}
           getAmountFunc={API.getAmountsOut}
           getBalances={getBalances}
           srcToken={store.selectedToken}

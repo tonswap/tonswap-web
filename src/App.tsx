@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
-import { getParamsFromUrl } from "utils";
+import { toJS } from "mobx";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -53,14 +53,11 @@ const App = observer(() => {
   const location = useLocation()
 
   useEffect(() => {
-
     const onLoad = async () => {
       if(location.pathname !== '/'){
         localStorage.setItem(DESTINATION_PATH, location.pathname+location.search)
       }
-
-      
-        
+  
       try {
         const address = await store.restoreSession();
         store.setAddress(address);
@@ -73,6 +70,10 @@ const App = observer(() => {
 
     onLoad();
   }, []);
+
+
+  console.log(toJS(store.wallet));
+  
 
   return appReady ? (
     <Box className={classes.app}>

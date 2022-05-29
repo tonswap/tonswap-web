@@ -13,7 +13,6 @@ import {
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
 import { walletService } from "services/wallets/WalletService";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
 
 export const BuyScreen = () => {
   return (
@@ -33,29 +32,16 @@ const Buy = observer(() => {
     srcTokenAmountCopy,
   } = useTokenOperationsStore();
 
-
-
-  const onSubmit = async () => {
-    if (store.selectedToken) {
-      const txRequest = await API.generateBuyLink(
-        store.selectedToken.name,
+  const getTxRequest = async () => {
+      return API.generateBuyLink(
+        store.selectedToken!!.name,
         srcTokenAmount,
         destTokenAmount
       );
-      
-       try {
-        const tx = await walletService.requestTransaction(store.adapterId!!, store.session, txRequest)
-        console.log('ended');
-       } catch (error) {
-         console.log(error);
-         
-       }
-      
-    }
+    
   };
 
   const getBalances = () => {
-    
     return Promise.all([
       API.getTonBalance(),
       API.getTokenBalance(store.selectedToken!!),
@@ -72,7 +58,7 @@ const Buy = observer(() => {
           successText={`Successfully swapped ${srcTokenAmountCopy} TON for ${destTokenAmountCopy} ${store.selectedToken.displayName}`}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
           disableButton={false}
-          onSubmit={onSubmit}
+          getTxRequest={getTxRequest}
           getAmountFunc={API.getAmountsOut}
           getBalances={getBalances}
           srcToken={ton}

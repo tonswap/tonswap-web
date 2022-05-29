@@ -1,25 +1,22 @@
-import { Fade, Typography, useMediaQuery } from "@mui/material";
+import { Fade, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import TonLogo from "assets/images/shared/ton-logo.svg";
 import HeroImg from "assets/images/connect/hero.png";
 import { ActionButton } from "components";
 import { useStyles } from "./styles";
-import { useTheme } from "@mui/material/styles";
 import ConnectModal from "screens/Connect/SelectWallet";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { useStore } from "store";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { getParamsFromUrl, isTelegramWebApp } from "utils";
+import { getParamsFromUrl } from "utils";
 import { telegramWebApp } from "services/telegram";
 import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
-import { Adapters } from "services/wallets/types";
 import { isMobile } from "react-device-detect";
 
 export const ConnectScreen = observer(() => {
   const classes = useStyles();
-  const theme = useTheme();
   const store = useStore();
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [hideMainButton, setHideMainButton] = useState(false);
@@ -37,9 +34,9 @@ export const ConnectScreen = observer(() => {
       return;
     }
 
-    const query = getParamsFromUrl(TELEGRAM_WEBAPP_PARAM, search);
+    const isTelegramWebapp = getParamsFromUrl(TELEGRAM_WEBAPP_PARAM, search);
     const action = () => setShowConnectModal(true);
-    if (query) {
+    if (isTelegramWebapp) {
       telegramWebApp.addClickEventToButton(action);
       telegramWebApp.setButtonText("Connect Wallet");
       setHideMainButton(true);
@@ -50,14 +47,19 @@ export const ConnectScreen = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (store.address) {
+    if (!store.address) {
+      return;
+    }
+    const destinationPath = localStorage.getItem(DESTINATION_PATH);
+    if (destinationPath) {
+      navigate(destinationPath);
+      localStorage.removeItem(DESTINATION_PATH);
+    } else {
       navigate(ROUTES.tokens);
     }
-  }, [store.address]);
+  }, [store.address, navigate]);
 
   const onConnect = () => {
-  
-
     setShowConnectModal(true);
   };
 

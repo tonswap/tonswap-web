@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as API from "services/api";
 import { useStore } from "store";
-import useInterval from "./useInterval";
+import useInterval from "../../../hooks/useInterval";
 
 const pollTriesLimit = 30;
 
-function useTxPolling(onPollingFinished: (value?: boolean) => Promise<void>) {
+function useTxPolling() {
   const store = useStore();
   const [txSuccess, setTxSuccess] = useState(false);
-  const { startInterval, stopInterval } = useInterval();
+  const { startInterval, stopInterval } = useInterval(1000);
 
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);
@@ -18,7 +18,7 @@ function useTxPolling(onPollingFinished: (value?: boolean) => Promise<void>) {
     return result.stack[0][1];
   }, [store.address]);
 
-  const pollInterval = async () => {
+  const pollInterval = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
     const result = await getSeqno();
 
     //seqno didnt moved forawed, canceling polling
@@ -35,17 +35,23 @@ function useTxPolling(onPollingFinished: (value?: boolean) => Promise<void>) {
     pollTries.current++;
   };
 
-  const pollTx = async () => {
+  const pollTx = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
     stopInterval();
     // get current seqno
     seqnoRef.current = await getSeqno();
 
-    startInterval(pollInterval);
+    startInterval(() => pollInterval(onPollingFinished));
   };
 
   const closeSuccess = () => {
     setTxSuccess(false);
   };
+
+
+  const cancelPolling = () => {
+    pollTries.current = 0
+    stopInterval()
+  }
 
   useEffect(() => {
     return () => {
@@ -53,7 +59,7 @@ function useTxPolling(onPollingFinished: (value?: boolean) => Promise<void>) {
     };
   }, []);
 
-  return { pollTx, closeSuccess, txSuccess };
+  return { pollTx, closeSuccess, txSuccess, cancelPolling };
 }
 
 export default useTxPolling;

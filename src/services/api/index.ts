@@ -443,3 +443,4 @@ export const getSeqno = async (
 ): Promise<{ gas_used: number; stack: any[] }> => {
   return client.callGetMethod(Address.parse(address), "seqno", []);
 };
+ 

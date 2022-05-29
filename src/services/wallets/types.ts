@@ -43,3 +43,11 @@ export enum Adapters  {
     TON_HUB = 'tonhub',
     TON_WALLET = 'ton-wallet'
 }
+
+
+export interface Adapter {
+    text: string,
+    type: Adapters,
+    icon: any,
+    mobileCompatible: boolean
+}

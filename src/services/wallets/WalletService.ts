@@ -6,6 +6,8 @@ import { WalletAdapter, TransactionRequest, Wallet, Adapters } from './types';
 
 
 const IS_TESTNET = false
+
+
 export class WalletService {
   private readonly adapters: Map<string, WalletAdapter<any>> = new Map();
   
@@ -31,7 +33,7 @@ export class WalletService {
     return adapter.getWallet(session);
   }
 
-  async requestTransaction<S>(adapterId: string, session: S, request: TransactionRequest): Promise<void> {
+  async requestTransaction<S>(adapterId: string, session: S, request: TransactionRequest): Promise<void> {    
     const adapter = this.adapters.get(adapterId) as WalletAdapter<S>;
     return adapter.requestTransaction(session, request);
   }
@@ -42,4 +44,4 @@ export const walletService = new WalletService();
 const tonhubConnector = new TonhubConnector({ testnet: IS_TESTNET });
 
 walletService.registerAdapter(Adapters.TON_HUB, new TonhubWalletAdapter(tonhubConnector));
- walletService.registerAdapter(Adapters.TON_WALLET, new TonWalletWalletAdapter());
+walletService.registerAdapter(Adapters.TON_WALLET, new TonWalletWalletAdapter());

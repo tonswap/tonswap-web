@@ -8,7 +8,7 @@ import { TokenLayout } from "../layouts/TokenLayout";
 import { observer } from "mobx-react-lite";
 import { useStore } from "store";
 import { useEffect, useRef, useState } from "react";
-import useTxPolling from "hooks/useTransactionStatus";
+import useTxPolling from "screens/cmponents/TokenOperations/useTransactionStatus";
 import Notification from "components/Notification";
 import { delay } from "utils";
 
@@ -19,19 +19,19 @@ export const ClaimRewardsScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [reward, setReward] = useState(0);
   const [rewardCopyForSnackbar, setRewardCopyForSnackbar] = useState(0)
+  const { txSuccess, pollTx, closeSuccess } = useTxPolling();
 
   const onTxFinished = async () => {
     // const tokenBalance = await API.getRewards(store.selectedToken!!.name);
     // setReward(tokenBalance);
   };
 
-  const { txSuccess, pollTx, closeSuccess } = useTxPolling(onTxFinished);
 
   const onSubmit = () => {
 
     if (store.selectedToken) {
      // API.generateClaimRewards(store.selectedToken.name);
-      pollTx();
+      pollTx(onTxFinished);
     }
   };
 

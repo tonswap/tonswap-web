@@ -28,9 +28,9 @@ const RemoveLiquidity = observer(() => {
     srcTokenAmountCopy,
   } = useTokenOperationsStore();
 
-  const onSubmit = () => {
+  const getTxRequest = () => {
     if (store.selectedToken) {
-      API.generateRemoveLiquidityLink(
+      return API.generateRemoveLiquidityLink(
         store.selectedToken?.name,
         srcTokenAmount
       );
@@ -48,7 +48,7 @@ const RemoveLiquidity = observer(() => {
           successText={`Successfully removed ${srcTokenAmountCopy} TON and ${destTokenAmountCopy} ${store.selectedToken.displayName} liquidity`}
           icon={<SvgIcon component={Minus} viewBox="0 0 13 22" />}
           disableButton={false}
-          onSubmit={onSubmit}
+          getTxRequest={getTxRequest}
           getAmountFunc={API.getLiquidityAmount}
           getBalances={getBalances}
           srcToken={ton}

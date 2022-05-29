@@ -56,7 +56,7 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
         stateInit: request.stateInit?.toString('base64'),
       }),
       timeout(request.timeout, 'Transaction request exceeded timeout.'),
-    ]);
+    ])
   }
 }
 
