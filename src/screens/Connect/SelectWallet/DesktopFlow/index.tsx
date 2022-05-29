@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import QR from "./QR";
 import AdaptersList from "../AdaptersList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Adapters } from "services/wallets/types";
 import { useStore } from "store";
 import { observer } from "mobx-react-lite";
