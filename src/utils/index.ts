@@ -152,13 +152,25 @@ export function stripBoc(bocStr: string) {
     return bocStr.substr(2, bocStr.length - 4);
 }
 
+const ENC: any = {
+    "+": "-",
+    "/": "_",
+    "=": ".",
+};
 
-export const getParamsFromUrl = (name: string) => {
-    const query = new URLSearchParams(window.location.search);
+export function base64UrlEncode(base64: string) {
+    return base64.replace(/[+/=]/g, (m) => {
+        return ENC[m];
+    });
+}
+
+
+export const getParamsFromUrl = (name: string, search?: string) => {    
+    const query = new URLSearchParams(search || window.location.search);
     return query.get(name);
   };
 
-  const isTelegramWebApp = () =>  getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
+const isTelegramWebApp = () =>  getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
 
 
 export { delay, splitToGroups, getToken, getIsSelectedTokenMobile, isTelegramWebApp };

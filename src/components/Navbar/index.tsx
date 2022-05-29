@@ -16,6 +16,7 @@ import { useStore } from "store";
 import useMobile from "hooks/useMobile";
 import useQuery from "hooks/useQuery";
 import { isTelegramWebApp } from "utils";
+import WalletAddress from "./Menu/WalletAddress";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
@@ -36,8 +37,6 @@ const hideNavbar = (
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const store = useStore();
   const isMobile = useMobile();
   const location = useLocation();
   const query = useQuery();
@@ -110,16 +109,11 @@ export const Navbar = observer(() => {
                   className={classes.menuIcon}
                 />
               </IconButton>
-              <Link className={classes.link} to={ROUTES.connect}>
-                <LogoWithText onClick={() => navigate(ROUTES.tokens)} />
+              <Link className={classes.link} to={ROUTES.tokens}>
+                <LogoWithText />
               </Link>
             </Grid>
-            {store.address && (
-              <Grid item className={classes.rightGrid}>
-                <img src={WalletAddressImg} alt="wallet" />
-                <Typography fontSize="12px">{store.address}</Typography>
-              </Grid>
-            )}
+            <WalletAddress />
           </Grid>
         </Toolbar>
         <Menu open={open} hide={() => setOpen(false)} />

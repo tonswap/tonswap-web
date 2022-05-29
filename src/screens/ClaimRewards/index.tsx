@@ -5,7 +5,6 @@ import TokenReward from "./TokenReward";
 import { useStyles } from "./styles";
 import Icon from "assets/images/shared/claim-rewards.svg";
 import { TokenLayout } from "../layouts/TokenLayout";
-import * as API from "services/api";
 import { observer } from "mobx-react-lite";
 import { useStore } from "store";
 import { useEffect, useRef, useState } from "react";

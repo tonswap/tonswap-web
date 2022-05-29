@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Fade } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ActionButton } from "components";
 import { Token } from "types";
@@ -115,7 +115,8 @@ function TokenOperations({
 
 
   return (
-    <Box className={classes.content}>
+    <Fade in>
+      <Box className={classes.content}>
       <Notification
         text={successText}
         open={txSuccess}
@@ -154,6 +155,7 @@ function TokenOperations({
         </Box>
       )}
     </Box>
+    </Fade>
   );
 }
 

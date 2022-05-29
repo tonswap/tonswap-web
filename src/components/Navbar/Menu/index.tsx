@@ -7,7 +7,6 @@ import { useStyles } from "./style";
 import NoToken from "./NoToken";
 import SelectedToken from "./SelectedToken";
 import { useStore } from "store";
-import ConnectWallet from "components/ConnectWallet";
 import { useCallback } from "react";
 
 interface Props {
@@ -18,16 +17,6 @@ interface Props {
 function Menu({ open, hide }: Props) {
   const classes = useStyles();
   const store = useStore();
-
-  const getMenuContent = useCallback(() => {
-    if (!store.address) {
-      return <Box className={classes.connect}><ConnectWallet onConnected={hide} text="Connect wallet" /></Box>;
-    } else if (store.selectedToken) {
-      return <SelectedToken hideMenu={hide} token={store.selectedToken} />;
-    }
-    return <NoToken hideMenu={hide} />;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.address, store.selectedToken]);
 
   return (
     <Drawer anchor="left" open={open} onClose={hide}>
@@ -45,7 +34,11 @@ function Menu({ open, hide }: Props) {
             <CloseRoundedIcon fontSize="large" className={classes.closeBtn} />
           </IconButton>
         </Box>
-        {getMenuContent()}
+        {store.selectedToken ? (
+          <SelectedToken hideMenu={hide} token={store.selectedToken} />
+        ) : (
+          <NoToken hideMenu={hide} />
+        )}
       </Box>
     </Drawer>
   );

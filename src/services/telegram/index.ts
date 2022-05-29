@@ -33,6 +33,12 @@ const disableButton = (text?: string) => {
 const addClickEventToButton = (event: () => void) => {
   provider.MainButton.onClick(event);
 };
+const removeClickEventFromButton = (event: () => void) => {
+  provider.MainButton.offClick(event);
+};
+
+
+
 
 const activateButtonLoader = () => {
   provider.MainButton.showProgress()
@@ -50,7 +56,8 @@ const telegramWebApp = {
   addClickEventToButton,
   provider,
   activateButtonLoader,
-  disableButtonLoader
+  disableButtonLoader,
+  removeClickEventFromButton
 };
 
 export { telegramWebApp };

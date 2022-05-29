@@ -21,14 +21,14 @@ const TestNetPools: { [key: string]: PoolInfo } = {
 
 const MainNetPools: { [key: string]: PoolInfo } = {
     luna: {
-        ammMinter: Address.parse("EQCAbOdZOdk0C2GlwSwLLKmYe2NTXJCxcWndi1rYpMhs41rO"),
+        ammMinter: Address.parse("EQA9OLcGB8feXilz0_bXiPMKriHGZZ1o25eHrHXOvBUZDsjC"),
         tokenMinter: Address.parse("EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"),
     },
 };
 
 let isTestNet = true;
 let Pools: { [key: string]: PoolInfo } = isTestNet ? TestNetPools : SandBoxPools;
-if (process.env.NODE_ENV == "production") {
+if (process.env.NODE_ENV === "production") {
     Pools = MainNetPools;
 }
 

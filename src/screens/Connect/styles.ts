@@ -76,45 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "white",
     },
   },
-  "@keyframes myEffect": {
-    "0%": {
-      transform: "translateY(0%)",
-    },
-    "100%": {
-      transform: "translateY(300%)",
-    },
-  },
-  qrImage: {
-    position: "absolute",
-    height: "100%",
-    objectFit: "contain",
-  },
-  qrLineImg: {
-    animation: `$myEffect 1500ms  infinite  ease alternate`,
-    zIndex: 9,
-    position: "relative",
-    top: 10,
-  },
-  qr: {
-    position: "relative",
-    height: 90,
-    marginTop: 33,
-    marginBottom: 45,
-  },
-  input: {
-    position: 'relative',
-    width:'100%'
-  },
-  inputBox: {
-    marginTop: 17,
-    marginBottom: 33
-  },
-  inputError: {
-    position: 'absolute',
-    left: '0px',
-    color: theme.palette.error.main,
-    top: `calc(100% )`
-  },
+
 }));
 
 export { useStyles };

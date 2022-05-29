@@ -1,14 +1,14 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-
-import { hexToBn, stripBoc } from "utils";
+import { base64UrlEncode, hexToBn } from "utils";
 import { DexActions } from "./dex";
-import { tokens as supportedTokens } from "tokens";
 import { Token } from "types";
 import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
+import { LOCAL_STORAGE_ADDRESS } from "consts";
 
-let rpcUrl = "https://scalable-api.tonwhales.com/jsonRPC";
+let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
+
 if (document.location.href.indexOf("testnet=") > -1) {
   rpcUrl = "https://testnet.tonhubapi.com/jsonRPC";
 } else if (document.location.href.indexOf("sandbox=") > -1) {
@@ -24,6 +24,7 @@ enum GAS_FEE {
   SWAP = 0.2,
   FORWARD_TON = 0.05,
   ADD_LIQUIDITY = 0.2,
+  REMOVE_LIQUIDITY = 0.2,
 }
 
 const sleep = (milliseconds: number) => {
@@ -47,7 +48,7 @@ export const getTokenBalance = async (token: Token) => {
 
 export const getLPTokenBalance = async (token: string) => {
   const tokenData = await getToken(client, token, getOwner());
-  return _getTokenBalance(tokenData.lpWallet);
+  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter);
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
@@ -56,13 +57,17 @@ export const getTokensOfLPBalances = async (token: string) => {
     getJettonData(tokenObjects.ammMinter),
     getLPTokenBalance(token),
   ]);
+  if (lpBalance.balance.toString() === "0") {
+    return [fromNano("0"), fromNano("0")];
+  }
+  const tonSide2 = lpBalance.balance
+    .mul(jettonData.tonReserves)
+    .div(jettonData.totalSupply);
+  const tokenSide2 = lpBalance.balance
+    .mul(jettonData.tokenReserves)
+    .div(jettonData.totalSupply);
 
-  const ratio = lpBalance.balance.div(jettonData.totalSupply);
-
-  return [
-    jettonData.tonReserves.mul(ratio.mul(new BN(1e9)).div(new BN(1e9))),
-    jettonData.tokenReserves.mul(ratio.mul(new BN(1e9)).div(new BN(1e9))),
-  ];
+  return [fromNano(tonSide2), fromNano(tokenSide2)];
 };
 
 // TODO: Remove later
@@ -92,45 +97,33 @@ const parseNumber = (
 };
 
 function getOwner() {
-  return Address.parse(localStorage.getItem("address") as string);
+  return Address.parse(localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string);
 }
 
-const _getWalletData = async (jettonWallet: Address) => {
-  let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
+// const _getWalletData = async (jettonWallet: Address) => {
+//     let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
 
-  const balance = hexToBn(res.stack[0][1]);
-  const walletOwner = bytesToAddress(res.stack[1][1].bytes);
-  const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
+//     const balance = hexToBn(res.stack[0][1]);
+//     const walletOwner = bytesToAddress(res.stack[1][1].bytes);
+//     const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
 
-  return {
-    balance,
-    walletOwner,
-    jettonMaster,
-  };
-};
+//     return {
+//         balance,
+//         walletOwner,
+//         jettonMaster,
+//     };
+// };
 
-const _getTokenBalance = async (minterAddress: Address) => {
-  let cell = new Cell();
-  cell.bits.writeAddress(getOwner());
-  const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
-  const jettonWallet = await callWithRetry(
-    minterAddress,
-    "get_wallet_address",
-    [["tvm.Slice", b64data]]
-  );
-
-  let jettonWalletAddress = bytesToAddress(jettonWallet.stack[0][1].bytes);
-  // jettonWalletAddress = Address.parse("kQBaIvo07zP5git3cfVmImayYzTfhKT3L2wZmE2qBIVbaCXv");
+export async function _getJettonBalance(
+  jettonWallet: Address,
+  minterAddress: Address
+) {
   try {
     console.log(
-      `fetching wallet_data from jettonWallet ${jettonWalletAddress.toFriendly()}`
+      `fetching wallet_data from jettonWallet ${jettonWallet.toFriendly()}`
     );
 
-    let res = await client.callGetMethod(
-      jettonWalletAddress,
-      "get_wallet_data",
-      []
-    );
+    let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
     const balance = hexToBn(res.stack[0][1]);
     const walletOwner = bytesToAddress(res.stack[1][1].bytes);
     const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
@@ -146,19 +139,28 @@ const _getTokenBalance = async (minterAddress: Address) => {
       jettonMaster: minterAddress,
     };
   }
+}
+
+const _getTokenBalance = async (minterAddress: Address) => {
+  let cell = new Cell();
+  cell.bits.writeAddress(getOwner());
+  const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
+  const jettonWallet = await callWithRetry(
+    minterAddress,
+    "get_wallet_address",
+    [["tvm.Slice", b64data]]
+  );
+
+  let jettonWalletAddress = bytesToAddress(jettonWallet.stack[0][1].bytes);
+  return _getJettonBalance(jettonWalletAddress, minterAddress);
+  // jettonWalletAddress = Address.parse("kQBaIvo07zP5git3cfVmImayYzTfhKT3L2wZmE2qBIVbaCXv");
 };
 
 export const getTonBalance = async () => {
-  const address = localStorage.getItem("address") as string;
+  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string;
   const balance = await client.getBalance(Address.parse(address));
 
   return parseNumber(new BN(balance));
-};
-
-export const getSeqno = async (
-  address: string
-): Promise<{ gas_used: number; stack: any[] }> => {
-  return client.callGetMethod(Address.parse(address), "seqno", []);
 };
 
 async function getAmountOut(
@@ -260,22 +262,37 @@ export const getLiquidityAmount = async (
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
 
-  const ratio = tonReserves
-    .mul(new BN(1e9))
-    .div(tokenReserves)
-    .div(new BN(1e9));
+  console.log(
+    `tokenReserves: ${fromNano(tokenReserves)} tonReserves: ${fromNano(
+      tonReserves
+    )}`
+  );
+
+  // return muldiv(amount_a, reserve_b, reserve_a);
 
   if (srcToken === "ton") {
     if (srcAmount != null) {
-      return srcAmount / ratio.toNumber();
+      return new BN(srcAmount * 1e9)
+        .mul(tokenReserves)
+        .div(tonReserves)
+        .toNumber();
     } else if (destAmount != null) {
-      return destAmount * ratio.toNumber();
+      return new BN(destAmount * 1e9)
+        .mul(tonReserves)
+        .div(tokenReserves)
+        .toNumber();
     }
   } else {
     if (srcAmount != null) {
-      return srcAmount * ratio.toNumber();
+      return new BN(srcAmount * 1e9)
+        .mul(tokenReserves)
+        .div(tonReserves)
+        .toNumber();
     } else if (destAmount != null) {
-      return destAmount / ratio.toNumber();
+      return new BN(destAmount * 1e9)
+        .mul(tonReserves)
+        .div(tokenReserves)
+        .toNumber();
     }
   }
   return 0;
@@ -290,36 +307,31 @@ export const getTokenDollarValue = async (
   if (token !== "ton") {
     const tokenData = await getToken(client, token, getOwner());
     const lpTokenData = await getJettonData(tokenData.ammMinter);
-
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
-
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
   }
 
-  const coinsResponse = await fetch(
-    `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
-  );
-  const result = await coinsResponse.json();
-  const tonPriceWithAmount = parseFloat(
-    (parseFloat(result["the-open-network"].usd) * amount).toPrecision(4)
-  );
+  const cgPrice = await fetchPrice();
+  const tonPriceWithAmount = cgPrice * amount;
 
   return parseFloat((tonPriceWithAmount * ratio).toFixed(4));
 };
 
-// export const getRewards = async (token: string) => {
-//     const owner = Address.parse(localStorage.getItem("address") as string);
-//     let wc = owner.workChain;
-//     let address = new BN(owner.hash);
-//     const tokenObjects: any = getToken(client, token, getOwner());
-//     const res = await callWithRetry(tokenObjects.amm, "get_rewards_of", [
-//         ["num", wc.toString(10)],
-//         ["num", address.toString(10)],
-//     ]);
+let tonPrice = 0;
 
-//     return hexToBn(res.stack[0][1]);
-// };
+async function fetchPrice() {
+  if (tonPrice) {
+    return tonPrice;
+  }
+  const coinsResponse = await fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
+  );
+  const result = await coinsResponse.json();
+  tonPrice = parseFloat(result["the-open-network"].usd);
+  setTimeout(() => (tonPrice = 0), 60 * 1000);
+  return tonPrice;
+}
 
 export const generateSellLink = async (
   token: string,
@@ -327,7 +339,6 @@ export const generateSellLink = async (
   minAmountOut: number
 ) => {
   const tokenData = await getToken(client, token, getOwner());
-
   let transfer = DexActions.transferOverload(
     tokenData.ammMinter,
     toNano(tokenAmount),
@@ -337,24 +348,8 @@ export const generateSellLink = async (
     toNano(minAmountOut)
   );
   const boc64 = transfer.toBoc().toString("base64");
-
-  const provider = (window as any).ton;
   const value = toNano(GAS_FEE.SWAP);
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenData.jettonWallet.toFriendly(),
-        value: toNano(GAS_FEE.SWAP).toString(), // 10000 :
-        data: boc64,
-        dataType: "boc",
-      },
-    ]);
-  } else {
-    const deeplinkTransfer = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
-
-    console.log(deeplinkTransfer);
-    window.open(deeplinkTransfer, "_blank");
-  }
+  sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
 export const generateBuyLink = async (
@@ -364,36 +359,14 @@ export const generateBuyLink = async (
 ) => {
   // 0.5% slippage
   //TODO add slippage explicit
-  console.log(`tonAmount:${tonAmount} expecting tokens: ${tokenAmount}`);
-
   let transfer = await DexActions.swapTon(
     new BN(Math.floor(tonAmount * 1e9)),
     new BN(Math.floor(tokenAmount * 0.995 * 1e9))
   );
-  const transferStr = transfer.toString();
-  // let bocHex = stripBoc(transferStr);
-  // console.log(`buy buffer ${bocHex}`);
-
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
-
-  const provider = (window as any).ton;
   const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenObjects.ammMinter.toFriendly(),
-        value: value.toString(),
-        data: boc64,
-        dataType: "boc",
-      },
-    ]);
-  } else {
-    const deeplinkTransfer = `https://test.tonhub.com/transfer/${tokenObjects.ammMinter.toFriendly()}?amount=${value}&bin=${boc64}`;
-    console.log(deeplinkTransfer);
-
-    window.open(deeplinkTransfer, "_blank");
-  }
+  return sendTransaction(tokenObjects.ammMinter, value, boc64);
 };
 
 export const generateAddLiquidityLink = async (
@@ -402,94 +375,71 @@ export const generateAddLiquidityLink = async (
   tokenAmount: number
 ) => {
   const tokenData = await getToken(client, token, getOwner());
-
   const slippage = new BN(5);
   const transferAndLiq = await DexActions.addLiquidity(
     tokenData.ammMinter,
     toNano(tokenAmount),
     tokenData.ammMinter,
-    toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY)),
+    toNano(tonAmount + GAS_FEE.FORWARD_TON),
     slippage,
     toNano(tonAmount)
   );
-  const bocHex = stripBoc(transferAndLiq.toString());
   const boc64 = transferAndLiq.toBoc().toString("base64");
-
-  const provider = (window as any).ton;
-  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY));
-
-  if (provider) {
-    provider.send("ton_sendTransaction", [
-      {
-        to: tokenData.jettonWallet.toFriendly(),
-        value: value.toString(),
-        data: boc64,
-        dataType: "boc",
-      },
-    ]);
-  } else {
-    const deeplink = `ton://transfer/${tokenData.jettonWallet}?amount=${value}&bin=${boc64}`;
-
-    window.open(deeplink, "_blank");
-  }
+  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY * 2));
+  sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
 export const generateRemoveLiquidityLink = async (
   token: string,
   tonAmount: number | string
 ) => {
-  try {
-    const tokenData = await getToken(client, token, getOwner());
-
-    const jettonData = await getJettonData(tokenData.ammMinter);
-    const walletData = _getWalletData(tokenData.lpWallet);
-
-    const ratio = toNano(tonAmount).div(jettonData.tonReserves);
-    const totalLPs = jettonData.totalSupply;
-
-    const transferAndLiq = await DexActions.removeLiquidity(
-      totalLPs.mul(ratio),
-      getOwner()
-    );
-
-    const boc = stripBoc(transferAndLiq.toString());
-    const tokenObjects: any = await getToken(client, token, getOwner());
-    const provider = (window as any).ton;
-    const value = toNano(GAS_FEE.ADD_LIQUIDITY);
-    if (provider) {
-      provider.send("ton_sendTransaction", [
-        {
-          to: tokenObjects.amm,
-          value,
-          data: boc,
-          dataType: "text",
-        },
-      ]);
-    } else {
-      const deeplink = `https://test.tonhub.com/transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-      window.open(deeplink, "_blank");
-    }
-  } catch (error: any) {}
+  const tokenData = await getToken(client, token, getOwner());
+  const jettonData = await getJettonData(tokenData.ammMinter);
+  let shareToRemove = toNano(tonAmount)
+    .mul(jettonData.totalSupply)
+    .div(jettonData.tonReserves);
+  const removeLiquidity = await DexActions.removeLiquidity(
+    shareToRemove,
+    getOwner()
+  );
+  const boc64 = removeLiquidity.toBoc().toString("base64");
+  const tokenObjects: any = await getToken(client, token, getOwner());
+  const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
+  sendTransaction(tokenObjects.lpWallet, value, boc64);
 };
 
-// export const generateClaimRewards = async (token: string) => {
+// function sendTransaction(to: Address, value: BN, data: string) {
 //     const provider = (window as any).ton;
-
-//     const claimRewards = await DexActions.claimRewards();
-//     const boc = stripBoc(claimRewards.toString());
-//     const tokenObjects: any = getToken(client, token, getOwner());
-//     const value = gasFee * 1e9;
 //     if (provider) {
 //         provider.send("ton_sendTransaction", [
 //             {
-//                 to: tokenObjects.amm,
-// .00001 TONs
-//                 data: boc,
-//                 dataType: "text",
+//                 to: to.toFriendly(),
+//                 value: value.toString(),
+//                 data: data,
+//                 dataType: "boc",
 //             },
 //         ]);
 //     } else {
-//         const deeplink = `ton://transfer/${tokenObjects.amm}?amount=${value}&text=${boc}`;
-//         return (window.location.href = deeplink);
+//         const link = `https://tonhub.com/transfer/${to.toFriendly()}?amount=${value}&bin=${base64UrlEncode(data)}`;
+//         return (window.location.href = link);
 //     }
-// };
+// }
+
+function sendTransaction(to: Address, value: BN, data: string) {
+  return {
+  
+    to: to.toFriendly(),
+    value: value.toString(),
+    // dataType: "boc",
+    timeout: 5 * 60 * 1000,
+    stateInit: null,
+    text: data,
+    payload: null,
+  };
+}
+
+export const getSeqno = async (
+  address: string
+): Promise<{ gas_used: number; stack: any[] }> => {
+  return client.callGetMethod(Address.parse(address), "seqno", []);
+};

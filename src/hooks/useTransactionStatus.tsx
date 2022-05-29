@@ -14,7 +14,7 @@ function useTxPolling(onPollingFinished: (value?: boolean) => Promise<void>) {
   const pollTries = useRef(0);
 
   const getSeqno = useCallback(async () => {
-    const result = await API.getSeqno(store.address);
+    const result = await API.getSeqno(store.address!!);
     return result.stack[0][1];
   }, [store.address]);
 

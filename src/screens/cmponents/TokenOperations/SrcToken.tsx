@@ -33,11 +33,11 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       return;
     }
     let result = 0;
-    const jetton = token.name == 'ton' ?  destTokenName : token.name;
+    const jetton = token.name === 'ton' ?  destTokenName : token.name;
     try {
       result = await calculateTokens(
         jetton,
-        token.name != 'ton',
+        token.name !== 'ton',
         balanceRef.current || "0",
         null,
         getAmountFunc
@@ -45,7 +45,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
 
       const usdAmounts = await Promise.all([
         getUsdAmount(token.name, balanceRef.current),
-        getUsdAmount(destTokenName, Number(result)),
+        getUsdAmount(destTokenName, Number(fromNano(result))),
       ]);
 
       if (!balanceRef.current) {
