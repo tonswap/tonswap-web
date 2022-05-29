@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";

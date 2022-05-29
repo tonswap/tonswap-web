@@ -1,5 +1,9 @@
 import { createTheme } from "@mui/material/styles";
+import { Theme } from '@mui/material/styles';
 
+declare module '@mui/styles' {
+  interface DefaultTheme extends Theme {}
+}
 // A custom theme for this app
 const theme = createTheme({
   palette: {

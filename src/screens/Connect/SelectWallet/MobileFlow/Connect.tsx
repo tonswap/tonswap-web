@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import { Box, Button } from "@mui/material";
 import Title from "../Title";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -19,7 +19,7 @@ const StyledContainer = styled(Box)({
 });
 
 
-const StyledLink = styled.a({
+const StyledLink = styled('a')({
   width:'100%',
   height:'100%',
   display: 'flex',

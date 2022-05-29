@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled, useTheme } from '@mui/styles';
 import { Box } from "@mui/material";
 import QRCode from "react-qr-code";
 import Fade from "@mui/material/Fade";
@@ -32,6 +32,7 @@ interface Props {
 }
 
 function QR({ onClose, link, open }: Props) {
+  const theme = useTheme()
   if (!open) {
     return null;
   }
@@ -47,7 +48,7 @@ function QR({ onClose, link, open }: Props) {
             </Box>
           </Fade>
         ) : (
-          <CircularProgress />
+          <CircularProgress style={{color:theme.palette.primary.main}} />
         )}
       </StyledQrBox>
     </StyledContainer>

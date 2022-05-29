@@ -8,17 +8,19 @@ import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
-
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { StyledEngineProvider } from "@mui/material/styles";
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Router basename={process.env.PUBLIC_URL} >
-      <App />
-    </Router>
-  </ThemeProvider>,
+  <StyledEngineProvider injectFirst>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router basename={process.env.PUBLIC_URL}>
+        <App />
+      </Router>
+    </MuiThemeProvider>
+  </StyledEngineProvider>,
   document.getElementById("root")
 );
 

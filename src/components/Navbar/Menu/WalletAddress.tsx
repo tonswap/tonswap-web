@@ -3,7 +3,7 @@ import WalletAddressImg from "assets/images/shared/wallet-address.svg";
 import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import Chip from "@mui/material/Chip";
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import Tooltip from "components/Tooltip";
 import { useNavigate } from "react-router-dom";

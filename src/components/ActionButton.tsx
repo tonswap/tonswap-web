@@ -47,7 +47,8 @@ export function ActionButton({
       className={className}
       loading={isLoading}
       variant="contained"
-      sx={{ boxShadow: "unset", borderRadius: "8px", background: theme.palette.primary.main }}
+      color='primary'
+      sx={{ boxShadow: "unset", borderRadius: "8px"}}
     >
       <Box style={{color: isDisabled ? '#7D7D7D' : ''}} className={classes.content}>{children}</Box>
     </LoadingButton>

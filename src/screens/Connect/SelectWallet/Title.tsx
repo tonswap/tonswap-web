@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import { Box, IconButton, Typography } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useTheme } from "@mui/material/styles";

@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import { Paper } from "@mui/material";
 import DesktopFlow from "./DesktopFlow";
 import MobileFlow from "./MobileFlow";

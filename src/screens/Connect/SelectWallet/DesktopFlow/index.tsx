@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import {styled} from '@mui/styles';
 import { Box } from "@mui/material";
 import QR from "./QR";
 import AdaptersList from "../AdaptersList";
