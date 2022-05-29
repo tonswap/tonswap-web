@@ -8,9 +8,7 @@ import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
 
-import { CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/styles";
-
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
 
 

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
@@ -38,6 +38,7 @@ export function ActionButton({
 }: Props) {
   const classes = useStyles();
   const className = clsx(classes.root, customClassName);
+  const theme = useTheme()
 
   return (
     <LoadingButton
@@ -46,9 +47,7 @@ export function ActionButton({
       className={className}
       loading={isLoading}
       variant="contained"
-
-      color="primary"
-      sx={{ boxShadow: "unset", borderRadius: "8px" }}
+      sx={{ boxShadow: "unset", borderRadius: "8px", background: theme.palette.primary.main }}
     >
       <Box style={{color: isDisabled ? '#7D7D7D' : ''}} className={classes.content}>{children}</Box>
     </LoadingButton>

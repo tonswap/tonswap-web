@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 import QR from "./QR";
 import AdaptersList from "../AdaptersList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Adapters } from "services/wallets/types";
 import { useStore } from "store";
 import { observer } from "mobx-react-lite";
@@ -17,13 +17,15 @@ const StyledContainer = styled(Box)({
 
 interface Props {
   closeModal: () => void;
+  isModalOpen:  boolean;
 }
 
-const DesktopFlow = observer(({ closeModal }: Props) => {
+const DesktopFlow = observer(({ closeModal, isModalOpen }: Props) => {
   const store = useStore();
   const [showQr, setShowQr] = useState(false);
 
   const onSelect = (adapter: Adapters) => {
+    store.reset();
     store.createWalletSession(adapter);
     if (adapter === Adapters.TON_HUB) {
       setShowQr(true);
@@ -35,16 +37,21 @@ const DesktopFlow = observer(({ closeModal }: Props) => {
     store.reset();
   };
 
+
+  
+
+
+
   return (
-      <StyledContainer>
-        <AdaptersList
-          adapters={adapters}
-          onClose={closeModal}
-          open={!showQr}
-          select={onSelect}
-        />
-        <QR open={showQr} link={store.session?.link} onClose={cancel} />
-      </StyledContainer>
+    <StyledContainer>
+      <AdaptersList
+        adapters={adapters}
+        onClose={closeModal}
+        open={!showQr}
+        select={onSelect}
+      />
+      <QR open={showQr} link={store.session?.link} onClose={cancel} />
+    </StyledContainer>
   );
 });
 

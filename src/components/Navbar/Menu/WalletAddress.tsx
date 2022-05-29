@@ -8,8 +8,9 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import Tooltip from "components/Tooltip";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
+import theme from "theme";
 
-const StyledChip = styled(Chip)(({ theme }: any) => ({
+const StyledChip = styled(Chip)({
   display: "flex",
   alignItems: "center",
   border: `1px solid ${theme.palette.primary.main}`,
@@ -19,27 +20,27 @@ const StyledChip = styled(Chip)(({ theme }: any) => ({
   background: "transparent",
   color: theme.palette.primary.main,
   maxWidth: 185,
-}));
+})
 
-const StyledIconButton = styled(IconButton)(({ theme }: any) => ({
+const StyledIconButton = styled(IconButton)({
   color: theme.palette.primary.main,
-}));
+})
 
 const WalletAddress = observer(() => {
   const store = useStore();
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onDisconnect = () => {
-    navigate(ROUTES.connect)
-    store.disconnect()
-  }
+    navigate(ROUTES.connect);
+    store.disconnect();
+  };
 
   return store.address ? (
     <Grid item display="flex" gap="10px">
-      <StyledIconButton onClick={onDisconnect}>
+      <StyledIconButton onClick={onDisconnect} >
         <PowerSettingsNewIcon />
       </StyledIconButton>
-      <Tooltip placement='bottom-end' title={store.address}>
+      <Tooltip placement="bottom-end" title={store.address}>
         <StyledChip
           label={store.address}
           avatar={<Avatar alt="wallet" src={WalletAddressImg} />}

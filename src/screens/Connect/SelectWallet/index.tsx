@@ -21,7 +21,7 @@ const StyledContainer = styled(Paper)({
   alignItems: "center",
   justifyContent: "center",
   position: "relative",
-  padding: '20px',
+  padding: "20px",
   background: "white",
 });
 
@@ -32,7 +32,7 @@ const ConnectModal = ({ open, onClose }: Props) => {
         {isMobile ? (
           <MobileFlow closeModal={onClose} />
         ) : (
-          <DesktopFlow closeModal={onClose} />
+          <DesktopFlow isModalOpen={open} closeModal={onClose} />
         )}
       </StyledContainer>
     </StyledModal>
