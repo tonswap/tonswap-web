@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Theme } from "@mui/material/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { DESTINATION_PATH, LAYOUT_MAX_WIDTH } from "consts";
@@ -10,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
     flexDirection: "column",
