@@ -58,7 +58,6 @@ const TokenOperations = observer(
       clearAmountsCopyForSnackbar,
     } = useTokenOperationsStore();
     const { txSuccess, pollTx, closeSuccess, cancelPolling } = useTxPolling();
-    const ref = useRef<any>(null)
 
     const onPollingFinished = async (fetchBalances?: boolean) => {
       setLoading(false);
