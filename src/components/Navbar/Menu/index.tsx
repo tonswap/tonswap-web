@@ -7,7 +7,6 @@ import { useStyles } from "./style";
 import NoToken from "./NoToken";
 import SelectedToken from "./SelectedToken";
 import { useStore } from "store";
-import { useCallback } from "react";
 
 interface Props {
   open: boolean;

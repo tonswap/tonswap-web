@@ -5,7 +5,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Fade,
   Box,
 } from "@mui/material";
 import { Adapter, Adapters } from "../../../services/wallets/types";

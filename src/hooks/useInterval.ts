@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function useInterval(delay?: number) {
   const intervalRef = useRef<any>();
@@ -9,15 +9,15 @@ function useInterval(delay?: number) {
     }, delay || 1000);
   };
 
-  const stopInterval = () => {
+  const stopInterval = useCallback(() => {
     clearInterval(intervalRef.current);
-  };
+  }, []);
 
   useEffect(() => {
     return () => {
       stopInterval();
     };
-  }, []);
+  }, [stopInterval]);
 
   return { startInterval, stopInterval };
 }

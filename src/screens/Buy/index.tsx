@@ -12,7 +12,6 @@ import {
   TokenOperationsStore,
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
-import { walletService } from "services/wallets/WalletService";
 
 export const BuyScreen = () => {
   return (

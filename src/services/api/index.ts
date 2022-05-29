@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-import { base64UrlEncode, hexToBn } from "utils";
+import {  hexToBn } from "utils";
 import { DexActions } from "./dex";
 import { Token } from "types";
 import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
