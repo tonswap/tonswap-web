@@ -1,10 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import { Theme } from "@mui/material/styles";
 
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: ({ color }: { color: string }) => ({
-    background: color,
+interface Props{
+  color: string;
+  expanded: boolean;
+}
+
+const useStyles = makeStyles({
+  root: {
+    background: (props: Props) => props.color,
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -13,23 +17,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "relative",
     paddingLeft: 18,
     paddingRight: 18,
-    paddingTop: 42,
-    paddingBottom: 28,
+    paddingTop:(props: Props) => props.expanded ?  42 : 30,
+    paddingBottom: (props: Props) => props.expanded ? 28 : 16,
+    transition: '0.2s all',
+   
     "& *": {
       color: "white",
     },
-    [theme.breakpoints.up("sm")]: {
-      paddingTop: 35,
-      paddingBottom: 13,
-    },
-  }),
+  },
   tokenImage: {
+    transition:'0.2s all',
     position: "absolute",
     left: "50%",
     transform: "translate(-50%, -50%)",
     top: "0%",
-    width: 60,
-    height: 60,
+    width: (props: Props) => props.expanded ? 60 : 45,
+    height: (props: Props) => props.expanded ? 60 : 45,
     objectFit:'cover',
     "& img": {
       width:'100%',
@@ -38,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputBox: {
     width: "100%",
+    "& input": {
+      transition:'0.2s all',
+      height: (props: Props) => props.expanded ? '50px' : '32px',
+      fontSize: (props: Props) => props.expanded ? '28px' : '16px'
+    }
   },
   bottomBox: {
     marginTop: 8,
@@ -48,6 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
     },
   },
-}));
+})
 
 export {useStyles}

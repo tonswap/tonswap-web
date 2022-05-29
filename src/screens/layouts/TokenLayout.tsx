@@ -19,13 +19,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     maxWidth: "380px",
     width: "100%",
-    paddingTop: 55,
+    paddingTop: 40,
     paddingBottom: 60,
     [theme.breakpoints.down("sm")]: {
       paddingTop: 0,
       paddingBottom: 0,
       flex: 1,
     },
+ 
   },
 }));
 

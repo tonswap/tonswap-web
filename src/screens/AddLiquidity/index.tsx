@@ -55,9 +55,9 @@ const AddLiquidity = observer(() => {
     destTokenAmountCopy,
   } = useTokenOperationsStore();
 
-  const onSubmit = () => {
+  const getTxRequest = () => {
     if (store.selectedToken) {
-      API.generateAddLiquidityLink(
+      return API.generateAddLiquidityLink(
         store.selectedToken?.name,
         srcTokenAmount,
         destTokenAmount
@@ -90,7 +90,7 @@ const AddLiquidity = observer(() => {
           getAmountFunc={API.getLiquidityAmount}
           getBalances={getBalances}
           srcToken={ton}
-          onSubmit={onSubmit}
+          getTxRequest={getTxRequest}
           destToken={store.selectedToken}
           submitButtonText={`Add TON/${store.selectedToken?.displayName} liquidity`}
         />

@@ -2,6 +2,11 @@ import { makeStyles } from "@mui/styles";
 
 import { Theme } from "@mui/material/styles";
 
+interface StyleProps{
+  expanded: boolean;
+  color?: string;
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
     flex: 1,
@@ -22,17 +27,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginTop:'auto'
     }
   },
-  svg: (props: { color?: string }) => ({
+  svg:{
    
-    marginTop: 15,
-    marginBottom: 40,
+    marginTop: (props: StyleProps) => props.expanded ? 15 : 10,
+    marginBottom: (props: StyleProps) => props.expanded ? 40 : 22,
     textAlign:'center',
     "& svg": {
       "& path": {
-        fill: props.color,
+        fill: (props: StyleProps) => props.color,
       },
     },
-  }),
+  }
 }));
 
 export { useStyles };
