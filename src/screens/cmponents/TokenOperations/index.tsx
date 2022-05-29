@@ -1,5 +1,5 @@
 import { Box, Fade } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionButton } from "components";
 import { Token } from "types";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
@@ -70,7 +70,7 @@ const TokenOperations = observer(
     const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
     const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
-    const submitted = async () => {
+    const onSubmit = async () => {
       setLoading(true);
       const txRequest = await getTxRequest();
       
@@ -92,7 +92,7 @@ const TokenOperations = observer(
     };
 
     useTelegramWebAppButton({
-      submitted,
+      onSubmit,
       submitButtonText,
       insufficientFunds,
       isDisabled,
@@ -169,7 +169,7 @@ const TokenOperations = observer(
                 <ActionButton
                   isLoading={loading}
                   isDisabled={isDisabled}
-                  onClick={submitted}
+                  onClick={onSubmit}
                 >
                   {submitButtonText}
                 </ActionButton>

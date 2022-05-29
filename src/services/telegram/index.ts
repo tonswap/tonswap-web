@@ -1,8 +1,5 @@
 const provider = (window as any).Telegram.WebApp;
 
-console.log(provider);
-
-
 provider.MainButton.show()
 
 const setButtonText = (text?: string) => {

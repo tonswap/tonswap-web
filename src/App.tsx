@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
-import { toJS } from "mobx";
 
 const useStyles = makeStyles((theme: Theme) => ({
   app: {
@@ -69,10 +68,8 @@ const App = observer(() => {
     };
 
     onLoad();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
-  console.log(toJS(store.wallet));
   
 
   return appReady ? (

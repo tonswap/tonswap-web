@@ -57,7 +57,7 @@ function useTxPolling() {
     return () => {
       stopInterval();
     };
-  }, []);
+  }, [stopInterval]);
 
   return { pollTx, closeSuccess, txSuccess, cancelPolling };
 }

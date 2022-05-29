@@ -1,7 +1,6 @@
 import { Box, Theme, Typography } from "@mui/material";
-import React, { ReactNode } from "react";
+import  { ReactNode } from "react";
 import { makeStyles } from "@mui/styles";
-import useWebAppResize from "hooks/useWebAppResize";
 
 
 const useStyles = makeStyles((theme: Theme) => ({

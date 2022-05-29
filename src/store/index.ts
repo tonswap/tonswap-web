@@ -111,9 +111,7 @@ class Store {
     
       this.setWallet(_wallet, adapterId);
       return _wallet.address
-    } catch {
-      console.log('');
-      
+    } catch {      
       this.reset();
       
     }

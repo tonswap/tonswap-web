@@ -1,4 +1,4 @@
-import { Avatar, Fade, Grid, IconButton } from "@mui/material";
+import { Avatar, Grid, IconButton } from "@mui/material";
 import WalletAddressImg from "assets/images/shared/wallet-address.svg";
 import { useStore } from "store";
 import { observer } from "mobx-react-lite";

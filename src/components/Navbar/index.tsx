@@ -6,15 +6,12 @@ import { useMemo, useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
-import { Box, Grid, Typography } from "@mui/material";
-import WalletAddressImg from "assets/images/shared/wallet-address.svg";
+import { Box, Grid } from "@mui/material";
 import { observer } from "mobx-react";
-import { useStore } from "store";
 import useMobile from "hooks/useMobile";
-import useQuery from "hooks/useQuery";
 import { isTelegramWebApp } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 
@@ -39,12 +36,11 @@ export const Navbar = observer(() => {
   const [open, setOpen] = useState(false);
   const isMobile = useMobile();
   const location = useLocation();
-  const query = useQuery();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
 
   const hide = useMemo(
     () => hideNavbar(isMobile, location.pathname),
-    [isMobile, location, query]
+    [isMobile, location]
   );
 
   if (hide) {
