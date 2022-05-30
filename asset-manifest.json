@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tonswap-web/static/css/main.bfdf39bf.css",
-    "main.js": "/tonswap-web/static/js/main.7bcd7020.js",
+    "main.js": "/tonswap-web/static/js/main.0c929093.js",
     "static/js/529.c79d7faf.chunk.js": "/tonswap-web/static/js/529.c79d7faf.chunk.js",
     "static/media/hero.png": "/tonswap-web/static/media/hero.6d14a30059a98d69c952.png",
     "static/media/medal.svg": "/tonswap-web/static/media/medal.72a6e86054f8d2353b1a61611f07be3d.svg",
@@ -26,11 +26,11 @@
     "static/media/minus.svg": "/tonswap-web/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/tonswap-web/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "main.bfdf39bf.css.map": "/tonswap-web/static/css/main.bfdf39bf.css.map",
-    "main.7bcd7020.js.map": "/tonswap-web/static/js/main.7bcd7020.js.map",
+    "main.0c929093.js.map": "/tonswap-web/static/js/main.0c929093.js.map",
     "529.c79d7faf.chunk.js.map": "/tonswap-web/static/js/529.c79d7faf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bfdf39bf.css",
-    "static/js/main.7bcd7020.js"
+    "static/js/main.0c929093.js"
   ]
 }
