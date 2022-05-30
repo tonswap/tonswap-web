@@ -1,5 +1,5 @@
 import { APP_NAME } from 'consts';
-import { Cell, ConfigStore } from 'ton';
+import { ConfigStore } from 'ton';
 import { TonhubConnector } from 'ton-x';
 import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
 import { TransactionRequest, Wallet, WalletAdapter } from '../types';
@@ -50,19 +50,15 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
     
     if (state.state !== 'ready') return;
 
-    const payload = request.payload instanceof Cell
-      ? request.payload.toBoc()
-      : request.payload;
-
     const response = await this.tonhubConnector.requestTransaction({
       seed: session.seed,
       appPublicKey: state.wallet.appPublicKey,
       to: request.to,
       value: request.value,
       timeout: request.timeout,
-      stateInit: request.stateInit?.toString('base64'),
+      // stateInit: request.stateInit?.toString('base64'),
       text: request.text,
-      payload: payload?.toString('base64'),
+      payload: request.payload,
     });
 
     if (response.type === 'rejected') {

@@ -1,4 +1,3 @@
-import type { Cell } from 'ton';
 
 
 export interface TransactionRequest {
@@ -15,7 +14,7 @@ export interface TransactionRequest {
 
   text?: string | null;
 
-  payload?: Cell | Buffer | null;
+  payload: string;
 }
 
 export interface Wallet {

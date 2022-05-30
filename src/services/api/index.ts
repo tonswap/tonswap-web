@@ -349,7 +349,7 @@ export const generateSellLink = async (
   );
   const boc64 = transfer.toBoc().toString("base64");
   const value = toNano(GAS_FEE.SWAP);
-  sendTransaction(tokenData.jettonWallet, value, boc64);
+  return sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
 export const generateBuyLink = async (
@@ -386,7 +386,7 @@ export const generateAddLiquidityLink = async (
   );
   const boc64 = transferAndLiq.toBoc().toString("base64");
   const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY * 2));
-  sendTransaction(tokenData.jettonWallet, value, boc64);
+  return sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
 export const generateRemoveLiquidityLink = async (
@@ -405,36 +405,18 @@ export const generateRemoveLiquidityLink = async (
   const boc64 = removeLiquidity.toBoc().toString("base64");
   const tokenObjects: any = await getToken(client, token, getOwner());
   const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
-  sendTransaction(tokenObjects.lpWallet, value, boc64);
+  return sendTransaction(tokenObjects.lpWallet, value, boc64);
 };
 
-// function sendTransaction(to: Address, value: BN, data: string) {
-//     const provider = (window as any).ton;
-//     if (provider) {
-//         provider.send("ton_sendTransaction", [
-//             {
-//                 to: to.toFriendly(),
-//                 value: value.toString(),
-//                 data: data,
-//                 dataType: "boc",
-//             },
-//         ]);
-//     } else {
-//         const link = `https://tonhub.com/transfer/${to.toFriendly()}?amount=${value}&bin=${base64UrlEncode(data)}`;
-//         return (window.location.href = link);
-//     }
-// }
 
-function sendTransaction(to: Address, value: BN, data: string) {
+
+function sendTransaction(to: Address, value: BN, boc64: string) {
   return {
-  
     to: to.toFriendly(),
     value: value.toString(),
-    // dataType: "boc",
     timeout: 5 * 60 * 1000,
-    stateInit: null,
-    text: data,
-    payload: null,
+    // stateInit: null,
+    payload: boc64,
   };
 }
 
