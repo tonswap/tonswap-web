@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Box from "@mui/material/Box";
@@ -7,6 +7,7 @@ import { useStyles } from "./style";
 import NoToken from "./NoToken";
 import SelectedToken from "./SelectedToken";
 import { useStore } from "store";
+import WalletAddress from "./WalletAddress";
 
 interface Props {
   open: boolean;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 function Menu({ open, hide }: Props) {
+  const matches = useMediaQuery("(max-width:600px)");
+
   const classes = useStyles();
   const store = useStore();
 
@@ -33,6 +36,11 @@ function Menu({ open, hide }: Props) {
             <CloseRoundedIcon fontSize="large" className={classes.closeBtn} />
           </IconButton>
         </Box>
+        {matches && (
+          <Box marginTop='20px'>
+            <WalletAddress />
+          </Box>
+        )}
         {store.selectedToken ? (
           <SelectedToken hideMenu={hide} token={store.selectedToken} />
         ) : (

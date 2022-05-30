@@ -9,7 +9,7 @@ import Menu from "./Menu";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, useMediaQuery } from "@mui/material";
 import { observer } from "mobx-react";
 import useMobile from "hooks/useMobile";
 import { isTelegramWebApp } from "utils";
@@ -37,6 +37,7 @@ export const Navbar = observer(() => {
   const isMobile = useMobile();
   const location = useLocation();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
+  const matches = useMediaQuery('(min-width:600px)');
 
   const hide = useMemo(
     () => hideNavbar(isMobile, location.pathname),
@@ -109,7 +110,7 @@ export const Navbar = observer(() => {
                 <LogoWithText />
               </Link>
             </Grid>
-            <WalletAddress />
+            {matches && <WalletAddress />}
           </Grid>
         </Toolbar>
         <Menu open={open} hide={() => setOpen(false)} />

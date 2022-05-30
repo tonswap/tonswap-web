@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   actions: {
     marginTop: 60,
     width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 25,
+    }
   },
   action: {
     borderBottom: "0.5px solid #DDDDDD",
@@ -58,7 +61,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     paddingTop: 47,
-    paddingBottom: 70
+    paddingBottom: 70,
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: 20,
+    }
   },
   selectedTokenDetails: {
     marginTop: 35,
@@ -70,6 +76,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     "& p": {
       fontWeight: 500,
     },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 15,
+    }
   },
   selectedTokenTitle: {
     fontWeight: 500,
