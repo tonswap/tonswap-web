@@ -14,6 +14,7 @@ import { observer } from "mobx-react";
 import useMobile from "hooks/useMobile";
 import { isTelegramWebApp } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
+import BetaIndicator from "./BetaIndicator";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
@@ -109,6 +110,9 @@ export const Navbar = observer(() => {
               <Link className={classes.link} to={ROUTES.tokens}>
                 <LogoWithText />
               </Link>
+            </Grid>
+            <Grid item>
+            <BetaIndicator />
             </Grid>
             {matches && <WalletAddress />}
           </Grid>

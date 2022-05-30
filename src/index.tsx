@@ -9,16 +9,16 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider as MuiThemeProvider } from "@mui/styles";
+import { ThemeProvider } from '@mui/material/styles';
+
 
 ReactDOM.render(
- 
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
         <App />
       </Router>
-    </MuiThemeProvider>
+    </ThemeProvider>
  ,
   document.getElementById("root")
 );

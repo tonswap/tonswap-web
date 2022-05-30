@@ -3,11 +3,16 @@ import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { DESTINATION_PATH, LAYOUT_MAX_WIDTH } from "consts";
+import {
+  DESTINATION_PATH,
+  LAYOUT_MAX_WIDTH,
+  TELEGRAM_WEBAPP_PARAM,
+} from "consts";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
+import useQuery from "hooks/useQuery";
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -48,14 +53,24 @@ const App = observer(() => {
   const classes = useStyles();
   const store = useStore();
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
+  const query = useQuery();
 
   useEffect(() => {
     const onLoad = async () => {
-      if(location.pathname !== '/'){
-        localStorage.setItem(DESTINATION_PATH, location.pathname+location.search)
+      const isAllowed = query.get(TELEGRAM_WEBAPP_PARAM);
+      console.log(isAllowed);
+      
+      if (!isAllowed) {
+        return;
       }
-  
+      if (location.pathname !== "/") {
+        localStorage.setItem(
+          DESTINATION_PATH,
+          location.pathname + location.search
+        );
+      }
+
       try {
         const address = await store.restoreSession();
         store.setAddress(address);
@@ -69,7 +84,6 @@ const App = observer(() => {
     onLoad();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
 
   return appReady ? (
     <Box className={classes.app}>

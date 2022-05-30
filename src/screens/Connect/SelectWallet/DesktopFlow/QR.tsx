@@ -1,9 +1,10 @@
-import { styled, useTheme } from '@mui/styles';
+import {useTheme } from '@mui/styles';
 import { Box } from "@mui/material";
 import QRCode from "react-qr-code";
 import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
 import Title from "../Title";
+import { styled } from '@mui/system';
 
 const StyledContainer = styled(Box)({
   display: "flex",

@@ -3,7 +3,7 @@ import WalletAddressImg from "assets/images/shared/wallet-address.svg";
 import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import Chip from "@mui/material/Chip";
-import {styled} from '@mui/styles';
+import { styled } from "@mui/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import Tooltip from "components/Tooltip";
 import { useNavigate } from "react-router-dom";
@@ -19,12 +19,12 @@ const StyledChip = styled(Chip)({
   borderRadius: 20,
   background: "transparent!important",
   color: theme.palette.primary.main,
-  maxWidth: '185px!important'
-})
+  maxWidth: "185px!important",
+});
 
 const StyledIconButton = styled(IconButton)({
   color: `${theme.palette.primary.main}!important`,
-})
+});
 
 const WalletAddress = observer(() => {
   const store = useStore();
@@ -37,7 +37,7 @@ const WalletAddress = observer(() => {
 
   return store.address ? (
     <Grid item display="flex" gap="10px">
-      <StyledIconButton onClick={onDisconnect} >
+      <StyledIconButton onClick={onDisconnect}>
         <PowerSettingsNewIcon />
       </StyledIconButton>
       <Tooltip placement="bottom-end" title={store.address}>

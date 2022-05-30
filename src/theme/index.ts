@@ -1,5 +1,5 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/styles' {
   interface DefaultTheme extends Theme {}
@@ -39,6 +39,5 @@ let theme = createTheme({
   },
 });
 
-theme = responsiveFontSizes(theme);
 
 export default theme;
