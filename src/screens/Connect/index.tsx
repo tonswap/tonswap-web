@@ -14,13 +14,15 @@ import { getParamsFromUrl } from "utils";
 import { telegramWebApp } from "services/telegram";
 import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { isMobile } from "react-device-detect";
+import useWebAppResize from "hooks/useWebAppResize";
 
 export const ConnectScreen = observer(() => {
-  const classes = useStyles();
   const store = useStore();
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [hideMainButton, setHideMainButton] = useState(false);
   const navigate = useNavigate();
+  const expanded = useWebAppResize()
+  const classes = useStyles({expanded});
 
   useEffect(() => {
     const destinationPath = localStorage.getItem(DESTINATION_PATH);
@@ -59,10 +61,6 @@ export const ConnectScreen = observer(() => {
     }
   }, [store.address, navigate]);
 
-  const onConnect = () => {
-    setShowConnectModal(true);
-  };
-
   return (
     <Fade in>
       <Box className={classes.root}>
@@ -84,7 +82,7 @@ export const ConnectScreen = observer(() => {
             Start by
           </Typography>
           {!hideMainButton && (
-            <ActionButton onClick={onConnect}>
+            <ActionButton onClick={() => setShowConnectModal(true)}>
               Connecting to your wallet
             </ActionButton>
           )}

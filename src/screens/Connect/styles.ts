@@ -2,6 +2,10 @@ import { makeStyles } from "@mui/styles";
 
 import { Theme } from "@mui/material/styles";
 
+interface Props {
+  expanded: boolean;
+}
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     textAlign: "center",
@@ -12,30 +16,32 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     paddingTop: 100,
     maxWidth: 400,
-    marginLeft:'auto',
-    marginRight:'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     paddingBottom: 100,
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down("sm")]: {
       paddingTop: 15,
-     flex:1,
-     paddingBottom: 0
-    }
+      flex: 1,
+      paddingBottom: 0,
+      justifyContent: "flex-start",
+    },
   },
   hero: {
+    transition: "0.2s all",
     width: 230,
     height: 230,
-    [theme.breakpoints.down('sm')]:{
-      width: 200,
-      height: 200,
-    }
+    [theme.breakpoints.down("sm")]: {
+      width: ({ expanded }: Props) => !expanded ? 130 : 200,
+      height: ({ expanded }: Props) => !expanded ? 130 : 200,
+    },
   },
   topContainer: {
-    marginBottom:48,
+    marginBottom: 48,
     "& h2": {
-      fontSize: "33px",
-      lineHeight: "30px",
+      fontSize: ({ expanded }: Props) => !expanded ?  '23px'  :  "33px",
+      lineHeight: ({ expanded }: Props) => !expanded ?  '16px' : "30px",
       fontWeight: 400,
-
+      transition: "0.2s all",
       "&:first-of-type": {
         marginBottom: 16,
       },
@@ -45,9 +51,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   logo: {
-    width: 88,
-    height: 88,
+    transition: "0.2s all",
     marginBottom: 27,
+    width: ({ expanded }: Props) => !expanded ? 60 : 88,
+    height: ({ expanded }: Props) => !expanded ? 60 : 88,
   },
   bottomBox: {
     marginTop: 42,
@@ -60,8 +67,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "center",
     width: "100%",
     maxWidth: 360,
-    marginLeft:'auto',
-    marginRight:'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     "& h2": {
       fontSize: 23,
       fontWeight: 600,
@@ -76,7 +83,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "white",
     },
   },
-
 }));
 
 export { useStyles };

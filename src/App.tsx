@@ -13,8 +13,10 @@ import { ROUTES } from "router/routes";
 import { useStore } from "store";
 import useQuery from "hooks/useQuery";
 import { styled } from "@mui/system";
+import { isTelegramWebApp } from "utils";
+import { telegramWebApp } from "services/telegram";
 
-const StyledAppContainer = styled(Box)(({ theme }) => ({
+const StyledAppContainer = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -27,7 +29,7 @@ const StyledAppContainer = styled(Box)(({ theme }) => ({
   marginLeft: "auto",
   marginRight: "auto",
   flex: 1,
-}));
+});
 
 const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   background: "#FAFAFA",
@@ -65,6 +67,10 @@ const App = observer(() => {
           DESTINATION_PATH,
           location.pathname + location.search
         );
+      }
+
+      if(isTelegramWebApp()){
+        telegramWebApp.activate()
       }
 
       try {
