@@ -10,17 +10,16 @@ import "./styles/index.scss";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import { StyledEngineProvider } from "@mui/material/styles";
 
 ReactDOM.render(
-  <StyledEngineProvider injectFirst>
+ 
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
         <App />
       </Router>
     </MuiThemeProvider>
-  </StyledEngineProvider>,
+ ,
   document.getElementById("root")
 );
 
