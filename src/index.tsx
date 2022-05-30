@@ -10,14 +10,17 @@ import "./styles/index.scss";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider as MakeStylesProvider } from '@mui/styles';
 
 
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
+  <ThemeProvider theme={theme}>
+    <MakeStylesProvider theme={theme}>
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
         <App />
       </Router>
+    </MakeStylesProvider>
     </ThemeProvider>
  ,
   document.getElementById("root")

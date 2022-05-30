@@ -1,5 +1,5 @@
-import { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
+import {Theme } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
