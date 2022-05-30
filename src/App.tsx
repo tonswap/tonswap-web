@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { Box } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import {
@@ -13,44 +12,42 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useStore } from "store";
 import useQuery from "hooks/useQuery";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  app: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    position: "relative",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    paddingBottom: 30,
-    maxWidth: LAYOUT_MAX_WIDTH,
-    marginLeft: "auto",
-    marginRight: "auto",
+const StyledAppContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  width: "100%",
+  position: "relative",
+  paddingLeft: "20px",
+  paddingRight: "20px",
+  paddingBottom: 30,
+  maxWidth: LAYOUT_MAX_WIDTH,
+  marginLeft: "auto",
+  marginRight: "auto",
+  flex: 1,
+}));
+
+const StyledRoutesContainer = styled(Box)(({ theme }) => ({
+  background: "#FAFAFA",
+  borderRadius: 20,
+  maxHeight: "calc(100vh - 130px)",
+  width: "100%",
+  overflow: "auto",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  [theme.breakpoints.down("sm")]: {
+    background: "transparent",
     flex: 1,
-  },
-
-  routes: {
-    background: "#FAFAFA",
-    borderRadius: 20,
-    maxHeight: "calc(100vh - 130px)",
-    width: "100%",
-    overflow: "auto",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      background: "transparent",
-      flex: 1,
-      maxHeight: "unset",
-      borderRadius: 0,
-    },
+    maxHeight: "unset",
+    borderRadius: 0,
   },
 }));
 
 const App = observer(() => {
   const [appReady, setAppReady] = useState(false);
-  const classes = useStyles();
   const store = useStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,9 +56,8 @@ const App = observer(() => {
   useEffect(() => {
     const onLoad = async () => {
       const isAllowed = query.get(TELEGRAM_WEBAPP_PARAM);
-      console.log(isAllowed);
-      
-      if (!isAllowed) {
+
+      if (!isAllowed && process.env.NODE_ENV === "production") {
         return;
       }
       if (location.pathname !== "/") {
@@ -86,12 +82,12 @@ const App = observer(() => {
   }, []);
 
   return appReady ? (
-    <Box className={classes.app}>
+    <StyledAppContainer>
       <Navbar />
-      <Box className={classes.routes}>
+      <StyledRoutesContainer>
         <AppRoutes />
-      </Box>
-    </Box>
+      </StyledRoutesContainer>
+    </StyledAppContainer>
   ) : null;
 });
 
