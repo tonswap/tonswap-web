@@ -17,9 +17,9 @@ const StyledChip = styled(Chip)({
   height: 35,
   paddingLeft: 10,
   borderRadius: 20,
-  background: "transparent",
+  background: "transparent!important",
   color: theme.palette.primary.main,
-  maxWidth: '185px!important',
+  maxWidth: '185px!important'
 })
 
 const StyledIconButton = styled(IconButton)({
