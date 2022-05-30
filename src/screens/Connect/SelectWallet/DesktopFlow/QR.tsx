@@ -45,7 +45,7 @@ function QR({ onClose, link, open }: Props) {
         {link ? (
           <Fade in={true}>
             <Box>
-              <QRCode style={{ width: "100%", height: "100%" }} value={link} />
+              <QRCode  style={{ width: "100%", height: "100%" }} value={link} />
             </Box>
           </Fade>
         ) : (

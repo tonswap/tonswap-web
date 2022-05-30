@@ -38,10 +38,6 @@ const DesktopFlow = observer(({ closeModal, isModalOpen }: Props) => {
   };
 
 
-  
-
-
-
   return (
     <StyledContainer>
       <AdaptersList

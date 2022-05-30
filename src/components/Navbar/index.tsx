@@ -15,6 +15,7 @@ import useMobile from "hooks/useMobile";
 import { isTelegramWebApp } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 import BetaIndicator from "./BetaIndicator";
+import { useStore } from "store";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
@@ -38,6 +39,7 @@ export const Navbar = observer(() => {
   const isMobile = useMobile();
   const location = useLocation();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
+  const store = useStore()
   const matches = useMediaQuery('(min-width:600px)');
 
   const hide = useMemo(
@@ -90,7 +92,7 @@ export const Navbar = observer(() => {
             }}
           >
             <Grid item className={classes.leftGrid}>
-              <IconButton
+             {store.address &&  <IconButton
                 onClick={() => setOpen(true)}
                 size="large"
                 edge="start"
@@ -106,8 +108,8 @@ export const Navbar = observer(() => {
                   fontSize="large"
                   className={classes.menuIcon}
                 />
-              </IconButton>
-              <Link className={classes.link} to={ROUTES.tokens}>
+              </IconButton>}
+              <Link className={classes.link} to={store.address ? ROUTES.tokens : ''}>
                 <LogoWithText />
               </Link>
             </Grid>

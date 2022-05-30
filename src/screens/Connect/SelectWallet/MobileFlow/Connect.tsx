@@ -1,7 +1,7 @@
 import {styled} from '@mui/styles';
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Title from "../Title";
-import CircularProgress from '@mui/material/CircularProgress';
+import { LoadingButton } from '@mui/lab';
 
 interface Props {
   onSelect: () => void;
@@ -25,7 +25,14 @@ const StyledLink = styled('a')({
   display: 'flex',
   alignItems:'center',
   justifyContent:'center',
-  textDecoration:'none'
+  textDecoration:'none',
+  color:'white',
+  fontSize:'16px'
+})
+
+
+const StyledLoadingButton = styled(LoadingButton)({
+  height:'35px'
 })
 
 function Connect({open, href, adapterName = "", onClose }: Props) {
@@ -38,9 +45,9 @@ function Connect({open, href, adapterName = "", onClose }: Props) {
       <Box marginBottom="20px">
         <Title onClose={onClose} text={`Connect with ${adapterName} `} />
       </Box>
-      <Button variant="contained">
-        {href ? <StyledLink href={href}>Connect</StyledLink> : <CircularProgress />}
-      </Button>
+      <StyledLoadingButton  variant="contained" loading={!href}>
+        {href &&  <StyledLink href={href}>Connect</StyledLink>}
+      </StyledLoadingButton>
     </StyledContainer>
   );
 }

@@ -25,7 +25,10 @@ class Store {
       session: observable,
       sessionLink: computed,
       disconnect: action.bound,
-      adapterId: observable
+      adapterId: observable,
+      setWallet: action,
+      setAddress: action,
+      setSession: action
     });
   }
 
@@ -39,6 +42,7 @@ class Store {
   setToken(token?: Token) {
     this.selectedToken = token;
   }
+
   setNavbarMenuOpen(value: boolean) {
     this.navMenuOpen = value;
   }
@@ -52,9 +56,14 @@ class Store {
     this.address = _address;
   }
 
-  setWallet(wallet: Wallet | null, _adapterId?: string) {
+
+  setAdapterId(_adapterId?: string){
     this.adapterId = _adapterId
+  }
+
+  setWallet(wallet: Wallet | null, _adapterId?: string) {
     this.wallet = wallet;
+    this.setAdapterId(_adapterId)
     this.setAddress(wallet?.address);
   }
 
@@ -66,6 +75,7 @@ class Store {
     this.setSession(null);
     this.setWallet(null);
     this.setAddress(undefined)
+    this.setToken(undefined)
   }
 
   setSession(_session: any) {        
