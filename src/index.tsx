@@ -9,7 +9,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { ThemeProvider as MuiThemeProvider } from "@mui/styles";
 
 ReactDOM.render(
  

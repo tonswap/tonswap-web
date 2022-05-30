@@ -13,17 +13,17 @@ import theme from "theme";
 const StyledChip = styled(Chip)({
   display: "flex",
   alignItems: "center",
-  border: `1px solid ${theme.palette.primary.main}`,
+  border: `1px solid ${theme.palette.primary.main}!important`,
   height: 35,
   paddingLeft: 10,
   borderRadius: 20,
   background: "transparent",
   color: theme.palette.primary.main,
-  maxWidth: 185,
+  maxWidth: '185px!important',
 })
 
 const StyledIconButton = styled(IconButton)({
-  color: theme.palette.primary.main,
+  color: `${theme.palette.primary.main}!important`,
 })
 
 const WalletAddress = observer(() => {
