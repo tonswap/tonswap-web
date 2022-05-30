@@ -1,7 +1,5 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { useMemo, useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
@@ -16,6 +14,7 @@ import { isTelegramWebApp } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 import BetaIndicator from "./BetaIndicator";
 import { useStore } from "store";
+import MenuToggle from "./MenuToggle";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
@@ -92,23 +91,7 @@ export const Navbar = observer(() => {
             }}
           >
             <Grid item className={classes.leftGrid}>
-             {store.address &&  <IconButton
-                onClick={() => setOpen(true)}
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                style={{
-                  padding: 0,
-                  marginLeft: 0,
-                  marginRight: isMobile ? 10 : 28,
-                }}
-              >
-                <MenuRoundedIcon
-                  fontSize="large"
-                  className={classes.menuIcon}
-                />
-              </IconButton>}
+              <MenuToggle onClick={() => setOpen(true)} show={!!store.address}  />
               <Link className={classes.link} to={store.address ? ROUTES.tokens : ''}>
                 <LogoWithText />
               </Link>

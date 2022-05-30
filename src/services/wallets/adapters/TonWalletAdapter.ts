@@ -42,27 +42,28 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
     return !!(window as any).ton?.isTonWallet;
   }
 
-  async requestTransaction(session: any, request: TransactionRequest): Promise<void> {
+  async requestTransaction(_session: any, request: TransactionRequest): Promise<void> {
     const payload = request.payload instanceof Cell
       ? request.payload.toBoc()
       : request.payload;
 
-    await Promise.race([
-      tonWalletClient.sendTransaction({
+    try {
+      return tonWalletClient.sendTransaction({
         to: request.to,
         value: request.value,
         dataType: request.payload ? 'boc' : 'text',
         data: payload?.toString('base64') ?? request.text ?? undefined,
         stateInit: request.stateInit?.toString('base64'),
-      }),
-      timeout(request.timeout, 'Transaction request exceeded timeout.'),
-    ])
+      })
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
   }
 }
 
-function timeout(ms: number, message: string) {
-  return new Promise((_, reject) => setTimeout(
-    () => reject(new Error(message)),
-    ms,
-  ));
-}
+// function timeout(ms: number, message: string) {
+//   return new Promise((_, reject) => setTimeout(
+//     () => reject(new Error(message)),
+//     ms,
+//   ));
+// }

@@ -16,6 +16,7 @@ import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
+import { Adapters } from "services/wallets/types";
 
 interface Props {
   srcToken: Token;
@@ -73,18 +74,25 @@ const TokenOperations = observer(
     const onSubmit = async () => {
       setLoading(true);
       const txRequest = await getTxRequest();
-      
+
       if (!txRequest) {
         setLoading(false);
       } else {
         try {
-          await walletService.requestTransaction(
+          const res = await walletService.requestTransaction(
             store.adapterId!!,
             store.session,
             txRequest
           );
-          pollTx(onPollingFinished);
+
+          if (!res && store.adapterId === Adapters.TON_WALLET) {
+            setLoading(false);
+          } else {
+            pollTx(onPollingFinished);
+          }
         } catch (error) {
+          console.log("test1");
+
           cancelPolling();
           setLoading(false);
         }
@@ -129,14 +137,16 @@ const TokenOperations = observer(
     }, []);
     return (
       <Fade in>
-      
         <Box className={classes.content}>
           <Notification
             text={successText}
             open={txSuccess}
             onClose={onCloseSuccessSnackbar}
           />
-          <Box className={classes.cards} style={{pointerEvents: loading ? 'none' : 'all'}}>
+          <Box
+            className={classes.cards}
+            style={{ pointerEvents: loading ? "none" : "all" }}
+          >
             <SrcToken
               token={srcToken}
               getAmountFunc={getAmountFunc}
