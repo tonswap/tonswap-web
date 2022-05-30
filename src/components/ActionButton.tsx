@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
@@ -38,7 +38,6 @@ export function ActionButton({
 }: Props) {
   const classes = useStyles();
   const className = clsx(classes.root, customClassName);
-  const theme = useTheme()
 
   return (
     <LoadingButton
