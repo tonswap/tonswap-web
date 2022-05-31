@@ -55,8 +55,8 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
     if(isMobile){
       const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${request.payload}`;
 
-      window.open(link)
-      return 
+      window.location.href = link;
+      return;
     }
  
 
