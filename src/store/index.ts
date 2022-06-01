@@ -12,7 +12,9 @@ class Store {
   seqno?: string;
   wallet: Wallet | null = null;
   session: any;
-  adapterId?: string; 
+  adapterId?: string;
+  isConnecting: boolean = true;
+  isRestoring: boolean = true;
 
   constructor() {
     makeObservable(this, {
@@ -28,10 +30,11 @@ class Store {
       adapterId: observable,
       setWallet: action,
       setAddress: action,
-      setSession: action
+      setSession: action,
+      isConnecting: observable,
+      isRestoring: observable,
     });
   }
-
 
   get sessionLink() {
     return this.session?.link
@@ -47,23 +50,22 @@ class Store {
     this.navMenuOpen = value;
   }
 
-  setAddress(_address?: string) {        
-    if(_address){
-      localStorage.setItem(LOCAL_STORAGE_ADDRESS, _address)
-    }else{
-      localStorage.removeItem(LOCAL_STORAGE_ADDRESS)
+  setAddress(_address?: string) {
+    if (_address) {
+      localStorage.setItem(LOCAL_STORAGE_ADDRESS, _address);
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_ADDRESS);
     }
     this.address = _address;
   }
 
-
-  setAdapterId(_adapterId?: string){
-    this.adapterId = _adapterId
+  setAdapterId(_adapterId?: string) {
+    this.adapterId = _adapterId;
   }
 
   setWallet(wallet: Wallet | null, _adapterId?: string) {
     this.wallet = wallet;
-    this.setAdapterId(_adapterId)
+    this.setAdapterId(_adapterId);
     this.setAddress(wallet?.address);
   }
 
@@ -74,23 +76,25 @@ class Store {
   reset() {
     this.setSession(null);
     this.setWallet(null);
-    this.setAddress(undefined)
-    this.setToken(undefined)
+    this.setAddress(undefined);
+    this.setToken(undefined);
+    this.isConnecting = false;
   }
 
-  setSession(_session: any) {        
-    this.session =  typeof _session === 'string' ?  JSON.parse(_session) : _session
+  setSession(_session: any) {
+    this.session =
+      typeof _session === "string" ? JSON.parse(_session) : _session;
   }
-
-  
 
   async createWalletSession(adapterId: Adapters) {
     const _session = await walletService.createSession(adapterId);
-    this.setSession(_session)
-
+    this.setSession(_session);
+    this.isConnecting = true;
     try {
       const _wallet = await walletService.awaitReadiness(adapterId, _session);
+
       this.setWallet(_wallet, adapterId);
+      this.isConnecting = false;
       localStorage.setItem("wallet:adapter-id", adapterId);
       localStorage.setItem("wallet:session", JSON.stringify(_session));
     } catch (e: any) {
@@ -107,23 +111,27 @@ class Store {
   async restoreSession() {
     const adapterId = localStorage.getItem("wallet:adapter-id");
     const _session = localStorage.getItem("wallet:session");
+
     if (!adapterId || !_session) {
+      this.isRestoring = false;
       throw new Error("Nothing to restore.");
     }
-    
-    this.setSession(_session)
 
+    this.setSession(_session);
+   
     try {
       const _wallet = await walletService.awaitReadiness(
         adapterId,
         JSON.parse(_session)
       );
-    
+
       this.setWallet(_wallet, adapterId);
-      return _wallet.address
-    } catch {      
+    
+    } catch {
       this.reset();
-      
+    } finally{
+      this.isRestoring = false;
+
     }
   }
 }

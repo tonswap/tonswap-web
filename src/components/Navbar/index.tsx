@@ -1,56 +1,36 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { Box, Grid, useMediaQuery } from "@mui/material";
 import { observer } from "mobx-react";
-import useMobile from "hooks/useMobile";
-import { isTelegramWebApp } from "utils";
+import { isHiddenNavbar } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 import BetaIndicator from "./BetaIndicator";
 import { useStore } from "store";
 import MenuToggle from "./MenuToggle";
+import { isMobile } from "react-device-detect";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
 
-const hideNavbar = (
-  isMobile: boolean,
-  pathname: string,
-) => {
-  if (isTelegramWebApp()) {
-    return true
-  }
-  if (isMobile && pathname === "/") {
-    return true
-  }
-  return false
-};
-
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const isMobile = useMobile();
-  const location = useLocation();
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
-  const store = useStore()
-  const matches = useMediaQuery('(min-width:600px)');
+  const store = useStore();
+  const matches = useMediaQuery("(min-width:600px)");
 
-  const hide = useMemo(
-    () => hideNavbar(isMobile, location.pathname),
-    [isMobile, location]
-  );
-
-  if (hide) {
+  if (isHiddenNavbar()) {
     return (
       <Box
         style={{
-          height: '6px',
+          height: "6px",
           width: "100%",
           top: 0,
           background: "white",
@@ -91,13 +71,19 @@ export const Navbar = observer(() => {
             }}
           >
             <Grid item className={classes.leftGrid}>
-              <MenuToggle onClick={() => setOpen(true)} show={!!store.address}  />
-              <Link className={classes.link} to={store.address ? ROUTES.tokens : ''}>
+              <MenuToggle
+                onClick={() => setOpen(true)}
+                show={!!store.address}
+              />
+              <Link
+                className={classes.link}
+                to={store.address ? ROUTES.tokens : ""}
+              >
                 <LogoWithText />
               </Link>
             </Grid>
             <Grid item>
-            <BetaIndicator />
+              <BetaIndicator />
             </Grid>
             {matches && <WalletAddress />}
           </Grid>

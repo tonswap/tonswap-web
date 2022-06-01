@@ -25,8 +25,6 @@ const Sell = observer(() => {
   const store = useStore();
   const {
     srcTokenAmount,
-    srcTokenAmountCopy,
-    destTokenAmountCopy,
     destTokenAmount,
   } = useTokenOperationsStore();
 
@@ -47,6 +45,11 @@ const Sell = observer(() => {
     ]);
   };
 
+
+  const createSuccessMessage = () => {
+    return  `Successfully swapped ${srcTokenAmount} ${store.selectedToken?.displayName} for ${destTokenAmount} TON`
+  }
+
   return (
     <TokenLayout
       title={`Swap ${store.selectedToken?.displayName} to TON`}
@@ -54,9 +57,8 @@ const Sell = observer(() => {
     >
       {store.selectedToken && (
         <TokenOperations
-          successText={`Successfully swapped ${srcTokenAmountCopy} ${store.selectedToken.displayName} for ${destTokenAmountCopy} TON`}
+          createSuccessMessage={createSuccessMessage}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
-          disableButton={false}
           getTxRequest={getTxRequest}
           getAmountFunc={API.getAmountsOut}
           getBalances={getBalances}

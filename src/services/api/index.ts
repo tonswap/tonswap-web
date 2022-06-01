@@ -158,6 +158,10 @@ const _getTokenBalance = async (minterAddress: Address) => {
 
 export const getTonBalance = async () => {
   const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string;
+  if(!address){
+    throw new Error('Address missing')
+  }
+  
   const balance = await client.getBalance(Address.parse(address));
 
   return parseNumber(new BN(balance));

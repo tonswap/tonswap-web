@@ -1,5 +1,4 @@
 import { ton } from "tokens";
-
 import { Box, SvgIcon } from "@mui/material";
 import { useStore } from "store";
 import { observer } from "mobx-react";
@@ -48,12 +47,7 @@ export const AddLiquidityScreen = () => {
 const AddLiquidity = observer(() => {
   const classes = useStyles();
   const store = useStore();
-  const {
-    srcTokenAmount,
-    destTokenAmount,
-    srcTokenAmountCopy,
-    destTokenAmountCopy,
-  } = useTokenOperationsStore();
+  const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
 
   const getTxRequest = () => {
     if (store.selectedToken) {
@@ -72,21 +66,20 @@ const AddLiquidity = observer(() => {
     ]);
   };
 
+  const createSuccessMessage = () => {
+    return `Successfully added ${srcTokenAmount} TON and ${destTokenAmount} ${store.selectedToken?.displayName} liquidity`;
+  };
+
   return (
     <TokenLayout
       title="Add Liquidity and earn"
-      subTitle={
-        <Box className={classes.subTitle}>
-          
-        </Box>
-      }
+      subTitle={<Box className={classes.subTitle}></Box>}
       titleImage={Icon}
     >
       {store.selectedToken && (
         <TokenOperations
-          successText={`Successfully added ${srcTokenAmountCopy} TON and ${destTokenAmountCopy} ${store.selectedToken.displayName} liquidity`}
+          createSuccessMessage={createSuccessMessage}
           icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
-          disableButton={false}
           getAmountFunc={API.getLiquidityAmount}
           getBalances={getBalances}
           srcToken={ton}

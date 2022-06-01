@@ -7,11 +7,11 @@ import { ReactComponent as Arrow } from "assets/images/shared/arrow.svg";
 import { SvgIcon } from "@mui/material";
 import * as API from "services/api";
 import TokenOperations from "screens/cmponents/TokenOperations";
-
 import {
   TokenOperationsStore,
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
+
 
 export const BuyScreen = () => {
   return (
@@ -26,9 +26,7 @@ const Buy = observer(() => {
 
   const {
     srcTokenAmount,
-    destTokenAmount,
-    destTokenAmountCopy,
-    srcTokenAmountCopy,
+    destTokenAmount
   } = useTokenOperationsStore();
 
   const getTxRequest = async () => {
@@ -47,6 +45,11 @@ const Buy = observer(() => {
     ]);
   };
 
+const createSuccessMessage = () => {
+  return `Successfully swapped ${srcTokenAmount} TON for ${destTokenAmount} ${store.selectedToken?.displayName}`
+}
+
+
   return (
     <TokenLayout
       title={`Swap TON to ${store.selectedToken?.displayName}`}
@@ -54,9 +57,8 @@ const Buy = observer(() => {
     >
       {store.selectedToken && (
         <TokenOperations
-          successText={`Successfully swapped ${srcTokenAmountCopy} TON for ${destTokenAmountCopy} ${store.selectedToken.displayName}`}
+          createSuccessMessage={createSuccessMessage}
           icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
-          disableButton={false}
           getTxRequest={getTxRequest}
           getAmountFunc={API.getAmountsOut}
           getBalances={getBalances}

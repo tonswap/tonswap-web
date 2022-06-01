@@ -24,8 +24,7 @@ const RemoveLiquidity = observer(() => {
   const store = useStore();
   const {
     srcTokenAmount,
-    destTokenAmountCopy,
-    srcTokenAmountCopy,
+    destTokenAmount
   } = useTokenOperationsStore();
 
   const getTxRequest = () => {
@@ -41,13 +40,17 @@ const RemoveLiquidity = observer(() => {
     return API.getTokensOfLPBalances(store.selectedToken!!.name);
   };
 
+
+  const createSuccessMessage = () => {
+    return `Successfully removed ${srcTokenAmount} TON and ${destTokenAmount} ${store.selectedToken?.displayName} liquidity`
+  }
+
   return (
     <TokenLayout title="Remove Liquidity" titleImage={Icon}>
       {store.selectedToken && (
         <TokenOperations
-          successText={`Successfully removed ${srcTokenAmountCopy} TON and ${destTokenAmountCopy} ${store.selectedToken.displayName} liquidity`}
+          createSuccessMessage={createSuccessMessage}
           icon={<SvgIcon component={Minus} viewBox="0 0 13 22" />}
-          disableButton={false}
           getTxRequest={getTxRequest}
           getAmountFunc={API.getLiquidityAmount}
           getBalances={getBalances}

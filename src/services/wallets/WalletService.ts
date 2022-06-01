@@ -33,9 +33,9 @@ export class WalletService {
     return adapter.getWallet(session);
   }
 
-  async requestTransaction<S>(adapterId: string, session: S, request: TransactionRequest): Promise<void | boolean> {    
+  async requestTransaction<S>(adapterId: string, session: S, request: TransactionRequest, onSuccess?: () => void): Promise<void | boolean> {    
     const adapter = this.adapters.get(adapterId) as WalletAdapter<S>;
-    return adapter.requestTransaction(session, request)
+    return adapter.requestTransaction(session, request, onSuccess)
   }
 }
 

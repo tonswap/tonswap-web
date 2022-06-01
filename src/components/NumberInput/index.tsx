@@ -76,10 +76,8 @@ export function NumberInput({
               padding: 0,
               height: "100%",
               border: "none",
-              color: isLoading ? "transparent" : "white",
               textIndent: "16px",
               background: "transparent",
-
               width: "100%",
             },
             inputMode: 'decimal'
@@ -88,7 +86,7 @@ export function NumberInput({
           style={{ width: "100%", height:'100%' }}
           autoComplete="off"
           sx={{ border: "none" }}
-          value={value || ''}
+          value={ isLoading ? '' :  value || ''}
           customInput={TextField}
           decimalSeparator="."
           thousandSeparator=","
