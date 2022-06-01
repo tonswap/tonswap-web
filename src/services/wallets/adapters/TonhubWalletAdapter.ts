@@ -47,18 +47,18 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
   }
 
   async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
-    const state = await this.tonhubConnector.getSessionState(session.id);
     
-    if (state.state !== 'ready'){
-      throw new Error('State is not ready');
-    }
     if(isMobile){
       const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${request.payload}`;
 
       window.location.href = link;
       return;
     }
- 
+    const state = await this.tonhubConnector.getSessionState(session.id);
+    
+    if (state.state !== 'ready'){
+      throw new Error('State is not ready');
+    }
     
     const response = await this.tonhubConnector.requestTransaction({
       seed: session.seed,
