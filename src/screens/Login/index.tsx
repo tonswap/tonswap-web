@@ -31,7 +31,7 @@ function Login() {
   const [error, setError] = useState(false);
 
   const submit = () => {
-    if (password !== pwd) {
+    if (!password || password.trim() !== pwd) {
       setError(true);
       return;
     }
@@ -43,12 +43,13 @@ function Login() {
     <StyledContainer>
         <StyledContent>
         <TextField
+       
         style={{marginBottom:'20px', width:'100%'}}
         value={password}
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <ActionButton onClick={submit}>Submit</ActionButton>
+      <ActionButton   isDisabled={!password} onClick={submit}>Submit</ActionButton>
         </StyledContent>
       <Notification
       isError
