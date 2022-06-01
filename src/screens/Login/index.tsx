@@ -4,15 +4,14 @@ import { ActionButton } from "components";
 import Notification from "components/Notification";
 import { TEST_MODE } from "consts";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "router/routes";
 
 const StyledContainer = styled(Box)({
-  height: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexDirection:'column',
+  paddingTop:'100px',
+  paddingBottom:'100px'
 });
 
 const StyledContent = styled(Box)({

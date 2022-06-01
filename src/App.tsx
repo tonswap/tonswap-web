@@ -4,11 +4,8 @@ import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import {  LAYOUT_MAX_WIDTH } from "consts";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { useStore } from "store";
 import { styled } from "@mui/system";
-import {  isTelegramWebApp } from "utils";
-import { telegramWebApp } from "services/telegram";
 import useAuth from "hooks/useAuth";
 
 const StyledAppContainer = styled(Box)({
@@ -45,13 +42,9 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
 
 const App = observer(() => {
   const store = useStore();
-  const location = useLocation();
   useAuth();
 
   useEffect(() => {
-    if (isTelegramWebApp()) {
-      telegramWebApp.activate();
-    }
     store.restoreSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

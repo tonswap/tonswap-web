@@ -3,7 +3,7 @@ import { Token } from "types";
 import BN from "bn.js";
 
 import { Address, Cell, RawCurrencyCollection, RawMessage, Slice } from "ton";
-import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM, TEST_MODE } from "consts";
+import { TELEGRAM_WEBAPP_PARAM, TEST_MODE } from "consts";
 import { isMobile } from "react-device-detect";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
@@ -179,7 +179,7 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 };
 
 const isTelegramWebApp = () => {
-  const result = getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
+  const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM)
   if (result && isMobile) {
     return true
   }

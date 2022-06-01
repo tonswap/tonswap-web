@@ -3,7 +3,7 @@ import * as API from "services/api";
 import { useStore } from "store";
 import useInterval from "../../../hooks/useInterval";
 
-const pollTriesLimit = 100;
+const pollTriesLimit = 40;
 
 function useTxPolling() {
   const store = useStore();
@@ -60,6 +60,7 @@ function useTxPolling() {
     return () => {
       stopInterval();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { pollTx, closeSuccess, txSuccess, cancelPolling };

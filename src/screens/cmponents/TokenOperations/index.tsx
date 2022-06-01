@@ -9,14 +9,12 @@ import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "screens/cmponents/TokenOperations/useTransactionStatus";
-import { base64UrlEncode, delay, isTelegramWebApp } from "utils";
+import {  delay } from "utils";
 import { fromNano } from "ton";
-import useTelegramWebAppButton from "hooks/useTelegramWebAppButton";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
-import { isMobile } from "react-device-detect";
 
 interface Props {
   srcToken: Token;
@@ -76,8 +74,7 @@ const TokenOperations = observer(
     const onSubmit = async () => {
       setLoading(true);
       const txRequest = await getTxRequest();
-      
-  
+    
       try {
         await walletService.requestTransaction(
           store.adapterId!!,
@@ -94,13 +91,7 @@ const TokenOperations = observer(
       }
     };
 
-    useTelegramWebAppButton({
-      onSubmit,
-      submitButtonText,
-      insufficientFunds,
-      isDisabled,
-      loading,
-    });
+
 
     const onCloseSuccessSnackbar = async () => {
       closeSuccess();
@@ -166,7 +157,7 @@ const TokenOperations = observer(
             />
           </Box>
 
-          {!isTelegramWebApp() && (
+          
             <Box className={classes.button}>
               {insufficientFunds ? (
                 <ActionButton isDisabled onClick={() => {}}>
@@ -189,7 +180,7 @@ const TokenOperations = observer(
                 </ActionButton>
               )}
             </Box>
-          )}
+          
         </Box>
       </Fade>
     );

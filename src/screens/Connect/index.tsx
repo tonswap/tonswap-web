@@ -10,36 +10,20 @@ import { observer } from "mobx-react";
 import { useStore } from "store";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { isTelegramWebApp } from "utils";
-import { telegramWebApp } from "services/telegram";
 import { isMobile } from "react-device-detect";
 import useWebAppResize from "hooks/useWebAppResize";
 
 export const ConnectScreen = observer(() => {
   const store = useStore();
   const [showConnectModal, setShowConnectModal] = useState(false);
-  const [hideMainButton, setHideMainButton] = useState(false);
   const navigate = useNavigate();
   const expanded = useWebAppResize();
   const classes = useStyles({ expanded });
 
   useEffect(() => {
-    const action = () => setShowConnectModal(true);
-    if (isTelegramWebApp()) {
-      telegramWebApp.addClickEventToButton(action);
-      telegramWebApp.setButtonText("Connect Wallet");
-      setHideMainButton(true);
-    }
-    return () => {
-      telegramWebApp.removeClickEventFromButton(action);
-    };
-  }, []);
-
-  useEffect(() => {
     if (store.address) {
       navigate(ROUTES.tokens);
     }
-  
   }, [store.address, navigate]);
 
   return (
@@ -62,11 +46,10 @@ export const ConnectScreen = observer(() => {
           <Typography variant="subtitle1" component="h6">
             Start by
           </Typography>
-          {!hideMainButton && (
-            <ActionButton onClick={() => setShowConnectModal(true)}>
-              Connecting to your wallet
-            </ActionButton>
-          )}
+
+          <ActionButton onClick={() => setShowConnectModal(true)}>
+            Connecting to your wallet
+          </ActionButton>
         </Box>
         <ConnectModal
           open={showConnectModal}

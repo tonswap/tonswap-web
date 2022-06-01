@@ -1,10 +1,10 @@
-import { APP_NAME } from "consts";
-import { isMobile } from "react-device-detect";
-import { ConfigStore } from "ton";
-import { TonhubConnector } from "ton-x";
-import { TonhubCreatedSession } from "ton-x/dist/connector/TonhubConnector";
-import { base64UrlEncode } from "utils";
-import { TransactionRequest, Wallet, WalletAdapter } from "../types";
+import { APP_NAME } from 'consts';
+import { isMobile } from 'react-device-detect';
+import { ConfigStore } from 'ton';
+import { TonhubConnector } from 'ton-x';
+import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
+import { base64UrlEncode } from 'utils';
+import { TransactionRequest, Wallet, WalletAdapter } from '../types';
 
 const TONHUB_TIMEOUT = 5 * 60 * 1000;
 
@@ -49,27 +49,20 @@ export class TonhubWalletAdapter
     return this.awaitReadiness(session);
   }
 
-  async requestTransaction(
-    session: TonhubCreatedSession,
-    request: TransactionRequest,
-    onSuccess?: () => void
-  ): Promise<void> {
-    const state = await this.tonhubConnector.getSessionState(session.id);
-
-    if (state.state !== "ready") {
-      throw new Error("State is not ready");
+  async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
+    
+    if(isMobile){
+      const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
+      window.location.href = link;
+      onSuccess!!()
+      return;
     }
-
-      if(isMobile){
-        const link = `https://tonhub.com/transfer/${request.to}?amount=${
-          request.value
-        }&bin=${base64UrlEncode(request.payload)}`;
-        onSuccess!!()
-        window.location.href= link
-        return 
-      }
-   
-
+    const state = await this.tonhubConnector.getSessionState(session.id);
+    
+    if (state.state !== 'ready'){
+      throw new Error('State is not ready');
+    }
+    
     const response = await this.tonhubConnector.requestTransaction({
       seed: session.seed,
       appPublicKey: state.wallet.appPublicKey,
