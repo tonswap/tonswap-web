@@ -1,9 +1,7 @@
 import { APP_NAME } from 'consts';
-import { isMobile } from 'react-device-detect';
 import { ConfigStore } from 'ton';
 import { TonhubConnector } from 'ton-x';
 import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
-import { base64UrlEncode } from 'utils';
 import { TransactionRequest, Wallet, WalletAdapter } from '../types';
 
 const TONHUB_TIMEOUT = 5 * 60 * 1000;
@@ -51,12 +49,12 @@ export class TonhubWalletAdapter
 
   async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
     
-    if(isMobile){
-      const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
-      window.location.href = link;
-      onSuccess!!()
-      return;
-    }
+    // if(isMobile){
+    //   const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
+    //   window.location.href = link;
+    //   onSuccess!!()
+    //   return;
+    // }
     const state = await this.tonhubConnector.getSessionState(session.id);
     
     if (state.state !== 'ready'){
