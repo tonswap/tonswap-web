@@ -86,7 +86,7 @@ const TokenOperations = observer(
         cancelPolling();
         setLoading(false);
         if (error instanceof Error) {
-          // setTxError(error.message);
+         setTxError(error.message);
         }
       }
     };
