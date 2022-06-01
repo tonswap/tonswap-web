@@ -23,7 +23,7 @@ const client = new TonClient({
 enum GAS_FEE {
   SWAP = 0.21,
   FORWARD_TON = 0.05,
-  ADD_LIQUIDITY = 0.2,
+  ADD_LIQUIDITY = 0.25,
   REMOVE_LIQUIDITY = 0.2,
 }
 
@@ -389,7 +389,7 @@ export const generateAddLiquidityLink = async (
     toNano(tonAmount)
   );
   const boc64 = transferAndLiq.toBoc().toString("base64");
-  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY * 2));
+  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY ));
   return sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
