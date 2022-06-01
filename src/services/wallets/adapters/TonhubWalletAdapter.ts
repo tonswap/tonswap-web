@@ -3,6 +3,7 @@ import { isMobile } from 'react-device-detect';
 import { ConfigStore } from 'ton';
 import { TonhubConnector } from 'ton-x';
 import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
+import { base64UrlEncode } from 'utils';
 import { TransactionRequest, Wallet, WalletAdapter } from '../types';
 
 const TONHUB_TIMEOUT = 5 * 60 * 1000;
@@ -49,8 +50,7 @@ export class TonhubWalletAdapter implements WalletAdapter<TonhubCreatedSession> 
   async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
     
     if(isMobile){
-      const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${request.payload}`;
-
+      const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
       window.location.href = link;
       return;
     }
