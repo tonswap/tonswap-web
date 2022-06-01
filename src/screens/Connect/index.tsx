@@ -10,9 +10,8 @@ import { observer } from "mobx-react";
 import { useStore } from "store";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { getParamsFromUrl } from "utils";
+import { isTelegramWebApp } from "utils";
 import { telegramWebApp } from "services/telegram";
-import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { isMobile } from "react-device-detect";
 import useWebAppResize from "hooks/useWebAppResize";
 
@@ -21,24 +20,12 @@ export const ConnectScreen = observer(() => {
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [hideMainButton, setHideMainButton] = useState(false);
   const navigate = useNavigate();
-  const expanded = useWebAppResize()
-  const classes = useStyles({expanded});
+  const expanded = useWebAppResize();
+  const classes = useStyles({ expanded });
 
   useEffect(() => {
-    const destinationPath = localStorage.getItem(DESTINATION_PATH);
-
-    if (!destinationPath) {
-      return;
-    }
-
-    const search = destinationPath.split("?")[1];
-    if (!search) {
-      return;
-    }
-
-    const isTelegramWebapp = getParamsFromUrl(TELEGRAM_WEBAPP_PARAM, search);
     const action = () => setShowConnectModal(true);
-    if (isTelegramWebapp) {
+    if (isTelegramWebApp()) {
       telegramWebApp.addClickEventToButton(action);
       telegramWebApp.setButtonText("Connect Wallet");
       setHideMainButton(true);
@@ -49,16 +36,10 @@ export const ConnectScreen = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (!store.address) {
-      return;
-    }
-    const destinationPath = localStorage.getItem(DESTINATION_PATH);
-    if (destinationPath) {
-      navigate(destinationPath);
-      localStorage.removeItem(DESTINATION_PATH);
-    } else {
+    if (store.address) {
       navigate(ROUTES.tokens);
     }
+  
   }, [store.address, navigate]);
 
   return (

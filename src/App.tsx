@@ -2,19 +2,14 @@ import { observer } from "mobx-react-lite";
 import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import {
-  DESTINATION_PATH,
-  LAYOUT_MAX_WIDTH,
-  TELEGRAM_WEBAPP_PARAM,
-} from "consts";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "router/routes";
+import {  LAYOUT_MAX_WIDTH } from "consts";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useStore } from "store";
-import useQuery from "hooks/useQuery";
 import { styled } from "@mui/system";
-import { isTelegramWebApp } from "utils";
+import {  isTelegramWebApp } from "utils";
 import { telegramWebApp } from "services/telegram";
+import useAuth from "hooks/useAuth";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -49,52 +44,30 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
 }));
 
 const App = observer(() => {
-  const [appReady, setAppReady] = useState(false);
   const store = useStore();
-  const navigate = useNavigate();
   const location = useLocation();
-  const query = useQuery();
+  useAuth();
 
   useEffect(() => {
-    const onLoad = async () => {
-      const isAllowed = query.get(TELEGRAM_WEBAPP_PARAM);
-
-      if (!isAllowed && process.env.NODE_ENV === "production") {
-        return;
-      }
-      if (location.pathname !== "/") {
-        localStorage.setItem(
-          DESTINATION_PATH,
-          location.pathname + location.search
-        );
-      }
-
-      if(isTelegramWebApp()){
-        telegramWebApp.activate()
-      }
-
-      try {
-        const address = await store.restoreSession();
-        store.setAddress(address);
-      } catch (error) {
-        navigate(ROUTES.connect);
-      } finally {
-        setAppReady(true);
-      }
-    };
-
-    onLoad();
+    if (isTelegramWebApp()) {
+      telegramWebApp.activate();
+    }
+    store.restoreSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return appReady ? (
+  if (store.isRestoring) {
+    return null;
+  }
+
+  return (
     <StyledAppContainer>
       <Navbar />
       <StyledRoutesContainer>
         <AppRoutes />
       </StyledRoutesContainer>
     </StyledAppContainer>
-  ) : null;
+  );
 });
 
 export default App;

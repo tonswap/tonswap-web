@@ -29,7 +29,7 @@ export interface WalletAdapter<S> {
   createSession(): Promise<S>;
   awaitReadiness(session: S): Promise<Wallet>;
   getWallet(session: S): Promise<Wallet>;
-  requestTransaction(session: S, request: TransactionRequest): Promise<void>;
+  requestTransaction(session: S, request: TransactionRequest, onSuccess?: () => void): Promise<void>;
 }
 
 export interface TonWalletProvider {

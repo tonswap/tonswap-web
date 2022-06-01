@@ -6,8 +6,6 @@ import Chip from "@mui/material/Chip";
 import { styled } from "@mui/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import Tooltip from "components/Tooltip";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "router/routes";
 import theme from "theme";
 
 const StyledChip = styled(Chip)({
@@ -28,16 +26,10 @@ const StyledIconButton = styled(IconButton)({
 
 const WalletAddress = observer(() => {
   const store = useStore();
-  const navigate = useNavigate();
-
-  const onDisconnect = () => {
-    navigate(ROUTES.connect);
-    store.disconnect();
-  };
 
   return store.address ? (
     <Grid item display="flex" gap="10px">
-      <StyledIconButton onClick={onDisconnect}>
+      <StyledIconButton onClick={store.disconnect}>
         <PowerSettingsNewIcon />
       </StyledIconButton>
       <Tooltip placement="bottom-end" title={store.address}>

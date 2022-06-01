@@ -28,7 +28,7 @@ const disableButton = (text?: string) => {
 
 
 const activate = () => {
-  provider.MainButton.show()
+provider.MainButton.show()
 provider.MainButton.enable()
 }
 

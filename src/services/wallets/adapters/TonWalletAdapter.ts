@@ -41,18 +41,26 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
     return !!(window as any).ton?.isTonWallet;
   }
 
-  async requestTransaction(_session: any, request: TransactionRequest): Promise<void> {
+  async requestTransaction(_session: any, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
 
     try {
-      return tonWalletClient.sendTransaction({
+      const res: any = await tonWalletClient.sendTransaction({
         to: request.to,
         value: request.value,
         dataType: 'boc',
         data: request.payload,
         // stateInit: request.stateInit?.toString('base64'),
       })
-    } catch (error: any) {
+      
+      if(!res){
+        throw new Error('Something went wrong')
+      }else{
+        onSuccess && onSuccess()
+      }
+     
+    } catch (error: any) {      
       throw new Error(error.message)
     }
   }
 }
+

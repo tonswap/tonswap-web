@@ -3,12 +3,12 @@ import * as API from "services/api";
 import { useStore } from "store";
 import useInterval from "../../../hooks/useInterval";
 
-const pollTriesLimit = 30;
+const pollTriesLimit = 100;
 
 function useTxPolling() {
   const store = useStore();
   const [txSuccess, setTxSuccess] = useState(false);
-  const { startInterval, stopInterval } = useInterval(1000);
+  const { startInterval, stopInterval } = useInterval();
 
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);
@@ -22,13 +22,14 @@ function useTxPolling() {
     const result = await getSeqno();
 
     //seqno didnt moved forawed, canceling polling
+    
     if (pollTries.current >= pollTriesLimit) {
-      stopInterval();
+      cancelPolling();
       onPollingFinished();
     }
     //seqno moved forward, tx success
     else if (result !== seqnoRef.current) {
-      stopInterval();
+      cancelPolling();
       await onPollingFinished(true);
       setTxSuccess(true);
     }
@@ -37,6 +38,7 @@ function useTxPolling() {
 
   const pollTx = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
     stopInterval();
+    pollTries.current = 0
     // get current seqno
     seqnoRef.current = await getSeqno();
 
@@ -54,10 +56,11 @@ function useTxPolling() {
   }
 
   useEffect(() => {
+
     return () => {
       stopInterval();
     };
-  }, [stopInterval]);
+  }, []);
 
   return { pollTx, closeSuccess, txSuccess, cancelPolling };
 }

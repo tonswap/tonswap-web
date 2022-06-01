@@ -1,8 +1,10 @@
 import { Token } from "types";
 //https://github.com/tonwhales/ton-nft/blob/main/packages/utils/parseActionsList.ts
 import BN from "bn.js";
+
 import { Address, Cell, RawCurrencyCollection, RawMessage, Slice } from "ton";
-import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
+import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM, TEST_MODE } from "consts";
+import { isMobile } from "react-device-detect";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
 
@@ -178,22 +180,35 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 
 const isTelegramWebApp = () => {
   const result = getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
-  if (result) {
-    return result;
+  if (result && isMobile) {
+    return true
+  }
+};
+
+const isHiddenNavbar = () => {
+  if (isTelegramWebApp()) {
+    return true;
+  }
+  if (isMobile && window.location.pathname === "/") {
+    return true;
+  }
+  return false;
+};
+
+const isDev = () => {
+  return process.env.NODE_ENV === 'development'
+}
+
+const isAllowedToUseApp = () => {
+  const isAllowed = localStorage.getItem(TEST_MODE);
+  if (isAllowed) {
+    return true;
   }
 
-  const destinationPath = localStorage.getItem(DESTINATION_PATH);
-
-  if (!destinationPath) {
-    return;
+  if (!isAllowed && process.env.NODE_ENV === "development") {
+    return true;
   }
-
-  const search = destinationPath.split("?")[1];
-  if (!search) {
-    return;
-  }
-
-  return getParamsFromUrl(TELEGRAM_WEBAPP_PARAM, search);
+  return false;
 };
 
 export {
@@ -202,4 +217,7 @@ export {
   getToken,
   getIsSelectedTokenMobile,
   isTelegramWebApp,
+  isHiddenNavbar,
+  isAllowedToUseApp,
+  isDev
 };
