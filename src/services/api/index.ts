@@ -310,12 +310,11 @@ export const getTokenDollarValue = async (
   let ratio = 1;
 
   if (token !== "ton") {
-    console.log(token);
-    
     const tokenData = await getToken(client, token, getOwner());
     const lpTokenData = await getJettonData(tokenData.ammMinter);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
+    
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
   }
 

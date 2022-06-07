@@ -15,7 +15,6 @@ import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
-import useWindowFocus from "hooks/useWindowFocus";
 
 interface Props {
   srcToken: Token;
@@ -46,7 +45,6 @@ const TokenOperations = observer(
     const classes = useStyles({ color: srcToken?.color || "", expanded });
     const [loading, setLoading] = useState(false);
     const [txError, setTxError] = useState<string | null>(null);
-    const isTabActive = useWindowFocus();
 
     const {
       setTotalBalances,
@@ -97,8 +95,6 @@ const TokenOperations = observer(
       }
     };
 
-  
-
     const updateBalances = async () => {
       const [srcTokenBalance, destTokenBalance] = await getBalances();
       const srcBalance =
@@ -123,18 +119,14 @@ const TokenOperations = observer(
     }, []);
 
     const onCloseSuccessSnackbar = async () => {
-      if (isTabActive) {
-        closeSuccess();
-        await delay(500);
-        successTextRef.current = "";
-      }
+      closeSuccess();
+      await delay(500);
+      successTextRef.current = "";
     };
 
     const onCloseError = () => {
-        if(isTabActive){
-          setTxError(null)
-        }
-    }
+      setTxError(null);
+    };
 
     return (
       <Fade in>

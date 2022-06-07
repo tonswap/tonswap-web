@@ -44,7 +44,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       );
       const usdAmounts = await Promise.all([
         getUsdAmount(token.name, balanceRef.current),
-        getUsdAmount(srcTokenName, Number(result)),
+        getUsdAmount(srcTokenName, Number(fromNano(result))),
       ]);
 
       if (!balanceRef.current) {

@@ -9,9 +9,13 @@ function useTxPolling() {
   const store = useStore();
   const [txSuccess, setTxSuccess] = useState(false);
   const { startInterval, stopInterval } = useInterval();
+  // const isTabActive = useWindowFocus();
+  // const isInactiveRef = useRef(false)
 
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);
+  const isInProgressRef = useRef(false)
+  const onFinishMethodRef = useRef<any>()
 
   const getSeqno = useCallback(async () => {
     const result = await API.getSeqno(store.address!!);
@@ -37,11 +41,12 @@ function useTxPolling() {
   };
 
   const pollTx = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
+    onFinishMethodRef.current = onPollingFinished
     stopInterval();
     pollTries.current = 0
     // get current seqno
     seqnoRef.current = await getSeqno();
-
+    isInProgressRef.current = true
     startInterval(() => pollInterval(onPollingFinished));
   };
 
@@ -53,7 +58,20 @@ function useTxPolling() {
   const cancelPolling = () => {
     pollTries.current = 0
     stopInterval()
+    isInProgressRef.current = false
   }
+
+
+  // useEffect(() => {
+  //   if(isTabActive && isInactiveRef.current === true){
+  //     isInactiveRef.current = false
+  //     pollTx(onFinishMethodRef.current)
+  //   }else{
+  //     isInactiveRef.current = true
+  //     cancelPolling()
+  //   }
+  // }, [isTabActive])
+  
 
   useEffect(() => {
 
