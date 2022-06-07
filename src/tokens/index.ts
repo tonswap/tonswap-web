@@ -1,4 +1,3 @@
-import Luna from "assets/images/tokens/Luna.svg";
 import Dai from "assets/images/tokens/DAI.svg";
 import Doge from "assets/images/tokens/doge.svg";
 import Dot from "assets/images/tokens/dot.svg";
@@ -7,6 +6,7 @@ import Usdt from "assets/images/tokens/usdt.svg";
 import BTC from "assets/images/tokens/BTC.svg";
 import ETH from "assets/images/tokens/ETH.svg";
 import Ton from "assets/images/tokens/ton.svg";
+import Shib from "assets/images/tokens/shiba.svg";
 
 
 
@@ -14,10 +14,10 @@ import { Token } from "types";
 
 const tokens: Token[] = [
   {
-    image: Luna,
-    displayName: "LUNA",
-    name: "luna",
-    color: "#32487E",
+    image: Shib,
+    displayName: "SHIB",
+    name: "shib",
+    color: "#FFA40A",
     isActive: true,
     address: 'EQAycqbigAAkekkGG1A_3LSVGS1RfvJb4YavqUcbUg0pYK0u',
     amm: "EQCSOxDQI94b0vGCN2Lc3DPan8v3P_JRt-z4PJ9Af2_BPHx5"

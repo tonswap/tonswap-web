@@ -42,6 +42,7 @@ const callWithRetry = async (address: Address, method: string, params: any) => {
 
 export const getTokenBalance = async (token: Token) => {
   const tokenData = await getToken(client, token.name, getOwner());
+    
   //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
   return _getTokenBalance(tokenData.tokenMinter);
 };
@@ -212,10 +213,10 @@ export const getAmountsOut = async (
         new BN(tokenData.tokenReserves)
       );
     }
-  } else {
-    // TODO
+  } else {  // Dest amount
+    // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
     const amountIn = toNano(destAmount || 0);
-    if (isSourceToken) {
+    if (!isSourceToken) {
       return getAmountOut(
         tokenAmm,
         new BN(amountIn),
@@ -309,6 +310,8 @@ export const getTokenDollarValue = async (
   let ratio = 1;
 
   if (token !== "ton") {
+    console.log(token);
+    
     const tokenData = await getToken(client, token, getOwner());
     const lpTokenData = await getJettonData(tokenData.ammMinter);
     const tokenReserves = lpTokenData.tokenReserves;

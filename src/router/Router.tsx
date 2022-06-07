@@ -7,7 +7,6 @@ import {
   RemoveLiquidityScreen,
   AddLiquidityScreen,
 } from "screens";
-import Login from "screens/Login";
 
 import { ROUTES } from "./routes";
 
@@ -19,7 +18,6 @@ function AppRoutes() {
         <Route path={ROUTES.tokens} element={<Tokens />} />
         <Route path={ROUTES.actions.buy} element={<BuyScreen />} />
         <Route path={ROUTES.actions.sell} element={<SellScreen />} />
-        <Route path={ROUTES.login} element={<Login />} />
         <Route
           path={ROUTES.actions.removeLiquidity}
           element={<RemoveLiquidityScreen />}

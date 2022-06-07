@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: 30,
     width:'100%',
     [theme.breakpoints.down('sm')]: {
-      marginTop:'auto'
+      marginTop: (props: StyleProps) => props.expanded ? 'auto' : 0,
     }
   },
   svg:{
-   
-    marginTop: (props: StyleProps) => props.expanded ? 15 : 10,
-    marginBottom: (props: StyleProps) => props.expanded ? 40 : 22,
+    marginTop: (props: StyleProps) => props.expanded ? 15 : 3,
+    marginBottom: (props: StyleProps) => props.expanded ? 40 : 16,
+    transform: (props: StyleProps) => props.expanded ? 'scale(1)' :  'scale(0.6)',
     textAlign:'center',
     "& svg": {
       "& path": {

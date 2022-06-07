@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import {  LAYOUT_MAX_WIDTH } from "consts";
+import { LAYOUT_MAX_WIDTH } from "consts";
 import { useEffect } from "react";
 import { useStore } from "store";
 import { styled } from "@mui/system";

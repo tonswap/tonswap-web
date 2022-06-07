@@ -1,6 +1,7 @@
 import SwapCard from "components/SwapCard";
 import React, { useRef, useState } from "react";
 import { calculateTokens } from "screens/layouts/util";
+import { fromNano } from "ton";
 import { Token } from "types";
 import { useDebouncedCallback } from "use-debounce";
 import { useTokenOperationsStore } from "./Context";
@@ -58,9 +59,11 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       if (!balanceRef.current) {
         return;
       }
+      console.log({result:fromNano(result)}, result);
+      
       setUsdLoading(false);
       setSrcLoading(false);
-      setsrcTokenAmount(result);
+      setsrcTokenAmount(result/1e9);
     }
   }, 600);
 

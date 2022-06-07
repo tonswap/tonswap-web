@@ -118,6 +118,7 @@ const TokenOperations = observer(
     };
 
     useEffect(() => {
+      
       updateBalances();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

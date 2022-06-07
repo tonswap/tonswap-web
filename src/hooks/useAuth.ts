@@ -1,4 +1,4 @@
-import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM, TEST_MODE } from "consts";
+import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
@@ -17,15 +17,11 @@ function useAuth() {
         location.pathname + location.search
       );
     }
-    const hasAccess = localStorage.getItem(TEST_MODE);
 
     if(getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)){
       localStorage.setItem(TELEGRAM_WEBAPP_PARAM, '1')
     }
-    if (!hasAccess) {
-      navigate(ROUTES.login);
-      return;
-    }
+ 
     if (!store.address) {
       navigate(ROUTES.connect);
       return;

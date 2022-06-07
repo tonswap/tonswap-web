@@ -27,11 +27,11 @@ export default function Tooltip({
 }: Props) {
   const [open, setOpen] = useState(false);
   return !isMobile ? (
-    <MuiTooltip placement={placement} title={title} arrow>
+    <MuiTooltip   placement={placement} title={title} arrow>
       {children}
     </MuiTooltip>
   ) : (
-    <ClickAwayListener onClickAway={() => setOpen(false)}>
+    <ClickAwayListener  onClickAway={() => setOpen(false)}>
       <div>
         <MuiTooltip
           placement={placement}
@@ -43,7 +43,7 @@ export default function Tooltip({
           open={open}
           disableFocusListener
           disableHoverListener
-          disableTouchListener
+          
           title={title}
         >
           <Box onClick={() => setOpen(true)}>{children}</Box>
