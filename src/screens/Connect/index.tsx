@@ -52,6 +52,7 @@ export const ConnectScreen = observer(() => {
           </ActionButton>
         </Box>
         <ConnectModal
+          expanded={expanded}
           open={showConnectModal}
           onClose={() => setShowConnectModal(false)}
         />
