@@ -173,6 +173,8 @@ export function base64UrlEncode(base64: string) {
   });
 }
 
+
+
 export const getParamsFromUrl = (name: string, search?: string) => {
   const query = new URLSearchParams(search || window.location.search);
   return query.get(name);
