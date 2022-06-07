@@ -1,10 +1,5 @@
-import Dai from "assets/images/tokens/DAI.svg";
-import Doge from "assets/images/tokens/doge.svg";
-import Dot from "assets/images/tokens/dot.svg";
-import Usdc from "assets/images/tokens/usdc.svg";
+
 import Usdt from "assets/images/tokens/usdt.svg";
-import BTC from "assets/images/tokens/BTC.svg";
-import ETH from "assets/images/tokens/ETH.svg";
 import Ton from "assets/images/tokens/ton.svg";
 import Shib from "assets/images/tokens/shiba.svg";
 
