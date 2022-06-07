@@ -9,12 +9,13 @@ import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "screens/cmponents/TokenOperations/useTransactionStatus";
-import {  delay } from "utils";
+import { delay } from "utils";
 import { fromNano } from "ton";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
+import useWindowFocus from "hooks/useWindowFocus";
 
 interface Props {
   srcToken: Token;
@@ -25,6 +26,7 @@ interface Props {
   getAmountFunc: any;
   getTxRequest: () => any;
   createSuccessMessage: () => string;
+  isInsufficientFunds?: (src: number, dest: number) => boolean;
 }
 
 const TokenOperations = observer(
@@ -37,27 +39,29 @@ const TokenOperations = observer(
     getAmountFunc,
     getTxRequest,
     createSuccessMessage,
+    isInsufficientFunds,
   }: Props) => {
     const expanded = useWebAppResize();
     const store = useStore();
     const classes = useStyles({ color: srcToken?.color || "", expanded });
     const [loading, setLoading] = useState(false);
     const [txError, setTxError] = useState<string | null>(null);
+    const isTabActive = useWindowFocus();
 
     const {
       setTotalBalances,
       setDestAvailableAmountLoading,
       setSrcAvailableAmountLoading,
       srcTokenAmount,
-      totalBalances,
       destLoading,
       srcLoading,
+      destTokenAmount,
       resetAmounts,
+      totalBalances,
     } = useTokenOperationsStore();
 
     const { txSuccess, pollTx, closeSuccess, cancelPolling } = useTxPolling();
     const successTextRef = useRef("");
-  
 
     const onPollingFinished = async (fetchBalances?: boolean) => {
       setLoading(false);
@@ -67,14 +71,16 @@ const TokenOperations = observer(
         updateBalances();
       }
     };
+    const insufficientFunds = isInsufficientFunds
+      ? isInsufficientFunds(srcTokenAmount, destTokenAmount)
+      : srcTokenAmount > totalBalances.srcBalance;
 
-    const insufficientFunds = srcTokenAmount > totalBalances.srcBalance;
     const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
     const onSubmit = async () => {
       setLoading(true);
       const txRequest = await getTxRequest();
-    
+
       try {
         await walletService.requestTransaction(
           store.adapterId!!,
@@ -86,18 +92,12 @@ const TokenOperations = observer(
         cancelPolling();
         setLoading(false);
         if (error instanceof Error) {
-         setTxError(error.message);
+          setTxError(error.message);
         }
       }
     };
 
-
-
-    const onCloseSuccessSnackbar = async () => {
-      closeSuccess();
-      await delay(500);
-      successTextRef.current = "";
-    };
+  
 
     const updateBalances = async () => {
       const [srcTokenBalance, destTokenBalance] = await getBalances();
@@ -118,10 +118,23 @@ const TokenOperations = observer(
     };
 
     useEffect(() => {
-      
       updateBalances();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const onCloseSuccessSnackbar = async () => {
+      if (isTabActive) {
+        closeSuccess();
+        await delay(500);
+        successTextRef.current = "";
+      }
+    };
+
+    const onCloseError = () => {
+        if(isTabActive){
+          setTxError(null)
+        }
+    }
 
     return (
       <Fade in>
@@ -135,7 +148,7 @@ const TokenOperations = observer(
           <Notification
             text={txError || ""}
             open={!!txError}
-            onClose={() => setTxError(null)}
+            onClose={onCloseError}
             isError
           />
 
@@ -158,30 +171,28 @@ const TokenOperations = observer(
             />
           </Box>
 
-          
-            <Box className={classes.button}>
-              {insufficientFunds ? (
-                <ActionButton isDisabled onClick={() => {}}>
-                  <WarningAmberRoundedIcon
-                    style={{
-                      color: "#7D7D7D",
-                      top: "-2px",
-                      position: "relative",
-                    }}
-                  />
-                  Insufficient funds
-                </ActionButton>
-              ) : (
-                <ActionButton
-                  isLoading={loading}
-                  isDisabled={isDisabled}
-                  onClick={onSubmit}
-                >
-                  {submitButtonText}
-                </ActionButton>
-              )}
-            </Box>
-          
+          <Box className={classes.button}>
+            {insufficientFunds ? (
+              <ActionButton isDisabled onClick={() => {}}>
+                <WarningAmberRoundedIcon
+                  style={{
+                    color: "#7D7D7D",
+                    top: "-2px",
+                    position: "relative",
+                  }}
+                />
+                Insufficient funds
+              </ActionButton>
+            ) : (
+              <ActionButton
+                isLoading={loading}
+                isDisabled={isDisabled}
+                onClick={onSubmit}
+              >
+                {submitButtonText}
+              </ActionButton>
+            )}
+          </Box>
         </Box>
       </Fade>
     );

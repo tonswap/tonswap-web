@@ -7,18 +7,18 @@ function useWebAppResize() {
 
 
   useEffect(() => {
+
+
+    const onChange = () => {
+      setExpanded(telegramWebApp.provider.isExpanded);
+    }
     if (isTelegramWebApp()) {
       setExpanded(telegramWebApp.provider.isExpanded);
-      telegramWebApp.provider.onEvent("viewportChanged", async () => {
-        
-        setExpanded(telegramWebApp.provider.isExpanded);
-      });
+      telegramWebApp.provider.onEvent("viewportChanged", onChange);
     }
 
     return () => {
-      telegramWebApp.provider.offEvent("viewportChanged", () => {
-        setExpanded(telegramWebApp.provider.isExpanded);
-      });
+      telegramWebApp.provider.offEvent("viewportChanged", onChange);
     };
   }, []);
 

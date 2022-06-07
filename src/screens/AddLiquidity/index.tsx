@@ -47,7 +47,8 @@ export const AddLiquidityScreen = () => {
 const AddLiquidity = observer(() => {
   const classes = useStyles();
   const store = useStore();
-  const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
+  const { srcTokenAmount, destTokenAmount, totalBalances } =
+    useTokenOperationsStore();
 
   const getTxRequest = () => {
     if (store.selectedToken) {
@@ -70,6 +71,16 @@ const AddLiquidity = observer(() => {
     return `Successfully added ${srcTokenAmount} TON and ${destTokenAmount} ${store.selectedToken?.displayName} liquidity`;
   };
 
+  const isInsufficientFunds = (src: number, dest: number) => {
+    if (!src || !dest) {
+      return false;
+    }
+    if (src > totalBalances.srcBalance || dest > totalBalances.destBalance) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <TokenLayout
       title="Add Liquidity and earn"
@@ -86,6 +97,7 @@ const AddLiquidity = observer(() => {
           getTxRequest={getTxRequest}
           destToken={store.selectedToken}
           submitButtonText={`Add TON/${store.selectedToken?.displayName} liquidity`}
+          isInsufficientFunds={isInsufficientFunds}
         />
       )}
     </TokenLayout>

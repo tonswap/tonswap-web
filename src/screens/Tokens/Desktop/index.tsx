@@ -33,6 +33,7 @@ const Desktop = observer(() => {
       marginRight="auto"
       width="100%"
       position="relative"
+      justifyContent='center'
     >
       {tokens.map((token) => {
         return (

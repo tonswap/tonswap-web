@@ -13,7 +13,7 @@ const SandBoxPools: { [key: string]: PoolInfo } = {
 };
 
 const TestNetPools: { [key: string]: PoolInfo } = {
-    luna: {
+    shib: {
         ammMinter: Address.parse("EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"),
         tokenMinter: Address.parse("EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"),
     },
@@ -23,6 +23,10 @@ const MainNetPools: { [key: string]: PoolInfo } = {
     shib: {
         ammMinter: Address.parse("EQA9OLcGB8feXilz0_bXiPMKriHGZZ1o25eHrHXOvBUZDsjC"),
         tokenMinter: Address.parse("EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"),
+    },
+    usdt: {
+        ammMinter: Address.parse("EQBomTp_uTphBeuJtuumlfmB4d6SP_zvN93KYpiM7WR7h9nA"),
+        tokenMinter: Address.parse("EQD9SyLUUGV9Caqh7DgHp15JY4GcKpLoZ_wdmG7SQ_Mpjxw4"),
     },
 };
 
@@ -60,13 +64,15 @@ export async function getToken(client: TonClient, token: string, owner: Address)
 }
 
 export async function resolveJettonWallet(client: TonClient, walletAddress: Address, jettonMaster: Address) {
+
+    
     let cell = new Cell();
     cell.bits.writeAddress(walletAddress);
-
+    
     // tonweb style - this way its more optimized for browser
     const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
     let res = await client.callGetMethod(jettonMaster, "get_wallet_address", [["tvm.Slice", b64data]]);
-
+    
     return bytesToAddress(res.stack[0][1].bytes);
 }
 
