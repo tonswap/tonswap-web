@@ -387,7 +387,7 @@ export const generateAddLiquidityLink = async (
     tokenData.ammMinter,
     toNano(tonAmount + GAS_FEE.FORWARD_TON),
     slippage,
-    toNano(tonAmount)
+    toNano(tonAmount).add(new BN(10))  // TODO dust issue 
   );
   const boc64 = transferAndLiq.toBoc().toString("base64");
   const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY ));
