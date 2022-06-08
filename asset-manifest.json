@@ -1,11 +1,13 @@
 {
   "files": {
     "main.css": "/tonswap-web/static/css/main.bfdf39bf.css",
-    "main.js": "/tonswap-web/static/js/main.1863296c.js",
-    "static/media/hero.png": "/tonswap-web/static/media/hero.6d14a30059a98d69c952.png",
+    "main.js": "/tonswap-web/static/js/main.fd30a3c3.js",
+    "static/media/tonhub.png": "/tonswap-web/static/media/tonhub.a222cde6645afb15181c.png",
+    "static/media/hero.png": "/tonswap-web/static/media/hero.73a5d6bcf9cbe40383ea.png",
     "static/media/shiba.svg": "/tonswap-web/static/media/shiba.46c0290735efcd7495b3df2b2c2629ae.svg",
     "static/media/medal.svg": "/tonswap-web/static/media/medal.72a6e86054f8d2353b1a61611f07be3d.svg",
     "static/media/claim-rewards.svg": "/tonswap-web/static/media/claim-rewards.9c9fdaf1b07c1014fccbb4e17bb5db44.svg",
+    "static/media/chrome.svg": "/tonswap-web/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
     "static/media/arrow.svg": "/tonswap-web/static/media/arrow.520c234996021da2685f9ae4d51a582b.svg",
     "index.html": "/tonswap-web/index.html",
     "static/media/ton.svg": "/tonswap-web/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
@@ -18,11 +20,12 @@
     "static/media/ton-logo.svg": "/tonswap-web/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
     "static/media/minus.svg": "/tonswap-web/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/tonswap-web/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
+    "static/media/logo-2.svg": "/tonswap-web/static/media/logo-2.358fba5dadad95fc99ee5cdd2cd76697.svg",
     "main.bfdf39bf.css.map": "/tonswap-web/static/css/main.bfdf39bf.css.map",
-    "main.1863296c.js.map": "/tonswap-web/static/js/main.1863296c.js.map"
+    "main.fd30a3c3.js.map": "/tonswap-web/static/js/main.fd30a3c3.js.map"
   },
   "entrypoints": [
     "static/css/main.bfdf39bf.css",
-    "static/js/main.1863296c.js"
+    "static/js/main.fd30a3c3.js"
   ]
 }
