@@ -314,7 +314,6 @@ export const getTokenDollarValue = async (
     const lpTokenData = await getJettonData(tokenData.ammMinter);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
-    
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
   }
 
@@ -404,6 +403,13 @@ export const generateRemoveLiquidityLink = async (
   let shareToRemove = toNano(tonAmount)
     .mul(jettonData.totalSupply)
     .div(jettonData.tonReserves);
+
+  const userLpBalance = (await getLPTokenBalance(token)).balance;
+  // round up 98 and above to use the max lp
+  if((userLpBalance.mul(new BN(100)).div(shareToRemove).gte(new BN(98)) )) {
+    shareToRemove = userLpBalance;
+  }
+  
   const removeLiquidity = await DexActions.removeLiquidity(
     shareToRemove,
     getOwner()
