@@ -3,13 +3,12 @@ import {
   ListItem,
   List,
   ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Box,
+  Typography,
 } from "@mui/material";
 import { Adapter, Adapters } from "../../../services/wallets/types";
 import Title from "./Title";
-import { useTheme, Theme } from "@mui/material/styles";
+import {  Theme } from "@mui/material/styles";
 
 const StyledListItem = styled(ListItem)({
   background: "white",
@@ -17,24 +16,53 @@ const StyledListItem = styled(ListItem)({
 });
 const StyledList = styled(List)({
   width: "100%",
+  gap:'5px',
+  display: 'flex',
+  flexDirection:'column'
 });
 
 const StyledListItemButton = styled(ListItemButton)({
   paddingLeft: 10,
+  
 });
 
-const StyledContainer = styled(Box)({
-  width: "300px",
-});
+const StyledContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+  width: "350px",
+  [theme.breakpoints.down('sm')]: {
+    width: "300px",
+  }
+
+}));
 
 const StyledConnectModalTitle = styled(Box)({
   paddingLeft: "10px",
 });
-const StyledListItemText = styled(ListItemText)(
+const StyledListItemRight = styled(Box)(
   ({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.primary,
+    '& h5':{
+      color: theme.palette.secondary.main,
+      fontSize:'18px',
+      fontWeight:'500',
+      marginBottom:'5px'
+    },
+    '& p':{
+      color: theme.palette.secondary.main,
+      fontSize:'14px',
+      opacity: '0.7'
+
+    }
+   
+
   })
 );
+const StyledIcon = styled('img')({
+  width:'40px',
+  height:'40px',
+  objectFit:'cover',
+  marginRight:'24px'
+})
+
+
 
 interface Props {
   select: (adapter: Adapters) => void;
@@ -44,7 +72,6 @@ interface Props {
 }
 
 function AdaptersList({ onClose, select, open, adapters }: Props) {
-  const theme = useTheme();
 
   if (!open) {
     return null; 
@@ -57,14 +84,15 @@ function AdaptersList({ onClose, select, open, adapters }: Props) {
       </StyledConnectModalTitle>
       <StyledList>
         {adapters.map((adapter) => {
-          const { type, icon: Icon, text } = adapter;
+          const { type, icon, name, description } = adapter;
           return (
             <StyledListItem disablePadding key={type}>
               <StyledListItemButton onClick={() => select(type)}>
-                <ListItemIcon style={{ minWidth: "40px" }}>
-                  <Icon sx={{ color: theme.palette.text.primary }} />
-                </ListItemIcon>
-                <StyledListItemText theme={theme} primary={text} />
+              <StyledIcon src ={icon} />
+               <StyledListItemRight>
+                 <Typography variant='h5'>{name}</Typography>
+                 <Typography>{description}</Typography>
+               </StyledListItemRight>
               </StyledListItemButton>
             </StyledListItem>
           );

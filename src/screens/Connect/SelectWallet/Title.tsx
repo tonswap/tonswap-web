@@ -21,7 +21,7 @@ function Title({ text, onClose }: Props) {
   const theme = useTheme();
   return (
     <StyledContainer>
-      <Typography style={{whiteSpace: 'nowrap', paddingRight:'20px'}}>{text}</Typography>
+      <Typography style={{whiteSpace: 'nowrap', paddingRight:'20px', fontWeight:'500', fontSize:'18px'}}>{text}</Typography>
       <IconButton  color="primary" onClick={onClose}>
         <CloseRoundedIcon style={{ color: theme.palette.primary.main }} />
       </IconButton>

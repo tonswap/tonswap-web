@@ -1,3 +1,4 @@
+import useWindowVisibility from "hooks/useWindowFocus";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as API from "services/api";
 import { useStore } from "store";
@@ -9,44 +10,52 @@ function useTxPolling() {
   const store = useStore();
   const [txSuccess, setTxSuccess] = useState(false);
   const { startInterval, stopInterval } = useInterval();
-  // const isTabActive = useWindowFocus();
-  // const isInactiveRef = useRef(false)
-
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);
-  const isInProgressRef = useRef(false)
-  const onFinishMethodRef = useRef<any>()
+  const isInProgressRef = useRef(false);
+  const onFinishMethodRef = useRef<any>();
 
   const getSeqno = useCallback(async () => {
     const result = await API.getSeqno(store.address!!);
     return result.stack[0][1];
   }, [store.address]);
 
-  const pollInterval = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
+  const pollInterval = async (
+    onPollingFinished: (value?: boolean) => Promise<void>
+  ) => {
     const result = await getSeqno();
 
     //seqno didnt moved forawed, canceling polling
-    
+
     if (pollTries.current >= pollTriesLimit) {
-      cancelPolling();
+      console.log("timeout");
+      stopPolling();
       onPollingFinished();
+      isInProgressRef.current = false;
     }
     //seqno moved forward, tx success
     else if (result !== seqnoRef.current) {
-      cancelPolling();
+      console.log("done");
+
+      isInProgressRef.current = false;
+      stopPolling();
       await onPollingFinished(true);
       setTxSuccess(true);
     }
     pollTries.current++;
   };
 
-  const pollTx = async (onPollingFinished: (value?: boolean) => Promise<void>) => {
-    onFinishMethodRef.current = onPollingFinished
+  const pollTx = async (
+    onPollingFinished: (value?: boolean) => Promise<void>,
+    seqno?: string
+  ) => {
+    console.log("started");
+    onFinishMethodRef.current = onPollingFinished;
     stopInterval();
-    pollTries.current = 0
+    pollTries.current = 0;
     // get current seqno
-    seqnoRef.current = await getSeqno();
-    isInProgressRef.current = true
+    seqnoRef.current = seqno || (await getSeqno());
+    isInProgressRef.current = true;
     startInterval(() => pollInterval(onPollingFinished));
   };
 
@@ -54,34 +63,32 @@ function useTxPolling() {
     setTxSuccess(false);
   };
 
-
-  const cancelPolling = () => {
-    pollTries.current = 0
-    stopInterval()
-    isInProgressRef.current = false
-  }
-
-
-  // useEffect(() => {
-  //   if(isTabActive && isInactiveRef.current === true){
-  //     isInactiveRef.current = false
-  //     pollTx(onFinishMethodRef.current)
-  //   }else{
-  //     isInactiveRef.current = true
-  //     cancelPolling()
-  //   }
-  // }, [isTabActive])
-  
+  const stopPolling = () => {
+    pollTries.current = 0;
+    stopInterval();
+  };
 
   useEffect(() => {
-
     return () => {
       stopInterval();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { pollTx, closeSuccess, txSuccess, cancelPolling };
+  const onBlur = () => {
+    console.log("paused");
+    stopPolling();
+  };
+
+  const onFocus = () => {
+    if (isInProgressRef.current) {
+      pollTx(onFinishMethodRef.current, seqnoRef.current);
+    }
+  };
+
+  useWindowVisibility({ onFocus, onBlur });
+
+  return { pollTx, closeSuccess, txSuccess, cancelPolling: stopPolling };
 }
 
 export default useTxPolling;

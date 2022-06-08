@@ -1,6 +1,7 @@
 const provider = (window as any).Telegram.WebApp;
 
 
+
 const setButtonText = (text?: string) => {
   provider.MainButton.setText(text);
 };
@@ -60,7 +61,8 @@ const telegramWebApp = {
   activateButtonLoader,
   disableButtonLoader,
   removeClickEventFromButton,
-  activate
+  activate,
+  close: provider.close
 };
 
 export { telegramWebApp };

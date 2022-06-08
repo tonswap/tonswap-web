@@ -39,7 +39,7 @@ function SelectedToken({ token, hideMenu }: Props) {
         </Typography>
       </Box>
       <Link onClick={onReplace} to={ROUTES.tokens} className={classes.replace}>
-        Replace
+        Change Token
       </Link>
       <Box className={classes.actions}>
         <TokenActions onActionClick={hideMenu} token={token} />

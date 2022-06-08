@@ -9,12 +9,13 @@ import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
 import Notification from "components/Notification";
 import useTxPolling from "screens/cmponents/TokenOperations/useTransactionStatus";
-import { delay } from "utils";
+import { delay, isTelegramWebApp } from "utils";
 import { fromNano } from "ton";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
+import { telegramWebApp } from "services/telegram";
 
 interface Props {
   srcToken: Token;
@@ -45,6 +46,7 @@ const TokenOperations = observer(
     const classes = useStyles({ color: srcToken?.color || "", expanded });
     const [loading, setLoading] = useState(false);
     const [txError, setTxError] = useState<string | null>(null);
+    const [txFinished, setTxFinished] = useState(false);
 
     const {
       setTotalBalances,
@@ -67,6 +69,9 @@ const TokenOperations = observer(
         successTextRef.current = createSuccessMessage();
         resetAmounts();
         updateBalances();
+        if (isTelegramWebApp()) {
+          setTxFinished(true);
+        }
       }
     };
     const insufficientFunds = isInsufficientFunds
@@ -174,6 +179,13 @@ const TokenOperations = observer(
                   }}
                 />
                 Insufficient funds
+              </ActionButton>
+            ) : txFinished ? (
+              <ActionButton
+                isDisabled={false}
+                onClick={() => telegramWebApp.close()}
+              >
+                Done
               </ActionButton>
             ) : (
               <ActionButton

@@ -45,8 +45,9 @@ export enum Adapters  {
 
 
 export interface Adapter {
-    text: string,
+  name: string,
     type: Adapters,
-    icon: any,
-    mobileCompatible: boolean
+    icon: string,
+    mobileCompatible: boolean,
+    description: string;
 }

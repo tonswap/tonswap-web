@@ -49,7 +49,7 @@ const MobileFlow = observer(({ closeModal }: Props) => {
       <Connect
         href={store.sessionLink}
         open={!!selectedAdapter}
-        adapterName={selectedAdapter?.text}
+        adapterName={selectedAdapter?.name}
         onSelect={closeModal}
         onClose={onConnectClose}
       />

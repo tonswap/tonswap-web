@@ -1,6 +1,6 @@
 import { Fade, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import TonLogo from "assets/images/shared/ton-logo.svg";
+import Logo from "assets/images/shared/logo-2.svg";
 import HeroImg from "assets/images/connect/hero.png";
 import { ActionButton } from "components";
 import { useStyles } from "./styles";
@@ -10,7 +10,6 @@ import { observer } from "mobx-react";
 import { useStore } from "store";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { isMobile } from "react-device-detect";
 import useWebAppResize from "hooks/useWebAppResize";
 
 export const ConnectScreen = observer(() => {
@@ -30,14 +29,9 @@ export const ConnectScreen = observer(() => {
     <Fade in>
       <Box className={classes.root}>
         <Box className={classes.topContainer}>
-          {isMobile && (
-            <img className={classes.logo} src={TonLogo} alt="logo" />
-          )}
+        <img className={classes.logo} src={Logo} alt="logo" />
           <Typography component="h2">
-            <strong>Welcome to</strong>
-          </Typography>
-          <Typography component="h2">
-            <strong>Ton</strong>swap
+            <strong>Ton</strong>Swap
           </Typography>
         </Box>
 
@@ -48,7 +42,7 @@ export const ConnectScreen = observer(() => {
           </Typography>
 
           <ActionButton onClick={() => setShowConnectModal(true)}>
-            Connecting to your wallet
+            Connecting
           </ActionButton>
         </Box>
         <ConnectModal

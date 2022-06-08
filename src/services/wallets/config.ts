@@ -1,20 +1,21 @@
 import { Adapter, Adapters } from "./types";
-import ExtensionIcon from "@mui/icons-material/Extension";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-
+import TonhubImg from 'assets/images/shared/tonhub.png'
+import ChromeExtImg from 'assets/images/shared/chrome.svg'
 
 const adapters: Adapter[] = [
     {
-      text: "Tonhub",
+      name: "Tonhub",
       type: Adapters.TON_HUB,
-      icon: AccountBalanceWalletIcon,
-      mobileCompatible: true
+      icon: TonhubImg,
+      mobileCompatible: true,
+      description: 'A mobile wallet in your pocket'
     },
     {
-      text: "Ton Wallet",
+      name: "Google Chrome Plugin",
       type: Adapters.TON_WALLET,
-      icon: ExtensionIcon,
-      mobileCompatible: false
+      icon: ChromeExtImg,
+      mobileCompatible: false,
+      description: 'TON Wallet Plugin for Google Chrome'
     },
   ];
 
