@@ -370,7 +370,7 @@ export const generateBuyLink = async (
   );
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
-  const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
+  const value = toNano(tonAmount + GAS_FEE.SWAP);
   return sendTransaction(tokenObjects.ammMinter, value, boc64);
 };
 
@@ -384,7 +384,7 @@ export const generateAddLiquidityLink = async (
   const transferAndLiq = await DexActions.addLiquidity(
     tokenData.ammMinter,
     toNano(tokenAmount),
-    tokenData.ammMinter,
+    getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(tonAmount + GAS_FEE.FORWARD_TON),
     slippage,
     toNano(tonAmount).add(new BN(10))  // TODO dust issue 

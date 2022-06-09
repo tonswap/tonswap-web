@@ -30,7 +30,7 @@ export class DexActions {
         messageBody.bits.writeUint(1, 64); // query-id
         messageBody.bits.writeCoins(jettonAmount);
         messageBody.bits.writeAddress(to);
-        messageBody.bits.writeAddress(responseDestination);
+        messageBody.bits.writeAddress(responseDestination); // this address gets the ton leftovers
         messageBody.bits.writeBit(false); // null custom_payload
         messageBody.bits.writeCoins(forwardTonAmount);
         messageBody.bits.writeBit(false); // forward_payload in this slice, not separate messageBody
