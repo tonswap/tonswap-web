@@ -25,6 +25,10 @@ const MainNetPools: { [key: string]: PoolInfo } = {
         tokenMinter: Address.parse("EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"),
     },
     usdt: {
+        ammMinter: Address.parse("EQCpqgMKLbyp3ZpRi6JR1v9cAPMgkOlHZtXJ3JKWtFsqpyko"),
+        tokenMinter: Address.parse("EQCWrhopl5IEzrUlJw1uDs3f5KbfZoyPEBJN4VVrABHACnZC"),
+    },
+    usdt2: {
         ammMinter: Address.parse("EQBomTp_uTphBeuJtuumlfmB4d6SP_zvN93KYpiM7WR7h9nA"),
         tokenMinter: Address.parse("EQD9SyLUUGV9Caqh7DgHp15JY4GcKpLoZ_wdmG7SQ_Mpjxw4"),
     },
@@ -52,7 +56,7 @@ export async function getToken(client: TonClient, token: string, owner: Address)
     const jettonWalletKey = `${token}:jettonWallet`;
 
     const jettonWallet = tokenCache[jettonWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Pools[token].tokenMinter), jettonWalletKey));
-    
+
     const lpWalletKey = `${token}:lpWallet`;
     const lpWallet = tokenCache[lpWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Pools[token].ammMinter), lpWalletKey));
 
@@ -64,15 +68,13 @@ export async function getToken(client: TonClient, token: string, owner: Address)
 }
 
 export async function resolveJettonWallet(client: TonClient, walletAddress: Address, jettonMaster: Address) {
-
-    
     let cell = new Cell();
     cell.bits.writeAddress(walletAddress);
-    
+
     // tonweb style - this way its more optimized for browser
     const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
     let res = await client.callGetMethod(jettonMaster, "get_wallet_address", [["tvm.Slice", b64data]]);
-    
+
     return bytesToAddress(res.stack[0][1].bytes);
 }
 
