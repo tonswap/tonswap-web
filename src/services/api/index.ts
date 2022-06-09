@@ -21,10 +21,10 @@ const client = new TonClient({
 });
 
 enum GAS_FEE {
-  SWAP = 0.21,
-  FORWARD_TON = 0.05,
-  ADD_LIQUIDITY = 0.25,
-  REMOVE_LIQUIDITY = 0.2,
+  SWAP = 0.1,
+  FORWARD_TON = 0.05, // TODO this can be optimized
+  ADD_LIQUIDITY = 0.12,
+  REMOVE_LIQUIDITY = 0.11,
 }
 
 const sleep = (milliseconds: number) => {
@@ -345,12 +345,12 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-    tokenData.ammMinter,
-    toNano(tokenAmount),
-    tokenData.ammMinter,
-    toNano(GAS_FEE.FORWARD_TON),
-    OPS.SWAP_TOKEN,
-    toNano(minAmountOut)
+      tokenData.ammMinter,
+      toNano(tokenAmount),
+      getOwner(), // owner wallet should get jetton-wallet excess messages + tons
+      toNano(GAS_FEE.FORWARD_TON),
+      OPS.SWAP_TOKEN,
+      toNano(minAmountOut)
   );
   const boc64 = transfer.toBoc().toString("base64");
   const value = toNano(GAS_FEE.SWAP);
