@@ -21,16 +21,12 @@ const TestNetPools: { [key: string]: PoolInfo } = {
 
 const MainNetPools: { [key: string]: PoolInfo } = {
     shib: {
-        ammMinter: Address.parse("EQA9OLcGB8feXilz0_bXiPMKriHGZZ1o25eHrHXOvBUZDsjC"),
-        tokenMinter: Address.parse("EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"),
+        ammMinter: Address.parse("EQA5JvHOjixFSsDgaKZa3-kVBfvahGDoiOT5X_cHCyeSpQhC"),
+        tokenMinter: Address.parse("EQC6T74KYR_ajy0MUzbHsRlIWkdQJf9ovcqCjfmko-WSpjOo"),
     },
     usdt: {
-        ammMinter: Address.parse("EQCpqgMKLbyp3ZpRi6JR1v9cAPMgkOlHZtXJ3JKWtFsqpyko"),
-        tokenMinter: Address.parse("EQCWrhopl5IEzrUlJw1uDs3f5KbfZoyPEBJN4VVrABHACnZC"),
-    },
-    usdt2: {
-        ammMinter: Address.parse("EQBomTp_uTphBeuJtuumlfmB4d6SP_zvN93KYpiM7WR7h9nA"),
-        tokenMinter: Address.parse("EQD9SyLUUGV9Caqh7DgHp15JY4GcKpLoZ_wdmG7SQ_Mpjxw4"),
+        ammMinter: Address.parse("EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"),
+        tokenMinter: Address.parse("EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban"),
     },
 };
 
