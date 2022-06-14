@@ -21,10 +21,10 @@ const client = new TonClient({
 });
 
 enum GAS_FEE {
-  SWAP = 0.06,
+  SWAP = 0.1,
   FORWARD_TON = 0.05,
   ADD_LIQUIDITY = 0.12,
-  REMOVE_LIQUIDITY = 0.06,
+  REMOVE_LIQUIDITY = 0.1,
 }
 
 const sleep = (milliseconds: number) => {
