@@ -1,4 +1,4 @@
-import { ton } from "tokens";
+import { ton } from "services/api/addresses";
 import { Box, SvgIcon } from "@mui/material";
 import { useStore } from "store";
 import { observer } from "mobx-react";

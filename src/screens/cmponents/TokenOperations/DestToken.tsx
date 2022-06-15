@@ -2,13 +2,13 @@ import SwapCard from "components/SwapCard";
 import React, { useRef, useState } from "react";
 import { calculateTokens } from "screens/layouts/util";
 import { fromNano } from "ton";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import { useDebouncedCallback } from "use-debounce";
 import { useTokenOperationsStore } from "./Context";
 import { getUsdAmount } from "./util";
 
 interface Props {
-  token: Token;
+  token: PoolInfo;
   srcTokenName: string;
   getAmountFunc: any;
 }

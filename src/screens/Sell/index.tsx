@@ -1,4 +1,3 @@
-import { ton } from "tokens";
 import { observer } from "mobx-react";
 
 import { useStore } from "store";
@@ -12,6 +11,7 @@ import {
   TokenOperationsStore,
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
+import { ton } from "services/api/addresses";
 
 export const SellScreen = () => {
   return (

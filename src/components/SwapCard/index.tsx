@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { NumberInput } from "components/NumberInput";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import ContentLoader from "components/ContentLoader";
 import { useStyles } from "./styles";
 import useWebAppResize from "hooks/useWebAppResize";
@@ -10,7 +10,7 @@ interface Props {
   availableAmount: number;
   onChange: (val: string) => void;
   maxAmount: number;
-  token: Token;
+  token: PoolInfo;
   usdPrice: number;
   usdLoading: boolean;
   isLoading?: boolean;
@@ -35,7 +35,7 @@ function SwapCard({
   return (
     <Box className={classes.root}>
       <Box className={classes.tokenImage}>
-        <img src={token.image} alt='token' />
+       {token.image &&  <img src={token.image} alt='token' />}
       </Box>
       <Typography fontSize="14px" marginBottom="4px" fontWeight={500}>
         {token.displayName}

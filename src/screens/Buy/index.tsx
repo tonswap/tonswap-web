@@ -1,4 +1,3 @@
-import { ton } from "tokens";
 import { observer } from "mobx-react-lite";
 import { useStore } from "store";
 import Icon from "assets/images/shared/buy.svg";
@@ -11,6 +10,7 @@ import {
   TokenOperationsStore,
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
+import { ton } from "services/api/addresses";
 
 
 export const BuyScreen = () => {

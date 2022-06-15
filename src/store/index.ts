@@ -1,13 +1,35 @@
-import { LOCAL_STORAGE_ADDRESS } from "consts";
+import { LOCAL_STORAGE_ADDRESS, TOKENS_IN_LOCAL_STORAGE } from "consts";
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
+import {
+  MainNetPoolsRoot,
+  PoolInfo,
+  PoolInfoRaw,
+} from "services/api/addresses";
 import { Wallet, Adapters } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
-import { Token } from "types";
+import { Address } from "ton";
+import { getLocalStorageTokens } from "utils";
+
+const getTokens = () => {
+  const localStorageTokens = getLocalStorageTokens();
+  if (localStorageTokens) {
+    return localStorageTokens;
+  } else {
+    var result = Object.keys(MainNetPoolsRoot).map((key) => {
+      return {
+        ...MainNetPoolsRoot[key],
+        name: MainNetPoolsRoot[key].name,
+      };
+    });
+
+    return result;
+  }
+};
 
 class Store {
   address?: string;
-  selectedToken?: Token;
+  selectedToken?: PoolInfo;
   navMenuOpen = false;
   seqno?: string;
   wallet: Wallet | null = null;
@@ -15,6 +37,7 @@ class Store {
   adapterId?: string;
   isConnecting: boolean = true;
   isRestoring: boolean = true;
+  tokens: PoolInfo[] = getTokens();
 
   constructor() {
     makeObservable(this, {
@@ -33,6 +56,8 @@ class Store {
       setSession: action,
       isConnecting: observable,
       isRestoring: observable,
+      tokens: observable,
+      addToken: action,
     });
   }
 
@@ -42,8 +67,14 @@ class Store {
       .replace("ton://", "https://tonhub.com/");
   }
 
-  setToken(token?: Token) {
+  setToken(token?: PoolInfo) {
     this.selectedToken = token;
+  }
+
+  addToken(value: PoolInfo) {
+  
+    this.tokens.push(value);
+    localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, JSON.stringify(this.tokens));
   }
 
   setNavbarMenuOpen(value: boolean) {
@@ -118,7 +149,7 @@ class Store {
     }
 
     this.setSession(_session);
-   
+
     try {
       const _wallet = await walletService.awaitReadiness(
         adapterId,
@@ -126,12 +157,10 @@ class Store {
       );
 
       this.setWallet(_wallet, adapterId);
-    
     } catch {
       this.reset();
-    } finally{
+    } finally {
       this.isRestoring = false;
-
     }
   }
 }
