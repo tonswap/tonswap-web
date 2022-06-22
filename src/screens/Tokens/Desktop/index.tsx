@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { tokens } from "tokens";
+
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useStore } from "store";
@@ -22,7 +22,6 @@ const Desktop = observer(() => {
       setShowMenu(true);
     }
   };
-
   return (
     <Grid
       container
@@ -35,7 +34,8 @@ const Desktop = observer(() => {
       position="relative"
       justifyContent='center'
     >
-      {tokens.map((token) => {
+
+      {store.tokens.map((token) => {
         return (
           <Grid item sm={4} md={3} key={token.name}>
             <ListToken callback={onTokenSelect} token={token} />

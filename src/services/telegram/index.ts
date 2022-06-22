@@ -1,4 +1,9 @@
-const provider = (window as any).Telegram.WebApp;
+let provider: any;
+try {
+  provider = (window as any).Telegram.WebApp;
+} catch(e){
+  
+}
 
 
 

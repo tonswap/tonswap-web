@@ -44,6 +44,9 @@ export const AddLiquidityScreen = () => {
   );
 };
 
+
+
+
 const AddLiquidity = observer(() => {
   const classes = useStyles();
   const store = useStore();
@@ -60,10 +63,25 @@ const AddLiquidity = observer(() => {
     }
   };
 
+  const getAmountOut = async (srcToken: string, destToken: string, srcAmount: number | null, destAmount: number | null)=> {
+    if(!store.selectedToken?.name) {
+      return
+    }
+    let data = await API.getPoolInfo(store.selectedToken?.name);
+    if( data.tokenReserves.toNumber() == 0 && data.tonReserves.toNumber() == 0) {
+       return 0;
+    }
+  
+    return API.getLiquidityAmount(srcToken, destToken,srcAmount, destAmount)
+  }
+  
+  
   const getBalances = () => {
+    
     return Promise.all([
       API.getTonBalance(),
       API.getTokenBalance(store.selectedToken!!),
+      
     ]);
   };
 
@@ -81,6 +99,8 @@ const AddLiquidity = observer(() => {
     return false;
   };
 
+  
+
   return (
     <TokenLayout
       title="Add Liquidity and earn"
@@ -91,7 +111,7 @@ const AddLiquidity = observer(() => {
         <TokenOperations
           createSuccessMessage={createSuccessMessage}
           icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
-          getAmountFunc={API.getLiquidityAmount}
+          getAmountFunc={getAmountOut}
           getBalances={getBalances}
           srcToken={ton}
           getTxRequest={getTxRequest}

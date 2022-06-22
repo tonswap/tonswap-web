@@ -1,3 +1,4 @@
+import { StateInit } from "ton";
 
 
 export interface TransactionRequest {
@@ -10,7 +11,7 @@ export interface TransactionRequest {
   /** Timeout */
   timeout: number;
 
-  stateInit?: Buffer | null;
+  stateInit?: StateInit | null;
 
   text?: string | null;
 

@@ -2,8 +2,9 @@
 import Usdt from "assets/images/tokens/usdt.svg";
 import Ton from "assets/images/tokens/ton.svg";
 import Shib from "assets/images/tokens/shiba.svg";
-
+import { addToken } from "services/api/addresses";
 import { Token } from "types";
+import { Address } from "ton";
 
 const tokens: Token[] = [
   {
@@ -73,5 +74,6 @@ const ton: Token = {
   color: "#1490CD",
   isActive: true,
 };
+
 
 export { tokens, ton };

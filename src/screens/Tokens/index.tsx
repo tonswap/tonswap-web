@@ -1,5 +1,5 @@
-import { Box, useMediaQuery } from "@mui/material";
-import { Title } from "components";
+import { Box, Button, useMediaQuery } from "@mui/material";
+import { ActionButton, Title } from "components";
 import { useStyles } from "./styles";
 import Mobile from "./Mobile";
 import theme from "theme";
@@ -7,6 +7,8 @@ import Desktop from "./Desktop";
 import Fade from "@mui/material/Fade";
 import { useStore } from "store";
 import { useEffect } from "react";
+import { ROUTES } from "router/routes";
+import { Link } from "react-router-dom";
 
 export const Tokens = () => {
   const classes = useStyles();
@@ -26,6 +28,14 @@ export const Tokens = () => {
         <Box className={classes.lists}>
           {isMobile ? <Mobile /> : <Desktop />}
         </Box>
+        
+        <Button style={{"marginTop": "20px"}} onClick={()=> {}}>
+          Add Token
+        </Button>
+      <br />
+        <Button style={{"marginTop": "20px"}} onClick={()=> {}}>
+          <Link to={ROUTES.createPool}>Create Pool</Link>
+        </Button>
       </Box>
     </Fade>
   );

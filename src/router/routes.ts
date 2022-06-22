@@ -1,6 +1,7 @@
 const ROUTES = {
     connect: "/",
     tokens: "/select-token",
+    createPool: "/create-pool",
     login: '/login',
     actions: {
         sell: "/sell/:id",

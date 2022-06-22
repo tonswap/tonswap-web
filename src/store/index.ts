@@ -1,9 +1,14 @@
 import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
+import { addToken } from "services/api/addresses";
 import { Wallet, Adapters } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
+import { tokens } from "tokens";
+import { Address } from "ton";
 import { Token } from "types";
+
+
 
 class Store {
   address?: string;
@@ -15,6 +20,7 @@ class Store {
   adapterId?: string;
   isConnecting: boolean = true;
   isRestoring: boolean = true;
+  tokens =tokens;
 
   constructor() {
     makeObservable(this, {
@@ -33,6 +39,7 @@ class Store {
       setSession: action,
       isConnecting: observable,
       isRestoring: observable,
+      tokens: observable
     });
   }
 
@@ -135,6 +142,16 @@ class Store {
     }
   }
 }
+
+export function addTokenToList(name:string, data: Token, tokenMinter: Address, ammMinter: Address) {
+  store.tokens.push(data);
+  addToken(name, {
+    tokenMinter,
+    ammMinter
+  })
+}
+
+
 
 const store = new Store();
 

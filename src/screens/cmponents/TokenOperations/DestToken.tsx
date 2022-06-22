@@ -42,6 +42,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
         balanceRef.current || "0",
         getAmountFunc
       );
+
       const usdAmounts = await Promise.all([
         getUsdAmount(token.name, balanceRef.current),
         getUsdAmount(srcTokenName, Number(fromNano(result))),
@@ -63,7 +64,12 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       
       setUsdLoading(false);
       setSrcLoading(false);
-      setsrcTokenAmount(result/1e9);
+      if(result === 0) { 
+        return
+      } else {
+        setsrcTokenAmount(result/1e9);
+      }
+
     }
   }, 600);
 

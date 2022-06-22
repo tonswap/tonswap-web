@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://tonswap.github.io/tonswap-web",
   "dependencies": {
+    "@aws-crypto/sha256-js": "^2.0.1",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.1",

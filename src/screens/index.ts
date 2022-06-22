@@ -5,3 +5,4 @@ export * from "./Tokens";
 export * from "./ClaimRewards";
 export * from "./RemoveLiquidity";
 export * from "./Connect";
+export * from "./CreatePool";

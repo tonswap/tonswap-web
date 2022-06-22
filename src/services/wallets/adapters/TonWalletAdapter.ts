@@ -1,4 +1,5 @@
 import { TON_WALLET_EXTENSION_URL } from 'consts';
+import { Cell, StateInit } from 'ton';
 import { tonWalletClient } from '../clients/TonWalletClient';
 import { TransactionRequest, Wallet, WalletAdapter } from '../types';
 
@@ -42,6 +43,13 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
   }
 
   async requestTransaction(_session: any, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
+    const INIT_CELL = new Cell();
+    // @ts-ignore
+    let b64InitCell = "";
+    if(request.stateInit) {
+      request.stateInit.writeTo(INIT_CELL);
+      b64InitCell = INIT_CELL.toBoc().toString("base64");
+    }
 
     try {
       const res: any = await tonWalletClient.sendTransaction({
@@ -49,7 +57,7 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
         value: request.value,
         dataType: 'boc',
         data: request.payload,
-        // stateInit: request.stateInit?.toString('base64'),
+        stateInit: b64InitCell,
       })
       
       if(!res){

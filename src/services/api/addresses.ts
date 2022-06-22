@@ -40,6 +40,10 @@ Pools = MainNetPools;
 
 const tokenCache: { [key: string]: Address } = {};
 
+export function addToken(key: string, pool: {ammMinter: Address, tokenMinter: Address}) {
+    Pools[key] = pool;
+}
+
 async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
     console.log("fetch and cache");
 
@@ -74,7 +78,7 @@ export async function resolveJettonWallet(client: TonClient, walletAddress: Addr
     return bytesToAddress(res.stack[0][1].bytes);
 }
 
-export function bytesToAddress(bufferB64: string) {
+export function bytesToAddress(bufferB64: string) { 
     const buff = Buffer.from(bufferB64, "base64");
     let c2 = Cell.fromBoc(buff);
     return c2[0].beginParse().readAddress() as Address;
