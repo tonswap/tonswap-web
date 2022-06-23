@@ -34,10 +34,6 @@ export const Tokens = () => {
           onAddToken = {() => setAddTokenModal(true)}
           /> : <Desktop onAddToken = {() => setAddTokenModal(true)} />}
         </Box>
-        
-        <Button style={{"marginTop": "20px"}} onClick={()=> {}}>
-          Add Token
-        </Button>
       <br />
         <Button style={{"marginTop": "20px"}} onClick={()=> {}}>
           <Link to={ROUTES.createPool}>Create Pool</Link>

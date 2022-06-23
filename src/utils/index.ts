@@ -212,14 +212,12 @@ const getLocalStorageTokens = () => {
 };
 
 const localStorageTokensToObject = () => {
-  const tokens = getLocalStorageTokens()
-    console.log(tokens);
-    
-  if(!tokens){
+  const customTokens = getLocalStorageTokens()
+  if(!customTokens){
     return 
   }
   const result: {[key: string]: PoolInfo} = {}
-  tokens.forEach((token: PoolInfo) => {
+  customTokens.forEach((token: PoolInfo) => {
     result[token.name] = token
   });
   return result

@@ -113,17 +113,20 @@ function AddCustomToken({ open, onClose }: Props) {
     try {
       const token: PoolInfo = {
         name: tokenData.name,
-        ammMinter: Address.parse(data.ammMinter),
-        tokenMinter: Address.parse(data.tokenMinter),
+        ammMinter: Address.parse(tokenData.ammMinter),
+        tokenMinter: Address.parse(tokenData.tokenMinter),
         color: getRandomColor(),
         displayName: tokenData.name.toUpperCase(),
         image: tokenData.image,
+        isCustom: true
       };
        
       store.addToken(token);
       setData({} as Data)
       onClose()
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   const onFocus = (name: keyof Errors) => {
@@ -142,12 +145,11 @@ function AddCustomToken({ open, onClose }: Props) {
     const jd = await getTokenBalanceByMinter(address)
     
     const { futureAddress, isDeployed } = await poolStateInit(tokenMinter, 0);
-    setTokenData({ ...jettonData, tokenMinter, ammMinter: futureAddress});
+    setTokenData({ ...jettonData, tokenMinter, ammMinter: futureAddress.toFriendly()});
     setPoolMinter(futureAddress.toFriendly());
     setIsPoolDeployed(isDeployed);
     if(isDeployed) {
       const pdata = await API.getPoolData(futureAddress);
-      debugger
       // @ts-ignore
       setPoolData(pdata)
     }
@@ -179,11 +181,11 @@ function AddCustomToken({ open, onClose }: Props) {
                   isPoolDeployed ?   
                   (
                     <div>
-                    <div>✅ Pool Reservers ({tokenData?.name})-TON </div>
-                    <div>Token: {fromNano(poolData.tokenReserves)} 🪙</div>
-                    <div>Ton: {fromNano(poolData.tonReserves)} 💎</div>
+                    <div>✅ Pool Reservers <b>{tokenData?.name.toUpperCase()}-TON</b></div>
+                    <div>Token: {parseFloat(fromNano(poolData.tokenReserves)).toFixed(2)} 🪙</div>
+                    <div>Ton: {parseFloat(fromNano(poolData.tonReserves)).toFixed(2)} 💎</div>
                     </div>
-                  )  : (<div>⛔️ Pool not found</div>) 
+                  )  :  (<div>⛔️ Pool not found</div>) 
 
                 }
                 

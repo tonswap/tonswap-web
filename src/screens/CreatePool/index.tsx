@@ -1,4 +1,4 @@
-import { Box, TextField, CardHeader } from "@mui/material";
+import { Box, TextField, CardHeader, Link } from "@mui/material";
 import { styled } from "@mui/system";
 import { ActionButton } from "components";
 import Notification from "components/Notification";
@@ -6,7 +6,7 @@ import { TEST_MODE } from "consts";
 import { useStore, addTokenToList } from "store";
 
 import { useState } from "react";
-import { deployPool } from "services/api/deploy-pool";
+import { deployPool, poolStateInit } from "services/api/deploy-pool";
 import { Address } from "ton";
 import { walletService } from "services/wallets/WalletService";
 import { TransactionRequest } from "services/wallets/types";
@@ -15,6 +15,9 @@ import { fromNano } from "ton";
 import BN from "bn.js";
 
 import ContentLoader from "components/ContentLoader";
+import { ROUTES } from "router/routes";
+import { PoolInfo } from "services/api/addresses";
+import { getRandomColor } from "utils";
 
 
 interface jettonData {
@@ -56,34 +59,35 @@ export function CreatePool() {
   const [isLoading, setIsLoading] = useState(false);
   const [tokenData, setTokenData] = useState({} as jettonData);
   // TODO zero address
-  const [newPoolAddress, setNewPoolAddress] = useState("EQDh3hrzLm-yBA_bYpxRdLwVMeDNLnUFJLXhr7j8EJ3jMv23");
+  const [newPoolAddress, setNewPoolAddress] = useState("");
 
   const [tonBalance, setTonBalance] = useState(0);
   const [error, setError] = useState("");
 
 
   const validateForm = () => {
-    return jettonAddress.length && Address.isFriendly(jettonAddress) && tokenData?.name
+
+    return jettonAddress.length && Address.isFriendly(jettonAddress) && tokenData?.name && !isDeployed
   }
 
   const jettonAddressChanged = async (jettonAddress: string) => {
     setJettonAddress(jettonAddress)
-    // if(jettonAddress.length != 48) {
-    //   return setJettonAddress(jettonAddress);  
-    // }
     setIsLoading(true);
    //jettonAddress="EQCcCT-RPnSDmScJeBV9xME_A0H27T3Pg_Ur2zdmawcla3uU";
     const address = Address.parse(jettonAddress);
     const jettonData = await getTokenData(address);
-    console.log(jettonData);
     
     const jd = await getTokenBalanceByMinter(address)
     setTokenData(jettonData)
-    
-    
     let balance = parseFloat(fromNano(jd.balance.toString()));
     setTokenBalance(balance);
     setTonBalance(await getTonBalance());
+
+    const { futureAddress, isDeployed } = await poolStateInit(address, 0);
+    setIsDeployed(isDeployed);
+    if (isDeployed) {
+      setNewPoolAddress(futureAddress.toFriendly());
+    }
     //  setTokenBalance(parseFloat(fromNano(jettonBalance.balance)))
     
     setIsLoading(false);
@@ -111,12 +115,16 @@ export function CreatePool() {
         () => {
           setIsDeployed(true);
           setNewPoolAddress(tx.to)
-          addTokenToList(tokenData.name, { 
-            image: tokenData.image,
-            displayName: tokenData.name,
+          const token: PoolInfo = {
             name: tokenData.name,
-            color: "#b393ef",
-          }, Address.parse(jettonAddress), Address.parse(tx.to))
+            ammMinter: Address.parse(tx.to),
+            tokenMinter: Address.parse(jettonAddress),
+            color: getRandomColor(),
+            displayName: tokenData.name.toUpperCase(),
+            image: tokenData.image,
+            isCustom: true
+          };
+          store.addToken(token);
         }
       );
     } catch (error) {
@@ -129,6 +137,11 @@ export function CreatePool() {
 
   };
 
+  const StyledDiv = styled(Box)({
+    width:'100%',
+    overflow:'hidden'
+  })
+
   const deployedContainer = () => {
     return (
       <StyledContainer>
@@ -136,10 +149,13 @@ export function CreatePool() {
         <div>
           Contract Address
         </div>
-        <div>
-          New Pool Address:{newPoolAddress || "na"} for {tokenData?.name} Token
-
-        </div>
+        <StyledDiv>
+          New Pool :
+          <br />
+          <b>{newPoolAddress || "na"}</b> 
+          <br />
+          for <b>{tokenData?.name}</b> Token
+        </StyledDiv>
         <div>
           <a href={`https://tonscan.org/jetton/${newPoolAddress}`}>explorer</a>
         </div>
@@ -161,7 +177,7 @@ export function CreatePool() {
     <StyledContainer>
         <StyledContent>
           <h2>Create a new Pool</h2>
-          <div>Jetton Address</div>
+          <div>Enter jetton minter address</div>
         <TextField
           style={{marginBottom:'20px', width:'100%'}}
           value={jettonAddress}
@@ -176,15 +192,8 @@ export function CreatePool() {
           }
         }/>
     { isLoading ? (<ContentLoader width={40} height="15px" borderRadius="4px" />) : (<div></div>) }
-    <div><img  style={{ height:"24px", width:'24px',  position: "relative",top: "5px",left: "-5px"}} src={tokenData.image} alt="" ></img><b>{tokenData.name}</b></div>
-    
-    <div style={{marginTop:"20px", marginBottom:"20px"}}>
-      Balance: {tokenBalance}
-    </div>
-    {/* <div style={{marginTop:"20px", marginBottom:"20px"}}>
-      Total Supply: {tokenData.totalSupply}
-    </div> */}
-    {/* <div>💎 Balance: {tonBalance}</div> */}
+    { tokenDetails(tokenBalance, tokenData.image, tokenData.name, isDeployed, poolAddress) }
+ 
     <div>{poolAddress}</div>
       <ActionButton  isDisabled={!validateForm()} onClick={deployPoolTx}>Deploy Pool 🚀</ActionButton>
         </StyledContent>
@@ -199,3 +208,25 @@ export function CreatePool() {
 }
 
 
+const tokenDetails = (tokenBalance: number, image: string, name: string, isDeployed: boolean, poolAddress?: string)=> {
+  
+  if(!name) {
+    return <></>
+  }
+
+  return (
+    <div> 
+    <div> 
+      <img  style={{ height:"24px", width:'24px',  position: "relative",top: "5px",left: "-5px"}} src={image} alt="" ></img><b>{name}</b>
+    </div>
+      <div style={{marginTop:"20px", marginBottom:"20px"}}>
+        My Balance: {tokenBalance}
+      </div>
+      { isDeployed ? ( <div>Pool already exists</div> ) : (<></>) }
+    </div>
+  );
+}
+
+
+
+//<Link   to={ROUTES.connect} >{name} Pool</Link>

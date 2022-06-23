@@ -2,7 +2,7 @@ import { LOCAL_STORAGE_ADDRESS, TOKENS_IN_LOCAL_STORAGE } from "consts";
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
 
-import { addToken } from "services/api/addresses";
+import { addToken, MainNetPools } from "services/api/addresses";
 import { Wallet, Adapters, } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
 import { Address } from "ton";
@@ -14,20 +14,17 @@ import {
 } from "services/api/addresses";
 import { getLocalStorageTokens } from "utils";
 
-const getTokens = () => {
-  const localStorageTokens = getLocalStorageTokens();
-  if (localStorageTokens) {
-    return localStorageTokens;
-  } else {
-    var result = Object.keys(MainNetPoolsRoot).map((key) => {
+const getTokens = () => {  
+    const pools = MainNetPools();
+    var result = Object.keys(pools).map((key) => {
       return {
-        ...MainNetPoolsRoot[key],
-        name: MainNetPoolsRoot[key].name,
+        ...pools[key],
+        name: pools[key].name,
       };
     });
 
     return result;
-  }
+  // }
 };
 
 
@@ -81,6 +78,8 @@ class Store {
     pool.isCustom = true;
     this.tokens.push(pool);
     let customTokens = this.tokens.filter( (it)=> { return it.isCustom });
+    console.log(customTokens);
+    
     localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, poolInfoStringify(customTokens));
   }
 
@@ -193,12 +192,13 @@ export const useStore = () => useContext(StoreContext);
 function poolInfoStringify(pools : PoolInfo[]) {
   
   let list = pools.map((pi) =>  { return {
-    ammMinter: pi.ammMinter?.toFriendly(),
-    tokenMinter: pi.tokenMinter?.toFriendly(),
+    ammMinter: pi.ammMinter,
+    tokenMinter: pi.tokenMinter,
     image: pi.image,
     displayName: pi.displayName,
     color: pi.color,
     name: pi.name,
+    isCustom: true,
   }})
 
   return JSON.stringify(list);
