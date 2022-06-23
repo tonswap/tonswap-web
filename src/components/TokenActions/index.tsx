@@ -1,9 +1,10 @@
 import { Box, List, ListItem, Typography } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
+import { toJS } from "mobx";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import { createTokenActions } from "./data";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  token?: Token;
+  token?: PoolInfo;
   onActionClick?: () => void;
 }
 
@@ -45,6 +46,9 @@ function TokenActions({ token, onActionClick }: Props) {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
+
+  console.log(toJS(token));
+  
 
   const actions = useMemo(() => createTokenActions(navigate, token), [token, navigate]);
 

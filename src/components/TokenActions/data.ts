@@ -3,17 +3,16 @@ import AddLiquidityImg from "assets/images/shared/add-liqudity.svg";
 import RemoveLiquidityImg from "assets/images/shared/remove-liquidity.svg";
 import Buy from "assets/images/shared/buy.svg";
 import { NavigateFunction } from "react-router-dom";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import { ROUTES } from "router/routes";
 
-const createTokenActions = (navigate: NavigateFunction, token?: Token) => {
+const createTokenActions = (navigate: NavigateFunction, token?: PoolInfo) => {
     if (!token) {
         token = {
             displayName: "",
             name: "tkn",
             image: "",
             color: "",
-            isActive: false,
         };
     }
 

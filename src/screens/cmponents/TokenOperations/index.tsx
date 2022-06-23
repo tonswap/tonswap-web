@@ -1,7 +1,7 @@
 import { Box, Fade } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ActionButton } from "components";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import { useTokenOperationsStore } from "./Context";
@@ -18,8 +18,8 @@ import { observer } from "mobx-react";
 import { telegramWebApp } from "services/telegram";
 
 interface Props {
-  srcToken: Token;
-  destToken: Token;
+  srcToken: PoolInfo;
+  destToken: PoolInfo;
   submitButtonText: string;
   icon: any;
   getBalances: () => Promise<any>;

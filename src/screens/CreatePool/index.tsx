@@ -116,7 +116,6 @@ export function CreatePool() {
             displayName: tokenData.name,
             name: tokenData.name,
             color: "#b393ef",
-            isActive: true,
           }, Address.parse(jettonAddress), Address.parse(tx.to))
         }
       );

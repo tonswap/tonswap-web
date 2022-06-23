@@ -5,17 +5,29 @@ import { useStyles } from "./styles";
 import ListToken from "./ListToken";
 import TokenActions from "components/TokenActions";
 import AnimateHeight from "react-animate-height";
-import { tokens } from "tokens";
 import { getIsSelectedTokenMobile, splitToGroups } from "utils";
-import { Token } from "types";
+import { useMemo } from "react";
+import AddCustomTokenButton from "./AddCustomTokenButton";
+import { styled } from "@mui/styles";
+import { PoolInfo } from "services/api/addresses";
 
-const groups = splitToGroups(tokens, 2);
 
 const ANIMATION_DURATION = 150;
 
-const Mobile = observer(() => {
+
+const StyledAddToken = styled(Box)({
+  height: 110
+})
+interface Props{
+  onAddToken: () => void;
+}
+
+const Mobile = observer(({onAddToken}: Props) => {
   const store = useStore();
   const classes = useStyles();
+
+  const groups = useMemo(() => splitToGroups(store.tokens, 2), [store.tokens])
+
 
   return (
     <>
@@ -34,7 +46,7 @@ const Mobile = observer(() => {
             spacing={2}
          
           >
-            {group.map((token: Token) => {
+            {group.map((token: PoolInfo) => {
               return (
                 <Grid item xs={6} key={token.name}>
                   <ListToken token={token} />
@@ -65,6 +77,9 @@ const Mobile = observer(() => {
           </Grid>
         );
       })}
+      <StyledAddToken>
+      <AddCustomTokenButton onClick={onAddToken} />
+      </StyledAddToken>
     </>
   );
 });

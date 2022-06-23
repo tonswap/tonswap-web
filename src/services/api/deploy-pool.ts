@@ -46,7 +46,7 @@ const META_DATA_DEFUALT = {
     image : "https://www.linkpicture.com/q/download_183.png"
 }
 
-export async function deployPool(jettonMinter:Address,  poolData = { }, workchain=0){ //:TransactionRequest {
+export async function poolStateInit(jettonMinter: Address, workchain: number) {
     const jettonData = await getTokenData(jettonMinter)
     let metadata = {
         "name": `LP-${jettonData.name}`,
@@ -58,6 +58,17 @@ export async function deployPool(jettonMinter:Address,  poolData = { }, workchai
         initialData: initDataCell,
         initialCode: codeCell,
     });
+    const isDeployed = await client.isContractDeployed(futureAddress);
+    return {
+        isDeployed,
+        futureAddress,
+        initDataCell, 
+        codeCell
+    }
+}
+
+export async function deployPool(jettonMinter:Address,  poolData = { }, workchain=0){ //:TransactionRequest {
+    const {futureAddress, initDataCell, codeCell} = await poolStateInit(jettonMinter, workchain);
 
     // if (await client.isContractDeployed(futureAddress)) {
     //     return {

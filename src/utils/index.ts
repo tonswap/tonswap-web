@@ -1,10 +1,15 @@
-import { Token } from "types";
 //https://github.com/tonwhales/ton-nft/blob/main/packages/utils/parseActionsList.ts
 import BN from "bn.js";
 
 import { Address, Cell, RawCurrencyCollection, RawMessage, Slice } from "ton";
-import { TELEGRAM_WEBAPP_PARAM, TEST_MODE } from "consts";
+import {
+  colors,
+  TELEGRAM_WEBAPP_PARAM,
+  TEST_MODE,
+  TOKENS_IN_LOCAL_STORAGE,
+} from "consts";
 import { isMobile } from "react-device-detect";
+import { MainNetPools, PoolInfo } from "services/api/addresses";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
 
@@ -18,11 +23,11 @@ const splitToGroups = (arr: any, size: number) => {
   return arrayOfArrays;
 };
 
-const getToken = (tokens: Token[], tokenId: string) => {
+const getToken = (tokens: PoolInfo[], tokenId: string) => {
   return tokens.find((t) => t.name === tokenId);
 };
 
-const getIsSelectedTokenMobile = (group: Token[], selected?: string) => {
+const getIsSelectedTokenMobile = (group: PoolInfo[], selected?: string) => {
   return group.find((g) => g.name === selected);
 };
 
@@ -173,17 +178,15 @@ export function base64UrlEncode(base64: string) {
   });
 }
 
-
-
 export const getParamsFromUrl = (name: string, search?: string) => {
   const query = new URLSearchParams(search || window.location.search);
   return query.get(name);
 };
 
 const isTelegramWebApp = () => {
-  const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM)
+  const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
   if (result && isMobile) {
-    return true
+    return true;
   }
 };
 
@@ -197,9 +200,34 @@ const isHiddenNavbar = () => {
   return false;
 };
 
+const getLocalStorageTokens = () => {
+  const tokenFromLocalStorage = localStorage.getItem(TOKENS_IN_LOCAL_STORAGE);
+  
+  if (
+    tokenFromLocalStorage &&
+    Array.isArray(JSON.parse(tokenFromLocalStorage))
+  ) {
+    return JSON.parse(tokenFromLocalStorage);
+  }
+};
+
+const localStorageTokensToObject = () => {
+  const tokens = getLocalStorageTokens()
+    console.log(tokens);
+    
+  if(!tokens){
+    return 
+  }
+  const result: {[key: string]: PoolInfo} = {}
+  tokens.forEach((token: PoolInfo) => {
+    result[token.name] = token
+  });
+  return result
+};
+
 const isDev = () => {
-  return process.env.NODE_ENV === 'development'
-}
+  return process.env.NODE_ENV === "development";
+};
 
 const isAllowedToUseApp = () => {
   const isAllowed = localStorage.getItem(TEST_MODE);
@@ -213,6 +241,10 @@ const isAllowedToUseApp = () => {
   return false;
 };
 
+const getRandomColor = () => {
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
 export {
   delay,
   splitToGroups,
@@ -221,5 +253,8 @@ export {
   isTelegramWebApp,
   isHiddenNavbar,
   isAllowedToUseApp,
-  isDev
+  isDev,
+  getRandomColor,
+  localStorageTokensToObject,
+  getLocalStorageTokens
 };

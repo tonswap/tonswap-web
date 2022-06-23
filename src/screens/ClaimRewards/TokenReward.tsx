@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import { useStyles } from "./styles";
 
 interface Props {
   amount: number;
-  token?: Token;
+  token?: PoolInfo;
 }
 
 function TokenReward({ amount, token }: Props) {

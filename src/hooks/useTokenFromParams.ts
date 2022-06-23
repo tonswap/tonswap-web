@@ -1,4 +1,3 @@
-import { tokens } from "tokens";
 import { useEffect } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
@@ -13,7 +12,7 @@ function useTokenFromParams() {
 
   useEffect(() => {
     if (id) {
-      const token = getToken(tokens, id);
+      const token = getToken(store.tokens, id);
       if (token) {
         store.setToken(token);
       } else {

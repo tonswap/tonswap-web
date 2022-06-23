@@ -1,4 +1,3 @@
-import { ton } from "tokens";
 import { useStore } from "store";
 import { observer } from "mobx-react";
 import Icon from "assets/images/shared/remove-liquidity.svg";
@@ -11,6 +10,7 @@ import {
   TokenOperationsStore,
   useTokenOperationsStore,
 } from "screens/cmponents/TokenOperations/Context";
+import { ton } from "services/api/addresses";
 
 export const RemoveLiquidityScreen = () => {
   return (

@@ -1,8 +1,7 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
 import {  cellToString, hexToBn } from "utils";
 import { DexActions } from "./dex";
-import { Token } from "types";
-import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
+import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
 import { LOCAL_STORAGE_ADDRESS } from "consts";
@@ -41,27 +40,24 @@ const callWithRetry = async (address: Address, method: string, params: any) => {
   }
 };
 
-export async function getJettonData(tokenMinter: Address)  {
-  const userBalance = await getTokenBalanceByMinter(tokenMinter);
-  const jettonData = await getTokenData(tokenMinter);
-}
-
-export const getTokenBalance = async (token: Token) => {
+export const getTokenBalance = async (token: PoolInfo) => {
   const tokenData = await getToken(client, token.name, getOwner());
-    
+      
   //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
-  return getTokenBalanceByMinter(tokenData.tokenMinter);
+  
+  return getTokenBalanceByMinter(tokenData.tokenMinter!!);
 };
 
 export const getLPTokenBalance = async (token: string) => {
   const tokenData = await getToken(client, token, getOwner());
-  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter);
+  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter!!);
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
   const tokenObjects = await getToken(client, token, getOwner());
   const [jettonData, lpBalance] = await Promise.all([
-    getPoolData(tokenObjects.ammMinter),
+
+    getPoolData(tokenObjects.ammMinter!!),
     getLPTokenBalance(token),
   ]);
   if (lpBalance.balance.toString() === "0") {
@@ -204,21 +200,22 @@ export const getAmountsOut = async (
   destAmount: number | null
 ) => {
   const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
-  const tokenData = await getPoolData(tokenAmm);
+
+  const tokenData = await getPoolData(tokenAmm!!);
 
   if (srcAmount) {
     // TODO
     const amountIn = toNano(srcAmount);
     if (isSourceToken) {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tokenReserves),
         new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tonReserves),
         new BN(tokenData.tokenReserves)
@@ -229,14 +226,14 @@ export const getAmountsOut = async (
     const amountIn = toNano(destAmount || 0);
     if (!isSourceToken) {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tokenReserves),
         new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tonReserves),
         new BN(tokenData.tokenReserves)
@@ -366,7 +363,7 @@ export const getTokenDollarValue = async (
 
   if (token !== "ton") {
     const tokenData = await getToken(client, token, getOwner());
-    const lpTokenData = await getPoolData(tokenData.ammMinter);
+    const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
@@ -400,7 +397,7 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-      tokenData.ammMinter,
+      tokenData.ammMinter!!,
       toNano(tokenAmount),
       getOwner(), // owner wallet should get jetton-wallet excess messages + tons
       toNano(GAS_FEE.FORWARD_TON),
@@ -426,7 +423,7 @@ export const generateBuyLink = async (
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
   const value = toNano(tonAmount + GAS_FEE.SWAP);
-  return sendTransaction(tokenObjects.ammMinter, value, boc64);
+  return sendTransaction(tokenObjects.ammMinter!!, value, boc64);
 };
 
 export const generateAddLiquidityLink = async (
@@ -437,7 +434,7 @@ export const generateAddLiquidityLink = async (
   const tokenData = await getToken(client, token, getOwner());
   const slippage = new BN(5);
   const transferAndLiq = await DexActions.addLiquidity(
-    tokenData.ammMinter,
+    tokenData.ammMinter!!,
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(tonAmount + GAS_FEE.FORWARD_TON),
@@ -454,7 +451,8 @@ export const generateRemoveLiquidityLink = async (
   tonAmount: number | string
 ) => {
   const tokenData = await getToken(client, token, getOwner());
-  const jettonData = await getPoolData(tokenData.ammMinter);
+  const jettonData = await getPoolData(tokenData.ammMinter!!);
+
   let shareToRemove = toNano(tonAmount)
     .mul(jettonData.totalSupply)
     .div(jettonData.tonReserves);

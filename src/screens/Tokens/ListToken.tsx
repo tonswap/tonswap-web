@@ -2,50 +2,30 @@ import { Typography } from "@mui/material";
 import useMobile from "hooks/useMobile";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
+import { PoolInfo } from "services/api/addresses";
 import { useStore } from "store";
-import { Token } from "types";
-import IncativeToken from "./Desktop/InactiveToken";
 import { useStyles } from "./styles";
 
 const defaultColor = "#F1F1F1";
 
 interface Props {
-  token: Token;
-  callback?: (token: Token) => void;
+  token: PoolInfo;
+  callback?: (token: PoolInfo) => void;
 }
-
-// const scroll = (element: any) => {
-//   const offset = 90;
-//   const bodyRect = document.body.getBoundingClientRect().top;
-//   const elementRect = element.getBoundingClientRect().top;
-//   const elementPosition = elementRect - bodyRect;
-//   const offsetPosition = elementPosition - offset;
-
-//   window.scrollTo({
-//     top: offsetPosition,
-//     behavior: "smooth",
-//   });
-// };
 
 const ListToken = observer(({ token, callback }: Props) => {
   const classes = useStyles();
   const store = useStore();
   const [hovering, setHovering] = useState(false);
-  const [showIncativePopup, setShowIncativePopup] = useState(false);
   const ref = useRef<any>();
   const isMobile = useMobile();
 
   const onSelect = () => {
-    if (!token.isActive) {
-      setShowIncativePopup(true);
-    } else if (store.selectedToken?.name === token.name) {
+    if (store.selectedToken?.name === token.name) {
       store.setToken(undefined);
     } else {
       store.setToken(token);
       callback?.(token);
-      // if (ref.current && isMobile) {
-      //   scroll(ref.current);
-      // }
     }
   };
 
@@ -78,7 +58,7 @@ const ListToken = observer(({ token, callback }: Props) => {
         onMouseLeave={onMouseLeave}
       >
         <div style={{ position: "relative" }}>
-          <img src={token.image} alt='token' />
+          {token.image && <img src={token.image} alt="token" />}
           <Typography
             style={{
               color: textColor,
@@ -88,11 +68,6 @@ const ListToken = observer(({ token, callback }: Props) => {
           </Typography>
         </div>
       </div>
-      <IncativeToken
-        token={token}
-        open={showIncativePopup}
-        onClose={() => setShowIncativePopup(false)}
-      />
     </>
   );
 });
