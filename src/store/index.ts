@@ -75,8 +75,6 @@ class Store {
   }
 
   addToken(pool: PoolInfo) {
-    console.log(pool);
-    
     pool.isCustom = true;
     this.tokens.push(pool);
     let customTokens = this.tokens.filter( (it)=> { return it.isCustom });
