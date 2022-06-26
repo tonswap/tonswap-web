@@ -75,11 +75,11 @@ class Store {
   }
 
   addToken(pool: PoolInfo) {
+    console.log(pool);
+    
     pool.isCustom = true;
     this.tokens.push(pool);
     let customTokens = this.tokens.filter( (it)=> { return it.isCustom });
-    console.log(customTokens);
-    
     localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, poolInfoStringify(customTokens));
   }
 
@@ -192,8 +192,8 @@ export const useStore = () => useContext(StoreContext);
 function poolInfoStringify(pools : PoolInfo[]) {
   
   let list = pools.map((pi) =>  { return {
-    ammMinter: pi.ammMinter,
-    tokenMinter: pi.tokenMinter,
+    ammMinter: pi.ammMinter?.toFriendly(),
+    tokenMinter: pi.tokenMinter?.toFriendly(),
     image: pi.image,
     displayName: pi.displayName,
     color: pi.color,

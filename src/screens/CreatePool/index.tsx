@@ -87,12 +87,24 @@ export function CreatePool() {
     setIsDeployed(isDeployed);
     if (isDeployed) {
       setNewPoolAddress(futureAddress.toFriendly());
+      addNewPool(futureAddress.toFriendly(), address.toFriendly(), jettonData);
     }
-    //  setTokenBalance(parseFloat(fromNano(jettonBalance.balance)))
-    
     setIsLoading(false);
   }
 
+  const addNewPool = async (newPool: string, jAddress = jettonAddress, jData = tokenData) => {
+    setNewPoolAddress(newPool);
+    const token: PoolInfo = {
+      name: jData.name,
+      ammMinter: Address.parse(newPool),
+      tokenMinter: Address.parse(jAddress),
+      color: getRandomColor(),
+      displayName: jData.name.toUpperCase(),
+      image: jData.image,
+      isCustom: true
+    };
+    store.addToken(token);
+  }
 
   const deployPoolTx = async () => {  
     const tx = await deployPool(Address.parse(jettonAddress));
@@ -113,18 +125,8 @@ export function CreatePool() {
         store.session,
         tx,
         () => {
+          addNewPool(tx.to);
           setIsDeployed(true);
-          setNewPoolAddress(tx.to)
-          const token: PoolInfo = {
-            name: tokenData.name,
-            ammMinter: Address.parse(tx.to),
-            tokenMinter: Address.parse(jettonAddress),
-            color: getRandomColor(),
-            displayName: tokenData.name.toUpperCase(),
-            image: tokenData.image,
-            isCustom: true
-          };
-          store.addToken(token);
         }
       );
     } catch (error) {
@@ -156,13 +158,19 @@ export function CreatePool() {
           <br />
           for <b>{tokenData?.name}</b> Token
         </StyledDiv>
+        <br />
+        <StyledDiv>
         <div>
-          <a href={`https://tonscan.org/jetton/${newPoolAddress}`}>explorer</a>
+        View pool on <a href={`https://tonscan.org/jetton/${newPoolAddress}`}> block explorer</a>
         </div>
-
+        <br />
         <div>
-          <a href={`http://localhost:3000/tonswap-web/add-liquidity/${tokenData.name}`}>💧 Add Liquidity to Pool</a>
+          💧 Manage Liquidity on <a href={`http://localhost:3000/tonswap-web/add-liquidity/${tokenData.name}`}>Liquidity Pool</a>
         </div>
+        <div>
+          💧 Trade <a href={`http://localhost:3000/tonswap-web/add-liquidity/${tokenData.name}`}>Liquidity Pool</a>
+        </div>
+        </StyledDiv>
       
         </StyledContent>
       </StyledContainer>

@@ -25,8 +25,9 @@ interface Props{
 const Mobile = observer(({onAddToken}: Props) => {
   const store = useStore();
   const classes = useStyles();
-
-  const groups = useMemo(() => splitToGroups(store.tokens, 2), [store.tokens])
+  console.log("mobile render", store.tokens);
+  
+  const groups = splitToGroups(store.tokens, 2);
 
 
   return (
