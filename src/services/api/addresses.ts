@@ -8,7 +8,7 @@ import { localStorageTokensToObject } from "utils";
 export type PoolInfo = {
   ammMinter?: Address;
   tokenMinter?: Address;
-  image: string;
+  image?: string;
   displayName: string;
   color: string;
   name: string;

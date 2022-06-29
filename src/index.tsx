@@ -9,20 +9,21 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from '@mui/material/styles';
-import { ThemeProvider as MakeStylesProvider } from '@mui/styles';
-
+import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider as MakeStylesProvider } from "@mui/styles";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <MakeStylesProvider theme={theme}>
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
-        <App />
+        <SnackbarProvider maxSnack={3}>
+          <App />
+        </SnackbarProvider>
       </Router>
     </MakeStylesProvider>
-    </ThemeProvider>
- ,
+  </ThemeProvider>,
   document.getElementById("root")
 );
 

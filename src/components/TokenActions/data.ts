@@ -5,6 +5,7 @@ import Buy from "assets/images/shared/buy.svg";
 import { NavigateFunction } from "react-router-dom";
 import { PoolInfo } from "services/api/addresses";
 import { ROUTES } from "router/routes";
+import { Address } from "ton";
 
 const createTokenActions = (navigate: NavigateFunction, token?: PoolInfo) => {
     if (!token) {
@@ -46,6 +47,13 @@ const createTokenActions = (navigate: NavigateFunction, token?: PoolInfo) => {
             title: "Remove Liquidity",
             func: () => navigate(ROUTES.actions.removeLiquidity.replace(":id", id)),
             id: "remve-liquidity",
+        },
+        {
+            icon: Buy,
+            activeIcon: "",
+            title: "Pool info",
+            func: () => token && token.ammMinter && navigate(`${ROUTES.pool.base}/${Address.normalize(token.ammMinter)}`),
+            id: "token-page",
         },
     ];
 };

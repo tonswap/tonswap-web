@@ -45,13 +45,14 @@ export function ActionButton({
     <StyledButton
       disabled={isDisabled}
       onClick={onClick}
-      className={customClassName}
+      className={`base-button ${customClassName}`}
       loading={isLoading}
       variant="contained"
+      
       color='primary'
       sx={{ boxShadow: "unset", borderRadius: "8px", background:theme.palette.primary.main}}
     >
-      <StyledBox style={{color: isDisabled ? '#7D7D7D' : ''}}>{children}</StyledBox>
+      <StyledBox style={{color: isDisabled ? '#7D7D7D' : ''}} className='base-button-content'>{children}</StyledBox>
     </StyledButton>
   );
 }

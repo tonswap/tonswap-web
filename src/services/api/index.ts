@@ -31,6 +31,11 @@ const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
+
+export const isContractDeployed = (address: string) => {
+  return  client.isContractDeployed(Address.parse(address));
+}
+
 const callWithRetry = async (address: Address, method: string, params: any) => {
   try {
     return await client.callGetMethod(address, method, params);
@@ -119,7 +124,7 @@ function getOwner() {
 
 export async function _getJettonBalance(
   jettonWallet: Address,
-  minterAddress: Address
+  minterAddress?: Address
 ) {
   try {
     console.log(
@@ -136,6 +141,8 @@ export async function _getJettonBalance(
       jettonMaster,
     };
   } catch (e) {
+    console.log(e);
+    
     return {
       balance: new BN(0),
       walletOwner: getOwner(),
@@ -253,7 +260,7 @@ export async function getPoolInfo(token: string) {
 
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
-
+  
   const totalSupply = hexToBn(res.stack[0][1]);
   const mintable = res.stack[1][1] as string;
   const jettonWalletAddressBytes = res.stack[2][1].bytes as string;

@@ -6,7 +6,8 @@ import {
   SellScreen,
   RemoveLiquidityScreen,
   AddLiquidityScreen,
-  CreatePool
+  CreatePool,
+  PoolScreen
 } from "screens";
 
 import { ROUTES } from "./routes";
@@ -20,6 +21,7 @@ function AppRoutes() {
         <Route path={ROUTES.actions.buy} element={<BuyScreen />} />
         <Route path={ROUTES.actions.sell} element={<SellScreen />} />
         <Route path={ROUTES.createPool} element={<CreatePool />} />
+        <Route path={ROUTES.pool.id} element={<PoolScreen />} />
         <Route
           path={ROUTES.actions.removeLiquidity}
           element={<RemoveLiquidityScreen />}
@@ -28,7 +30,7 @@ function AppRoutes() {
           path={ROUTES.actions.addLiquidity}
           element={<AddLiquidityScreen />}
         />
-        <Route path="*" element={<ConnectScreen />} />
+        <Route path="*" element={<Tokens />} />
       </Routes>
     </>
   );

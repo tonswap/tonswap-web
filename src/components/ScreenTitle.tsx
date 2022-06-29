@@ -6,11 +6,7 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme: Theme) => ({
   titleBox: {
     transition:'0.2s all',
-    marginBottom: 65,
-    textAlign: "center",
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: 40,
-    }
+    textAlign: "center",  
   },
   logo: {
     transition:'0.2s all',
@@ -41,16 +37,16 @@ const useStyles = makeStyles((theme: Theme) => ({
  
 }))
 interface Props {
-  titleImage: string;
+  titleImage?: string;
   title: string;
   subTitle?: ReactNode | string;
 }
 export function ScreenTitle({ titleImage, title, subTitle }: Props) {
   const classes = useStyles();
   return (
-    <Box className={classes.titleBox}>
+    <Box className={`screen-title ${classes.titleBox}`}>
       <Box className={classes.title}>
-        <img src={titleImage} alt='title' className={classes.logo} />
+       {titleImage &&  <img src={titleImage} alt='title' className={classes.logo} />}
         <Typography component="h3">{title}</Typography>
       </Box>
       {subTitle && <Box className={classes.subTitle}>{subTitle}</Box>}

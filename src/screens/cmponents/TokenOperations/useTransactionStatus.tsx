@@ -8,7 +8,6 @@ const pollTriesLimit = 40;
 
 function useTxPolling() {
   const store = useStore();
-  const [txSuccess, setTxSuccess] = useState(false);
   const { startInterval, stopInterval } = useInterval();
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);
@@ -28,19 +27,15 @@ function useTxPolling() {
     //seqno didnt moved forawed, canceling polling
 
     if (pollTries.current >= pollTriesLimit) {
-      console.log("timeout");
       stopPolling();
       onPollingFinished();
       isInProgressRef.current = false;
     }
     //seqno moved forward, tx success
     else if (result !== seqnoRef.current) {
-      console.log("done");
-
       isInProgressRef.current = false;
       stopPolling();
-      await onPollingFinished(true);
-      setTxSuccess(true);
+      onPollingFinished(true);
     }
     pollTries.current++;
   };
@@ -49,7 +44,6 @@ function useTxPolling() {
     onPollingFinished: (value?: boolean) => Promise<void>,
     seqno?: string
   ) => {
-    console.log("started");
     onFinishMethodRef.current = onPollingFinished;
     stopInterval();
     pollTries.current = 0;
@@ -57,10 +51,6 @@ function useTxPolling() {
     seqnoRef.current = seqno || (await getSeqno());
     isInProgressRef.current = true;
     startInterval(() => pollInterval(onPollingFinished));
-  };
-
-  const closeSuccess = () => {
-    setTxSuccess(false);
   };
 
   const stopPolling = () => {
@@ -88,7 +78,7 @@ function useTxPolling() {
 
   useWindowVisibility({ onFocus, onBlur });
 
-  return { pollTx, closeSuccess, txSuccess, cancelPolling: stopPolling };
+  return { pollTx, cancelPolling: stopPolling };
 }
 
 export default useTxPolling;

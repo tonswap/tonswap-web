@@ -19,7 +19,7 @@ export const ClaimRewardsScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [reward, setReward] = useState(0);
   const [rewardCopyForSnackbar, setRewardCopyForSnackbar] = useState(0)
-  const { txSuccess, pollTx, closeSuccess } = useTxPolling();
+  const {  pollTx } = useTxPolling();
 
   const onTxFinished = async () => {
     // const tokenBalance = await API.getRewards(store.selectedToken!!.name);
@@ -37,7 +37,7 @@ export const ClaimRewardsScreen = observer(() => {
 
 
   const onCloseSnackbar = async() => {
-    closeSuccess()
+    // closeSuccess()
     await delay(500)
     setRewardCopyForSnackbar(0)
   }
@@ -79,11 +79,11 @@ export const ClaimRewardsScreen = observer(() => {
           Claim Rewards
         </ActionButton>
       </Box>
-      <Notification
+      {/* <Notification
         text={`Successfully claimed ${rewardCopyForSnackbar} ${store.selectedToken?.displayName} reward`}
         open={txSuccess}
         onClose={onCloseSnackbar}
-      />
+      /> */}
     </TokenLayout>
   );
 });

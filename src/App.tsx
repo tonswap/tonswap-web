@@ -4,7 +4,7 @@ import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { useEffect } from "react";
-import { useStore } from "store";
+import { store, useStore } from "store";
 import { styled } from "@mui/system";
 import useAuth from "hooks/useAuth";
 
@@ -40,14 +40,10 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const App = observer(() => {
-  const store = useStore();
-  useAuth();
+store.restoreSession();
 
-  useEffect(() => {
-    store.restoreSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const App = observer(() => {
+  useAuth();
 
   if (store.isRestoring) {
     return null;
