@@ -8,14 +8,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     width:'100%',
     paddingBottom: 100,
     [theme.breakpoints.down('sm')]: {
-      paddingTop: 0,
+      paddingBottom: 130
     }
   },
   lists: {
     paddingTop: 30,
-    [theme.breakpoints.down('sm')]: {
-      paddingBottom: 130
-    }
+   
   },
   list: {},
   token: {

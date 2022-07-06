@@ -1,11 +1,11 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-import {  hexToBn } from "utils";
+import {  cellToString, hexToBn } from "utils";
 import { DexActions } from "./dex";
-import { Token } from "types";
-import { bytesToAddress, bytesToBase64, getToken } from "./addresses";
+import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
 import { LOCAL_STORAGE_ADDRESS } from "consts";
+import { parseOnChainData } from "./deploy-pool";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -20,7 +20,7 @@ const client = new TonClient({
   endpoint: rpcUrl,
 });
 
-enum GAS_FEE {
+export enum GAS_FEE {
   SWAP = 0.08,
   FORWARD_TON = 0.01,
   ADD_LIQUIDITY = 0.12,
@@ -31,6 +31,11 @@ const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
+
+export const isContractDeployed = (address: string) => {
+  return  client.isContractDeployed(Address.parse(address));
+}
+
 const callWithRetry = async (address: Address, method: string, params: any) => {
   try {
     return await client.callGetMethod(address, method, params);
@@ -40,22 +45,24 @@ const callWithRetry = async (address: Address, method: string, params: any) => {
   }
 };
 
-export const getTokenBalance = async (token: Token) => {
+export const getTokenBalance = async (token: PoolInfo) => {
   const tokenData = await getToken(client, token.name, getOwner());
-    
+      
   //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
-  return _getTokenBalance(tokenData.tokenMinter);
+  
+  return getTokenBalanceByMinter(tokenData.tokenMinter!!);
 };
 
 export const getLPTokenBalance = async (token: string) => {
   const tokenData = await getToken(client, token, getOwner());
-  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter);
+  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter!!);
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
   const tokenObjects = await getToken(client, token, getOwner());
   const [jettonData, lpBalance] = await Promise.all([
-    getJettonData(tokenObjects.ammMinter),
+
+    getPoolData(tokenObjects.ammMinter!!),
     getLPTokenBalance(token),
   ]);
   if (lpBalance.balance.toString() === "0") {
@@ -73,7 +80,7 @@ export const getTokensOfLPBalances = async (token: string) => {
 
 // TODO: Remove later
 (window as any).getLPTokenBalance = getLPTokenBalance;
-(window as any).getData = getJettonData;
+(window as any).getData = getPoolData;
 
 const parseNumber = (
   num: any,
@@ -117,7 +124,7 @@ function getOwner() {
 
 export async function _getJettonBalance(
   jettonWallet: Address,
-  minterAddress: Address
+  minterAddress?: Address
 ) {
   try {
     console.log(
@@ -134,6 +141,8 @@ export async function _getJettonBalance(
       jettonMaster,
     };
   } catch (e) {
+    console.log(e);
+    
     return {
       balance: new BN(0),
       walletOwner: getOwner(),
@@ -142,7 +151,7 @@ export async function _getJettonBalance(
   }
 }
 
-const _getTokenBalance = async (minterAddress: Address) => {
+export const getTokenBalanceByMinter = async (minterAddress: Address) => {
   let cell = new Cell();
   cell.bits.writeAddress(getOwner());
   const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
@@ -186,6 +195,11 @@ async function getAmountOut(
   return hexToBn(res.stack[0][1]).toString();
 }
 
+
+export async function tokenToMinter(token:string) {
+  return (await getToken(client, token, getOwner())).ammMinter
+}
+
 export const getAmountsOut = async (
   token: string,
   isSourceToken: boolean,
@@ -193,21 +207,22 @@ export const getAmountsOut = async (
   destAmount: number | null
 ) => {
   const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
-  const tokenData = await getJettonData(tokenAmm);
+
+  const tokenData = await getPoolData(tokenAmm!!);
 
   if (srcAmount) {
     // TODO
     const amountIn = toNano(srcAmount);
     if (isSourceToken) {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tokenReserves),
         new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tonReserves),
         new BN(tokenData.tokenReserves)
@@ -218,14 +233,14 @@ export const getAmountsOut = async (
     const amountIn = toNano(destAmount || 0);
     if (!isSourceToken) {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tokenReserves),
         new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
-        tokenAmm,
+        tokenAmm!!,
         new BN(amountIn),
         new BN(tokenData.tonReserves),
         new BN(tokenData.tokenReserves)
@@ -234,9 +249,18 @@ export const getAmountsOut = async (
   }
 };
 
-async function getJettonData(ammMinter: Address) {
-  let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
+export async function getPoolInfo(token: string) {
+  const tokenObjects: any = await getToken(
+    client,
+    token,
+    getOwner()
+  );
+  return getPoolData(tokenObjects.ammMinter);
+}
 
+export async function getPoolData(ammMinter: Address) {
+  let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
+  
   const totalSupply = hexToBn(res.stack[0][1]);
   const mintable = res.stack[1][1] as string;
   const jettonWalletAddressBytes = res.stack[2][1].bytes as string;
@@ -251,6 +275,37 @@ async function getJettonData(ammMinter: Address) {
   };
 }
 
+export async function getTokenData(jettonAddress: Address) {
+  let jettonDataRes = await client.callGetMethod(jettonAddress, "get_jetton_data", []);
+  const totalSupply = hexToBn(jettonDataRes.stack[0][1]);
+  const owner = b64ToCell(jettonDataRes.stack[2][1].bytes).beginParse().readAddress();
+  
+  let cell = Cell.fromBoc(Buffer.from(jettonDataRes.stack[3][1].bytes, "base64"))[0];
+  
+  // metadata is on chain 
+
+  // metadata is string 
+  //let uri = readString(cell);
+  let metadata;
+  try {
+    let uri = cellToString(cell);
+    //uri = "https://api.npoint.io/402e32572b294e845cde"
+    if(uri.length == 2) {
+      throw "onchain data";
+    }
+    let metadataRes = await fetch(uri);
+    metadata = await metadataRes.json();
+  } catch(e) {
+    metadata = parseOnChainData(cell);
+  }
+
+  return {
+    owner,
+    totalSupply,
+     ... metadata
+  };
+}
+
 export const getLiquidityAmount = async (
   srcToken: string,
   destToken: string,
@@ -262,10 +317,14 @@ export const getLiquidityAmount = async (
     srcToken !== "ton" ? srcToken : destToken,
     getOwner()
   );
-  const lpTokenData = await getJettonData(tokenObjects.ammMinter);
+  const lpTokenData = await getPoolData(tokenObjects.ammMinter);
 
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
+  if(tokenReserves.toNumber() === 0 && tonReserves.toNumber() === 0) {
+    return 0
+  }
+
 
   console.log(
     `tokenReserves: ${fromNano(tokenReserves)} tonReserves: ${fromNano(
@@ -311,7 +370,7 @@ export const getTokenDollarValue = async (
 
   if (token !== "ton") {
     const tokenData = await getToken(client, token, getOwner());
-    const lpTokenData = await getJettonData(tokenData.ammMinter);
+    const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
@@ -345,7 +404,7 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-      tokenData.ammMinter,
+      tokenData.ammMinter!!,
       toNano(tokenAmount),
       getOwner(), // owner wallet should get jetton-wallet excess messages + tons
       toNano(GAS_FEE.FORWARD_TON),
@@ -371,7 +430,7 @@ export const generateBuyLink = async (
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
   const value = toNano(tonAmount + GAS_FEE.SWAP);
-  return sendTransaction(tokenObjects.ammMinter, value, boc64);
+  return sendTransaction(tokenObjects.ammMinter!!, value, boc64);
 };
 
 export const generateAddLiquidityLink = async (
@@ -382,7 +441,7 @@ export const generateAddLiquidityLink = async (
   const tokenData = await getToken(client, token, getOwner());
   const slippage = new BN(5);
   const transferAndLiq = await DexActions.addLiquidity(
-    tokenData.ammMinter,
+    tokenData.ammMinter!!,
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(tonAmount + GAS_FEE.FORWARD_TON),
@@ -399,7 +458,8 @@ export const generateRemoveLiquidityLink = async (
   tonAmount: number | string
 ) => {
   const tokenData = await getToken(client, token, getOwner());
-  const jettonData = await getJettonData(tokenData.ammMinter);
+  const jettonData = await getPoolData(tokenData.ammMinter!!);
+
   let shareToRemove = toNano(tonAmount)
     .mul(jettonData.totalSupply)
     .div(jettonData.tonReserves);
@@ -422,12 +482,12 @@ export const generateRemoveLiquidityLink = async (
 
 
 
-function sendTransaction(to: Address, value: BN, boc64: string) {
+function sendTransaction(to: Address, value: BN, boc64: string, stateInit = null) {
   return {
     to: to.toFriendly(),
     value: value.toString(),
     timeout: 5 * 60 * 1000,
-    // stateInit: null,
+    //stateInit,
     payload: boc64,
   };
 }
@@ -438,3 +498,21 @@ export const getSeqno = async (
   return client.callGetMethod(Address.parse(address), "seqno", []);
 };
  
+
+
+function readString(cell: Cell) {
+  let str ="";
+  let slice = cell.beginParse();
+  let len = slice.readUint(10);
+  return slice.readBuffer(len.toNumber()).toString();
+}
+
+function readString2(cell: Cell) {
+  let str ="";
+  return cellToString
+}
+
+
+function b64ToCell(b64: string) {
+  return Cell.fromBoc(Buffer.from(b64, "base64"))[0];
+}

@@ -1,25 +1,25 @@
 import { Box, Fade } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { ActionButton } from "components";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import { useTokenOperationsStore } from "./Context";
 import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
-import Notification from "components/Notification";
 import useTxPolling from "screens/cmponents/TokenOperations/useTransactionStatus";
-import { delay, isTelegramWebApp } from "utils";
+import { isTelegramWebApp } from "utils";
 import { fromNano } from "ton";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
 import { useStore } from "store";
 import { observer } from "mobx-react";
 import { telegramWebApp } from "services/telegram";
+import useNotification from "hooks/useNotification";
 
 interface Props {
-  srcToken: Token;
-  destToken: Token;
+  srcToken: PoolInfo;
+  destToken: PoolInfo;
   submitButtonText: string;
   icon: any;
   getBalances: () => Promise<any>;
@@ -45,7 +45,6 @@ const TokenOperations = observer(
     const store = useStore();
     const classes = useStyles({ color: srcToken?.color || "", expanded });
     const [loading, setLoading] = useState(false);
-    const [txError, setTxError] = useState<string | null>(null);
     const [txFinished, setTxFinished] = useState(false);
 
     const {
@@ -60,13 +59,20 @@ const TokenOperations = observer(
       totalBalances,
     } = useTokenOperationsStore();
 
-    const { txSuccess, pollTx, closeSuccess, cancelPolling } = useTxPolling();
+    const { pollTx, cancelPolling } = useTxPolling();
     const successTextRef = useRef("");
+    const { showNotification } = useNotification();
 
     const onPollingFinished = async (fetchBalances?: boolean) => {
       setLoading(false);
       if (fetchBalances) {
         successTextRef.current = createSuccessMessage();
+        showNotification({
+          message: <>{successTextRef.current}</>,
+          variant: "success",
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+          autoHideDuration:6000
+        });
         resetAmounts();
         updateBalances();
         if (isTelegramWebApp()) {
@@ -74,6 +80,7 @@ const TokenOperations = observer(
         }
       }
     };
+    
     const insufficientFunds = isInsufficientFunds
       ? isInsufficientFunds(srcTokenAmount, destTokenAmount)
       : srcTokenAmount > totalBalances.srcBalance;
@@ -95,7 +102,12 @@ const TokenOperations = observer(
         cancelPolling();
         setLoading(false);
         if (error instanceof Error) {
-          setTxError(error.message);
+          showNotification({
+            message: <>{error.message}</>,
+            variant: 'error',
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+            autoHideDuration:6000
+          });
         }
       }
     };
@@ -123,32 +135,10 @@ const TokenOperations = observer(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onCloseSuccessSnackbar = async () => {
-      closeSuccess();
-      await delay(500);
-      successTextRef.current = "";
-    };
-
-    const onCloseError = () => {
-      setTxError(null);
-    };
-
     return (
       <Fade in>
         <Box className={classes.content}>
-          <Notification
-            text={successTextRef.current}
-            open={txSuccess}
-            onClose={onCloseSuccessSnackbar}
-          />
-
-          <Notification
-            text={txError || ""}
-            open={!!txError}
-            onClose={onCloseError}
-            isError
-          />
-
+      
           <Box
             className={classes.cards}
             style={{ pointerEvents: loading ? "none" : "all" }}

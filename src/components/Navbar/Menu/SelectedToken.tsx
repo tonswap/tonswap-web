@@ -2,13 +2,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useStyles } from "./style";
 import TokenActions from "components/TokenActions";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 import { Link } from "react-router-dom";
 import { useStore } from "store";
 import { ROUTES } from "router/routes";
 
 interface Props {
-  token: Token;
+  token: PoolInfo;
   hideMenu: () => void;
 }
 

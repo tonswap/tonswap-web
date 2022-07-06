@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { Popup } from "components";
 import TokenActions from "components/TokenActions";
 import { makeStyles } from "@mui/styles";
-import { Token } from "types";
+import { PoolInfo } from "services/api/addresses";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   open: boolean;
   onClose: () => void;
-  token?: Token;
+  token?: PoolInfo;
 }
 const Menu = ({ onClose, open, token }: Props) => {
   const classes = useStyles();

@@ -1,14 +1,14 @@
 import SwapCard from "components/SwapCard";
 import { useRef, useState } from "react";
 import { calculateTokens } from "screens/layouts/util";
+import { PoolInfo } from "services/api/addresses";
 import { fromNano } from "ton";
-import { Token } from "types";
 import { useDebouncedCallback } from "use-debounce";
 import { useTokenOperationsStore } from "./Context";
 import { getUsdAmount } from "./util";
 
 interface Props {
-  token: Token;
+  token: PoolInfo;
   destTokenName: string;
   getAmountFunc: any;
 }
@@ -29,6 +29,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
   const [usdLoading, setUsdLoading] = useState(false);
   const balanceRef = useRef(0);
   const debounce = useDebouncedCallback(async () => {
+    
     if (!balanceRef.current) {
       return;
     }
@@ -42,6 +43,8 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
         null,
         getAmountFunc
       );
+      
+      
 
       const usdAmounts = await Promise.all([
         getUsdAmount(token.name, balanceRef.current),
@@ -62,7 +65,13 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       setUsdLoading(false);
       setDestLoading(false);
       // TODO ...
-      setdestTokenAmount(result/1e9);
+      
+      if(result === 0) { 
+        return
+      } else {
+        setdestTokenAmount(result/1e9);
+      }
+
     }
   }, 600);
 

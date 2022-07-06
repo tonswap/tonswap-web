@@ -21,12 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     paddingTop: 40,
     paddingBottom: 60,
+    "& .screen-title": {
+      marginBottom: 65,
+    },
     [theme.breakpoints.down("sm")]: {
       paddingTop: 0,
       paddingBottom: 0,
       flex: 1,
+      "& .screen-title": {
+        marginBottom: 40,
+      },
     },
- 
   },
 }));
 

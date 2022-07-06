@@ -1,13 +1,16 @@
 import { Grid } from "@mui/material";
-import { tokens } from "tokens";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { useStore } from "store";
-import { Token } from "types";
 import ListToken from "../ListToken";
 import Menu from "./Menu";
+import AddCustomTokenButton from "../AddCustomTokenButton";
 
-const Desktop = observer(() => {
+interface Props{
+  onAddToken: () => void;
+}
+
+const Desktop = observer(({onAddToken}: Props) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const store = useStore();
@@ -17,12 +20,9 @@ const Desktop = observer(() => {
     setShowMenu(false);
   };
 
-  const onTokenSelect = (token: Token) => {
-    if (token.isActive) {
-      setShowMenu(true);
-    }
+  const onTokenSelect = () => {
+    setShowMenu(true);
   };
-
   return (
     <Grid
       container
@@ -33,15 +33,19 @@ const Desktop = observer(() => {
       marginRight="auto"
       width="100%"
       position="relative"
-      justifyContent='center'
+      justifyContent="center"
     >
-      {tokens.map((token) => {
+
+      {store.tokens.map((token) => {
         return (
           <Grid item sm={4} md={3} key={token.name}>
             <ListToken callback={onTokenSelect} token={token} />
           </Grid>
         );
       })}
+      <Grid item sm={4} md={3}>
+       <AddCustomTokenButton onClick = {onAddToken} />
+      </Grid>
 
       <Menu token={store.selectedToken} onClose={onClose} open={showMenu} />
     </Grid>

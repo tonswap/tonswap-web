@@ -1,3 +1,4 @@
+import { StateInit } from "ton";
 import { TonWalletProvider, Wallet } from "../types";
 
 
@@ -61,7 +62,7 @@ export class TonWalletClient {
     value: string,
     data?: string,
     dataType?: 'boc' | 'hex' | 'base64' | 'text',
-    stateInit?: string,
+    stateInit: string,
   }): Promise<void> {
     return this.ton!.send('ton_sendTransaction', [options]);
   }

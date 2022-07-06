@@ -1,13 +1,35 @@
-import { LOCAL_STORAGE_ADDRESS } from "consts";
-import { action, computed, makeObservable, observable } from "mobx";
+import { LOCAL_STORAGE_ADDRESS, TOKENS_IN_LOCAL_STORAGE } from "consts";
+import { action, computed, makeObservable, observable, toJS } from "mobx";
 import { createContext, useContext } from "react";
+
+import { addToken, MainNetPools } from "services/api/addresses";
 import { Wallet, Adapters } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
-import { Token } from "types";
+import { Address } from "ton";
+
+import {
+  MainNetPoolsRoot,
+  PoolInfo,
+  PoolInfoRaw,
+} from "services/api/addresses";
+import { getLocalStorageTokens } from "utils";
+
+const getTokens = () => {
+  const pools = MainNetPools();
+  var result = Object.keys(pools).map((key) => {
+    return {
+      ...pools[key],
+      name: pools[key].name,
+    };
+  });
+
+  return result;
+  // }
+};
 
 class Store {
   address?: string;
-  selectedToken?: Token;
+  selectedToken?: PoolInfo;
   navMenuOpen = false;
   seqno?: string;
   wallet: Wallet | null = null;
@@ -15,6 +37,7 @@ class Store {
   adapterId?: string;
   isConnecting: boolean = true;
   isRestoring: boolean = true;
+  tokens: PoolInfo[] = getTokens();
 
   constructor() {
     makeObservable(this, {
@@ -33,6 +56,8 @@ class Store {
       setSession: action,
       isConnecting: observable,
       isRestoring: observable,
+      tokens: observable,
+      addToken: action,
     });
   }
 
@@ -42,8 +67,27 @@ class Store {
       .replace("ton://", "https://tonhub.com/");
   }
 
-  setToken(token?: Token) {
+  setToken(token?: PoolInfo) {
     this.selectedToken = token;
+  }
+
+  addToken(pool: PoolInfo) {
+    const tokenExist = this.tokens.find(
+      (m) => m.ammMinter?.toFriendly() === pool.ammMinter?.toFriendly()
+    );
+    if (tokenExist) {
+      return;
+    }
+    pool.isCustom = true;
+
+    this.tokens.push(pool);
+    let customTokens = this.tokens.filter((it) => {
+      return it.isCustom;
+    });
+    localStorage.setItem(
+      TOKENS_IN_LOCAL_STORAGE,
+      poolInfoStringify(customTokens)
+    );
   }
 
   setNavbarMenuOpen(value: boolean) {
@@ -118,7 +162,7 @@ class Store {
     }
 
     this.setSession(_session);
-   
+
     try {
       const _wallet = await walletService.awaitReadiness(
         adapterId,
@@ -126,18 +170,46 @@ class Store {
       );
 
       this.setWallet(_wallet, adapterId);
-    
     } catch {
       this.reset();
-    } finally{
+    } finally {
       this.isRestoring = false;
-
     }
   }
 }
 
-const store = new Store();
+export function addTokenToList(
+  name: string,
+  data: PoolInfo,
+  tokenMinter: Address,
+  ammMinter: Address
+) {
+  store.tokens.push(data);
+  addToken(name, {
+    tokenMinter,
+    ammMinter,
+    ...data,
+  });
+}
+
+export const store = new Store();
 
 const StoreContext = createContext(store);
 
 export const useStore = () => useContext(StoreContext);
+
+function poolInfoStringify(pools: PoolInfo[]) {
+  let list = pools.map((pi) => {
+    return {
+      ammMinter: pi.ammMinter?.toFriendly(),
+      tokenMinter: pi.tokenMinter?.toFriendly(),
+      image: pi.image,
+      displayName: pi.displayName,
+      color: pi.color,
+      name: pi.name,
+      isCustom: true,
+    };
+  });
+
+  return JSON.stringify(list);
+}

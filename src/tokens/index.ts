@@ -3,7 +3,16 @@ import Usdt from "assets/images/tokens/usdt.svg";
 import Ton from "assets/images/tokens/ton.svg";
 import Shib from "assets/images/tokens/shiba.svg";
 
-import { Token } from "types";
+
+
+export interface Token {
+  
+  image: string,
+  displayName: string,
+  color: string,
+  name: string,
+  isActive?:  boolean
+}
 
 const tokens: Token[] = [
   {
@@ -11,7 +20,6 @@ const tokens: Token[] = [
     displayName: "SHIB",
     name: "shib",
     color: "#FFA40A",
-    isActive: true,
     // address: "EQAycqbigAAkekkGG1A_3LSVGS1RfvJb4YavqUcbUg0pYK0u",
     // amm: "EQCSOxDQI94b0vGCN2Lc3DPan8v3P_JRt-z4PJ9Af2_BPHx5",
   },
@@ -20,7 +28,6 @@ const tokens: Token[] = [
     displayName: "USDT",
     name: "usdt",
     color: "#1B8362",
-    isActive: true,
   },
   // {
   //   image: Dai,
@@ -73,5 +80,6 @@ const ton: Token = {
   color: "#1490CD",
   isActive: true,
 };
+
 
 export { tokens, ton };
