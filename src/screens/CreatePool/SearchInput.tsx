@@ -39,6 +39,7 @@ const StyledInputContainer = styled(Box)({
           setInvalidAddress(false);
         }
       } catch (error) {
+        
         setInvalidAddress(true);
       }
     };

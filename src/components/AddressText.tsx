@@ -13,6 +13,7 @@ const StyledAddressBox = styled(Box)({
       textOverflow: "ellipsis",
       overflow: "hidden",
       flex: 1,
+      paddingRight: 30
     },
   });
   

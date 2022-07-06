@@ -60,10 +60,14 @@ export function CreatePool() {
     try {
       setGetTokenLoading(true);
       setJettonAddress(jAddress);
+
       const address = Address.parse(jAddress);
+
       const jettonData = await getTokenData(address);
+      
 
       const { futureAddress, isDeployed } = await poolStateInit(address, 0);
+      console.log(futureAddress);
 
       if (isDeployed) {
         addNewPool(
@@ -82,9 +86,11 @@ export function CreatePool() {
       }
     } catch (e) {
       if (e instanceof Error) {
+        console.log(e);
+        
         setGetTokenLoading(false);
         showNotification({
-          message: <>{e.message}</>,
+          message: <>Something went wrong</>,
           variant: "error",
         });
       }
@@ -113,6 +119,7 @@ export function CreatePool() {
   };
 
   const deployPoolTx = async () => {
+
     try {
       setTxLoading(true);
       const tx = await deployPool(Address.parse(jettonAddress));
@@ -121,14 +128,16 @@ export function CreatePool() {
         throw new Error("Transaction error");
       }
 
-      if (!tx || tx.error) {
+      if (!tx || tx.error) {        
         throw new Error(tx.error);
       }
+      
       await walletService.requestTransaction(
         store.adapterId!!,
         store.session,
         tx
       );
+
       await delay(pollingDelay);
 
       const onFinish = () => {
@@ -153,7 +162,7 @@ export function CreatePool() {
       setTxLoading(false);
       if (error instanceof Error) {
         showNotification({
-          message: <>{error.message}</>,
+          message: <>Something went wrong</>,
           variant: "error",
         });
       }

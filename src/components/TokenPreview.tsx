@@ -25,7 +25,7 @@ interface Props {
 
 function TokenPreview({ image, name }: Props) {
   return (
-    <StyledContainer>
+    <StyledContainer className="token-preview">
       <img className="token-image" src={image || DefaultTokenIcon} />
       <Typography className="token-name">{name.toUpperCase()}</Typography>
     </StyledContainer>

@@ -14,6 +14,7 @@ import TokenPreview from "components/TokenPreview";
 import TonIcon from "assets/images/tokens/ton.svg";
 import AddressText from "components/AddressText";
 import FullPageLoader from "components/FullPageLoader";
+import useNotification from "hooks/useNotification";
 
 const StyledContainer = styled(Box)({
   maxWidth: "500px",
@@ -70,6 +71,7 @@ function AddCustomToken({ open, onClose }: Props) {
   const [pool, setPool] = useState<Pool | undefined>();
   const [getTokenLoading, setGetTokenLoading] = useState(false);
   const [jettonAddress, setJettonAddress] = useState("");
+  const { showNotification } = useNotification();
   const store = useStore();
 
   const create = (tokenData: Token) => {
@@ -95,10 +97,20 @@ function AddCustomToken({ open, onClose }: Props) {
     if (value.length !== 48) {
       return;
     }
+
+    let address;
     try {
-      const address = Address.parse(value);
+      address = Address.parse(value);
+    } catch (error) {
+      showNotification({ message: "Invalid address", variant: "error" });
+
+      return;
+    }
+
+    try {
       setGetTokenLoading(true);
       const jettonData = await getTokenData(address);
+      console.log(jettonData);
 
       const { futureAddress, isDeployed } = await poolStateInit(value, 0);
 
@@ -118,6 +130,7 @@ function AddCustomToken({ open, onClose }: Props) {
       });
       setIsPoolDeployed(isDeployed);
     } catch (error) {
+      console.log(error);
     } finally {
       setGetTokenLoading(false);
     }
@@ -129,7 +142,6 @@ function AddCustomToken({ open, onClose }: Props) {
     }
   };
 
-  const StyledTokenDetails = styled(Box)({});
 
   return (
     <Popup open={open} onClose={onClose}>
@@ -147,36 +159,48 @@ function AddCustomToken({ open, onClose }: Props) {
         </StyledInput>
 
         {token && (
-          <StyledTokenDetails>
-            <TokenPreview name={token.name.toUpperCase()} image={token.image} />
-            <Box>
-              <Typography>Amm minter: </Typography>
-              <AddressText address={token.ammMinter} />
-            </Box>
-          </StyledTokenDetails>
-        )}
-
-        {isPoolDeployed && token && pool && (
-          <Box>
-            <Typography>
-              Pool Reservers {token.name.toUpperCase()}-TON
-            </Typography>
-            <Box>
+          <>
+          
+            <StyledTokenDetails>
               <TokenPreview
                 name={token.name.toUpperCase()}
                 image={token.image}
               />
-              <Typography>
-                {convertToCurrencySystem(pool.tokenReserves)}
-              </Typography>
-            </Box>
-            <Box>
-              <TokenPreview name={token.name.toUpperCase()} image={TonIcon} />
-              <Typography>
-                {convertToCurrencySystem(pool.tonReserves)}
-              </Typography>
-            </Box>
-          </Box>
+              <StyledTokenDetailsAddress>
+                <StyledSectionTitle>Amm minter: </StyledSectionTitle>
+                <AddressText address={token.ammMinter} />
+              </StyledTokenDetailsAddress>
+            </StyledTokenDetails>
+
+            {pool && (
+              <StyledReserves>
+                <StyledSectionTitle>
+                  Pool Reservers {token.name.toUpperCase()}-TON
+                </StyledSectionTitle>
+                  <StyledReservesFlex>
+                  <StyledReserve>
+                  <TokenPreview
+                    name={token.name.toUpperCase()}
+                    image={token.image}
+                  />
+                  <StyledReserveAmount>
+                    {convertToCurrencySystem(pool.tokenReserves)}
+                  </StyledReserveAmount>
+                </StyledReserve>
+
+                <StyledReserve>
+                  <TokenPreview
+                    name={'TON'}
+                    image={TonIcon}
+                  />
+                  <StyledReserveAmount>
+                    {convertToCurrencySystem(pool.tonReserves)}
+                  </StyledReserveAmount>
+                </StyledReserve>
+                  </StyledReservesFlex>
+              </StyledReserves>
+            )}
+          </>
         )}
 
         <Box marginTop="50px">
@@ -190,3 +214,43 @@ function AddCustomToken({ open, onClose }: Props) {
 }
 
 export default AddCustomToken;
+
+
+const StyledTokenDetails = styled(Box)({
+  marginTop: 30,
+ 
+});
+
+
+const StyledTokenDetailsAddress = styled(Box)({
+  marginTop: 20,
+ 
+})
+
+const StyledSectionTitle = styled(Typography)({
+  fontSize: 16,
+    fontWeight: 500,
+    marginBottom: 10
+})
+
+const StyledReservesFlex = styled(Box)({
+  display:'flex',
+  flexDirection:'column',
+  gap:20
+})
+
+
+const StyledReserves = styled(Box)({
+  marginTop: 20
+})
+
+
+const StyledReserve = styled(Box)({
+display:'flex',
+alignItems:'center',
+})
+
+
+const StyledReserveAmount = styled(Box)({
+  marginLeft: 10
+})
