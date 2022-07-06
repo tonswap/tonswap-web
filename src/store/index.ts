@@ -8,11 +8,8 @@ import { walletService } from "services/wallets/WalletService";
 import { Address } from "ton";
 
 import {
-  MainNetPoolsRoot,
   PoolInfo,
-  PoolInfoRaw,
 } from "services/api/addresses";
-import { getLocalStorageTokens } from "utils";
 
 const getTokens = () => {
   const pools = MainNetPools();

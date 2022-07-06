@@ -9,7 +9,7 @@ import {
   TOKENS_IN_LOCAL_STORAGE,
 } from "consts";
 import { isMobile } from "react-device-detect";
-import { MainNetPools, PoolInfo } from "services/api/addresses";
+import {  PoolInfo } from "services/api/addresses";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
 

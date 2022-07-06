@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
-import { useEffect } from "react";
 import { store, useStore } from "store";
 import { styled } from "@mui/system";
 import useAuth from "hooks/useAuth";
