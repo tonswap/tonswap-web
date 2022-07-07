@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/tonswap-web/static/css/main.bfdf39bf.css",
-    "main.js": "/tonswap-web/static/js/main.5b008323.js",
+    "main.js": "/tonswap-web/static/js/main.44668bce.js",
     "static/media/tonhub.png": "/tonswap-web/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/hero.png": "/tonswap-web/static/media/hero.73a5d6bcf9cbe40383ea.png",
     "static/media/default-token-image.png": "/tonswap-web/static/media/default-token-image.7f04508e9bb03b76f258.png",
@@ -23,10 +23,10 @@
     "static/media/plus.svg": "/tonswap-web/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "static/media/logo-2.svg": "/tonswap-web/static/media/logo-2.358fba5dadad95fc99ee5cdd2cd76697.svg",
     "main.bfdf39bf.css.map": "/tonswap-web/static/css/main.bfdf39bf.css.map",
-    "main.5b008323.js.map": "/tonswap-web/static/js/main.5b008323.js.map"
+    "main.44668bce.js.map": "/tonswap-web/static/js/main.44668bce.js.map"
   },
   "entrypoints": [
     "static/css/main.bfdf39bf.css",
-    "static/js/main.5b008323.js"
+    "static/js/main.44668bce.js"
   ]
 }
