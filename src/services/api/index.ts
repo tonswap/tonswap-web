@@ -5,7 +5,8 @@ import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
 import { LOCAL_STORAGE_ADDRESS } from "consts";
-import { parseOnChainData } from "./deploy-pool";
+import { parseJettonOnchainMetadata } from "./deploy-pool";
+import axios from "axios";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -296,7 +297,7 @@ export async function getTokenData(jettonAddress: Address) {
     let metadataRes = await fetch(uri);
     metadata = await metadataRes.json();
   } catch(e) {
-    metadata = parseOnChainData(cell);
+    metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
   }
 
   return {

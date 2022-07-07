@@ -67,7 +67,6 @@ export function CreatePool() {
       
 
       const { futureAddress, isDeployed } = await poolStateInit(address, 0);
-      console.log(futureAddress);
 
       if (isDeployed) {
         addNewPool(
