@@ -426,7 +426,7 @@ export const generateBuyLink = async (
   //TODO add slippage explicit
   let transfer = await DexActions.swapTon(
     toNano(tonAmount),
-    toNano(tonAmount * 0.995)
+    toNano(tokenAmount * 0.995)
   );
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
