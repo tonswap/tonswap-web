@@ -38,6 +38,9 @@ const DesktopFlow = observer(({ closeModal, isModalOpen }: Props) => {
   };
 
 
+  
+
+
   return (
     <StyledContainer>
       <AdaptersList
@@ -46,7 +49,7 @@ const DesktopFlow = observer(({ closeModal, isModalOpen }: Props) => {
         open={!showQr}
         select={onSelect}
       />
-      <QR open={showQr} link={store.session?.link} onClose={cancel} />
+      <QR open={showQr} link={store.sessionLink} onClose={cancel} />
     </StyledContainer>
   );
 });
