@@ -39,6 +39,7 @@ const DesktopFlow = observer(({ closeModal, isModalOpen }: Props) => {
 
 
   
+console.log(store.sessionLink);
 
 
   return (
