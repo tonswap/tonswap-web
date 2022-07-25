@@ -4,7 +4,7 @@ import { isMobile } from "react-device-detect";
 
 interface Props {
   children: ReactElement;
-  title: string;
+  title: string | ReactElement;
   placement?:
     | "bottom-end"
     | "bottom-start"

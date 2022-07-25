@@ -4,7 +4,6 @@ import { useStyles } from "./style";
 import TokenActions from "components/TokenActions";
 import { PoolInfo } from "services/api/addresses";
 import { Link } from "react-router-dom";
-import { useStore } from "store";
 import { ROUTES } from "router/routes";
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
 
 function SelectedToken({ token, hideMenu }: Props) {
   const classes = useStyles();
-  const store = useStore();
+  const store = {} as any
 
   const onReplace = () => {
     hideMenu();

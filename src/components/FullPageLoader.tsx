@@ -4,7 +4,6 @@ import { styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
-import { useStore } from "store";
 import { Adapters } from "services/wallets/types";
 
 interface Props {
@@ -20,8 +19,8 @@ const StyledContainer = styled(Box)({
 });
 
 function FullPageLoader({ open, children }: Props) {
-  const { adapterId } = useStore();
-  const showReminderInLoader = !isMobile && adapterId === Adapters.TON_HUB;
+  const adapterId = ''
+  const showReminderInLoader = true
 
   return (
     <Backdrop

@@ -6,7 +6,6 @@ import LogoWithText from "../LogoWithText";
 import { useStyles } from "./style";
 import NoToken from "./NoToken";
 import SelectedToken from "./SelectedToken";
-import { useStore } from "store";
 import WalletAddress from "./WalletAddress";
 
 interface Props {
@@ -18,7 +17,7 @@ function Menu({ open, hide }: Props) {
   const matches = useMediaQuery("(max-width:600px)");
 
   const classes = useStyles();
-  const store = useStore();
+  const store = {} as any
 
   return (
     <Drawer anchor="left" open={open} onClose={hide}>

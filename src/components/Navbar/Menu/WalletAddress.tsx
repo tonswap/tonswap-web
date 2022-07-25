@@ -5,7 +5,6 @@ import {
   Typography,
 } from "@mui/material";
 import WalletAddressImg from "assets/images/shared/wallet-address.svg";
-import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import { styled } from "@mui/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
@@ -74,7 +73,7 @@ const StyledContainer = styled(Grid)({
 });
 
 const WalletAddress = observer(() => {
-  const store = useStore();
+  const store = {} as any
   const [showDisconnect, setShowDisconnect] = useState(false);
 
   return store.address ? (

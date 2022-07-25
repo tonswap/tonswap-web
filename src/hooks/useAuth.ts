@@ -2,12 +2,11 @@ import { DESTINATION_PATH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { useStore } from "store";
 import { getParamsFromUrl } from "utils";
 
 function useAuth() {
   const navigate = useNavigate();
-  const store = useStore();
+  const store = {} as any
   const location = useLocation()
 
   useEffect(() => {

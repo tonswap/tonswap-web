@@ -1,13 +1,12 @@
 import useWindowVisibility from "hooks/useWindowFocus";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as API from "services/api";
-import { useStore } from "store";
 import useInterval from "../../../hooks/useInterval";
 
 const pollTriesLimit = 40;
 
 function useTxPolling() {
-  const store = useStore();
+  const store = {} as any
   const { startInterval, stopInterval } = useInterval();
   const seqnoRef = useRef<string>("");
   const pollTries = useRef(0);

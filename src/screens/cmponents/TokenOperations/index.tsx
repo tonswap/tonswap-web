@@ -12,7 +12,6 @@ import { isTelegramWebApp } from "utils";
 import { fromNano } from "ton";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
-import { useStore } from "store";
 import { observer } from "mobx-react";
 import { telegramWebApp } from "services/telegram";
 import useNotification from "hooks/useNotification";
@@ -42,7 +41,7 @@ const TokenOperations = observer(
     isInsufficientFunds,
   }: Props) => {
     const expanded = useWebAppResize();
-    const store = useStore();
+    const store = {} as any
     const classes = useStyles({ color: srcToken?.color || "", expanded });
     const [loading, setLoading] = useState(false);
     const [txFinished, setTxFinished] = useState(false);

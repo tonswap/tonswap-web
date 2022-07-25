@@ -12,7 +12,6 @@ import { observer } from "mobx-react";
 import { isHiddenNavbar } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 import BetaIndicator from "./BetaIndicator";
-import { useStore } from "store";
 import MenuToggle from "./MenuToggle";
 import { isMobile } from "react-device-detect";
 
@@ -23,7 +22,7 @@ export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
-  const store = useStore();
+  const store = {}as any
   const matches = useMediaQuery("(min-width:600px)");
 
   if (isHiddenNavbar()) {

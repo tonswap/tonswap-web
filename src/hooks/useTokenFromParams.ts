@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { useStore } from "store";
 import { getToken } from "utils";
 
 function useTokenFromParams() {
   const  params = useParams();
   const {id} = params
-  const store = useStore();
+  const store = {} as any
   const navigate = useNavigate();    
 
   useEffect(() => {

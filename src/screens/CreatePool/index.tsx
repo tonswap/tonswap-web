@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { ActionButton, ScreenTitle } from "components";
-import { useStore } from "store";
 import { useState } from "react";
 import { deployPool, poolStateInit } from "services/api/deploy-pool";
 import { Address } from "ton";
@@ -36,7 +35,7 @@ const StyledContent = styled(Box)({
 });
 
 export function CreatePool() {
-  const store = useStore();
+  const store = {} as any
   const [jettonAddress, setJettonAddress] = useState("");
   const [tokenBalance, setTokenBalance] = useState<number | undefined>();
   const [txLoading, setTxLoading] = useState(false);

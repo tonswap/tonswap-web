@@ -7,11 +7,12 @@ import App from "./App";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
-
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { ThemeProvider as MakeStylesProvider } from "@mui/styles";
 import { SnackbarProvider } from "notistack";
+import { Provider } from "react-redux";
+import store from "store";
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -19,7 +20,9 @@ ReactDOM.render(
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
         <SnackbarProvider maxSnack={3}>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </SnackbarProvider>
       </Router>
     </MakeStylesProvider>

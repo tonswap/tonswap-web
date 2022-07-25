@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
-import { store, useStore } from "store";
 import { styled } from "@mui/system";
 import useAuth from "hooks/useAuth";
 
@@ -39,14 +38,8 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-store.restoreSession();
-
 const App = observer(() => {
-  useAuth();
-
-  if (store.isRestoring) {
-    return null;
-  }
+  // useAuth()
 
   return (
     <StyledAppContainer>

@@ -9,7 +9,6 @@ import { getUsdAmount } from "screens/cmponents/TokenOperations/util";
 import TonIcon from "assets/images/tokens/ton.svg";
 import DefaultTokenIcon from "assets/images/shared/default-token-image.png";
 import Loader from "./Loader";
-import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import { PoolInfo } from "services/api/addresses";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -105,7 +104,7 @@ const PoolScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();
   const [pool, setPool] = useState<Pool | undefined>();
-  const store = useStore();
+  const store = {} as any
 
   useEffect(() => {
     

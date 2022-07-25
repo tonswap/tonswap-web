@@ -1,4 +1,5 @@
 const ROUTES = {
+  swap: '/swap',
   connect: "/",
   tokens: "/select-token",
   createPool: "/create-pool",
