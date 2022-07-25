@@ -410,7 +410,7 @@ export const generateSellLink = async (
       getOwner(), // owner wallet should get jetton-wallet excess messages + tons
       toNano(GAS_FEE.FORWARD_TON),
       OPS.SWAP_TOKEN,
-      toNano(tonAmount) * 0.995
+      toNano(tonAmount * 0.995)
   );
   const boc64 = transfer.toBoc().toString("base64");
   const value = toNano(GAS_FEE.SWAP);
