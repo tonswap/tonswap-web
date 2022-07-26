@@ -2,7 +2,7 @@
   "name": "tonswap-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tonswap.github.io/tonswap-web",
+  "homepage": "https://ton-swap.org",
   "dependencies": {
     "@aws-crypto/sha256-js": "^2.0.1",
     "@emotion/react": "^11.8.2",
