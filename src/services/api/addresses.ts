@@ -3,6 +3,10 @@ import Ton from "assets/images/tokens/ton.svg";
 
 import Usdt from "assets/images/tokens/usdt.svg";
 import Shib from "assets/images/tokens/shiba.svg";
+import Btc from "assets/images/tokens/btc.svg";
+import Eth from "assets/images/tokens/eth.svg";
+import Uni from "assets/images/tokens/uni.svg";
+
 import { localStorageTokensToObject } from "utils";
 
 export type PoolInfo = {
@@ -12,20 +16,18 @@ export type PoolInfo = {
   displayName: string;
   color: string;
   name: string;
-  isCustom?: boolean
+  isCustom?: boolean;
+  isDisabled?: boolean;
 };
 
-
 export type PoolInfoRaw = {
-    ammMinter?: string;
-    tokenMinter?: string;
-    image: string;
-    displayName: string;
-    color: string;
-    name: string;
-  };
-
-
+  ammMinter?: string;
+  tokenMinter?: string;
+  image: string;
+  displayName: string;
+  color: string;
+  name: string;
+};
 
 const SandBoxPools: { [key: string]: PoolInfo } = {
   luna: {
@@ -70,26 +72,49 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: Shib,
     color: "#FFA40A",
   },
-    usdt: {
-      name:'usdt',
-      ammMinter: Address.parse(
-        "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"
-      ),
-      tokenMinter: Address.parse(
-        "EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban"
-      ),
-      displayName: "USDT",
-      image: Usdt,
-      color: "#1B8362",
-    },
+  usdt: {
+    name: "usdt",
+    ammMinter: Address.parse(
+      "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"
+    ),
+    tokenMinter: Address.parse(
+      "EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban"
+    ),
+    displayName: "USDT",
+    image: Usdt,
+    color: "#1B8362",
+  },
+  eth: {
+    name: "eth",
+
+    displayName: "ETH",
+    image: Eth,
+    color: "#1390CE",
+    isDisabled: true
+  },
+  btc: {
+    name: "btc",
+
+    displayName: "BTC",
+    image: Btc,
+    color: "#E17E06",
+    isDisabled: true
+  },
+  uni: {
+    name: "uni",
+    displayName: "UNI",
+    image: Uni,
+    color: "#E02172",
+    isDisabled: true
+  },
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
-  return { ...MainNetPoolsRoot , ...localStorageTokensToObject() } ;
+  return { ...MainNetPoolsRoot, ...localStorageTokensToObject() };
 };
 
 export const ton: PoolInfo = {
-    isCustom:false,
+  isCustom: false,
   image: Ton,
   displayName: "TON",
   name: "ton",
@@ -98,7 +123,7 @@ export const ton: PoolInfo = {
 
 let isTestNet = true;
 const Pools = () => {
-//   isTestNet ? TestNetPools : SandBoxPools;
+  //   isTestNet ? TestNetPools : SandBoxPools;
   if (process.env.NODE_ENV === "production") {
     return MainNetPools();
   }
@@ -109,8 +134,8 @@ const Pools = () => {
 const tokenCache: { [key: string]: Address } = {};
 
 export function addToken(key: string, pool: PoolInfo) {
-    const pools = Pools();
-    pools[key] = pool;
+  const pools = Pools();
+  pools[key] = pool;
 }
 
 async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
@@ -127,8 +152,7 @@ export async function getToken(
   owner: Address
 ) {
   const jettonWalletKey = `${token}:jettonWallet`;
-    
-    
+
   const jettonWallet =
     tokenCache[jettonWalletKey] ||
     (await fetchAndCache(

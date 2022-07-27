@@ -17,6 +17,10 @@ const StyledActions = styled(Box)({
   marginTop: 40,
   flexDirection:'column',
   gap: 20,
+  ".coming-soon": {
+    pointerEvents:'none',
+    background:'lightgray'
+  }
 })
 
 interface Props {
@@ -65,8 +69,8 @@ function Menu({ open, hide }: Props) {
      
         <StyledActions>
         <ActionButton  onClick={onSwapClick}>Swap</ActionButton>
-        <ActionButton  onClick={onManageLiquidity}>Manage Liquidity</ActionButton>
-        <ActionButton  onClick={onCreatePool}>Create Pool</ActionButton>
+        <ActionButton  customClassName="coming-soon" onClick={onManageLiquidity}>Manage Liquidity (soon)</ActionButton>
+        <ActionButton  customClassName="coming-soon"  onClick={onCreatePool}>Create Pool (soon)</ActionButton>
         </StyledActions>
       </Box>
     </Drawer>

@@ -274,6 +274,14 @@ const getActionFromParams = (value: any) => {
   return result.replace('-', ' ')
 };
 
+
+
+export const isManageLiquidity = (value: any) => {
+  const result = getActionFromParams(value)
+  console.log(result);
+  
+};
+
 export {
   delay,
   splitToGroups,

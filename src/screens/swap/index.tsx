@@ -1,11 +1,14 @@
 import SlidingMenu from "components/SlidingMenu";
-import { useMemo } from "react";
+import useEffectOnce from "hooks/useEffectOnce";
+import useWebAppResize from "hooks/useWebAppResize";
+import {  useMemo } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
 import { useTokenOperationsActions } from "store/token-operations/hooks";
+import { OperationType } from "store/token-operations/reducer";
 import { useTokensStore } from "store/tokens/hooks";
-import { StyledTokenOperation } from "styles/styles";
+import { StyledTokenOperation, StyledTokenOperationTitle } from "styles/styles";
 import { getActionFromParams } from "utils";
 import Buy from "./Buy";
 import Sell from "./Sell";
@@ -13,10 +16,18 @@ import Sell from "./Sell";
 
 function SwapScreen() {
   const { selectedToken } = useTokensStore();
-  const { toggleBuyToSell, toggleSellToBuy } = useTokenOperationsActions();
+  const { toggleBuyToSell, toggleSellToBuy, onOperationTypeChange } = useTokenOperationsActions();
   const navigate = useNavigate();
   const params = useParams();
   const action = getActionFromParams(params);
+  const expanded = useWebAppResize()
+
+  useEffectOnce(() => {
+    onOperationTypeChange(OperationType.SWAP)
+  })
+  
+
+
 
   const menuItems = useMemo(
     () =>
@@ -41,7 +52,10 @@ function SwapScreen() {
 
   return (
     <StyledTokenOperation>
-      {selectedToken && <SlidingMenu items={menuItems} action={action} />}
+      {selectedToken && <StyledTokenOperationTitle
+      expanded={expanded}
+      >Trade</StyledTokenOperationTitle>}
+      {selectedToken && <SlidingMenu symbol={selectedToken.displayName} items={menuItems} action={action} />}
 
       <Routes>
         <Route path={ROUTES.swap.buy} element={<Buy />} />

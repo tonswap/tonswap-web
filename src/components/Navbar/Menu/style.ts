@@ -155,8 +155,12 @@ export const StyledConnectedChip = styled(StyledChip)(({theme}) => ({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
-  
+    maxWidth: 100,
+    
     paddingRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 70,
+    },
   },
   "& .toggle": {
     position: "absolute",

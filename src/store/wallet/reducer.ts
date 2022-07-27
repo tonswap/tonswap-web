@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { Wallet } from "services/wallets/types";
-import { awaitWalletReadiness, resetWallet, setSession } from "./actions";
+import { awaitWalletReadiness, resetWallet, setConnecting, setSession } from "./actions";
 
 interface State {
   address?: string;
@@ -10,6 +10,7 @@ interface State {
   session: any;
   adapterId?: string;
   sessionLink?: string;
+  connectng: boolean;
 }
 
 const initialState: State = {
@@ -19,6 +20,7 @@ const initialState: State = {
   session: null,
   adapterId: undefined,
   sessionLink: undefined,
+  connectng: true
 };
 
 
@@ -28,6 +30,11 @@ const initialState: State = {
 const reducer = createReducer(initialState, (builder) => {
   // actionCreator.toString() will automatically be called here
   // also, if you use TypeScript, the action type will be correctly inferred
+  builder
+  .addCase(setConnecting, (state, action) => {
+    state.connectng = action.payload;
+
+  })
   builder
     .addCase(resetWallet, (state) => {
       state.wallet = null;
@@ -57,6 +64,7 @@ const reducer = createReducer(initialState, (builder) => {
       localStorage.setItem("wallet:adapter-id", adapterId);
       localStorage.setItem("wallet:session", JSON.stringify(state.session));
       localStorage.setItem(LOCAL_STORAGE_ADDRESS, wallet.address);
+      state.connectng = false
     });
 
   // Or, you can reference the .type field:

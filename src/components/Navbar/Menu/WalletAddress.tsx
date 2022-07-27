@@ -24,7 +24,7 @@ const StyledIconButton = styled("button")({
   gap: 10,
   justifyContent: "center",
   top: "calc(100% + 10px)",
-  borderRadius: 20,
+  borderRadius: 12,
   width: "100%",
   padding: "5px 0px",
   "& p": {
@@ -54,7 +54,7 @@ const WalletAddress = observer(() => {
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />
           <Tooltip placement="bottom" title={address}>
-            <Typography className="address">{address}</Typography>
+            <p className="address">{address}</p>
           </Tooltip>
           <IconButton
             className="toggle"

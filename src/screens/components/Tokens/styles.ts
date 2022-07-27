@@ -46,8 +46,8 @@ export const StyledToken = styled(Box)(({color}:{color: string}) => ({
   gap:10,
   alignItems: "center",
   justifyContent: "flex-start",
-  cursor: "pointer",
-  padding: '10px 11px',
+  padding: '10px 20px 10px 14px',
+  boxShadow:'rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px',
   "& p": {
     fontSize: 14,
     fontWeight: 500,

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Adapters } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
 import { RootState } from "store/store";
-import { awaitWalletReadiness, resetWallet, setSession } from "./actions";
+import { awaitWalletReadiness, resetWallet, setConnecting, setSession } from "./actions";
 
 export const useWalletStore = () => {
   return useSelector((state: RootState) => state.wallet);
@@ -34,6 +34,7 @@ export const useWalletActions = (): {
     const _session = localStorage.getItem("wallet:session");
 
     if (!adapterId || !_session) {
+        dispatch(setConnecting(false))
       return;
     }
 

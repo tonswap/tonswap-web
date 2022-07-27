@@ -1,5 +1,3 @@
-import { ReactComponent as Arrow } from "assets/images/shared/arrow.svg";
-import { SvgIcon } from "@mui/material";
 import TokenOperations from "screens/components/TokenOperations";
 import * as API from "services/api";
 
@@ -9,6 +7,7 @@ import {
 } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
+import SouthRoundedIcon from '@mui/icons-material/SouthRounded';
 
 const Sell = () => {
   const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
@@ -45,7 +44,7 @@ const Sell = () => {
   return (
     <TokenOperations
       createSuccessMessage={createSuccessMessage}
-      icon={<SvgIcon component={Arrow} viewBox="0 0 13 22" />}
+      icon={<SouthRoundedIcon />}
       getTxRequest={getTxRequest}
       getAmountFunc={API.getAmountsOut}
       getBalances={getBalances}

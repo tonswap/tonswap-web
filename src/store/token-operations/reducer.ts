@@ -1,7 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { getAmounts } from "./actions";
 
+
+export enum OperationType  {
+  SWAP,
+  MANAGE_LIQUIDITY
+}
 interface State {
   totalBalances: {
     destBalance: number;
@@ -13,6 +18,7 @@ interface State {
   srcTokenAmount: number;
   srcAvailableAmountLoading: boolean;
   destAvailableAmountLoading: boolean;
+  operationType:OperationType;
 }
 
 const initialState: State = {
@@ -26,6 +32,7 @@ const initialState: State = {
   destLoading: false,
   srcAvailableAmountLoading: false,
   destAvailableAmountLoading: false,
+  operationType: OperationType.SWAP
 };
 
 const WalletOperationSlice = createSlice({
@@ -33,6 +40,9 @@ const WalletOperationSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
+    setOperationType(state, action: PayloadAction<OperationType>) {
+      state.operationType = action.payload
+    },
     resetAmounts(state) {
       state.destTokenAmount = 0;
       state.srcTokenAmount = 0;
@@ -93,6 +103,7 @@ export const {
   setSrcTokenAmount,
   toggleAction,
   resetBalances,
+  setOperationType
 } = WalletOperationSlice.actions;
 
 export default WalletOperationSlice.reducer;

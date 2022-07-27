@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const StyledContainer = styled(Box)({
-  maxWidth: "280px",
+  maxWidth: "320px",
   display: "flex",
   background: "rgba(118, 118, 128, 0.12)",
   borderRadius: 8.91,
@@ -55,16 +55,15 @@ interface Item {
 interface Props {
   items: Item[];
   action: string;
+  symbol?: string;
+
 }
 
-function SlidingMenu({ items, action }: Props) {
+function SlidingMenu({ items, action, symbol }: Props) {
   const [left, setLeft] = useState(0);
   const [width, setWidth] = useState(0);
   const [allowTransition, setAllowTransition] = useState(false);
   const containerRef = useRef<any>();
-  console.log(action);
-
-  //   const [selected, setSelected] = useState(action)
 
   const onSelect = (index: number) => {
     const _width =
@@ -93,6 +92,7 @@ function SlidingMenu({ items, action }: Props) {
 
         return (
           <SlidingMenuItem
+          symbol={symbol}
             onSelect={onSelect}
             selected={selected}
             key={item.text}
@@ -112,6 +112,7 @@ interface SlidingMenuItemProps {
   onSelect: (index: number) => void;
   selected: boolean;
   index: number;
+  symbol?: string;
 }
 
 const SlidingMenuItem = ({
@@ -120,6 +121,7 @@ const SlidingMenuItem = ({
   onSelect,
   selected,
   index,
+  symbol
 }: SlidingMenuItemProps) => {
   useEffect(() => {
     if (selected) {
@@ -135,7 +137,7 @@ const SlidingMenuItem = ({
 
   return (
     <StyledOption style={{ width }} onClick={onClick}>
-      <Typography>{item.text}</Typography>
+      <Typography style={{fontWeight: selected ? 600 : 400}}>{item.text} {symbol}</Typography>
     </StyledOption>
   );
 };

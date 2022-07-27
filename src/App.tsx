@@ -6,8 +6,10 @@ import { LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { styled } from "@mui/system";
 import { getParamsFromUrl } from "utils";
 import SelectWallet from "components/SelectWallet";
-import { useWalletActions } from "store/wallet/hooks";
+import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useEffect, useRef } from "react";
+import Socials from "components/Socials";
+import AppLoader from "components/AppLoader";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -49,6 +51,7 @@ if(getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)){
 
 const App = observer(() => {
   const {restoreSession} = useWalletActions()
+  const {connectng} = useWalletStore()
   const restoreSessionRef = useRef(false)
 
 
@@ -60,6 +63,11 @@ const App = observer(() => {
    
   }, [])
 
+  if(connectng){
+    return <AppLoader />
+
+  }
+
   return (
     <StyledAppContainer>
       <Navbar />
@@ -68,7 +76,7 @@ const App = observer(() => {
         <AppRoutes />
       
       </StyledRoutesContainer>
-     
+      <Socials />
     </StyledAppContainer>
   );
 });

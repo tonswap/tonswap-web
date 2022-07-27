@@ -11,18 +11,23 @@ interface Props {
 
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
-  const { loading, usd } = useUsdValue(token.name, 1);
+  const amount = token.isDisabled ? 0 : 1
+  const { loading, usd } = useUsdValue(token.name, amount, 0);
 
   return (
     <StyledToken
+      
       color={token.color}
-      onClick={onSelect}
+      onClick={token.isDisabled ? () => {} : onSelect}
       className={classes.token}
+      style={{cursor: token.isDisabled ? '' : 'pointer'}}
     >
       {token.image && <StyledImage src={token.image} alt="token" />}
-      <Typography>{token.displayName}</Typography>
+      <Typography>{token.displayName} {token.isDisabled ? '(coming soon)' : ''}</Typography>
       <StyledUsdValue>
-        {loading ? (
+        {token.isDisabled ? 
+          null
+        : loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
           <Typography>{`$${parseFloat(usd.toFixed(3))}`}</Typography>

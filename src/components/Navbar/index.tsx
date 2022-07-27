@@ -16,20 +16,14 @@ import { useWalletStore } from "store/wallet/hooks";
 import { styled } from "@mui/system";
 
 const desktopNavbarHeight = "60px";
-const mobileNavbarHeight = "50px";
-
-
-
-const StyledAppBar = styled(AppBar)({
-
-})
+const mobileNavbarHeight = "60px";
+const StyledAppBar = styled(AppBar)({});
 
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
-  const matches = useMediaQuery("(min-width:600px)");
-  const {address} = useWalletStore()
+  const { address } = useWalletStore();
 
   return (
     <>
@@ -56,22 +50,17 @@ export const Navbar = observer(() => {
             container
             style={{
               justifyContent: "space-between",
-              alignItems: 'center',
+              alignItems: "center",
               height: "100%",
             }}
           >
             <Grid item className={classes.leftGrid}>
-              <MenuToggle
-                onClick={() => setOpen(true)}
-              />
-              <Link
-                className={classes.link}
-                to={address ? ROUTES.tokens : ""}
-              >
+              <MenuToggle onClick={() => setOpen(true)} />
+              <Link className={classes.link} to={address ? ROUTES.tokens : ""}>
                 <LogoWithText />
               </Link>
             </Grid>
-          
+
             <WalletAddress />
           </Grid>
         </Toolbar>

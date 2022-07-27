@@ -2,13 +2,18 @@ import { NumberInput } from "components/NumberInput";
 import { PoolInfo } from "services/api/addresses";
 import ContentLoader from "components/ContentLoader";
 import useWebAppResize from "hooks/useWebAppResize";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { ton } from "tokens";
 import useUsdValue from "hooks/useUsdValue";
 import { styled, Box } from "@mui/system";
 import { Avatar, IconButton, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { isManageLiquidity } from "utils";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
+import { OperationType } from "store/token-operations/reducer";
+import Balance from "./Balance";
+import UsdAmount from "./UsdAmount";
 interface Props {
   inputAmount?: number;
   availableAmount: number;
@@ -19,88 +24,93 @@ interface Props {
   availableAmountLoading: boolean;
 }
 
-const StyledContainer = styled(Box)(({ color }: { color: string }) => ({
+const StyledContainer = styled(Box)({
   borderRadius: 12,
-  background: color,
-  padding: "12px 18px 14px 12px",
+  padding: "18px",
   display: "flex",
-}));
-
-const StyledLeft = styled(Box)({
-  width: 87,
-  paddingTop: 8,
-  display: "flex",
-  alignItems: "center",
+  position: "relative",
+  overflow: "hidden",
   flexDirection: "column",
-  gap: 17,
 });
 
-const StyledRight = styled(Box)({
-  flex: 1,
-  position: "relative",
-  paddingLeft: 13,
+const StyledTokenDisplay = styled(Box)({
+  padding: "0px 8px",
   display: "flex",
-  flexDirection: "column",
-  ".border": {
-    position: "absolute",
-    left: 0,
-    top: "50%",
-    width: 1,
-    height: "calc(100% - 20px)",
-    background: "white",
-    opacity: 0.25,
-    transform: "translate(0, -50%)",
+  alignItems: "center",
+  gap: 10,
+  position: "relative",
+  background: "rgba(255,255,255, 0.1)",
+  borderRadius: 12,
+  height: "100%",
+  boxShadow:'rgb(0 0 0 / 8%) 0px 6px 10px',
+  ".arrow": {
+    width: 7,
+    height: 7,
+    borderLeft: "2px solid white",
+    borderBottom: "2px solid white",
+    transform: "rotate(-45deg)",
+    position: "relative",
+    top: "-2px",
   },
-  input: {
-    height: 49,
+  p: {
     color: "white",
-    fontSize: 30,
+    fontSize: 12,
     fontWeight: 600,
   },
 });
 
 const StyledAvatar = styled(Avatar)({
-  width: 37,
-  height: 37,
+  width: 24,
+  height: 24,
 });
 
-const StyledDisplayName = styled(Box)(({isTon}:{isTon: boolean}) => ({
- width:'100%',
-  borderRadius: 12,
-  display:'flex',
-  alignItems:'center',
-  justifyContent:'center',
-  border: !isTon ? '0.5px solid #FFFFFF' : '',
-  ".MuiIconButton-root": {
-    padding: 0,
-  },
+const StyledBottom = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  height: 25,
+  marginTop: 10,
   p: {
     color: "white",
     fontSize: 12,
-    fontWeight: 500,
-  },
-}));
-
-const StyledUsd = styled(Box)({
-  marginTop: 6,
-  marginLeft: "auto",
-  p: {
-    color: "white",
-    fontSize: 13,
+    fontWeight: 400,
   },
 });
 
-const StyledTop = styled(Box)({
+const StyledInput = styled(Box)(({expanded}: {expanded: boolean}) => ({
+  paddingRight: 10,
+  position: "relative",
+  background: "rgba(255,255,255, 0.1)",
+  width: "100%",
+  borderRadius: "12px",
   display: "flex",
   alignItems: "center",
-  marginBottom: 9,
-  justifyContent: "space-between",
-  width: "100%",
-  p: {
-    color: "white",
-    fontSize: 12,
+  height: expanded ? 54 : 42 ,
+  padding: expanded ? 10 : 5 ,
+  ".input-container": {
+    width: "100%",
+    height: "100%",
+    input: {
+      color: "white",
+      fontSize: 30,
+      fontWeight: 600,
+      height: "100%",
+      paddingRight: 10,
+      textIndent: 5,
+    },
   },
-});
+}))
+
+const StyledBg = styled(Box)(({ color }: { color: string }) => ({
+  background: color,
+  width: "100%",
+  position: "absolute",
+  height: "100%",
+  left: 0,
+  top: 0,
+  pointerEvents: "none",
+  opacity: 0.93,
+}));
 
 function SwapCard({
   inputAmount,
@@ -113,60 +123,56 @@ function SwapCard({
 }: Props) {
   const expanded = useWebAppResize();
   const navigate = useNavigate();
-  const { loading: usdLoading, usd } = useUsdValue(token.name, inputAmount);
-    const isTon = token.name === ton.name
-  const onAvatarClick = () => {
-    if (!isTon) {
-      navigate(ROUTES.tokens);
+  const { operationType } = useTokenOperationsStore();
+  const isTon = token.name === ton.name;
+
+  const onTokenSelect = () => {
+    if (isTon) {
+      return;
+    }
+    if (operationType === OperationType.SWAP) {
+      navigate(ROUTES.swap.navigateToTokens);
+    } else {
+      navigate(ROUTES.manageLiquidity.navigateToTokens);
     }
   };
 
   return (
-    <StyledContainer color={token.color}>
-      <StyledLeft>
-        {token.image && <StyledAvatar src={token.image} alt="token" />}
-        <StyledDisplayName isTon={isTon}>
-          <Typography>{token.displayName}</Typography>
-          {!isTon && <IconButton>
-            <ArrowDropDownIcon />
-          </IconButton>}
-        </StyledDisplayName>
-      </StyledLeft>
+    <StyledContainer>
+      <StyledBg color={token.color} />
+      <div style={{ position: "relative" }}>
+        <StyledInput expanded={expanded}>
+          <NumberInput
+            placeholder="0"
+            isLoading={isLoading}
+            value={inputAmount}
+            onChange={(val) => onChange(val)}
+          />
+          <StyledTokenDisplay
+            style={{ cursor: isTon ? "" : "pointer" }}
+            onClick={onTokenSelect}
+          >
+            {token.image && <StyledAvatar src={token.image} alt="token" />}
+            <Typography>{token.displayName}</Typography>
+            {!isTon && <div className="arrow"></div>}
+          </StyledTokenDisplay>
+        </StyledInput>
 
-      <StyledRight>
-        <aside className="border" />
-        <StyledTop>
-          <Typography className="enter-amount">Enter Amount</Typography>
-          {availableAmountLoading ? 
-          <ContentLoader width={40} height={15} borderRadius="4px" />
-           : <Typography component="p" textAlign="right">
-            <strong>Balance: </strong>
-            {availableAmount.toLocaleString("en-US", {
-              maximumFractionDigits: 4,
-            })}{" "}
-            {token.displayName}
-          </Typography>}
-        </StyledTop>
-        <NumberInput
-          placeholder="0"
-          isLoading={isLoading}
-          maxAmount={maxAmount}
-          value={inputAmount}
-          onChange={(val) => onChange(val)}
-        />
-        <StyledUsd>
-          {usdLoading ? (
-            <ContentLoader width={40} height="15px" borderRadius="4px" />
-          ) : (
-            <Typography component="p">
-              ~$
-              {usd.toLocaleString("en-US", {
-                maximumFractionDigits: 4,
-              })}
-            </Typography>
-          )}
-        </StyledUsd>
-      </StyledRight>
+        <StyledBottom>
+          <UsdAmount
+            isLoading={isLoading}
+            value={inputAmount}
+            name={token.name}
+          />
+          <Balance
+            availableAmount={availableAmount}
+            displayName={token.displayName}
+            loading={availableAmountLoading}
+            onMaxAmountClick={() => onChange(maxAmount.toString())}
+            showMax={inputAmount !== availableAmount}
+          />
+        </StyledBottom>
+      </div>
     </StyledContainer>
   );
 }

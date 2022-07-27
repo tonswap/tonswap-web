@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { RootState } from "store/store";
 import {
+  OperationType,
   resetAmounts,
   resetBalances,
   resetState,
   setDestLoading,
   setDestTokenAmount,
+  setOperationType,
   setSrcLoading,
   setSrcTokenAmount,
   toggleAction,
@@ -32,6 +34,7 @@ export const useTokenOperationsActions = (): {
   toggleBuyToSell: () => void;
   toggleSellToBuy: () => void;
   clearStore: () => void;
+  onOperationTypeChange: (value: OperationType) => void;
 } => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
@@ -50,7 +53,6 @@ export const useTokenOperationsActions = (): {
   const updateDestTokenAmount = useCallback(
     (value: number) => {
       dispatch(setDestTokenAmount(value));
-   
     },
     [dispatch]
   );
@@ -100,6 +102,13 @@ export const useTokenOperationsActions = (): {
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
+  const onOperationTypeChange = useCallback(
+    (value: OperationType) => {
+      dispatch(setOperationType(value));
+    },
+    [dispatch]
+  );
+
   return {
     onResetAmounts,
     updateSrcTokenAmount,
@@ -111,5 +120,6 @@ export const useTokenOperationsActions = (): {
     toggleBuyToSell,
     toggleSellToBuy,
     clearStore,
+    onOperationTypeChange
   };
 };

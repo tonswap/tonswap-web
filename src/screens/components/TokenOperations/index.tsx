@@ -19,6 +19,7 @@ import {
 import { useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
+import Icon from "./Icon";
 
 interface Props {
   srcToken: PoolInfo;
@@ -30,7 +31,7 @@ interface Props {
   getTxRequest: () => any;
   createSuccessMessage: () => string;
   isInsufficientFunds?: (src: number, dest: number) => boolean;
-  refreshAmountsOnActionChange: boolean;  
+  refreshAmountsOnActionChange: boolean;
 }
 
 const TokenOperations = ({
@@ -43,7 +44,7 @@ const TokenOperations = ({
   getTxRequest,
   createSuccessMessage,
   isInsufficientFunds,
-  refreshAmountsOnActionChange
+  refreshAmountsOnActionChange,
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -138,8 +139,7 @@ const TokenOperations = ({
             destTokenName={destToken.name}
           />
 
-          <Box className={classes.svg}>{icon}</Box>
-
+          <Icon icon={icon} color={srcToken.color} />
           <DestToken
             getAmountFunc={getAmountFunc}
             token={destToken}
