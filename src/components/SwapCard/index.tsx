@@ -14,6 +14,7 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
+import { useWalletStore } from "store/wallet/hooks";
 interface Props {
   inputAmount?: number;
   availableAmount: number;
@@ -123,6 +124,7 @@ function SwapCard({
 }: Props) {
   const expanded = useWebAppResize();
   const navigate = useNavigate();
+  const {address} = useWalletStore()
   const { operationType } = useTokenOperationsStore();
   const isTon = token.name === ton.name;
 
@@ -169,7 +171,7 @@ function SwapCard({
             displayName={token.displayName}
             loading={availableAmountLoading}
             onMaxAmountClick={() => onChange(maxAmount.toString())}
-            showMax={inputAmount !== availableAmount}
+            showMax={inputAmount !== availableAmount && address}
           />
         </StyledBottom>
       </div>
