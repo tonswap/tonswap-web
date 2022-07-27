@@ -4,8 +4,8 @@ import Ton from "assets/images/tokens/ton.svg";
 import Usdt from "assets/images/tokens/usdt.svg";
 import Shib from "assets/images/tokens/shiba.svg";
 import Btc from "assets/images/tokens/btc1.svg";
-import Eth from "assets/images/tokens/eth.svg";
-import Uni from "assets/images/tokens/uni.svg";
+import Eth from "assets/images/tokens/eth1.svg";
+import Uni from "assets/images/tokens/uni1.svg";
 
 import { localStorageTokensToObject } from "utils";
 
