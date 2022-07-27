@@ -1,25 +1,27 @@
 {
   "files": {
     "main.css": "/static/css/main.1fbf189c.css",
-    "main.js": "/static/js/main.ac934651.js",
+    "main.js": "/static/js/main.dc2f5406.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
     "static/media/shiba.svg": "/static/media/shiba.46c0290735efcd7495b3df2b2c2629ae.svg",
+    "static/media/uni1.svg": "/static/media/uni1.c1068fa18ee9d2e09bb1d3c8e62b009a.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
-    "static/media/arrow.svg": "/static/media/arrow.520c234996021da2685f9ae4d51a582b.svg",
     "static/media/ton.svg": "/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
     "index.html": "/index.html",
     "static/media/wallet-address.svg": "/static/media/wallet-address.57b60a11e4d5fd39eac76f18f88060ee.svg",
     "static/media/wallet.svg": "/static/media/wallet.fc714ee09ee6021c6120c77726ed285d.svg",
+    "static/media/btc1.svg": "/static/media/btc1.0e1fa97493493367f45a929fcc9bb170.svg",
     "static/media/usdt.svg": "/static/media/usdt.0199d80a8c0ddcd912b0973eaa2dd243.svg",
+    "static/media/eth1.svg": "/static/media/eth1.f827adddcf99941a48898b6adf11dcf1.svg",
     "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
     "static/media/minus.svg": "/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "main.1fbf189c.css.map": "/static/css/main.1fbf189c.css.map",
-    "main.ac934651.js.map": "/static/js/main.ac934651.js.map"
+    "main.dc2f5406.js.map": "/static/js/main.dc2f5406.js.map"
   },
   "entrypoints": [
     "static/css/main.1fbf189c.css",
-    "static/js/main.ac934651.js"
+    "static/js/main.dc2f5406.js"
   ]
 }
