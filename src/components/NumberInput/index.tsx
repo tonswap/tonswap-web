@@ -9,6 +9,7 @@ interface Props {
   title?: string;
   maxAmount: number;
   isLoading?: boolean;
+  placeholder?: string;
 }
 
 const useStyles = makeStyles({
@@ -45,6 +46,7 @@ export function NumberInput({
   title,
   maxAmount,
   isLoading,
+  placeholder
 }: Props) {
   const classes = useStyles();
   return (
@@ -83,6 +85,7 @@ export function NumberInput({
             inputMode: 'decimal'
             
           }}
+          placeholder={placeholder}
           style={{ width: "100%", height:'100%' }}
           autoComplete="off"
           sx={{ border: "none" }}

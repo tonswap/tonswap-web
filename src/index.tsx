@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom";
-import "./index.css";
 import "setimmediate";
 
 import App from "./App";

@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 36,
     height: 36,
     marginRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      width: 30,
+      height: 30,
+      marginRight: 5,
+    },
   },
   menuIcon: {
     color: "#6D6D6D",

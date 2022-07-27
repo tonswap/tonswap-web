@@ -1,5 +1,5 @@
-import SwapCard from "components/SwapCard";
-import { useRef } from "react";
+import SwapCard from "components/SwapCard/index";
+import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
 import {
   useTokenOperationsActions,
@@ -76,6 +76,14 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       debounce();
     }
   };
+
+  useEffect(() => {
+    if (srcTokenAmount) {
+      console.log(srcTokenAmount);
+      
+      onChange(srcTokenAmount.toString());
+    }
+  }, []);
 
   return (
     <SwapCard

@@ -62,12 +62,7 @@ function Menu({ open, hide }: Props) {
             <CloseRoundedIcon fontSize="large" className={classes.closeBtn} />
           </IconButton>
         </Box>
-        {matches && (
-          <Box marginTop='20px'>
-            <WalletAddress />
-          </Box>
-        )}
-       
+     
         <StyledActions>
         <ActionButton  onClick={onSwapClick}>Swap</ActionButton>
         <ActionButton  onClick={onManageLiquidity}>Manage Liquidity</ActionButton>

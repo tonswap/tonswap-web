@@ -1,5 +1,5 @@
 import SwapCard from "components/SwapCard";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
 import {
   useTokenOperationsActions,
@@ -64,12 +64,13 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     balanceRef.current = Number(value);
     if (!value) {
       updateSrcTokenLoading(false);
-       updateSrcTokenAmount(0);
+      updateSrcTokenAmount(0);
     } else {
       updateSrcTokenLoading(true);
       debounce();
     }
   };
+
 
   return (
     <SwapCard

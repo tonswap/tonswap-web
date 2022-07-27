@@ -7,9 +7,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     textAlign: "center",
     width: "100%",
-    paddingBottom: 100,
+    paddingBottom: 50,
+    overflow:'auto',
+    flex:1,
     [theme.breakpoints.down("sm")]: {
-      paddingBottom: 130,
+      paddingBottom: 80,
     },
   },
   lists: {

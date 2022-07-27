@@ -9,7 +9,8 @@ import { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { StyledConnectedChip, StyledConnectChip } from "./style";
 import { useWalletActions, useWalletStore } from "store/wallet/hooks";
-import { useToggleModal, useWalletModalToggle } from "store/application/hooks";
+import { useWalletModalToggle } from "store/application/hooks";
+import WalletImg from 'assets/images/shared/wallet.svg'
 
 
 const StyledIconButton = styled("button")({
@@ -64,6 +65,7 @@ const WalletAddress = observer(() => {
         </StyledConnectedChip>
       ) : (
         <StyledConnectChip onClick={toggleModal}>
+          <img className="icon" src = {WalletImg} />
           <Typography className="address">Connect wallet</Typography>
         </StyledConnectChip>
       )}

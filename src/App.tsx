@@ -15,17 +15,17 @@ const StyledAppContainer = styled(Box)({
   alignItems: "center",
   width: "100%",
   position: "relative",
-  paddingLeft: "20px",
-  paddingRight: "20px",
+  paddingLeft: "15px",
+  paddingRight: "15px",
   paddingBottom: 30,
   maxWidth: LAYOUT_MAX_WIDTH,
   marginLeft: "auto",
   marginRight: "auto",
   flex: 1,
+  height:'100vh'
 });
 
 const StyledRoutesContainer = styled(Box)(({ theme }) => ({
-  background: "#FAFAFA",
   borderRadius: 20,
   maxHeight: "calc(100vh - 130px)",
   width: "100%",
@@ -59,11 +59,6 @@ const App = observer(() => {
     }
    
   }, [])
-  
-
-  // if (store.isRestoring) {
-  //   return null;
-  // }
 
   return (
     <StyledAppContainer>

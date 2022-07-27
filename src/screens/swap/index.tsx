@@ -51,7 +51,7 @@ function SwapScreen() {
           element={
             <Tokens
               onTokenSelect={onTokenSelect}
-              title="Select a token to trade"
+              title="Jettons available for trade"
             />
           }
         />

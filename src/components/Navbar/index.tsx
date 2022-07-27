@@ -10,13 +10,19 @@ import { LAYOUT_MAX_WIDTH } from "consts";
 import { Box, Grid, useMediaQuery } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
-import BetaIndicator from "./BetaIndicator";
 import MenuToggle from "./MenuToggle";
 import { isMobile } from "react-device-detect";
 import { useWalletStore } from "store/wallet/hooks";
+import { styled } from "@mui/system";
 
-const desktopNavbarHeight = "90px";
-const mobileNavbarHeight = "70px";
+const desktopNavbarHeight = "60px";
+const mobileNavbarHeight = "50px";
+
+
+
+const StyledAppBar = styled(AppBar)({
+
+})
 
 export const Navbar = observer(() => {
   const classes = useStyles();
@@ -27,7 +33,7 @@ export const Navbar = observer(() => {
 
   return (
     <>
-      <AppBar
+      <StyledAppBar
         position="fixed"
         color="transparent"
         sx={{
@@ -50,9 +56,8 @@ export const Navbar = observer(() => {
             container
             style={{
               justifyContent: "space-between",
-              alignItems: isMobile ? "center" : "flex-end",
+              alignItems: 'center',
               height: "100%",
-              paddingBottom: isMobile ? 0 : 27,
             }}
           >
             <Grid item className={classes.leftGrid}>
@@ -66,14 +71,12 @@ export const Navbar = observer(() => {
                 <LogoWithText />
               </Link>
             </Grid>
-            <Grid item>
-              <BetaIndicator />
-            </Grid>
-            {matches && <WalletAddress />}
+          
+            <WalletAddress />
           </Grid>
         </Toolbar>
         <Menu open={open} hide={() => setOpen(false)} />
-      </AppBar>
+      </StyledAppBar>
       <Box
         style={{
           height: navbarHeight,

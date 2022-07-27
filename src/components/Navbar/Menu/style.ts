@@ -104,30 +104,40 @@ export const StyledChip = styled(Box)(({theme}) => ({
   alignItems: "center",
   height: 35,
 
-  borderRadius: 20,
+  borderRadius:12,
   color: theme.palette.primary.main,
   maxWidth: 185,
   gap: 7,
   [theme.breakpoints.down("sm")]: {
-    maxWidth: "unset",
-    width: "100%",
-    marginTop: 20,
+    maxWidth: 145,
+
   },
   "p": {
     fontSize: 12,
-  }
+  },
+  "& .icon": {
+    width: 20,
+    height: 20,
+  },
+  
 }))
 
 
 
 export const StyledConnectChip = styled(StyledChip)(({theme}) => ({
-  background: theme.palette.primary.main,
-  paddingLeft: 20,
+ 
+  border: `1px solid ${theme.palette.primary.main}!important`,
+  paddingLeft: 14,
   paddingRight: 20,
   cursor:'pointer',
   "p": {
-    color:'white',
-    fontWeight: 500
+    color:theme.palette.primary.main,
+    fontWeight: 600,
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: 12,
+    paddingLeft: 10,
+    paddingRight: 15,
   }
 }))
 
@@ -136,10 +146,10 @@ export const StyledConnectedChip = styled(StyledChip)(({theme}) => ({
   background: "transparent!important",
   paddingLeft: 10,
   paddingRight: 30,
-  "& .icon": {
-    width: 20,
-    height: 20,
+  [theme.breakpoints.down("sm")]: {
+    paddingRight: 20,
   },
+ 
   "& .address": {
     flex: 1,
     textOverflow: "ellipsis",

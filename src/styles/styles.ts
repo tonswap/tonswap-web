@@ -1,13 +1,16 @@
 import { Box, styled } from "@mui/system";
 
-export const StyledTokenOperation = styled(Box)({
+export const StyledTokenOperation = styled(Box)(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   paddingTop: 30,
-  paddingBottom: 70,
-  width:'100%'
-});
+  flex:1,
+  width:'100%',
+  [theme.breakpoints.down('sm')]: {
+    paddingTop: 20,
+  }
+}));
 
 
 
