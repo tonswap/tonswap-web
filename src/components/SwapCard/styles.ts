@@ -26,6 +26,7 @@ const useStyles = makeStyles({
     },
   },
   tokenImage: {
+    cursor:'pointer',
     transition:'0.2s all',
     position: "absolute",
     left: "50%",

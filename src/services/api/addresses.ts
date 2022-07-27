@@ -128,7 +128,6 @@ export async function getToken(
 ) {
   const jettonWalletKey = `${token}:jettonWallet`;
     
-    console.log(Pools()[token].tokenMinter!!);
     
   const jettonWallet =
     tokenCache[jettonWalletKey] ||

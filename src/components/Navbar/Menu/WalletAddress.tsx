@@ -1,57 +1,19 @@
-import {
-  ClickAwayListener,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { ClickAwayListener, Grid, IconButton, Typography } from "@mui/material";
 import WalletAddressImg from "assets/images/shared/wallet-address.svg";
-import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import { styled } from "@mui/styles";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import Tooltip from "components/Tooltip";
 import theme from "theme";
 import { useState } from "react";
-import { Box } from "@mui/system";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-const StyledChip = styled(Box)({
-  position: "relative",
-  display: "flex",
-  alignItems: "center",
-  border: `1px solid ${theme.palette.primary.main}!important`,
-  height: 35,
-  paddingLeft: 10,
-  borderRadius: 20,
-  background: "transparent!important",
-  color: theme.palette.primary.main,
-  maxWidth: 185,
-  gap: 7,
-  paddingRight: 30,
-  "& .icon": {
-    width: 20,
-    height: 20,
-  },
-  "& .address": {
-    flex: 1,
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    fontSize: 12,
-    paddingRight:10,
-  },
-  "& .toggle": {
-    position: "absolute",
-    right: 0,
-  },
-  [theme.breakpoints.down('sm')]:{
-    maxWidth:'unset',
-    width: '100%',
-    marginTop: 20
-  }
-});
+import { StyledConnectedChip, StyledConnectChip } from "./style";
+import { useWalletActions, useWalletStore } from "store/wallet/hooks";
+import { useToggleModal, useWalletModalToggle } from "store/application/hooks";
+
 
 const StyledIconButton = styled("button")({
-  cursor:'pointer',
+  cursor: "pointer",
   color: `${theme.palette.primary.main}!important`,
   filter: "drop-shadow(rgba(0, 0, 0, 0.1) 0px 4px 4px)",
   background: "white",
@@ -74,34 +36,47 @@ const StyledContainer = styled(Grid)({
 });
 
 const WalletAddress = observer(() => {
-  const store = useStore();
+  const {resetWallet} = useWalletActions()
+  const toggleModal = useWalletModalToggle()
+  const {address} = useWalletStore()
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-  return store.address ? (
-    <StyledContainer item display="flex" gap="10px">
-      <StyledChip>
-        <img alt="wallet" className="icon" src={WalletAddressImg} />
-        <Tooltip placement="bottom" title={store.address}>
-          <Typography className="address">{store.address}</Typography>
-        </Tooltip>
-        <IconButton
-          className="toggle"
-          onClick={() => setShowDisconnect(!showDisconnect)}
-        >
-          <ArrowDropDownIcon style={{ color: "#50A7EA" }} />
-        </IconButton>
-      </StyledChip>
 
+  const onDisconnect = () => {
+    resetWallet()
+    setShowDisconnect(false)
+  }
+
+  return (
+    <StyledContainer item display="flex" gap="10px">
+      {address ? (
+        <StyledConnectedChip>
+          <img alt="wallet" className="icon" src={WalletAddressImg} />
+          <Tooltip placement="bottom" title={address}>
+            <Typography className="address">{address}</Typography>
+          </Tooltip>
+          <IconButton
+            className="toggle"
+            onClick={() => setShowDisconnect(!showDisconnect)}
+          >
+            <ArrowDropDownIcon style={{ color: "#50A7EA" }} />
+          </IconButton>
+        </StyledConnectedChip>
+      ) : (
+        <StyledConnectChip onClick={toggleModal}>
+          <Typography className="address">Connect wallet</Typography>
+        </StyledConnectChip>
+      )}
       {showDisconnect && (
         <ClickAwayListener onClickAway={() => setShowDisconnect(false)}>
-          <StyledIconButton onClick={store.disconnect}>
+          <StyledIconButton onClick={onDisconnect}>
             <PowerSettingsNewIcon style={{ width: 18 }} />
             <Typography>Disconnect</Typography>
           </StyledIconButton>
         </ClickAwayListener>
       )}
     </StyledContainer>
-  ) : null;
+  );
 });
 
 export default WalletAddress;

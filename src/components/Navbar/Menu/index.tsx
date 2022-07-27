@@ -4,10 +4,20 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Box from "@mui/material/Box";
 import LogoWithText from "../LogoWithText";
 import { useStyles } from "./style";
-import NoToken from "./NoToken";
-import SelectedToken from "./SelectedToken";
-import { useStore } from "store";
 import WalletAddress from "./WalletAddress";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "router/routes";
+import { ActionButton } from "components/ActionButton";
+import { useTokensStore } from "store/tokens/hooks";
+import { styled } from "@mui/system";
+
+
+const StyledActions = styled(Box)({
+  display:'flex',
+  marginTop: 40,
+  flexDirection:'column',
+  gap: 20,
+})
 
 interface Props {
   open: boolean;
@@ -18,7 +28,23 @@ function Menu({ open, hide }: Props) {
   const matches = useMediaQuery("(max-width:600px)");
 
   const classes = useStyles();
-  const store = useStore();
+  const navigate = useNavigate()
+
+  const onCreatePool = () => {
+    hide()
+    navigate(ROUTES.createPool)
+  }
+
+  const onManageLiquidity = () => {
+    hide()
+      navigate(ROUTES.manageLiquidity.navigateToTokens)
+  }
+
+
+  const onSwapClick = () => {
+    hide()
+    navigate(ROUTES.swap.navigateToTokens)
+  }
 
   return (
     <Drawer anchor="left" open={open} onClose={hide}>
@@ -41,11 +67,12 @@ function Menu({ open, hide }: Props) {
             <WalletAddress />
           </Box>
         )}
-        {store.selectedToken ? (
-          <SelectedToken hideMenu={hide} token={store.selectedToken} />
-        ) : (
-          <NoToken hideMenu={hide} />
-        )}
+       
+        <StyledActions>
+        <ActionButton  onClick={onSwapClick}>Swap</ActionButton>
+        <ActionButton  onClick={onManageLiquidity}>Manage Liquidity</ActionButton>
+        <ActionButton  onClick={onCreatePool}>Create Pool</ActionButton>
+        </StyledActions>
       </Box>
     </Drawer>
   );

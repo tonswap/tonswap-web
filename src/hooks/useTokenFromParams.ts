@@ -1,25 +1,19 @@
 import { useEffect } from "react";
-import {  useNavigate, useParams } from "react-router-dom";
-import { ROUTES } from "router/routes";
-import { useStore } from "store";
-import { getToken } from "utils";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTokensActions } from "store/tokens/hooks";
 
 function useTokenFromParams() {
-  const  params = useParams();
-  const {id} = params
-  const store = useStore();
-  const navigate = useNavigate();    
+  const params = useParams();
+  const { id } = params;
+  const { selectToken } = useTokensActions();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
-      const token = getToken(store.tokens, id);
-      if (token) {
-        store.setToken(token);
-      } else {
-        navigate(ROUTES.tokens);
-      }
+      
+      selectToken(id);
     }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, navigate]);
 }
 

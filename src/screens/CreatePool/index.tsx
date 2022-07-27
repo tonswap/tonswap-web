@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { ActionButton, ScreenTitle } from "components";
-import { useStore } from "store";
 import { useState } from "react";
 import { deployPool, poolStateInit } from "services/api/deploy-pool";
 import { Address } from "ton";
@@ -18,6 +17,8 @@ import SearchInput from "./SearchInput";
 import useContractPolling from "hooks/useContractPolling";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
+import { useTokensActions } from "store/tokens/hooks";
+import { useWalletStore } from "store/wallet/hooks";
 
 const pollingDelay = 5000;
 interface jettonData {
@@ -36,13 +37,15 @@ const StyledContent = styled(Box)({
 });
 
 export function CreatePool() {
-  const store = useStore();
+  
   const [jettonAddress, setJettonAddress] = useState("");
   const [tokenBalance, setTokenBalance] = useState<number | undefined>();
   const [txLoading, setTxLoading] = useState(false);
   const [getTokenLoading, setGetTokenLoading] = useState(false);
   const [tokenData, setTokenData] = useState<jettonData | undefined>();
   const { poll } = useContractPolling();
+  const {addToken} = useTokensActions()
+  const {adapterId, session} = useWalletStore()
 
   const navigate = useNavigate();
 
@@ -114,7 +117,7 @@ export function CreatePool() {
       image: jData.image,
       isCustom: true,
     };
-    store.addToken(token);
+    addToken(token);
   };
 
   const deployPoolTx = async () => {
@@ -132,8 +135,8 @@ export function CreatePool() {
       }
       
       await walletService.requestTransaction(
-        store.adapterId!!,
-        store.session,
+        adapterId!!,
+        session,
         tx
       );
 

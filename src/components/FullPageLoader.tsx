@@ -4,8 +4,8 @@ import { styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
-import { useStore } from "store";
 import { Adapters } from "services/wallets/types";
+import { useWalletStore } from "store/wallet/hooks";
 
 interface Props {
   open: boolean;
@@ -20,7 +20,7 @@ const StyledContainer = styled(Box)({
 });
 
 function FullPageLoader({ open, children }: Props) {
-  const { adapterId } = useStore();
+  const { adapterId } = useWalletStore();
   const showReminderInLoader = !isMobile && adapterId === Adapters.TON_HUB;
 
   return (

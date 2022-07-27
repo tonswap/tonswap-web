@@ -269,7 +269,10 @@ function convertToCurrencySystem (value?: string | number) {
 
 }
 
-
+const getActionFromParams = (value: any) => {
+  const result =  value["*"].split("/")[0];
+  return result.replace('-', ' ')
+};
 
 export {
   delay,
@@ -283,5 +286,6 @@ export {
   getRandomColor,
   localStorageTokensToObject,
   getLocalStorageTokens,
-  convertToCurrencySystem
+  convertToCurrencySystem,
+  getActionFromParams
 };

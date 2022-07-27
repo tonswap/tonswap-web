@@ -2,10 +2,12 @@ import { observer } from "mobx-react-lite";
 import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { LAYOUT_MAX_WIDTH } from "consts";
-import { store, useStore } from "store";
+import { LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { styled } from "@mui/system";
-import useAuth from "hooks/useAuth";
+import { getParamsFromUrl } from "utils";
+import SelectWallet from "components/SelectWallet";
+import { useWalletActions } from "store/wallet/hooks";
+import { useEffect, useRef } from "react";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -39,21 +41,39 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-store.restoreSession();
+
+if(getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)){
+  localStorage.setItem(TELEGRAM_WEBAPP_PARAM, '1')
+}
+
 
 const App = observer(() => {
-  useAuth();
+  const {restoreSession} = useWalletActions()
+  const restoreSessionRef = useRef(false)
 
-  if (store.isRestoring) {
-    return null;
-  }
+
+  useEffect(() => {
+    if(!restoreSessionRef.current){
+      restoreSession()
+      restoreSessionRef.current = true
+    }
+   
+  }, [])
+  
+
+  // if (store.isRestoring) {
+  //   return null;
+  // }
 
   return (
     <StyledAppContainer>
       <Navbar />
+      <SelectWallet />
       <StyledRoutesContainer>
         <AppRoutes />
+      
       </StyledRoutesContainer>
+     
     </StyledAppContainer>
   );
 });

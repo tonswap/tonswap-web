@@ -1,9 +1,10 @@
 import { makeStyles } from "@mui/styles";
 import {Theme } from "@mui/material";
+import { styled , Box} from "@mui/system";
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
-    width: 520,
+    width: 400,
     paddingLeft: 26,
     paddingRight: 22,
     paddingTop: 20,
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     paddingTop: 47,
-    paddingBottom: 70,
+    paddingBottom: 20,
     [theme.breakpoints.down('sm')]: {
       paddingTop: 20,
     }
@@ -94,5 +95,63 @@ const useStyles = makeStyles((theme: Theme) => ({
     top:'80px',
   }
 }));
+
+
+
+export const StyledChip = styled(Box)(({theme}) => ({
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  height: 35,
+
+  borderRadius: 20,
+  color: theme.palette.primary.main,
+  maxWidth: 185,
+  gap: 7,
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "unset",
+    width: "100%",
+    marginTop: 20,
+  },
+  "p": {
+    fontSize: 12,
+  }
+}))
+
+
+
+export const StyledConnectChip = styled(StyledChip)(({theme}) => ({
+  background: theme.palette.primary.main,
+  paddingLeft: 20,
+  paddingRight: 20,
+  cursor:'pointer',
+  "p": {
+    color:'white',
+    fontWeight: 500
+  }
+}))
+
+export const StyledConnectedChip = styled(StyledChip)(({theme}) => ({
+  border: `1px solid ${theme.palette.primary.main}!important`,
+  background: "transparent!important",
+  paddingLeft: 10,
+  paddingRight: 30,
+  "& .icon": {
+    width: 20,
+    height: 20,
+  },
+  "& .address": {
+    flex: 1,
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  
+    paddingRight: 10,
+  },
+  "& .toggle": {
+    position: "absolute",
+    right: 0,
+  },
+}))
 
 export { useStyles };

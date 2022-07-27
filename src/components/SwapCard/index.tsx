@@ -4,6 +4,10 @@ import { PoolInfo } from "services/api/addresses";
 import ContentLoader from "components/ContentLoader";
 import { useStyles } from "./styles";
 import useWebAppResize from "hooks/useWebAppResize";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "router/routes";
+import { ton } from "tokens";
+import useUsdValue from "hooks/useUsdValue";
 
 interface Props {
   inputAmount?: number;
@@ -11,8 +15,6 @@ interface Props {
   onChange: (val: string) => void;
   maxAmount: number;
   token: PoolInfo;
-  usdPrice: number;
-  usdLoading: boolean;
   isLoading?: boolean;
   availableAmountLoading: boolean;
 }
@@ -23,20 +25,28 @@ function SwapCard({
   onChange,
   maxAmount,
   token,
-  usdPrice,
-  usdLoading,
   isLoading,
   availableAmountLoading,
 }: Props) {
-  const expanded = useWebAppResize()
+  const expanded = useWebAppResize();
   const classes = useStyles({ color: token.color, expanded });
-
+  const navigate = useNavigate();
+  const {loading: usdLoading, usd} = useUsdValue(token.name, inputAmount )
+  
+  const onAvatarClick = () => {
+    if (token.name !== ton.name) {
+      navigate(ROUTES.tokens);
+    }
+  };
 
   return (
     <Box className={classes.root}>
-      <Box className={classes.tokenImage}>
-       {token.image &&  <img src={token.image} alt='token' />}
-      </Box>
+      <div
+        className={classes.tokenImage}
+        onClick={onAvatarClick}
+      >
+        {token.image && <img src={token.image} alt="token" />}
+      </div>
       <Typography fontSize="14px" marginBottom="4px" fontWeight={500}>
         {token.displayName}
       </Typography>
@@ -56,13 +66,16 @@ function SwapCard({
           {isLoading || usdLoading ? (
             <ContentLoader width={40} height="15px" borderRadius="4px" />
           ) : (
-            <Typography component="p">~${usdPrice}</Typography>
+            <Typography component="p">~${usd}</Typography>
           )}
         </Grid>
         <Grid item xs={6} justifyContent="flex-end">
           {availableAmountLoading ? (
-            <ContentLoader width={40} height="18px" borderRadius="4px" style={{marginLeft:'auto',  marginRight:'5px'}} 
-           
+            <ContentLoader
+              width={40}
+              height="18px"
+              borderRadius="4px"
+              style={{ marginLeft: "auto", marginRight: "5px" }}
             />
           ) : (
             <Typography component="p" textAlign="right">

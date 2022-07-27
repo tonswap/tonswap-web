@@ -5,11 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { getPoolData, getTokenData, _getJettonBalance } from "services/api";
 import { Address, fromNano } from "ton";
-import { getUsdAmount } from "screens/cmponents/TokenOperations/util";
+import { getUsdAmount } from "screens/components/TokenOperations/util";
 import TonIcon from "assets/images/tokens/ton.svg";
 import DefaultTokenIcon from "assets/images/shared/default-token-image.png";
 import Loader from "./Loader";
-import { useStore } from "store";
 import { observer } from "mobx-react-lite";
 import { PoolInfo } from "services/api/addresses";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -26,6 +25,7 @@ import {
 } from "./styles";
 import { convertToCurrencySystem } from "utils";
 import TokenPreview from "components/TokenPreview";
+import { useTokensStore } from "store/tokens/hooks";
 
 type Token = {
   name: string;
@@ -105,14 +105,14 @@ const PoolScreen = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();
   const [pool, setPool] = useState<Pool | undefined>();
-  const store = useStore();
+  const {tokens} = useTokensStore()
 
   useEffect(() => {
     
     if (ammMinter) {
       (async () => {
         try {
-          const data = await getPool(ammMinter, store.tokens);
+          const data = await getPool(ammMinter, tokens);
             setToken(data.token)
             setPool(data.pool)
         } catch (error) {
@@ -122,7 +122,7 @@ const PoolScreen = observer(() => {
         }
       })();
     }
-  }, [ammMinter, store.tokens]);
+  }, [ammMinter, tokens]);
 
   if (isLoading) {
     return (
@@ -159,14 +159,14 @@ const PoolScreen = observer(() => {
           <StyledPoolActions>
             <ActionButton
               onClick={() =>
-                navigate(ROUTES.actions.addLiquidity.replace(":id", token.name))
+                navigate(ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", token.name))
               }
             >
               Add Liquidity
             </ActionButton>
             <ActionButton
               onClick={() =>
-                navigate(ROUTES.actions.buy.replace(":id", token.name))
+                navigate(ROUTES.swap.buy.replace(":id", token.name))
               }
             >
               Buy

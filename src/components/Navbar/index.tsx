@@ -9,12 +9,11 @@ import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { Box, Grid, useMediaQuery } from "@mui/material";
 import { observer } from "mobx-react";
-import { isHiddenNavbar } from "utils";
 import WalletAddress from "./Menu/WalletAddress";
 import BetaIndicator from "./BetaIndicator";
-import { useStore } from "store";
 import MenuToggle from "./MenuToggle";
 import { isMobile } from "react-device-detect";
+import { useWalletStore } from "store/wallet/hooks";
 
 const desktopNavbarHeight = "90px";
 const mobileNavbarHeight = "70px";
@@ -23,22 +22,8 @@ export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
-  const store = useStore();
   const matches = useMediaQuery("(min-width:600px)");
-
-  if (isHiddenNavbar()) {
-    return (
-      <Box
-        style={{
-          height: "6px",
-          width: "100%",
-          top: 0,
-          background: "white",
-          zIndex: 99,
-        }}
-      ></Box>
-    );
-  }
+  const {address} = useWalletStore()
 
   return (
     <>
@@ -73,11 +58,10 @@ export const Navbar = observer(() => {
             <Grid item className={classes.leftGrid}>
               <MenuToggle
                 onClick={() => setOpen(true)}
-                show={!!store.address}
               />
               <Link
                 className={classes.link}
-                to={store.address ? ROUTES.tokens : ""}
+                to={address ? ROUTES.tokens : ""}
               >
                 <LogoWithText />
               </Link>

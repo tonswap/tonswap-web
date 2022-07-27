@@ -5,15 +5,12 @@ import { useStyles } from "./styles";
 
 interface Props {
   onClick: () => void;
-  show: boolean;
 }
 
-function MenuToggle({ onClick, show }: Props) {
+function MenuToggle({ onClick }: Props) {
   const classes = useStyles();
 
-  if(!show){
-      return null
-  }
+ 
   return (
     <IconButton
       onClick={onClick}
