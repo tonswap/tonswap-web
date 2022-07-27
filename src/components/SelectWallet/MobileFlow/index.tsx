@@ -40,11 +40,10 @@ const MobileFlow = observer(({ closeModal }: Props) => {
   };
 
 
-  console.log(sessionLink);
   
 
   return (
-    <StyledContainer>
+    <StyledContainer style={{width:'100%'}}>
       <AdaptersList
         adapters={filteredAdapters}
         onClose={closeModal}
