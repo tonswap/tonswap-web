@@ -50,11 +50,18 @@ const reducer = createReducer(initialState, (builder) => {
         typeof payload === "string" ? JSON.parse(payload) : payload;
       state.session = session;
 
-      if (session === "object") {
-        state.sessionLink = session
-          .replace("ton-test://", "https://test.tonhub.com/")
-          .replace("ton://", "https://tonhub.com/");
-      }
+      console.log(session);
+      
+
+     try {
+        state.sessionLink = session.link
+        .replace("ton-test://", "https://test.tonhub.com/")
+        .replace("ton://", "https://tonhub.com/");
+     } catch (error) {
+        
+     }
+
+      
     })
     .addCase(awaitWalletReadiness.fulfilled, (state, action) => {
       const { wallet, adapterId } = action.payload;

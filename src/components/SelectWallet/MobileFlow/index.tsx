@@ -39,6 +39,10 @@ const MobileFlow = observer(({ closeModal }: Props) => {
     resetWallet();
   };
 
+
+  console.log(sessionLink);
+  
+
   return (
     <StyledContainer>
       <AdaptersList
