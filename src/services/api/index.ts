@@ -410,7 +410,7 @@ export const generateSellLink = async (
       getOwner(), // owner wallet should get jetton-wallet excess messages + tons
       toNano(GAS_FEE.FORWARD_TON),
       OPS.SWAP_TOKEN,
-      toNano(tonAmount)
+      toNano(tonAmount).mul(new BN(995)).div(new BN(1000))
   );
   const boc64 = transfer.toBoc().toString("base64");
   const value = toNano(GAS_FEE.SWAP);
@@ -426,7 +426,7 @@ export const generateBuyLink = async (
   //TODO add slippage explicit
   let transfer = await DexActions.swapTon(
     toNano(tonAmount),
-    toNano(tokenAmount)
+    toNano(tokenAmount).mul(new BN(995)).div(new BN(1000))
   );
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
