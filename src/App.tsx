@@ -10,6 +10,8 @@ import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useEffect, useRef } from "react";
 import Socials from "components/Socials";
 import AppLoader from "components/AppLoader";
+import analytics from "services/analytics/ga";
+analytics.init();
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -70,6 +72,8 @@ const App = observer(() => {
       restoreSessionRef.current = true;
     }
   }, []);
+
+
 
   if (connectng) {
     return <AppLoader />;

@@ -20,6 +20,8 @@ import { useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
+import gaAnalytics from "services/analytics/ga";
+import { ActionCategory, ActionType } from "services/wallets/types";
 
 interface Props {
   srcToken: PoolInfo;
@@ -32,9 +34,9 @@ interface Props {
   createSuccessMessage: () => string;
   isInsufficientFunds?: (src: number, dest: number) => boolean;
   refreshAmountsOnActionChange: boolean;
+  actionCategory: ActionCategory;
+  actionType: ActionType;
 }
-
-
 
 const TokenOperations = ({
   srcToken,
@@ -47,6 +49,8 @@ const TokenOperations = ({
   createSuccessMessage,
   isInsufficientFunds,
   refreshAmountsOnActionChange,
+  actionCategory,
+  actionType
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -74,6 +78,8 @@ const TokenOperations = ({
     setLoading(false);
     if (fetchBalances) {
       successTextRef.current = createSuccessMessage();
+      gaAnalytics.sendEvent(actionCategory, actionType, successTextRef.current);
+
       showNotification({
         message: <>{successTextRef.current}</>,
         variant: "success",

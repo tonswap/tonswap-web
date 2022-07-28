@@ -56,7 +56,6 @@ interface Props {
   items: Item[];
   action: string;
   symbol?: string;
-
 }
 
 function SlidingMenu({ items, action, symbol }: Props) {
@@ -64,14 +63,24 @@ function SlidingMenu({ items, action, symbol }: Props) {
   const [width, setWidth] = useState(0);
   const [allowTransition, setAllowTransition] = useState(false);
   const containerRef = useRef<any>();
+  const montedRef = useRef(true);
 
   const onSelect = (index: number) => {
+    if (!montedRef.current) {
+      return;
+    }
     const _width =
       containerRef.current.getBoundingClientRect().width / items.length - 2;
     const _left = _width * index + 2;
     setLeft(_left);
     setWidth(_width);
   };
+
+  useEffect(() => {
+    return () => {
+      montedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!allowTransition) {
@@ -92,7 +101,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
 
         return (
           <SlidingMenuItem
-          symbol={symbol}
+            symbol={symbol}
             onSelect={onSelect}
             selected={selected}
             key={item.text}
@@ -121,7 +130,7 @@ const SlidingMenuItem = ({
   onSelect,
   selected,
   index,
-  symbol
+  symbol,
 }: SlidingMenuItemProps) => {
   useEffect(() => {
     if (selected) {
@@ -137,7 +146,9 @@ const SlidingMenuItem = ({
 
   return (
     <StyledOption style={{ width }} onClick={onClick}>
-      <Typography style={{fontWeight: selected ? 600 : 400}}>{item.text} {symbol}</Typography>
+      <Typography style={{ fontWeight: selected ? 600 : 400 }}>
+        {item.text} {symbol}
+      </Typography>
     </StyledOption>
   );
 };

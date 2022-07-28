@@ -2,17 +2,16 @@ import TokenOperations from "screens/components/TokenOperations";
 import * as API from "services/api";
 
 import { ton } from "services/api/addresses";
-import {
-  useTokenOperationsStore,
-} from "store/token-operations/hooks";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
-import SouthRoundedIcon from '@mui/icons-material/SouthRounded';
+import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
+import { ActionCategory, ActionType } from "services/wallets/types";
 
 const Sell = () => {
   const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
   const { selectedToken } = useTokensStore();
-  const {totalBalances} = useTokenOperationsStore()
+  const { totalBalances } = useTokenOperationsStore();
 
   const getTxRequest = () => {
     if (selectedToken) {
@@ -51,7 +50,11 @@ const Sell = () => {
       srcToken={selectedToken}
       destToken={ton}
       submitButtonText={`Sell ${selectedToken?.displayName}`}
-      refreshAmountsOnActionChange={!totalBalances.destBalance && !totalBalances.srcBalance}
+      refreshAmountsOnActionChange={
+        !totalBalances.destBalance && !totalBalances.srcBalance
+      }
+      actionCategory={ActionCategory.SWAP}
+      actionType={ActionType.SELL}
     />
   );
 };

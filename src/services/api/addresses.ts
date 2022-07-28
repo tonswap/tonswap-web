@@ -70,7 +70,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     ),
     displayName: "KIT",
     image: KittyKorn,
-    color: "#c697c4",
+    color: "#390075",
   },
   dino: {
     name: "dino",
@@ -82,7 +82,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     ),
     displayName: "DINO",
     image: DinoKorn,
-    color: "#cbb4b4",
+    color: "#0E9D26",
   },
   eth: {
     name: "eth",

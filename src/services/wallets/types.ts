@@ -54,3 +54,17 @@ export interface Adapter {
     description: string;
     disabled?: boolean;
 }
+
+
+export enum ActionCategory {
+  SWAP = "Swap",
+  MANAGE_LIQUIDITY = "Manage liqiodity",
+}
+
+
+export enum ActionType {
+  BUY ='Buy',
+  SELL = 'Sell',
+  ADD_LIQUIDITY = 'Add liquidity',
+  REMOVE_LIQUIDITY = 'Remove liquidity'
+}

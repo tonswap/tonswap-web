@@ -9,6 +9,7 @@ import { ReactComponent as Plus } from "assets/images/shared/plus.svg";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
+import { ActionCategory, ActionType } from "services/wallets/types";
 
 const useStyles = makeStyles((theme: Theme) => ({
   subTitle: {
@@ -107,6 +108,8 @@ const AddLiquidity =  () => {
       submitButtonText={`Add TON/${selectedToken?.displayName} liquidity`}
       isInsufficientFunds={isInsufficientFunds}
       refreshAmountsOnActionChange={true}
+      actionCategory={ActionCategory.MANAGE_LIQUIDITY}
+      actionType ={ActionType.ADD_LIQUIDITY}
     />
   );
 }

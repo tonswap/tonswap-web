@@ -7,6 +7,7 @@ import {
 } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
+import { ActionCategory, ActionType } from "services/wallets/types";
 
 const Buy = () => {
 
@@ -51,6 +52,8 @@ const Buy = () => {
       destToken={selectedToken}
       submitButtonText={`Buy ${selectedToken?.displayName}`}
       refreshAmountsOnActionChange={!totalBalances.destBalance && !totalBalances.srcBalance}
+      actionCategory={ActionCategory.SWAP}
+      actionType ={ActionType.BUY}
     />
   );
 };
