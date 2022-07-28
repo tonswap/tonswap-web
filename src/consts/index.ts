@@ -29,4 +29,4 @@ export const GITHUB = 'https://github.com/tonswap/tonswap-web'
 export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 
 
-export const BETA_TEXT = 'TopSwap is in beta, use at your risk'
+export const BETA_TEXT = 'TonSwap is in beta, use at your risk'
