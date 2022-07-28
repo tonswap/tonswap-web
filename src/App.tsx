@@ -75,9 +75,9 @@ const App = observer(() => {
 
 
 
-  if (connectng) {
-    return <AppLoader />;
-  }
+  // if (connectng) {
+  //   return <AppLoader />;
+  // }
 
   return (
     <>
