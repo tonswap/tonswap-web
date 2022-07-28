@@ -37,7 +37,6 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("sm")]: {
     background: "transparent",
-    flex: 1,
     maxHeight: "unset",
     borderRadius: 0,
   },

@@ -6,7 +6,6 @@ export const StyledTokenOperation = styled(Box)(({theme}) => ({
   flexDirection: "column",
   alignItems: "center",
   paddingTop: 30,
-  flex:1,
   width:'100%',
   [theme.breakpoints.down('sm')]: {
     paddingTop: 30,
@@ -19,7 +18,6 @@ export const StyledTokenOperationActions = styled(Box)({
    width:'100%',
    paddingTop: 23,
    maxWidth: 380,
-   flex:1,
    display:'flex',
    flexDirection:'column'
   });

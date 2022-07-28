@@ -29,7 +29,10 @@ const StyledContainer = styled(Box)(({isSource}: {isSource: boolean}) => ({
   position: "relative",
   overflow: "hidden",
   flexDirection: "column",
-  marginBottom: isSource ? 0 : 30
+  marginBottom: isSource ? 0 : 60,
+  ['@media (max-height:700px)']: {
+    marginBottom: isSource ? 0 : 20,
+  }
 }));
 
 const StyledTokenDisplay = styled(Box)({
