@@ -193,8 +193,7 @@ async function getAmountOut(
     ["num", reserveIn.toString()],
     ["num", reserveOut.toString()],
   ]);
-  console.log(hexToBn(res.stack[0][1]).toString());
-  
+
   return hexToBn(res.stack[0][1]).toString();
 }
 
@@ -206,8 +205,8 @@ export async function tokenToMinter(token:string) {
 export const getAmountsOut = async (
   token: string,
   isSourceToken: boolean,
-  srcAmount: BN | null,
-  destAmount: BN | null
+  srcAmount: number | null,
+  destAmount: number | null
 ) => {
   const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
 
@@ -215,31 +214,31 @@ export const getAmountsOut = async (
 
   if (srcAmount) {
     // TODO
-    const amountIn = srcAmount;
+    const amountIn = toNano(srcAmount);
     if (isSourceToken) {
       return getAmountOut(
         tokenAmm!!,
-        amountIn,
-        tokenData.tokenReserves,
-        tokenData.tonReserves
+        new BN(amountIn),
+        new BN(tokenData.tokenReserves),
+        new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
         tokenAmm!!,
-        amountIn,
-        tokenData.tonReserves,
-        tokenData.tokenReserves
+        new BN(amountIn),
+        new BN(tokenData.tonReserves),
+        new BN(tokenData.tokenReserves)
       );
     }
   } else {  // Dest amount
     // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
-    const amountIn = destAmount || new BN(0);
+    const amountIn = toNano(destAmount || 0);
     if (!isSourceToken) {
       return getAmountOut(
         tokenAmm!!,
-        amountIn,
-        tokenData.tokenReserves,
-        tokenData.tonReserves
+        new BN(amountIn),
+        new BN(tokenData.tokenReserves),
+        new BN(tokenData.tonReserves)
       );
     } else {
       return getAmountOut(
@@ -312,9 +311,9 @@ export async function getTokenData(jettonAddress: Address) {
 export const getLiquidityAmount = async (
   srcToken: string,
   destToken: string,
-  srcAmount: string | null,
-  destAmount: string | null
-): Promise<BN> => {
+  srcAmount: number | null,
+  destAmount: number | null
+): Promise<number> => {
   const tokenObjects: any = await getToken(
     client,
     srcToken !== "ton" ? srcToken : destToken,
@@ -325,7 +324,7 @@ export const getLiquidityAmount = async (
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
   if(tokenReserves.toNumber() === 0 && tonReserves.toNumber() === 0) {
-    return new BN(0)
+    return 0
   }
 
 
@@ -339,26 +338,30 @@ export const getLiquidityAmount = async (
 
   if (srcToken === "ton") {
     if (srcAmount != null) {
-      return new BN(srcAmount)
+      return new BN(srcAmount * 1e9)
         .mul(tokenReserves)
         .div(tonReserves)
+        .toNumber();
     } else if (destAmount != null) {
-      return toNano(destAmount)
+      return new BN(destAmount * 1e9)
         .mul(tonReserves)
         .div(tokenReserves)
+        .toNumber();
     }
   } else {
     if (srcAmount != null) {
-      return new BN(srcAmount)
+      return new BN(srcAmount * 1e9)
         .mul(tokenReserves)
         .div(tonReserves)
+        .toNumber();
     } else if (destAmount != null) {
-      return new BN(destAmount)
+      return new BN(destAmount * 1e9)
         .mul(tonReserves)
         .div(tokenReserves)
+        .toNumber();
     }
   }
-  return new BN(0);
+  return 0;
 };
 
 export const getTokenDollarValue = async (

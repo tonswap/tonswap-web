@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import * as API from 'services/api'
 
 const getUsdAmount = async (tokenId: string, amount: number) => {
@@ -13,13 +12,13 @@ const getUsdAmount = async (tokenId: string, amount: number) => {
     }
   };
 
-  const calculateTokens = async (tokenName: string, isTonToToken: boolean, srcAmount:  null | string, destAmount: null | string, getAmountsFunc: any) => {
+  const calculateTokens = async (tokenName: string, isTonToToken: boolean, srcAmount: number | null | string, destAmount: number | null | string, getAmountsFunc: any) => {
     if (srcAmount != null) {
-        const amount = await getAmountsFunc(tokenName, isTonToToken, new BN(srcAmount), destAmount != null ? new BN(destAmount) : null);
+        const amount = await getAmountsFunc(tokenName, isTonToToken, parseFloat(srcAmount.toString()), destAmount != null ? parseFloat(destAmount.toString()) : null);
 
         return amount;
     } else if (destAmount != null) {
-        const amount = await getAmountsFunc(tokenName, isTonToToken, srcAmount, destAmount.toString());
+        const amount = await getAmountsFunc(tokenName, isTonToToken, srcAmount, parseFloat(destAmount.toString()));
         return amount;
     }
 };

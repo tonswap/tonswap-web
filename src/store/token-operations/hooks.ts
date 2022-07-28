@@ -25,8 +25,8 @@ export const useTokenOperationsStore = () => {
 
 export const useTokenOperationsActions = (): {
   onResetAmounts: () => void;
-  updateSrcTokenAmount: (value: string) => void;
-  updateDestTokenAmount: (value: string) => void;
+  updateSrcTokenAmount: (value: number) => void;
+  updateDestTokenAmount: (value: number) => void;
   getTokensBalance: (value: () => Promise<[any, any]>) => void;
   resetTokensBalance: () => void;
   updateDestTokenLoading: (val: boolean) => void;
@@ -44,14 +44,14 @@ export const useTokenOperationsActions = (): {
   }, [dispatch]);
 
   const updateSrcTokenAmount = useCallback(
-    (value: string) => {
+    (value: number) => {
       dispatch(setSrcTokenAmount(value));
     },
     [dispatch]
   );
 
   const updateDestTokenAmount = useCallback(
-    (value: string) => {
+    (value: number) => {
       dispatch(setDestTokenAmount(value));
     },
     [dispatch]
