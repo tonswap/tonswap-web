@@ -1,9 +1,10 @@
 import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import ContentLoader from "components/ContentLoader";
 import { COMING_SOON } from "consts";
 import useUsdValue from "hooks/useUsdValue";
 import { PoolInfo } from "services/api/addresses";
-import { StyledImage, StyledToken, StyledUsdValue, useStyles } from "./styles";
+import { StyledImage, StyledToken, StyledTokenTexts, StyledUsdValue, useStyles } from "./styles";
 
 interface Props {
   token: PoolInfo;
@@ -12,23 +13,28 @@ interface Props {
 
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
-  const amount = token.isDisabled ? 0 : 1
+  const amount = token.isDisabled ? 0 : 1;
   const { loading, usd } = useUsdValue(token.name, amount, 0);
 
   return (
     <StyledToken
-      color={ token.color}
+      color={token.color}
       onClick={token.isDisabled ? () => {} : onSelect}
       className={classes.token}
-      style={{cursor: token.isDisabled ? '' : 'pointer', opacity: token.isDisabled ? 0.7 : 1 }}
+      style={{
+        cursor: token.isDisabled ? "" : "pointer",
+        opacity: token.isDisabled ? 0.4 : 1,
+      }}
     >
-      {token.image && <StyledImage 
-      src={token.image} alt="token" />}
-      <Typography>{token.displayName} {token.isDisabled ? COMING_SOON : ''}</Typography>
+      {token.image && <StyledImage src={token.image} alt="token" />}
+      <StyledTokenTexts>
+        <Typography className="symbol">
+          {token.displayName} {token.isDisabled ? COMING_SOON : ""}
+        </Typography>
+        <Typography className="name">{token.name}</Typography>
+      </StyledTokenTexts>
       <StyledUsdValue>
-        {token.isDisabled ? 
-          null
-        : loading ? (
+        {token.isDisabled ? null : loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
           <Typography>{`$${parseFloat(usd.toFixed(3))}`}</Typography>

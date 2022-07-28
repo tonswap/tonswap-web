@@ -9,7 +9,7 @@ declare module '@mui/styles' {
 let theme = createTheme({
   palette: {
     primary: {
-      main: "#0688CC",
+      main: "#007AFE",
       contrastText: "#fff",
     },
     
@@ -34,7 +34,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "roboto, sans-serif",
+    fontFamily: '"Helvetica Neue","Helvetica","Arial",sans-serif',
     button: {
       textTransform: "none",
     },

@@ -23,7 +23,7 @@ const StyledContainer = styled(Box)({
 
 function Socials() {
   return (
-    <StyledContainer>
+    <StyledContainer className="socials">
       <Link href={GITHUB} target='_blank'>
         <img src = {GithubImg} />
       </Link>

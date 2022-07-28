@@ -147,7 +147,7 @@ const TokenOperations = ({
             destTokenName={destToken.name}
           />
 
-          <Icon icon={icon} color={srcToken.color} />
+          <Icon icon={icon} color={destToken.color} />
           <DestToken
             getAmountFunc={getAmountFunc}
             token={destToken}

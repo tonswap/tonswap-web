@@ -8,6 +8,7 @@ import {
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
+import { Fade } from "@mui/material";
 
 const Buy = () => {
 
@@ -41,7 +42,6 @@ const Buy = () => {
   }
 
   return (
-    
     <TokenOperations
       createSuccessMessage={createSuccessMessage}
       icon={<SouthRoundedIcon />}

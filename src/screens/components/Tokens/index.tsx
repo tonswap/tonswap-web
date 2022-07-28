@@ -27,6 +27,7 @@ const StyledContainer = styled(Box)({
   maxWidth: 380,
   marginLeft: "auto",
   marginRight: "auto",
+  minHeight: 300
 });
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
@@ -43,7 +44,8 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
   }, []);
 
   return (
-    <Box className={classes.root}>
+    <Fade in timeout={300}>
+      <Box className={classes.root}>
       <CustomToken
         open={addTokenModal}
         onClose={() => setAddTokenModal(false)}
@@ -71,5 +73,6 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
         </StyledContainer>
       </Box>
     </Box>
+    </Fade>
   );
 };

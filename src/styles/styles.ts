@@ -16,7 +16,7 @@ export const StyledTokenOperation = styled(Box)(({theme}) => ({
 
 export const StyledTokenOperationActions = styled(Box)({
    width:'100%',
-   paddingTop: 23,
+   paddingTop: 35,
    maxWidth: 380,
    display:'flex',
    flexDirection:'column'
@@ -26,5 +26,6 @@ export const StyledTokenOperationActions = styled(Box)({
   export const StyledTokenOperationTitle = styled(Typography)(({expanded}: {expanded?: boolean}) => ({
         fontSize: expanded ? 26 : 22,
         fontWeight: 500,
-        marginBottom: 20
+        marginBottom: 20,
+        display:'none'
   }))

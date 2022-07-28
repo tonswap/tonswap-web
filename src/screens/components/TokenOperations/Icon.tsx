@@ -12,13 +12,13 @@ const StylesIcon = styled(Box)(
     marginRight: "auto",
     width: expanded ? 33 : 28,
     height: expanded ? 33 : 28,
-    marginTop: 16,
+    marginTop: 8,
     borderRadius: "50%",
-    marginBottom: 16,
+    marginBottom: 8,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: `1px solid ${color}`,
+    // border: `1px solid ${color}`,
     "& svg": {
       width: "70%",
       "& path": {

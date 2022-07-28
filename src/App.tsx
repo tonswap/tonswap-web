@@ -26,12 +26,12 @@ const StyledAppContainer = styled(Box)({
   marginLeft: "auto",
   marginRight: "auto",
   flex: 1,
-  height: "100vh",
+  // height: "100vh",
 });
 
 const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   borderRadius: 20,
-  maxHeight: "calc(100vh - 130px)",
+  flex:1,
   width: "100%",
   overflow: "auto",
   display: "flex",
@@ -90,7 +90,7 @@ const App = observer(() => {
         <StyledRoutesContainer>
           <AppRoutes />
         </StyledRoutesContainer>
-        <Socials />
+       
       </StyledAppContainer>
     </>
   );

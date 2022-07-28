@@ -4,6 +4,9 @@ import { styled , Box} from "@mui/system";
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
+    flex:1,
+    display:'flex',
+    flexDirection:'column',
     width: 400,
     paddingLeft: 26,
     paddingRight: 22,

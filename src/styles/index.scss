@@ -31,7 +31,8 @@ body, html{
 body{
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  // height: 100vh;
+  min-height: -webkit-fill-available;
 }
 #root{
   display: flex;

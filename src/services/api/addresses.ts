@@ -61,8 +61,10 @@ const TestNetPools: { [key: string]: PoolInfo } = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-  kit: {
-    name: "kit",
+ 
+  
+  'KittyCoin for TonSwap tests': {
+    name: "KittyCoin for TonSwap tests",
     ammMinter: Address.parse(
       "EQA5JvHOjixFSsDgaKZa3-kVBfvahGDoiOT5X_cHCyeSpQhC"
     ),
@@ -73,8 +75,8 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: KittyKorn,
     color: "#390075",
   },
-  dino: {
-    name: "dino",
+  'DinoCoin for TonSwap tests': {
+    name: "DinoCoin for TonSwap tests",
     ammMinter: Address.parse(
       "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"
     ),
@@ -85,29 +87,29 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: DinoKorn,
     color: "#0E9D26",
   },
-  eth: {
-    name: "eth",
-
-    displayName: "ETH",
-    image: Eth,
-    color: "#1390CE",
-    isDisabled: true
-  },
-  btc: {
-    name: "btc",
-
-    displayName: "BTC",
-    image: Btc,
-    color: "#E17E06",
-    isDisabled: true
-  },
-  usdc: {
-    name: "usdc",
+  'USD Stable Coin': {
+    name: "USD Stable Coin",
     displayName: "USDC",
     image: Usdc,
     color: "#055fa6",
     isDisabled: true
   },
+  'Wrapped Bitcoin on TON': {
+    name: "Wrapped Bitcoin on TON",
+    displayName: "WBTC",
+    image: Btc,
+    color: "#E17E06",
+    isDisabled: true
+  },
+  'Wrapped Ether on TON': {
+    name: "Wrapped Ether on TON",
+    displayName: "ETH",
+    image: Eth,
+    color: "#5f73c2",
+    isDisabled: true
+  },
+ 
+
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {

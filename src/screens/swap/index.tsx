@@ -1,3 +1,4 @@
+import { Fade } from "@mui/material";
 import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
 import useWebAppResize from "hooks/useWebAppResize";
@@ -25,10 +26,6 @@ function SwapScreen() {
   useEffectOnce(() => {
     onOperationTypeChange(OperationType.SWAP)
   })
-  
-
-
-
   const menuItems = useMemo(
     () =>
       selectedToken
@@ -50,7 +47,12 @@ function SwapScreen() {
     navigate(ROUTES.swap.navigateToBuy.replace(":id", tokenName));
   };
 
+
+  console.log(action);
+  
+
   return (
+   
     <StyledTokenOperation>
       {selectedToken && <StyledTokenOperationTitle
       expanded={expanded}
@@ -71,6 +73,7 @@ function SwapScreen() {
         />
       </Routes>
     </StyledTokenOperation>
+   
   );
 }
 
