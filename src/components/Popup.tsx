@@ -24,6 +24,11 @@ export function Popup({
       fullWidth
       onClose={onClose}
       open={open}
+      PaperProps={{
+        style: {
+          display:'flex'
+        }
+      }}
       BackdropProps={{
         style: {
           backgroundColor,

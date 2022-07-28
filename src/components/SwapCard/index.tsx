@@ -1,15 +1,11 @@
 import { NumberInput } from "components/NumberInput";
 import { PoolInfo } from "services/api/addresses";
-import ContentLoader from "components/ContentLoader";
 import useWebAppResize from "hooks/useWebAppResize";
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { ton } from "tokens";
-import useUsdValue from "hooks/useUsdValue";
 import { styled, Box } from "@mui/system";
-import { Avatar, IconButton, Typography } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { isManageLiquidity } from "utils";
+import { Avatar, Typography } from "@mui/material";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
@@ -23,6 +19,7 @@ interface Props {
   token: PoolInfo;
   isLoading?: boolean;
   availableAmountLoading: boolean;
+  isSource: boolean;
 }
 
 const StyledContainer = styled(Box)({
@@ -93,7 +90,7 @@ const StyledInput = styled(Box)(({expanded}: {expanded: boolean}) => ({
     height: "100%",
     input: {
       color: "white",
-      fontSize: 30,
+      fontSize: 29,
       fontWeight: 600,
       height: "100%",
       paddingRight: 10,
@@ -121,6 +118,7 @@ function SwapCard({
   token,
   isLoading,
   availableAmountLoading,
+  isSource
 }: Props) {
   const expanded = useWebAppResize();
   const navigate = useNavigate();
@@ -171,7 +169,7 @@ function SwapCard({
             displayName={token.displayName}
             loading={availableAmountLoading}
             onMaxAmountClick={() => onChange(maxAmount.toString())}
-            showMax={inputAmount !== availableAmount && address}
+            showMax={inputAmount !== availableAmount && !!address && isSource}
           />
         </StyledBottom>
       </div>

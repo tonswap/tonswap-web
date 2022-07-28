@@ -87,6 +87,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
 
   return (
     <SwapCard
+    isSource={true}
       isLoading={srcLoading}
       onChange={onChange}
       inputAmount={srcTokenAmount}

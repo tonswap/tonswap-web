@@ -20,3 +20,7 @@ export {
   TOKENS_IN_LOCAL_STORAGE,
   colors
 };
+
+export const COMING_SOON = '(coming soon)'
+
+export const GITHUB = 'https://github.com/tonswap/tonswap-web'

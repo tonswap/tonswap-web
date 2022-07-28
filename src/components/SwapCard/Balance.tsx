@@ -7,7 +7,7 @@ interface Props {
   displayName: string;
   availableAmount: number;
   onMaxAmountClick: () => void;
-  showMax: boolean;
+  showMax?: boolean;
 
 }
 
@@ -15,7 +15,8 @@ const StyledContainer = styled(Box)({
   height: "100%",
   display:'flex',
   alignItems:'center',
-  gap:5 
+  gap:5 ,
+  marginRight:12,
 });
 
 const StyledMaxButton = styled('button')({
@@ -23,6 +24,7 @@ const StyledMaxButton = styled('button')({
     padding:'0px 10px',
     borderRadius: 10,
     height: '100%',
+   
     cursor:'pointer',
     "p": {
         color:'white',

@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import ContentLoader from "components/ContentLoader";
+import { COMING_SOON } from "consts";
 import useUsdValue from "hooks/useUsdValue";
 import { PoolInfo } from "services/api/addresses";
 import { StyledImage, StyledToken, StyledUsdValue, useStyles } from "./styles";
@@ -23,7 +24,7 @@ const ListToken = ({ token, onSelect }: Props) => {
       style={{cursor: token.isDisabled ? '' : 'pointer'}}
     >
       {token.image && <StyledImage src={token.image} alt="token" />}
-      <Typography>{token.displayName} {token.isDisabled ? '(coming soon)' : ''}</Typography>
+      <Typography>{token.displayName} {token.isDisabled ? COMING_SOON : ''}</Typography>
       <StyledUsdValue>
         {token.isDisabled ? 
           null

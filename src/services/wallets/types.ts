@@ -41,7 +41,8 @@ export interface TonWalletProvider {
 
 export enum Adapters  {
     TON_HUB = 'tonhub',
-    TON_WALLET = 'ton-wallet'
+    TON_WALLET = 'ton-wallet',
+    TON_KEEPER = 'ton-keeper'
 }
 
 
@@ -51,4 +52,5 @@ export interface Adapter {
     icon: string,
     mobileCompatible: boolean,
     description: string;
+    disabled?: boolean;
 }

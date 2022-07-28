@@ -5,11 +5,11 @@ export const StyledTokenOperation = styled(Box)(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  paddingTop: 20,
+  paddingTop: 0,
   flex:1,
   width:'100%',
   [theme.breakpoints.down('sm')]: {
-    paddingTop: 20,
+    paddingTop: 0,
   }
 }));
 

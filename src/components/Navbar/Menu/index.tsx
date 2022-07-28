@@ -10,6 +10,7 @@ import { ROUTES } from "router/routes";
 import { ActionButton } from "components/ActionButton";
 import { useTokensStore } from "store/tokens/hooks";
 import { styled } from "@mui/system";
+import { COMING_SOON } from "consts";
 
 
 const StyledActions = styled(Box)({
@@ -69,8 +70,8 @@ function Menu({ open, hide }: Props) {
      
         <StyledActions>
         <ActionButton  onClick={onSwapClick}>Swap</ActionButton>
-        <ActionButton  customClassName="coming-soon" onClick={onManageLiquidity}>Manage Liquidity (soon)</ActionButton>
-        <ActionButton  customClassName="coming-soon"  onClick={onCreatePool}>Create Pool (soon)</ActionButton>
+        <ActionButton  customClassName="coming-soon" onClick={onManageLiquidity}>Manage Liquidity {COMING_SOON}</ActionButton>
+        <ActionButton  customClassName="coming-soon"  onClick={onCreatePool}>Create Pool {COMING_SOON}</ActionButton>
         </StyledActions>
       </Box>
     </Drawer>

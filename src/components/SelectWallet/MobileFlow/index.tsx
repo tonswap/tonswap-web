@@ -1,12 +1,11 @@
-import {styled} from '@mui/styles';
-import { Box } from "@mui/material";
+import { styled } from "@mui/styles";
+import { Box, Link } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { adapters } from "services/wallets/config";
-import { Adapter, Adapters } from "services/wallets/types";
+import { Adapters } from "services/wallets/types";
 import AdaptersList from "../AdaptersList";
-import Connect from "./Connect";
-import { useWalletActions, useWalletStore } from 'store/wallet/hooks';
+import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -21,41 +20,40 @@ interface Props {
 }
 
 const MobileFlow = observer(({ closeModal }: Props) => {
-  const {sessionLink} = useWalletStore()
-  const {createWalletSession, resetWallet} = useWalletActions()
-  const [selectedAdapter, setSelectedAdapter] = useState<Adapter | undefined>();
+  const { sessionLink } = useWalletStore();
+  const { createWalletSession } = useWalletActions();
+  const [selectedAdapter, setSelectedAdapter] = useState<
+    Adapters | undefined
+  >();
+  const ref = useRef<any>();
   const filteredAdapters = useMemo(
     () => adapters.filter((m) => m.mobileCompatible),
     []
   );
 
   const onSelect = (adapter: Adapters) => {
-    createWalletSession(adapter);
-    setSelectedAdapter(adapters.find((m) => m.type === adapter));
+    if(sessionLink){
+      window.location.href = sessionLink
+    }
+   
+    // createWalletSession(adapter);
+    // setSelectedAdapter(adapters.find((m) => m.type === adapter)?.type);
   };
 
-  const onConnectClose = async () => {
-    setSelectedAdapter(undefined);
-    resetWallet();
-  };
+  useEffect(() => {
+    createWalletSession(Adapters.TON_HUB);
+  }, []);
 
-
-  
 
   return (
-    <StyledContainer style={{width:'100%'}}>
+    <StyledContainer style={{ width: "100%" }}>
       <AdaptersList
+        adapterLoading={selectedAdapter}
         adapters={filteredAdapters}
         onClose={closeModal}
-        open={!selectedAdapter}
+        open={true}
         select={onSelect}
-      />
-      <Connect
-        href={sessionLink}
-        open={!!selectedAdapter}
-        adapterName={selectedAdapter?.name}
-        onSelect={closeModal}
-        onClose={onConnectClose}
+        isLoading={!sessionLink}
       />
     </StyledContainer>
   );

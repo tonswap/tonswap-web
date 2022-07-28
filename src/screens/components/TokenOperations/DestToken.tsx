@@ -74,6 +74,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
 
   return (
     <SwapCard
+    isSource={false}
       isLoading={destLoading}
       onChange={onChange}
       inputAmount={destTokenAmount}

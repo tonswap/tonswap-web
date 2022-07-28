@@ -1,6 +1,5 @@
 import Modal from "@mui/material/Modal";
 import { styled } from "@mui/styles";
-import { Paper } from "@mui/material";
 import DesktopFlow from "./DesktopFlow";
 import MobileFlow from "./MobileFlow";
 import { isMobile } from "react-device-detect";
@@ -17,24 +16,11 @@ import { Box } from "@mui/system";
 
 const StyledModal = styled(Modal)({});
 
-const StyledContainer = styled(Paper)(
-  ({ expanded }: { expanded: boolean }) => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    padding: "20px",
-    background: "white",
-    top: expanded ? "50%" : "30%",
-    transform: "translate(-50%, -50%)",
-    left: "50%",
-    transition: "0.2s all",
-  })
-);
+
 
 
 const StyledDrawer = styled(Box)({
-  paddingTop: 50,
+  padding: 20,
   minHeight: 300
 })
 
@@ -62,18 +48,16 @@ const SelectWallet = observer(() => {
       onOpen={() => {}}
       disableSwipeToOpen={false}
       ModalProps={{
-        keepMounted: true,
+        keepMounted: false,
       }}
     >
      <StyledDrawer>
-     <MobileFlow closeModal={onClose} />
+     <MobileFlow  closeModal={onClose} />
      </StyledDrawer>
     </SwipeableDrawer>
   ) : (
     <StyledModal open={open} onClose={onClose}>
-      <StyledContainer expanded={expanded} sx={{ width: "auto" }}>
-        <DesktopFlow closeModal={onClose} />
-      </StyledContainer>
+       <DesktopFlow closeModal={onClose} />
     </StyledModal>
   );
 });

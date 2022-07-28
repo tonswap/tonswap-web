@@ -33,27 +33,25 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
   const classes = useStyles();
   const [addTokenModal, setAddTokenModal] = useState(false);
   const { selectToken } = useTokensActions();
-  const {clearStore} = useTokenOperationsActions()
-
+  const { clearStore } = useTokenOperationsActions();
 
   const { tokens } = useTokensStore();
 
   useEffect(() => {
     selectToken(undefined);
-    clearStore()
+    clearStore();
   }, []);
 
   return (
-    <Fade in>
-      <Box className={classes.root}>
-        <CustomToken
-          open={addTokenModal}
-          onClose={() => setAddTokenModal(false)}
-        />
-        <Title>{title}</Title>
-        <Box className={classes.lists}>
-          <StyledContainer>
-            {/* <Grid item sm={4} md={3}>
+    <Box className={classes.root}>
+      <CustomToken
+        open={addTokenModal}
+        onClose={() => setAddTokenModal(false)}
+      />
+      <Title>{title}</Title>
+      <Box className={classes.lists}>
+        <StyledContainer>
+          {/* <Grid item sm={4} md={3}>
               <StyledAddTokenButton onClick={() => setAddTokenModal(true)}>
                 <AddIcon style={{ fontSize: 30 }} />
                 <StyledAddTokenButtonText>
@@ -61,18 +59,17 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 </StyledAddTokenButtonText>
               </StyledAddTokenButton>
             </Grid> */}
-            {tokens.map((token) => {
-              return (
-                <ListToken
-                  key={token.name}
-                  onSelect={() => onTokenSelect(token.name)}
-                  token={token}
-                />
-              );
-            })}
-          </StyledContainer>
-        </Box>
+          {tokens.map((token) => {
+            return (
+              <ListToken
+                key={token.name}
+                onSelect={() => onTokenSelect(token.name)}
+                token={token}
+              />
+            );
+          })}
+        </StyledContainer>
       </Box>
-    </Fade>
+    </Box>
   );
 };

@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     paddingBottom: 50,
     overflow:'auto',
-    flex:1,
     [theme.breakpoints.down("sm")]: {
       paddingBottom: 80,
     },

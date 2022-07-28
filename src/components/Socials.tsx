@@ -1,5 +1,6 @@
 import { IconButton } from "@mui/material";
 import { Box, styled } from "@mui/system";
+import { GITHUB } from "consts";
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -15,8 +16,7 @@ const StyledContainer = styled(Box)({
 function Socials() {
   return (
     <StyledContainer>
-      <IconButton href="/"></IconButton>
-      <IconButton href="/"></IconButton>
+      <IconButton href={GITHUB} target='_blank'></IconButton>
       <IconButton href="/"></IconButton>
     </StyledContainer>
   );

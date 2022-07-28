@@ -36,7 +36,7 @@ function Login() {
       return;
     }
     localStorage.setItem(TEST_MODE, "1");
-    window.location.reload()
+    location.reload()
   };
 
   return (

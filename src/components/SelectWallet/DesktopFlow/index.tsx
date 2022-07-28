@@ -13,6 +13,14 @@ const StyledContainer = styled(Box)({
   flexDirection: "column",
   alignItems: "center",
   background: "white",
+  maxWidth: 400,
+  margin: 'auto',
+  top: '20vh',
+  position:'relative',
+  borderRadius: 12,
+  overflow:'hidden',
+  padding: 15,
+  width:'fit-content'
 });
 
 interface Props {
