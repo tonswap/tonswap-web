@@ -2,10 +2,9 @@ import { makeStyles } from "@mui/styles";
 
 import { Theme } from "@mui/material/styles";
 
-interface StyleProps{
-  expanded: boolean;
-  color?: string;
-}
+
+
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -19,8 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
    
   },
   button: {
-    marginTop: 10,
+    marginTop: 'auto',
     width:'100%',
+    marginBottom: 30,
     [theme.breakpoints.down('sm')]: {
     }
   },

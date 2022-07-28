@@ -6,8 +6,8 @@ import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { LAYOUT_MAX_WIDTH } from "consts";
-import { Box, Grid, useMediaQuery } from "@mui/material";
+import { BETA_TEXT, LAYOUT_MAX_WIDTH } from "consts";
+import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
@@ -17,7 +17,15 @@ import { styled } from "@mui/system";
 
 const desktopNavbarHeight = "60px";
 const mobileNavbarHeight = "60px";
-const StyledAppBar = styled(AppBar)({});
+const StyledAppBar = styled(AppBar)({
+  top: 0,
+  
+});
+
+const StyledToolbar = styled(Toolbar)({
+  background:'white'
+});
+
 
 export const Navbar = observer(() => {
   const classes = useStyles();
@@ -28,24 +36,23 @@ export const Navbar = observer(() => {
   return (
     <>
       <StyledAppBar
-        position="fixed"
+        position="sticky"
         color="transparent"
         sx={{
           boxShadow: "unset",
           maxWidth: LAYOUT_MAX_WIDTH,
-          left: "50%",
-          transform: "translate(-50%)",
         }}
       >
-        <Toolbar
+        <StyledToolbar
           style={{
             width: "100%",
             justifyContent: "space-between",
             height: navbarHeight,
-            paddingLeft: 20,
-            paddingRight: 20,
+            paddingLeft: 0,
+            paddingRight: 0,
           }}
         >
+      
           <Grid
             container
             style={{
@@ -63,19 +70,10 @@ export const Navbar = observer(() => {
 
             <WalletAddress />
           </Grid>
-        </Toolbar>
+        </StyledToolbar>
         <Menu open={open} hide={() => setOpen(false)} />
       </StyledAppBar>
-      <Box
-        style={{
-          height: navbarHeight,
-          width: "100%",
-          top: 0,
-          background: "white",
-          zIndex: 99,
-          position: "sticky",
-        }}
-      ></Box>
+      
     </>
   );
 });

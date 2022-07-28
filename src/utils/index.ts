@@ -184,21 +184,14 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 };
 
 const isTelegramWebApp = () => {
-  const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
-  if (result && isMobile) {
-    return true;
-  }
+  return true
+  // const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
+  // if (result && isMobile) {
+  //   return true;
+  // }
 };
 
-const isHiddenNavbar = () => {
-  if (isTelegramWebApp()) {
-    return true;
-  }
-  if (isMobile && window.location.pathname === "/") {
-    return true;
-  }
-  return false;
-};
+
 
 const getLocalStorageTokens = () => {
   const tokenFromLocalStorage = localStorage.getItem(TOKENS_IN_LOCAL_STORAGE);
@@ -276,19 +269,12 @@ const getActionFromParams = (value: any) => {
 
 
 
-export const isManageLiquidity = (value: any) => {
-  const result = getActionFromParams(value)
-  console.log(result);
-  
-};
-
 export {
   delay,
   splitToGroups,
   getToken,
   getIsSelectedTokenMobile,
   isTelegramWebApp,
-  isHiddenNavbar,
   isAllowedToUseApp,
   isDev,
   getRandomColor,

@@ -22,14 +22,15 @@ interface Props {
   isSource: boolean;
 }
 
-const StyledContainer = styled(Box)({
+const StyledContainer = styled(Box)(({isSource}: {isSource: boolean}) => ({
   borderRadius: 12,
   padding: "18px",
   display: "flex",
   position: "relative",
   overflow: "hidden",
   flexDirection: "column",
-});
+  marginBottom: isSource ? 0 : 30
+}));
 
 const StyledTokenDisplay = styled(Box)({
   padding: "0px 8px",
@@ -138,7 +139,7 @@ function SwapCard({
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer isSource={isSource}>
       <StyledBg color={token.color} />
       <div style={{ position: "relative" }}>
         <StyledInput expanded={expanded}>

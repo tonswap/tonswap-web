@@ -1,23 +1,35 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Link } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { GITHUB } from "consts";
+import TelegramImg from 'assets/images/socials/telegram.svg'
+import GithubImg from 'assets/images/socials/github.svg'
+
 
 const StyledContainer = styled(Box)({
   display: "flex",
   gap: 20,
   marginTop: "auto",
-  ".MuiIconButton-root": {
-    background: "#2598D1",
+  "& a": {
     width: 30,
     height: 30,
+
+    "& img": {
+        width:'100%',
+        height: '100%',
+        objectFit:'cover'
+    }
   },
 });
 
 function Socials() {
   return (
     <StyledContainer>
-      <IconButton href={GITHUB} target='_blank'></IconButton>
-      <IconButton href="/"></IconButton>
+      <Link href={GITHUB} target='_blank'>
+        <img src = {GithubImg} />
+      </Link>
+      <Link href="/" target='_blank'>
+      <img src = {TelegramImg} />
+      </Link>
     </StyledContainer>
   );
 }

@@ -80,14 +80,14 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
   useEffect(() => {
     if (srcTokenAmount) {
       console.log(srcTokenAmount);
-      
+
       onChange(srcTokenAmount.toString());
     }
   }, []);
 
   return (
     <SwapCard
-    isSource={true}
+      isSource={true}
       isLoading={srcLoading}
       onChange={onChange}
       inputAmount={srcTokenAmount}

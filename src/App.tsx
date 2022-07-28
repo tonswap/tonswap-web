@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
+import { BETA_TEXT, LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { styled } from "@mui/system";
 import { getParamsFromUrl } from "utils";
 import SelectWallet from "components/SelectWallet";
@@ -24,7 +24,7 @@ const StyledAppContainer = styled(Box)({
   marginLeft: "auto",
   marginRight: "auto",
   flex: 1,
-  height:'100vh'
+  height: "100vh",
 });
 
 const StyledRoutesContainer = styled(Box)(({ theme }) => ({
@@ -43,41 +43,53 @@ const StyledRoutesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+const StyledBeta = styled(Box)({
+  background: "#FC5F5F",
+  width: "100%",
+  height: 40,
+  display:'flex',
+  alignItems:'center',
+  justifyContent:'center',
+  "& p": {
+    color: "white",
+    fontSize: 14
+  },
+});
 
-if(getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)){
-  localStorage.setItem(TELEGRAM_WEBAPP_PARAM, '1')
+if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
+  localStorage.setItem(TELEGRAM_WEBAPP_PARAM, "1");
 }
 
-
 const App = observer(() => {
-  const {restoreSession} = useWalletActions()
-  const {connectng} = useWalletStore()
-  const restoreSessionRef = useRef(false)
-
+  const { restoreSession } = useWalletActions();
+  const { connectng } = useWalletStore();
+  const restoreSessionRef = useRef(false);
 
   useEffect(() => {
-    if(!restoreSessionRef.current){
-      restoreSession()
-      restoreSessionRef.current = true
+    if (!restoreSessionRef.current) {
+      restoreSession();
+      restoreSessionRef.current = true;
     }
-   
-  }, [])
+  }, []);
 
-  if(connectng){
-    return <AppLoader />
-
+  if (connectng) {
+    return <AppLoader />;
   }
 
   return (
-    <StyledAppContainer>
-      <Navbar />
-      <SelectWallet />
-      <StyledRoutesContainer>
-        <AppRoutes />
-      
-      </StyledRoutesContainer>
-      <Socials />
-    </StyledAppContainer>
+    <>
+      <StyledBeta>
+        <Typography>{BETA_TEXT}</Typography>
+      </StyledBeta>
+      <StyledAppContainer>
+        <Navbar />
+        <SelectWallet />
+        <StyledRoutesContainer>
+          <AppRoutes />
+        </StyledRoutesContainer>
+        <Socials />
+      </StyledAppContainer>
+    </>
   );
 });
 

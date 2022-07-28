@@ -1,3 +1,4 @@
+
 const LOCAL_STORAGE_ADDRESS = "ton_address";
 const LAYOUT_MAX_WIDTH = "1200px";
 const TELEGRAM_WEBAPP_PARAM = "telegram_webapp";
@@ -24,3 +25,8 @@ export {
 export const COMING_SOON = '(coming soon)'
 
 export const GITHUB = 'https://github.com/tonswap/tonswap-web'
+
+export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
+
+
+export const BETA_TEXT = 'TopSwap is in beta, use at your risk'

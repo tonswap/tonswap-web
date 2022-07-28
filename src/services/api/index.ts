@@ -4,7 +4,7 @@ import { DexActions } from "./dex";
 import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
+import { LOCAL_STORAGE_ADDRESS, ZERO_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 
@@ -106,7 +106,8 @@ const parseNumber = (
 };
 
 function getOwner() {
-  return Address.parse(localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string);
+  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) || ZERO_ADDRESS;
+  return Address.parse(address as string)
 }
 
 // const _getWalletData = async (jettonWallet: Address) => {

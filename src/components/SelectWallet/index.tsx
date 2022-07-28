@@ -19,10 +19,11 @@ const StyledModal = styled(Modal)({});
 
 
 
-const StyledDrawer = styled(Box)({
+const StyledDrawer = styled(Box)(({expanded}:{expanded: boolean}) => ({
+
   padding: 20,
-  minHeight: 300
-})
+  minHeight: expanded ? 300 : 550
+}))
 
 const SelectWallet = observer(() => {
   const { address } = useWalletStore();
@@ -51,7 +52,7 @@ const SelectWallet = observer(() => {
         keepMounted: false,
       }}
     >
-     <StyledDrawer>
+     <StyledDrawer expanded={expanded}>
      <MobileFlow  closeModal={onClose} />
      </StyledDrawer>
     </SwipeableDrawer>
