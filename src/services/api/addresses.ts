@@ -1,8 +1,8 @@
 import { Cell, TonClient, Address } from "ton";
 import Ton from "assets/images/tokens/ton.svg";
 
-import Usdt from "assets/images/tokens/usdt.svg";
-import Shib from "assets/images/tokens/shiba.svg";
+import DinoKorn from "assets/images/tokens/DinoKorn.png";
+import KittyKorn from "assets/images/tokens/KittyKorn.png";
 import Btc from "assets/images/tokens/btc1.svg";
 import Eth from "assets/images/tokens/eth1.svg";
 import Uni from "assets/images/tokens/uni1.svg";
@@ -33,7 +33,7 @@ const SandBoxPools: { [key: string]: PoolInfo } = {
   luna: {
     name: "luna",
     displayName: "LUNA",
-    image: Shib,
+    image: KittyKorn,
     color: "#FFA40A",
     ammMinter: Address.parse(
       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
@@ -45,13 +45,13 @@ const SandBoxPools: { [key: string]: PoolInfo } = {
 };
 
 const TestNetPools: { [key: string]: PoolInfo } = {
-  shib: {
-    name: "shib",
+  kit: {
+    name: "kit",
     ammMinter: Address.parse(
       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
     ),
-    displayName: "SHIB",
-    image: Shib,
+    displayName: "KIT",
+    image: KittyKorn,
     color: "#FFA40A",
     tokenMinter: Address.parse(
       "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
@@ -60,29 +60,29 @@ const TestNetPools: { [key: string]: PoolInfo } = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-  shib: {
-    name: "shib",
+  kit: {
+    name: "kit",
     ammMinter: Address.parse(
       "EQA5JvHOjixFSsDgaKZa3-kVBfvahGDoiOT5X_cHCyeSpQhC"
     ),
     tokenMinter: Address.parse(
       "EQC6T74KYR_ajy0MUzbHsRlIWkdQJf9ovcqCjfmko-WSpjOo"
     ),
-    displayName: "SHIB",
-    image: Shib,
-    color: "#FFA40A",
+    displayName: "KIT",
+    image: KittyKorn,
+    color: "#c697c4",
   },
-  usdt: {
-    name: "usdt",
+  dino: {
+    name: "dino",
     ammMinter: Address.parse(
       "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"
     ),
     tokenMinter: Address.parse(
       "EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban"
     ),
-    displayName: "USDT",
-    image: Usdt,
-    color: "#1B8362",
+    displayName: "DINO",
+    image: DinoKorn,
+    color: "#cbb4b4",
   },
   eth: {
     name: "eth",
