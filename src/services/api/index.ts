@@ -372,6 +372,7 @@ export const getTokenDollarValue = async (
     const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
+    // TODO !
     ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
   }
 

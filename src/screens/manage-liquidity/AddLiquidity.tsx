@@ -68,7 +68,6 @@ const AddLiquidity =  () => {
     }
 
     let res = await API.getLiquidityAmount(srcToken, destToken, srcAmount, destAmount);
-    console.log(res);
     
     return res;
   };
