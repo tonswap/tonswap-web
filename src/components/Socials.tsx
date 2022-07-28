@@ -1,6 +1,6 @@
 import { IconButton, Link } from "@mui/material";
 import { Box, styled } from "@mui/system";
-import { GITHUB } from "consts";
+import { GITHUB, TELEGRAM } from "consts";
 import TelegramImg from 'assets/images/socials/telegram.svg'
 import GithubImg from 'assets/images/socials/github.svg'
 
@@ -27,7 +27,7 @@ function Socials() {
       <Link href={GITHUB} target='_blank'>
         <img src = {GithubImg} />
       </Link>
-      <Link href="/" target='_blank'>
+      <Link href={TELEGRAM} target='_blank'>
       <img src = {TelegramImg} />
       </Link>
     </StyledContainer>

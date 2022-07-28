@@ -69,7 +69,7 @@ function Menu({ open, hide }: Props) {
         </Box>
      
         <StyledActions>
-        <ActionButton  onClick={onSwapClick}>Swap</ActionButton>
+        <ActionButton  onClick={onSwapClick}>Trade</ActionButton>
         <ActionButton  customClassName="coming-soon" onClick={onManageLiquidity}>Manage Liquidity {COMING_SOON}</ActionButton>
         <ActionButton  customClassName="coming-soon"  onClick={onCreatePool}>Create Pool {COMING_SOON}</ActionButton>
         </StyledActions>

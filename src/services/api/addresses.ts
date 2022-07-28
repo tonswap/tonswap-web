@@ -6,6 +6,7 @@ import KittyKorn from "assets/images/tokens/KittyKorn.png";
 import Btc from "assets/images/tokens/btc1.svg";
 import Eth from "assets/images/tokens/eth1.svg";
 import Uni from "assets/images/tokens/uni1.svg";
+import Usdc from "assets/images/tokens/usdc.svg";
 
 import { localStorageTokensToObject } from "utils";
 
@@ -100,11 +101,11 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     color: "#E17E06",
     isDisabled: true
   },
-  uni: {
-    name: "uni",
-    displayName: "UNI",
-    image: Uni,
-    color: "#E02172",
+  usdc: {
+    name: "usdc",
+    displayName: "USDC",
+    image: Usdc,
+    color: "#055fa6",
     isDisabled: true
   },
 };

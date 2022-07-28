@@ -153,7 +153,7 @@ function SwapCard({
             onChange={(val) => onChange(val)}
           />
           <StyledTokenDisplay
-            style={{ cursor: isTon ? "" : "pointer" }}
+            style={{ cursor: isTon ? "" : "pointer", userSelect: isTon ? 'none' : 'all'  }}
             onClick={onTokenSelect}
           >
             {token.image && <StyledAvatar src={token.image} alt="token" />}

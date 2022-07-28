@@ -24,7 +24,8 @@ export {
 
 export const COMING_SOON = '(coming soon)'
 
-export const GITHUB = 'https://github.com/tonswap/tonswap-web'
+export const GITHUB = 'https://github.com/tonswap'
+export const TELEGRAM = 'https://t.me/tonswap'
 
 export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 

@@ -8,7 +8,7 @@ export const StyledTokenOperation = styled(Box)(({theme}) => ({
   paddingTop: 30,
   width:'100%',
   [theme.breakpoints.down('sm')]: {
-    paddingTop: 30,
+    paddingTop: 20,
   }
 }));
 

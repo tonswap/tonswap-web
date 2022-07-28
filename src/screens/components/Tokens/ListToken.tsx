@@ -17,13 +17,13 @@ const ListToken = ({ token, onSelect }: Props) => {
 
   return (
     <StyledToken
-      
-      color={token.color}
+      color={ token.color}
       onClick={token.isDisabled ? () => {} : onSelect}
       className={classes.token}
-      style={{cursor: token.isDisabled ? '' : 'pointer'}}
+      style={{cursor: token.isDisabled ? '' : 'pointer', opacity: token.isDisabled ? 0.7 : 1 }}
     >
-      {token.image && <StyledImage src={token.image} alt="token" />}
+      {token.image && <StyledImage 
+      src={token.image} alt="token" />}
       <Typography>{token.displayName} {token.isDisabled ? COMING_SOON : ''}</Typography>
       <StyledUsdValue>
         {token.isDisabled ? 
