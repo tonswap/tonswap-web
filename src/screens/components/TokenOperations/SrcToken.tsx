@@ -60,6 +60,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       if (result === 0) {
         return;
       } else {
+        debugger;
         updateDestTokenAmount(fromNano(result));
       }
     }
