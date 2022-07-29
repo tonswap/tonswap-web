@@ -5,7 +5,7 @@ import { fromNano } from "ton";
 
 export const getAmounts = createAsyncThunk<
   // Return type of the payload creator
-  { srcBalance: number; destBalance: number },
+  { srcBalance: string; destBalance: string },
   () => Promise<[any, any]>
 >("wallet/getAmounts", async (getBalances) => {
   const [srcTokenBalance, destTokenBalance] = await getBalances();

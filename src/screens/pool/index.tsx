@@ -26,6 +26,7 @@ import {
 import { convertToCurrencySystem } from "utils";
 import TokenPreview from "components/TokenPreview";
 import { useTokensStore } from "store/tokens/hooks";
+import { BN } from "bn.js";
 
 type Token = {
   name: string;
@@ -70,7 +71,7 @@ const getPool = async (
 
   const poolTvl = await getUsdAmount(
     "ton",
-    Number(fromNano(poolDataRaw.tonReserves)) * 2
+    poolDataRaw.tonReserves.mul(new BN(2)).toString()
   );
 
   let tokenData = getTokemByAmmMinter(poolAddress, tokens);
@@ -93,7 +94,7 @@ const getPool = async (
     pool: {
       tonReserves: Number(fromNano(poolDataRaw.tonReserves)).toFixed(2),
       tokenReserves:  Number(fromNano(poolDataRaw.tokenReserves)).toFixed(2),
-      tvl: poolTvl.toFixed(2),
+      tvl: poolTvl,
       address: ammMinter,
     },
   };

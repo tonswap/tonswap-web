@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { getUsdAmount } from "screens/components/TokenOperations/util";
 import useDebounce from "./useDebounce";
 
-function useUsdValue(name: string, value?: number, debounce?: number) {
-  const [usd, setUsd] = useState(0);
+function useUsdValue(name: string, value?: string, debounce?: number) {
+  const [usd, setUsd] = useState('0');
   const [loading, setLoading] = useState(false);
   const debounceMilliseconds = debounce && debounce > 0 ? debounce : 300;
   const debouncedValue = useDebounce(value, debounceMilliseconds);
@@ -14,7 +14,7 @@ function useUsdValue(name: string, value?: number, debounce?: number) {
     if (value) {
       setLoading(true);
     } else {
-      setUsd(0);
+      setUsd('0');
       setLoading(false);
     }
   }, [value]);

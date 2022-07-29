@@ -13,7 +13,7 @@ interface Props {
 
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
-  const amount = token.isDisabled ? 0 : 1;
+  const amount = token.isDisabled ? '0' : '1';
   const { loading, usd } = useUsdValue(token.name, amount, 0);
 
   return (
@@ -37,7 +37,7 @@ const ListToken = ({ token, onSelect }: Props) => {
         {token.isDisabled ? null : loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
-          <Typography>{`$${parseFloat(usd.toFixed(3))}`}</Typography>
+          <Typography>{`$${parseFloat(usd)}`}</Typography>
         )}
       </StyledUsdValue>
     </StyledToken>

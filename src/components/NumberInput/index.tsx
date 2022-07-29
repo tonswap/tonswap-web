@@ -4,7 +4,7 @@ import ContentLoader from "components/ContentLoader";
 import { styled } from "@mui/system";
 
 interface Props {
-  value?: number;
+  value?: string;
   onChange: (val: string) => void;
   isLoading?: boolean;
   placeholder?: string;

@@ -7,6 +7,7 @@ import { OPS } from "./ops";
 import { LOCAL_STORAGE_ADDRESS, ZERO_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
+import { ton } from "tokens";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -363,23 +364,25 @@ export const getLiquidityAmount = async (
 
 export const getTokenDollarValue = async (
   token: string,
-  amount: number
-): Promise<number> => {
+  amount: string
+): Promise<string> => {
   let ratio = 1;
-
+  
   if (token !== "ton") {
+    
     const tokenData = await getToken(client, token, getOwner());
     const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     // TODO !
-    ratio = tonReserves.mul(new BN(1e9)).div(tokenReserves).toNumber() / 1e9;
+    ratio = parseFloat(fromNano(tonReserves.mul(new BN(1e9)).div(tokenReserves)));
   }
-
+  console.log({ratio: ratio.toString()});
+  
   const cgPrice = await fetchPrice();
-  const tonPriceWithAmount = cgPrice * amount;
+  const tonPriceWithAmount = toNano(amount).mul(toNano(cgPrice)).div(new BN(1e9));
 
-  return parseFloat((tonPriceWithAmount * ratio).toFixed(4));
+  return  fromNano(tonPriceWithAmount.mul(toNano(ratio) ).div(new BN(1e9)));
 };
 
 let tonPrice = 0;
@@ -399,8 +402,8 @@ async function fetchPrice() {
 
 export const generateSellLink = async (
   token: string,
-  tokenAmount: number,
-  tonAmount: number
+  tokenAmount: string,
+  tonAmount: string
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
@@ -418,8 +421,8 @@ export const generateSellLink = async (
 
 export const generateBuyLink = async (
   token: string,
-  tonAmount: number,
-  tokenAmount: number
+  tonAmount: string,
+  tokenAmount: string
 ) => {
   // 0.5% slippage
   //TODO add slippage explicit
@@ -429,24 +432,25 @@ export const generateBuyLink = async (
   );
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
-  const value = toNano(tonAmount + GAS_FEE.SWAP);
+  const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
   return sendTransaction(tokenObjects.ammMinter!!, value, boc64);
 };
 
 export const generateAddLiquidityLink = async (
   token: string,
-  tonAmount: number,
-  tokenAmount: number
+  tonAmount: string,
+  tokenAmount: string
 ) => {
+  
   const tokenData = await getToken(client, token, getOwner());
-  const slippage = new BN(5);
+  const slippage = new BN(5); // TODO
   const transferAndLiq = await DexActions.addLiquidity(
     tokenData.ammMinter!!,
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
-    toNano(tonAmount + GAS_FEE.FORWARD_TON),
+    toNano(tonAmount).add( toNano( GAS_FEE.FORWARD_TON)),
     slippage,
-    toNano(tonAmount).add(new BN(10))  // TODO dust issue 
+    toNano(tonAmount)  // TODO dust issue 
   );
   const boc64 = transferAndLiq.toBoc().toString("base64");
   const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY ));
@@ -466,7 +470,9 @@ export const generateRemoveLiquidityLink = async (
 
   const userLpBalance = (await getLPTokenBalance(token)).balance;
   // round up 98 and above to use the max lp
-  if((userLpBalance.mul(new BN(100)).div(shareToRemove).gte(new BN(98)) )) {
+
+  
+  if((shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98)) )) {
     shareToRemove = userLpBalance;
   }
   
