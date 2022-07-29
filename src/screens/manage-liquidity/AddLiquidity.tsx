@@ -10,6 +10,8 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
+import { fromNano, toNano } from "ton";
+import BN from "bn.js";
 
 const useStyles = makeStyles((theme: Theme) => ({
   subTitle: {
@@ -80,11 +82,11 @@ const AddLiquidity =  () => {
     return `Successfully added ${srcTokenAmount} TON and ${destTokenAmount} ${selectedToken?.displayName} liquidity`;
   };
 
-  const isInsufficientFunds = (src: number, dest: number) => {
+  const isInsufficientFunds = (src: string, dest: string) => {
     if (!src || !dest) {
       return false;
     }
-    if (src > totalBalances.srcBalance || dest > totalBalances.destBalance) {
+    if (toNano(src).gte( toNano(totalBalances.srcBalance)) || toNano(dest).gte( toNano(totalBalances.destBalance))) {
       return true;
     }
     return false;

@@ -12,10 +12,10 @@ import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
 import { useWalletStore } from "store/wallet/hooks";
 interface Props {
-  inputAmount?: number;
-  availableAmount: number;
+  inputAmount?: string;
+  availableAmount: string;
   onChange: (val: string) => void;
-  maxAmount: number;
+  maxAmount: string;
   token: PoolInfo;
   isLoading?: boolean;
   availableAmountLoading: boolean;

@@ -5,7 +5,7 @@ import ContentLoader from "components/ContentLoader";
 interface Props {
   loading: boolean;
   displayName: string;
-  availableAmount: number;
+  availableAmount: string;
   onMaxAmountClick: () => void;
   showMax?: boolean;
 
@@ -42,9 +42,7 @@ function Balance({ loading, displayName, availableAmount, onMaxAmountClick, show
         <>
           <Typography component="p" textAlign="right">
             <strong>Balance: </strong>
-            {availableAmount.toLocaleString("en-US", {
-              maximumFractionDigits: 4,
-            })}
+            {availableAmount.toLocaleString()}
             {/* {` ${displayName}`} */}
           </Typography>
           {showMax && <StyledMaxButton

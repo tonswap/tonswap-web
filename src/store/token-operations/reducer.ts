@@ -9,13 +9,13 @@ export enum OperationType  {
 }
 interface State {
   totalBalances: {
-    destBalance: number;
-    srcBalance: number;
+    destBalance: string;
+    srcBalance: string;
   };
   srcLoading: boolean;
   destLoading: boolean;
-  destTokenAmount: number;
-  srcTokenAmount: number;
+  destTokenAmount: string;
+  srcTokenAmount: string;
   srcAvailableAmountLoading: boolean;
   destAvailableAmountLoading: boolean;
   operationType:OperationType;
@@ -23,11 +23,11 @@ interface State {
 
 const initialState: State = {
   totalBalances: {
-    srcBalance: 0,
-    destBalance: 0,
+    srcBalance: "",
+    destBalance: "",
   },
-  destTokenAmount: 0,
-  srcTokenAmount: 0,
+  destTokenAmount: "",
+  srcTokenAmount: "",
   srcLoading: false,
   destLoading: false,
   srcAvailableAmountLoading: false,
@@ -44,13 +44,13 @@ const WalletOperationSlice = createSlice({
       state.operationType = action.payload
     },
     resetAmounts(state) {
-      state.destTokenAmount = 0;
-      state.srcTokenAmount = 0;
+      state.destTokenAmount = "";
+      state.srcTokenAmount = "";
     },
     resetBalances(state) {
       state.totalBalances = {
-        srcBalance: 0,
-        destBalance: 0,
+        srcBalance: "",
+        destBalance: "",
       };
     },
 
@@ -80,8 +80,8 @@ const WalletOperationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAmounts.pending, (state, action) => {
-        state.totalBalances.destBalance = 0;
-        state.totalBalances.srcBalance = 0;
+        state.totalBalances.destBalance = "";
+        state.totalBalances.srcBalance = "";
         state.srcAvailableAmountLoading = true;
         state.destAvailableAmountLoading = true;
       })

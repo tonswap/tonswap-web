@@ -32,7 +32,7 @@ interface Props {
   getAmountFunc: any;
   getTxRequest: () => any;
   createSuccessMessage: () => string;
-  isInsufficientFunds?: (src: number, dest: number) => boolean;
+  isInsufficientFunds?: (src: string, dest: string) => boolean;
   refreshAmountsOnActionChange: boolean;
   actionCategory: ActionCategory;
   actionType: ActionType;
