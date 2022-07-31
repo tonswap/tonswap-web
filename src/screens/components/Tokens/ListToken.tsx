@@ -37,7 +37,7 @@ const ListToken = ({ token, onSelect }: Props) => {
         {token.isDisabled ? null : loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
-          <Typography>{`$${parseFloat(usd)}`}</Typography>
+          <Typography>{`$${parseFloat(usd).toFixed(6)}`}</Typography>
         )}
       </StyledUsdValue>
     </StyledToken>

@@ -66,10 +66,10 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
   'KittyCoin for TonSwap tests': {
     name: "KittyCoin for TonSwap tests",
     ammMinter: Address.parse(
-      "EQA5JvHOjixFSsDgaKZa3-kVBfvahGDoiOT5X_cHCyeSpQhC"
+      "EQBp2DZ3lwZKGl3Cd4a_6E840BbT0L863e4Hr1QC6PVq6WB3"
     ),
     tokenMinter: Address.parse(
-      "EQC6T74KYR_ajy0MUzbHsRlIWkdQJf9ovcqCjfmko-WSpjOo"
+      "EQA_MjgZKgYFokx1IRyfEiDrvYYhtrOPfZcvL_1X0K-4av_Z"
     ),
     displayName: "KIT",
     image: KittyKorn,
