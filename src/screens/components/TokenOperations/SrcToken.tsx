@@ -60,7 +60,6 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       if (result === 0) {
         return;
       } else {
-        debugger;
         updateDestTokenAmount(fromNano(result));
       }
     }
@@ -68,7 +67,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
 
   const onChange = (value: string) => {
     updateSrcTokenAmount(value);
-    balanceRef.current = toNano(value).toString();
+    balanceRef.current = value;
 
     if (!value || Number(value) === 0) {
       updateDestTokenAmount('');
