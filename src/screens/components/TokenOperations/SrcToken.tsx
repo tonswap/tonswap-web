@@ -5,6 +5,7 @@ import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
+import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
 import { calculateTokens } from "./util";
 
@@ -28,7 +29,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
     updateDestTokenLoading,
   } = useTokenOperationsActions();
 
-  const balanceRef = useRef(0);
+  const balanceRef = useRef('');
   const debounce = useDebouncedCallback(async () => {
     if (!balanceRef.current) {
       return;
@@ -59,17 +60,18 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       if (result === 0) {
         return;
       } else {
-        updateDestTokenAmount(result / 1e9);
+        debugger;
+        updateDestTokenAmount(fromNano(result));
       }
     }
   }, 600);
 
   const onChange = (value: string) => {
-    updateSrcTokenAmount(Number(value));
-    balanceRef.current = Number(value);
+    updateSrcTokenAmount(value);
+    balanceRef.current = toNano(value).toString();
 
     if (!value || Number(value) === 0) {
-      updateDestTokenAmount(0);
+      updateDestTokenAmount('');
       updateDestTokenLoading(false);
     } else {
       updateDestTokenLoading(true);

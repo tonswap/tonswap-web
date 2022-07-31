@@ -11,7 +11,6 @@ import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { fromNano, toNano } from "ton";
-import BN from "bn.js";
 
 const useStyles = makeStyles((theme: Theme) => ({
   subTitle: {
@@ -54,8 +53,8 @@ const AddLiquidity =  () => {
   const getAmountOut = async (
     srcToken: string,
     destToken: string,
-    srcAmount: number | null,
-    destAmount: number | null
+    srcAmount: string | null,
+    destAmount: string | null
   ) => {
     if (!selectedToken?.name) {
       return;
@@ -68,7 +67,10 @@ const AddLiquidity =  () => {
       return 0;
     }
 
-    return API.getLiquidityAmount(srcToken, destToken, srcAmount, destAmount);
+    let res = await API.getLiquidityAmount(srcToken, destToken, srcAmount, destAmount);
+    console.log(res);
+    
+    return res;
   };
 
   const getBalances = () => {

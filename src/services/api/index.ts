@@ -7,7 +7,6 @@ import { OPS } from "./ops";
 import { LOCAL_STORAGE_ADDRESS, ZERO_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
-import { ton } from "tokens";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -194,7 +193,7 @@ async function getAmountOut(
     ["num", reserveIn.toString()],
     ["num", reserveOut.toString()],
   ]);
-
+  
   return hexToBn(res.stack[0][1]).toString();
 }
 
@@ -206,8 +205,8 @@ export async function tokenToMinter(token:string) {
 export const getAmountsOut = async (
   token: string,
   isSourceToken: boolean,
-  srcAmount: number | null,
-  destAmount: number | null
+  srcAmount: BN | null,
+  destAmount: BN | null
 ) => {
   const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
 
@@ -312,9 +311,9 @@ export async function getTokenData(jettonAddress: Address) {
 export const getLiquidityAmount = async (
   srcToken: string,
   destToken: string,
-  srcAmount: number | null,
-  destAmount: number | null
-): Promise<number> => {
+  srcAmount: string | null,
+  destAmount: string | null
+): Promise<BN> => {
   const tokenObjects: any = await getToken(
     client,
     srcToken !== "ton" ? srcToken : destToken,
@@ -325,7 +324,7 @@ export const getLiquidityAmount = async (
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
   if(tokenReserves.toNumber() === 0 && tonReserves.toNumber() === 0) {
-    return 0
+    return new BN(0)
   }
 
 
@@ -339,30 +338,26 @@ export const getLiquidityAmount = async (
 
   if (srcToken === "ton") {
     if (srcAmount != null) {
-      return new BN(srcAmount * 1e9)
+      return new BN(srcAmount)
         .mul(tokenReserves)
         .div(tonReserves)
-        .toNumber();
     } else if (destAmount != null) {
-      return new BN(destAmount * 1e9)
+      return toNano(destAmount)
         .mul(tonReserves)
         .div(tokenReserves)
-        .toNumber();
     }
   } else {
     if (srcAmount != null) {
-      return new BN(srcAmount * 1e9)
+      return new BN(srcAmount)
         .mul(tokenReserves)
         .div(tonReserves)
-        .toNumber();
     } else if (destAmount != null) {
-      return new BN(destAmount * 1e9)
+      return new BN(destAmount)
         .mul(tonReserves)
         .div(tokenReserves)
-        .toNumber();
     }
   }
-  return 0;
+  return new BN(0);
 };
 
 export const getTokenDollarValue = async (
@@ -370,17 +365,15 @@ export const getTokenDollarValue = async (
   amount: string
 ): Promise<string> => {
   let ratio = 1;
-  
+
   if (token !== "ton") {
-    
     const tokenData = await getToken(client, token, getOwner());
     const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     ratio = parseFloat(fromNano(tonReserves.mul(new BN(1e9)).div(tokenReserves)));
   }
-  console.log({ratio: ratio.toString()});
-  
+
   const cgPrice = await fetchPrice();
   const tonPriceWithAmount = toNano(amount).mul(toNano(cgPrice)).div(new BN(1e9));
 
@@ -443,9 +436,8 @@ export const generateAddLiquidityLink = async (
   tonAmount: string,
   tokenAmount: string
 ) => {
-  
   const tokenData = await getToken(client, token, getOwner());
-  const slippage = new BN(5); // TODO
+  const slippage = new BN(5);
   const transferAndLiq = await DexActions.addLiquidity(
     tokenData.ammMinter!!,
     toNano(tokenAmount),
@@ -472,8 +464,6 @@ export const generateRemoveLiquidityLink = async (
 
   const userLpBalance = (await getLPTokenBalance(token)).balance;
   // round up 98 and above to use the max lp
-
-  
   if((shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98)) )) {
     shareToRemove = userLpBalance;
   }
