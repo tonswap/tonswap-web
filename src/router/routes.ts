@@ -16,12 +16,12 @@ const ROUTES = {
   },
   manageLiquidity: {
     tokens: '/tokens',
-    navigateToTokens: '/manage-liquiduty/tokens',
-    base: "manage-liquiduty",
+    navigateToTokens: '/manage-liquidity/tokens',
+    base: "manage-liquidity",
     addLiquidity: "/add-liquidity/:id",
     removeLiquidity: "/remove-liquidity/:id",
-    navigateToAddLiquidity: "/manage-liquiduty/add-liquidity/:id",
-    navigateToRemoveLiquidity: "/manage-liquiduty/remove-liquidity/:id",
+    navigateToAddLiquidity: "/manage-liquidity/add-liquidity/:id",
+    navigateToRemoveLiquidity: "/manage-liquidity/remove-liquidity/:id",
   },
 };
 

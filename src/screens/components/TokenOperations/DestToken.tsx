@@ -5,7 +5,7 @@ import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
-import { fromNano } from "ton";
+import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
 import { calculateTokens } from "./util";
 
@@ -38,7 +38,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
         jetton,
         srcTokenName !== "ton",
         null,
-        balanceRef.current || "0",
+        toNano(balanceRef.current || "0"),
         getAmountFunc
       );
 

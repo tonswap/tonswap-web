@@ -13,9 +13,9 @@ const getUsdAmount = async (tokenId: string, amount: string) => {
     }
   };
 
-  const calculateTokens = async (tokenName: string, isTonToToken: boolean, srcAmount:  null | string, destAmount: null | string, getAmountsFunc: any) => {
+  const calculateTokens = async (tokenName: string, isTonToToken: boolean, srcAmount:  null | BN, destAmount: null | BN, getAmountsFunc: any) => {
     if (srcAmount != null) {
-        const amount = await getAmountsFunc(tokenName, isTonToToken, new BN(srcAmount), destAmount != null ? new BN(destAmount) : null);
+        const amount = await getAmountsFunc(tokenName, isTonToToken, srcAmount, destAmount != null ? destAmount : null);
 
         return amount;
     } else if (destAmount != null) {

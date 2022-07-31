@@ -40,7 +40,7 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       result = await calculateTokens(
         jetton,
         token.name !== "ton",
-        balanceRef.current || "0",
+        toNano(balanceRef.current || "0"),
         null,
         getAmountFunc
       );

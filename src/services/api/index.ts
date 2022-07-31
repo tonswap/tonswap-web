@@ -185,8 +185,9 @@ async function getAmountOut(
   reserveIn: BN,
   reserveOut: BN
 ) {
-  console.log(`fromNano(amountIn), fromNano(reserveIn), fromNano(reserveOut)`);
-  console.log(fromNano(amountIn), fromNano(reserveIn), fromNano(reserveOut));
+  
+  console.log(`GetAmountOut(amountIn), (reserveIn), (reserveOut)`);
+  console.log(amountIn.toString(), reserveIn.toString(), reserveOut.toString());
 
   let res = await client.callGetMethod(minterAddress, "get_amount_out", [
     ["num", amountIn.toString()],
@@ -214,38 +215,38 @@ export const getAmountsOut = async (
 
   if (srcAmount) {
     // TODO
-    const amountIn = toNano(srcAmount);
+    const amountIn = srcAmount;
     if (isSourceToken) {
       return getAmountOut(
         tokenAmm!!,
-        new BN(amountIn),
-        new BN(tokenData.tokenReserves),
-        new BN(tokenData.tonReserves)
+        amountIn,
+        tokenData.tokenReserves,
+        tokenData.tonReserves
       );
     } else {
       return getAmountOut(
         tokenAmm!!,
-        new BN(amountIn),
-        new BN(tokenData.tonReserves),
-        new BN(tokenData.tokenReserves)
+        amountIn,
+        tokenData.tonReserves,
+        tokenData.tokenReserves
       );
     }
   } else {  // Dest amount
     // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
-    const amountIn = toNano(destAmount || 0);
+    const amountIn = destAmount || new BN(0);
     if (!isSourceToken) {
       return getAmountOut(
         tokenAmm!!,
-        new BN(amountIn),
-        new BN(tokenData.tokenReserves),
-        new BN(tokenData.tonReserves)
+        amountIn,
+        tokenData.tokenReserves,
+        tokenData.tonReserves
       );
     } else {
       return getAmountOut(
         tokenAmm!!,
-        new BN(amountIn),
-        new BN(tokenData.tonReserves),
-        new BN(tokenData.tokenReserves)
+        amountIn,
+        tokenData.tonReserves,
+        tokenData.tokenReserves
       );
     }
   }
@@ -311,8 +312,8 @@ export async function getTokenData(jettonAddress: Address) {
 export const getLiquidityAmount = async (
   srcToken: string,
   destToken: string,
-  srcAmount: string | null,
-  destAmount: string | null
+  srcAmount: BN | null,
+  destAmount: BN | null
 ): Promise<BN> => {
   const tokenObjects: any = await getToken(
     client,
@@ -323,7 +324,7 @@ export const getLiquidityAmount = async (
 
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
-  if(tokenReserves.toNumber() === 0 && tonReserves.toNumber() === 0) {
+  if(tokenReserves.toString() === '0' && tonReserves.toString() === '0') {
     return new BN(0)
   }
 
