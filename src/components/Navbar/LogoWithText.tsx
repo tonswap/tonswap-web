@@ -3,27 +3,49 @@ import Typography from "@mui/material/Typography";
 import { useStyles } from "./styles";
 import TonLogo from "assets/images/shared/ton-logo.svg";
 import { styled } from "@mui/system";
+import { useTokensStore } from "store/tokens/hooks";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
+import { OperationType } from "store/token-operations/reducer";
+import { ROUTES } from "router/routes";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 
-
-
-const StyledText = styled(Typography)(({theme}) => ({
+const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
-  "span": {
-      color:'#50A7EA'
+  color: "#6D6D6D",
+  span: {
+    color: "#50A7EA",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: 15,
   },
-}))
+}));
 
-interface  Props{
-  onClick?: () => void;
-}
-
-const LogoWithText = ({onClick}:Props ) => {
+const LogoWithText = () => {
   const classes = useStyles();
+  const { selectedToken } = useTokensStore();
+  const { operationType } = useTokenOperationsStore();
+  const navigate = useNavigateWithParams();
+
+  const onClick = () => {
+    if (!selectedToken) {
+      return;
+    }
+    if (operationType === OperationType.SWAP) {
+      navigate(ROUTES.swap.navigateToTokens);
+      return;
+    }
+    if (operationType === OperationType.MANAGE_LIQUIDITY) {
+      navigate(ROUTES.manageLiquidity.navigateToTokens);
+      return;
+    }
+  };
+
   return (
-    <Box onClick={onClick} className={classes.logoBox}>
+    <Box
+      style={{ cursor: selectedToken ? "pointer" : "" }}
+      onClick={onClick}
+      className={classes.logoBox}
+    >
       <img className={classes.logo} src={TonLogo} alt="" />
       <StyledText>
         <strong>Ton</strong>Swap

@@ -59,6 +59,7 @@ type Token = {
   image?: string;
   ammMinter: string;
   tokenMinter: string;
+  symbol: string;
 };
 
 type Pool = {
@@ -82,7 +83,7 @@ function CustomToken({ open, onClose }: Props) {
         ammMinter: Address.parse(tokenData.ammMinter),
         tokenMinter: Address.parse(tokenData.tokenMinter),
         color: getRandomColor(),
-        displayName: tokenData.name.toUpperCase(),
+        displayName: tokenData.symbol.toUpperCase(),
         image: tokenData.image,
         isCustom: true,
       };
@@ -123,11 +124,14 @@ function CustomToken({ open, onClose }: Props) {
           tonReserves: parseFloat(fromNano(poolData.tonReserves)).toFixed(2),
         });
       }
+      
       setToken({
         ...jettonData,
         tokenMinter: value,
         ammMinter: futureAddress.toFriendly(),
       });
+      console.log(isDeployed);
+
       setIsPoolDeployed(isDeployed);
     } catch (error) {
       console.log(error);

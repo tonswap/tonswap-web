@@ -1,6 +1,5 @@
 import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { RootState } from "store/store";
 import {
@@ -18,6 +17,7 @@ import {
 
 import { getAmounts } from "./actions";
 import { useTokensStore } from "store/tokens/hooks";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 
 export const useTokenOperationsStore = () => {
   return useSelector((state: RootState) => state.tokenOperations);
@@ -37,7 +37,7 @@ export const useTokenOperationsActions = (): {
   onOperationTypeChange: (value: OperationType) => void;
 } => {
   const dispatch = useDispatch<any>();
-  const navigate = useNavigate();
+  const navigate = useNavigateWithParams()
   const { selectedToken } = useTokensStore();
   const onResetAmounts = useCallback(() => {
     dispatch(resetAmounts());

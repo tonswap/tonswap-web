@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useTokensActions } from "store/tokens/hooks";
 import { useWalletStore } from "store/wallet/hooks";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 
 const pollingDelay = 5000;
 interface jettonData {
@@ -47,7 +48,7 @@ export function CreatePool() {
   const {addToken} = useTokensActions()
   const {adapterId, session} = useWalletStore()
 
-  const navigate = useNavigate();
+  const navigate = useNavigateWithParams()
 
   const { showNotification } = useNotification();
 

@@ -1,31 +1,33 @@
 import { Fade } from "@mui/material";
+import Title from "components/SelectWallet/Title";
 import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 import useWebAppResize from "hooks/useWebAppResize";
-import {  useMemo } from "react";
+import { useMemo } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
 import { useTokenOperationsActions } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import { useTokensStore } from "store/tokens/hooks";
-import { StyledTokenOperation, StyledTokenOperationTitle } from "styles/styles";
 import { getActionFromParams } from "utils";
 import Buy from "./Buy";
 import Sell from "./Sell";
 
-
 function SwapScreen() {
   const { selectedToken } = useTokensStore();
-  const { toggleBuyToSell, toggleSellToBuy, onOperationTypeChange } = useTokenOperationsActions();
-  const navigate = useNavigate();
+  const { toggleBuyToSell, toggleSellToBuy, onOperationTypeChange } =
+    useTokenOperationsActions();
+  const navigate = useNavigateWithParams()
   const params = useParams();
   const action = getActionFromParams(params);
-  const expanded = useWebAppResize()
 
   useEffectOnce(() => {
-    onOperationTypeChange(OperationType.SWAP)
-  })
+    onOperationTypeChange(OperationType.SWAP);
+  });
+
+  
   const menuItems = useMemo(
     () =>
       selectedToken
@@ -48,16 +50,16 @@ function SwapScreen() {
   };
 
 
-  console.log(action);
-  
 
   return (
-   
-    <StyledTokenOperation>
-      {selectedToken && <StyledTokenOperationTitle
-      expanded={expanded}
-      >Trade</StyledTokenOperationTitle>}
-      {selectedToken && <SlidingMenu symbol={selectedToken.displayName} items={menuItems} action={action} />}
+    <>     
+      {selectedToken && (
+        <SlidingMenu
+          symbol={selectedToken.displayName}
+          items={menuItems}
+          action={action}
+        />
+      )}
 
       <Routes>
         <Route path={ROUTES.swap.buy} element={<Buy />} />
@@ -72,8 +74,7 @@ function SwapScreen() {
           }
         />
       </Routes>
-    </StyledTokenOperation>
-   
+    </>
   );
 }
 

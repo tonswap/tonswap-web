@@ -27,6 +27,7 @@ import { convertToCurrencySystem } from "utils";
 import TokenPreview from "components/TokenPreview";
 import { useTokensStore } from "store/tokens/hooks";
 import { BN } from "bn.js";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 
 type Token = {
   name: string;
@@ -101,7 +102,7 @@ const getPool = async (
 };
 
 const PoolScreen = observer(() => {
-  const navigate = useNavigate();
+  const navigate = useNavigateWithParams()
   const { id: ammMinter } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();

@@ -1,6 +1,6 @@
 import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
-import useWebAppResize from "hooks/useWebAppResize";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useMemo } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
@@ -8,7 +8,7 @@ import { Tokens } from "screens/components/Tokens";
 import { useTokenOperationsActions } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import { useTokensStore } from "store/tokens/hooks";
-import { StyledTokenOperation, StyledTokenOperationTitle } from "styles/styles";
+import { StyledTokenOperation } from "styles/styles";
 import { getActionFromParams } from "utils";
 import AddLiquidity from "./AddLiquidity";
 import RemoveLiquidity from "./RemoveLiquidity";
@@ -17,14 +17,13 @@ import RemoveLiquidity from "./RemoveLiquidity";
 function ManageLiquidityScreen() {
   const { selectedToken } = useTokensStore();
   const {onOperationTypeChange} = useTokenOperationsActions()
-  const navigate = useNavigate();
+  const navigate = useNavigateWithParams()
   const params = useParams();
   const action = getActionFromParams(params);
-  const expanded = useWebAppResize()
 
 
   useEffectOnce(() => {
-    onOperationTypeChange(OperationType.SWAP)
+    onOperationTypeChange(OperationType.MANAGE_LIQUIDITY)
   })
 
   const menuItems = useMemo(
@@ -64,7 +63,6 @@ function ManageLiquidityScreen() {
 
   return (
     <StyledTokenOperation>
-         <StyledTokenOperationTitle expanded={expanded}>Manage liquidity</StyledTokenOperationTitle>
       {selectedToken && <SlidingMenu items={menuItems} action={action} />}
 
       <Routes>

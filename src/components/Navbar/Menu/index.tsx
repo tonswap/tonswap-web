@@ -1,17 +1,15 @@
-import { IconButton, Typography, useMediaQuery } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Box from "@mui/material/Box";
 import LogoWithText from "../LogoWithText";
 import { useStyles } from "./style";
-import WalletAddress from "./WalletAddress";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { ActionButton } from "components/ActionButton";
-import { useTokensStore } from "store/tokens/hooks";
 import { styled } from "@mui/system";
-import { COMING_SOON } from "consts";
+import { COMING_SOON, isDebug } from "consts";
 import Socials from "components/Socials";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 
 const StyledActions = styled(Box)({
   display: "flex",
@@ -53,11 +51,12 @@ interface Props {
   hide: () => void;
 }
 
+
+
 function Menu({ open, hide }: Props) {
-  const matches = useMediaQuery("(max-width:600px)");
 
   const classes = useStyles();
-  const navigate = useNavigate();
+  const navigate = useNavigateWithParams();
 
   const onCreatePool = () => {
     hide();
@@ -66,13 +65,15 @@ function Menu({ open, hide }: Props) {
 
   const onManageLiquidity = () => {
     hide();
-    navigate(ROUTES.manageLiquidity.navigateToTokens);
+    navigate(`${ROUTES.manageLiquidity.navigateToTokens}`);
   };
 
   const onSwapClick = () => {
     hide();
     navigate(ROUTES.swap.navigateToTokens);
   };
+
+
 
   return (
     <Drawer anchor="left" open={open} onClose={hide}>
@@ -94,14 +95,14 @@ function Menu({ open, hide }: Props) {
         <StyledActions>
           <ActionButton onClick={onSwapClick}>Trade</ActionButton>
           <ActionButton
-            customClassName="coming-soon"
+            customClassName={isDebug() ? '' : "coming-soon"}
             onClick={onManageLiquidity}
           >
            
            Manage Liquidity
             <small>{COMING_SOON}</small>
           </ActionButton>
-          <ActionButton customClassName="coming-soon" onClick={onCreatePool}>
+          <ActionButton customClassName={isDebug() ? '' :  "coming-soon"} onClick={onCreatePool}>
             Create New Pool 
             <small>{COMING_SOON}</small>
           </ActionButton>
