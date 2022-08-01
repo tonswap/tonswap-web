@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
+import BigNumberDisplay from "components/BigNumberDisplay";
 import ContentLoader from "components/ContentLoader";
 import useUsdValue from "hooks/useUsdValue";
-import React from "react";
 
 interface Props {
   name: string;
@@ -15,13 +15,6 @@ const StyledContainer = styled(Box)({
 })
 
 
-function toFixed(str : string) {
-  if(str == '' || str == '0') {
-    return '0'
-  }
-  return parseFloat(str).toFixed(4)
-}
-
 function UsdAmount({ name, value, isLoading }: Props) {
   const { loading: usdLoading, usd } = useUsdValue(name, value);
 
@@ -32,7 +25,8 @@ function UsdAmount({ name, value, isLoading }: Props) {
       ) : (
         <Typography component="p">
           ~$
-          {toFixed(usd.toLocaleString())}
+          <BigNumberDisplay value={usd} decimalScale={5} />
+          {/* {toFixed(usd.toLocaleString())} */}
         </Typography>
       )}
     </StyledContainer>

@@ -1,3 +1,4 @@
+import { getParamsFromUrl } from "utils";
 
 const LOCAL_STORAGE_ADDRESS = "ton_address";
 const LAYOUT_MAX_WIDTH = "1200px";
@@ -31,3 +32,5 @@ export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 
 
 export const BETA_TEXT = 'TonSwap is in Beta, use at your own risk'
+
+export const isDebug = () => getParamsFromUrl('debug')

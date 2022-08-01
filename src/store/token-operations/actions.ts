@@ -1,13 +1,11 @@
-import {  createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fromNano } from "ton";
-
-
 
 export const getAmounts = createAsyncThunk<
   // Return type of the payload creator
   { srcBalance: string; destBalance: string },
   () => Promise<[any, any]>
->("wallet/getAmounts", async (getBalances) => {
+>("token-operations/getAmounts", async (getBalances) => {
   const [srcTokenBalance, destTokenBalance] = await getBalances();
   const srcBalance =
     typeof srcTokenBalance == "object"
@@ -22,4 +20,5 @@ export const getAmounts = createAsyncThunk<
     destBalance: destBalance,
   };
 });
+
 

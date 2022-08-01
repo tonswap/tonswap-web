@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { styled, Box, borderRadius } from "@mui/system";
+import BigNumberDisplay from "components/BigNumberDisplay";
 import ContentLoader from "components/ContentLoader";
 
 interface Props {
@@ -42,7 +43,9 @@ function Balance({ loading, displayName, availableAmount, onMaxAmountClick, show
         <>
           <Typography component="p" textAlign="right">
             <strong>Balance: </strong>
-            {availableAmount.toLocaleString()}
+            {/* {availableAmount} */}
+            {console.log(availableAmount)}
+            <BigNumberDisplay value={availableAmount} decimalScale={7} />
             {/* {` ${displayName}`} */}
           </Typography>
           {showMax && <StyledMaxButton

@@ -1,7 +1,6 @@
 import { NumberInput } from "components/NumberInput";
 import { PoolInfo } from "services/api/addresses";
 import useWebAppResize from "hooks/useWebAppResize";
-import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { ton } from "tokens";
 import { styled, Box } from "@mui/system";
@@ -11,18 +10,18 @@ import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
 import { useWalletStore } from "store/wallet/hooks";
+import useNavigateWithParams from "hooks/useNavigateWithParams";
 interface Props {
   inputAmount?: string;
   availableAmount: string;
   onChange: (val: string) => void;
-  maxAmount: string;
   token: PoolInfo;
   isLoading?: boolean;
   availableAmountLoading: boolean;
   isSource: boolean;
 }
 
-const StyledContainer = styled(Box)(({isSource}: {isSource: boolean}) => ({
+const StyledContainer = styled(Box)(({ isSource }: { isSource: boolean }) => ({
   borderRadius: 12,
   padding: "18px",
   display: "flex",
@@ -30,9 +29,9 @@ const StyledContainer = styled(Box)(({isSource}: {isSource: boolean}) => ({
   overflow: "hidden",
   flexDirection: "column",
   marginBottom: isSource ? 0 : 35,
-  ['@media (max-height:700px)']: {
+  ["@media (max-height:700px)"]: {
     marginBottom: isSource ? 0 : 35,
-  }
+  },
 }));
 
 const StyledTokenDisplay = styled(Box)({
@@ -44,7 +43,7 @@ const StyledTokenDisplay = styled(Box)({
   background: "rgba(255,255,255, 0.1)",
   borderRadius: 12,
   height: "100%",
-  boxShadow:'rgb(0 0 0 / 8%) 0px 6px 10px',
+  boxShadow: "rgb(0 0 0 / 8%) 0px 6px 10px",
   ".arrow": {
     width: 7,
     height: 7,
@@ -79,7 +78,7 @@ const StyledBottom = styled(Box)({
   },
 });
 
-const StyledInput = styled(Box)(({expanded}: {expanded: boolean}) => ({
+const StyledInput = styled(Box)(({ expanded }: { expanded: boolean }) => ({
   paddingRight: 10,
   position: "relative",
   background: "rgba(255,255,255, 0.1)",
@@ -87,8 +86,8 @@ const StyledInput = styled(Box)(({expanded}: {expanded: boolean}) => ({
   borderRadius: "12px",
   display: "flex",
   alignItems: "center",
-  height: expanded ? 54 : 42 ,
-  padding: expanded ? 10 : 5 ,
+  height: expanded ? 54 : 42,
+  padding: expanded ? 10 : 5,
   ".input-container": {
     width: "100%",
     height: "100%",
@@ -101,7 +100,7 @@ const StyledInput = styled(Box)(({expanded}: {expanded: boolean}) => ({
       textIndent: 5,
     },
   },
-}))
+}));
 
 const StyledBg = styled(Box)(({ color }: { color: string }) => ({
   background: color,
@@ -116,17 +115,16 @@ const StyledBg = styled(Box)(({ color }: { color: string }) => ({
 
 function SwapCard({
   inputAmount,
-  availableAmount,
   onChange,
-  maxAmount,
   token,
   isLoading,
   availableAmountLoading,
-  isSource
+  isSource,
+  availableAmount,
 }: Props) {
   const expanded = useWebAppResize();
-  const navigate = useNavigate();
-  const {address} = useWalletStore()
+  const navigate = useNavigateWithParams();
+  const { address } = useWalletStore();
   const { operationType } = useTokenOperationsStore();
   const isTon = token.name === ton.name;
 
@@ -153,7 +151,10 @@ function SwapCard({
             onChange={(val) => onChange(val)}
           />
           <StyledTokenDisplay
-            style={{ cursor: isTon ? "" : "pointer", userSelect: isTon ? 'none' : 'all'  }}
+            style={{
+              cursor: isTon ? "" : "pointer",
+              userSelect: isTon ? "none" : "all",
+            }}
             onClick={onTokenSelect}
           >
             {token.image && <StyledAvatar src={token.image} alt="token" />}
@@ -172,7 +173,7 @@ function SwapCard({
             availableAmount={availableAmount}
             displayName={token.displayName}
             loading={availableAmountLoading}
-            onMaxAmountClick={() => onChange(maxAmount.toString())}
+            onMaxAmountClick={() => onChange(availableAmount)}
             showMax={inputAmount !== availableAmount && !!address && isSource}
           />
         </StyledBottom>

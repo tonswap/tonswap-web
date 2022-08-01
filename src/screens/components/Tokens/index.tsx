@@ -1,13 +1,7 @@
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { Title } from "components";
-import {
-  StyledAddTokenButton,
-  StyledAddTokenButtonText,
-  useStyles,
-} from "./styles";
+import { useStyles } from "./styles";
 import Fade from "@mui/material/Fade";
-import { ROUTES } from "router/routes";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ListToken from "./ListToken";
 import CustomToken from "./CustomToken";
@@ -27,7 +21,15 @@ const StyledContainer = styled(Box)({
   maxWidth: 380,
   marginLeft: "auto",
   marginRight: "auto",
-  minHeight: 300
+  minHeight: 300,
+});
+
+const StyledTitle = styled(Box)({
+  position: "sticky",
+  top: 54,
+  background: "white",
+  zIndex: 1,
+  paddingBottom: 10,
 });
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
@@ -46,14 +48,16 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
   return (
     <Fade in timeout={300}>
       <Box className={classes.root}>
-      <CustomToken
-        open={addTokenModal}
-        onClose={() => setAddTokenModal(false)}
-      />
-      <Title>{title}</Title>
-      <Box className={classes.lists}>
-        <StyledContainer>
-          {/* <Grid item sm={4} md={3}>
+        <CustomToken
+          open={addTokenModal}
+          onClose={() => setAddTokenModal(false)}
+        />
+        <StyledTitle>
+          <Title>{title}</Title>
+        </StyledTitle>
+        <Box className={classes.lists}>
+          <StyledContainer>
+            {/* <Grid item sm={4} md={3}>
               <StyledAddTokenButton onClick={() => setAddTokenModal(true)}>
                 <AddIcon style={{ fontSize: 30 }} />
                 <StyledAddTokenButtonText>
@@ -61,18 +65,18 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 </StyledAddTokenButtonText>
               </StyledAddTokenButton>
             </Grid> */}
-          {tokens.map((token) => {
-            return (
-              <ListToken
-                key={token.name}
-                onSelect={() => onTokenSelect(token.name)}
-                token={token}
-              />
-            );
-          })}
-        </StyledContainer>
+            {tokens.map((token) => {
+              return (
+                <ListToken
+                  key={token.name}
+                  onSelect={() => onTokenSelect(token.name)}
+                  token={token}
+                />
+              );
+            })}
+          </StyledContainer>
+        </Box>
       </Box>
-    </Box>
     </Fade>
   );
 };

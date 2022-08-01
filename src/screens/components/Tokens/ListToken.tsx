@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import BigNumberDisplay from "components/BigNumberDisplay";
 import ContentLoader from "components/ContentLoader";
 import { COMING_SOON } from "consts";
 import useUsdValue from "hooks/useUsdValue";
@@ -37,7 +38,11 @@ const ListToken = ({ token, onSelect }: Props) => {
         {token.isDisabled ? null : loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
-          <Typography>{`$${parseFloat(usd).toFixed(6)}`}</Typography>
+
+          <Typography>
+            <BigNumberDisplay value={usd} decimalScale={7} />
+            {/* {`$${parseFloat(usd).toFixed(6)}`} */}
+            </Typography>
         )}
       </StyledUsdValue>
     </StyledToken>

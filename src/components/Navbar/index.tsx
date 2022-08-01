@@ -6,31 +6,31 @@ import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import { ROUTES } from "router/routes";
-import { BETA_TEXT, LAYOUT_MAX_WIDTH } from "consts";
-import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
+import { LAYOUT_MAX_WIDTH } from "consts";
+import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
 import { isMobile } from "react-device-detect";
 import { useWalletStore } from "store/wallet/hooks";
 import { styled } from "@mui/system";
+import { AppGrid } from "styles/styles";
+import { useTokensStore } from "store/tokens/hooks";
 
-const desktopNavbarHeight = "60px";
-const mobileNavbarHeight = "60px";
+const navbarHeight = "60px";
 const StyledAppBar = styled(AppBar)({
   top: 0,
-  
 });
+
+const StyledWrapper = styled(AppGrid)({});
 
 const StyledToolbar = styled(Toolbar)({
-  background:'white'
+  background: "white",
 });
-
 
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const navbarHeight = isMobile ? mobileNavbarHeight : desktopNavbarHeight;
   const { address } = useWalletStore();
 
   return (
@@ -52,28 +52,26 @@ export const Navbar = observer(() => {
             paddingRight: 0,
           }}
         >
-      
-          <Grid
-            container
-            style={{
-              justifyContent: "space-between",
-              alignItems: "center",
-              height: "100%",
-            }}
-          >
-            <Grid item className={classes.leftGrid}>
-              <MenuToggle onClick={() => setOpen(true)} />
-              <Link className={classes.link} to={address ? ROUTES.tokens : ""}>
+          <StyledWrapper>
+            <Grid
+              container
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Grid item className={classes.leftGrid}>
+                <MenuToggle onClick={() => setOpen(true)} />
                 <LogoWithText />
-              </Link>
-            </Grid>
+              </Grid>
 
-            <WalletAddress />
-          </Grid>
+              <WalletAddress />
+            </Grid>
+          </StyledWrapper>
         </StyledToolbar>
         <Menu open={open} hide={() => setOpen(false)} />
       </StyledAppBar>
-      
     </>
   );
 });

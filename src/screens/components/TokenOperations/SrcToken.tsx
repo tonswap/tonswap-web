@@ -93,7 +93,6 @@ const SrcToken = ({ token, getAmountFunc, destTokenName }: Props) => {
       onChange={onChange}
       inputAmount={srcTokenAmount}
       availableAmount={totalBalances.srcBalance}
-      maxAmount={totalBalances.srcBalance}
       token={token}
       availableAmountLoading={srcAvailableAmountLoading}
     />

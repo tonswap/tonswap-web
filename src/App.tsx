@@ -8,9 +8,8 @@ import { getParamsFromUrl } from "utils";
 import SelectWallet from "components/SelectWallet";
 import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useEffect, useRef } from "react";
-import Socials from "components/Socials";
-import AppLoader from "components/AppLoader";
 import analytics from "services/analytics/ga";
+import { AppGrid } from "styles/styles";
 analytics.init();
 
 const StyledAppContainer = styled(Box)({
@@ -19,30 +18,17 @@ const StyledAppContainer = styled(Box)({
   alignItems: "center",
   width: "100%",
   position: "relative",
-  paddingLeft: "15px",
-  paddingRight: "15px",
   paddingBottom: 30,
   maxWidth: LAYOUT_MAX_WIDTH,
   marginLeft: "auto",
   marginRight: "auto",
   flex: 1,
-  // height: "100vh",
 });
 
-const StyledRoutesContainer = styled(Box)(({ theme }) => ({
-  borderRadius: 20,
+const StyledRoutesContainer = styled(AppGrid)({
   flex:1,
-  width: "100%",
-  overflow: "auto",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  [theme.breakpoints.down("sm")]: {
-    background: "transparent",
-    maxHeight: "unset",
-    borderRadius: 0,
-  },
-}));
+
+});
 
 const StyledBeta = styled(Box)({
   background: "#FC5F5F",
@@ -63,7 +49,6 @@ if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
 
 const App = observer(() => {
   const { restoreSession } = useWalletActions();
-  const { connectng } = useWalletStore();
   const restoreSessionRef = useRef(false);
 
   useEffect(() => {
@@ -72,12 +57,6 @@ const App = observer(() => {
       restoreSessionRef.current = true;
     }
   }, []);
-
-
-
-  // if (connectng) {
-  //   return <AppLoader />;
-  // }
 
   return (
     <>

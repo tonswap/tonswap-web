@@ -81,7 +81,6 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       inputAmount={destTokenAmount}
       token={token}
       availableAmount={totalBalances.destBalance}
-      maxAmount={totalBalances.destBalance}
       availableAmountLoading={destAvailableAmountLoading}
     />
   );

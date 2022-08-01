@@ -8,6 +8,8 @@ const StyledContainer = styled(Box)({
   background: "rgba(118, 118, 128, 0.12)",
   borderRadius: 8.91,
   height: 32,
+  marginLeft:'auto',
+  marginRight:'auto',
   overflow: "auto",
   position: "relative",
   padding: 2,

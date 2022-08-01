@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   lists: {
-    paddingTop: 30,
+   
   },
   list: {},
   token: {},
