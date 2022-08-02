@@ -52,10 +52,9 @@ export class TonhubWalletAdapter
     return this.awaitReadiness(session);
   }
 
-  async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
+  async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
     
     if(isMobile){
-      onSuccess!!()
       const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
       window.location.href = link;
      
@@ -91,7 +90,6 @@ export class TonhubWalletAdapter
     }
 
     if (response.type === "success") {
-      onSuccess && onSuccess();
       // Handle successful transaction
       // const externalMessage = response.response; // Signed external message that was sent to the network
     }

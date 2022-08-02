@@ -92,7 +92,7 @@ const TokenOperations = ({
         message: <>{msg}</>,
         variant: "success",
         anchorOrigin: { vertical: "top", horizontal: "center" },
-        autoHideDuration: 6000,
+        autoHideDuration: 60000,
       });
       onResetAmounts();
       getTokensBalance(getBalances);

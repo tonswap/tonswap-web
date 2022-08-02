@@ -42,7 +42,7 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
     return !!(window as any).ton?.isTonWallet;
   }
 
-  async requestTransaction(_session: any, request: TransactionRequest, onSuccess?: () => void): Promise<void> {
+  async requestTransaction(_session: any, request: TransactionRequest): Promise<void> {
     const INIT_CELL = new Cell();
     // @ts-ignore
     let b64InitCell = "";
@@ -63,7 +63,7 @@ export class TonWalletWalletAdapter implements WalletAdapter<boolean> {
       if(!res){
         throw new Error('Something went wrong')
       }else{
-        onSuccess && onSuccess()
+       
       }
      
     } catch (error: any) {      
