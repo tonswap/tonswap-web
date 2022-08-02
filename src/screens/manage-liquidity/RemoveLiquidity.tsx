@@ -52,6 +52,8 @@ const RemoveLiquidity = () => {
       refreshAmountsOnActionChange={true}
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType ={ActionType.REMOVE_LIQUIDITY}
+      gasFee = {API.GAS_FEE.REMOVE_LIQUIDITY}
+
     />
   );
 }

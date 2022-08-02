@@ -55,6 +55,7 @@ const Sell = () => {
       }
       actionCategory={ActionCategory.SWAP}
       actionType={ActionType.SELL}
+      gasFee = {API.GAS_FEE.SWAP}
     />
   );
 };

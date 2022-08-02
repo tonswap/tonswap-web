@@ -6,11 +6,8 @@ import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
-import useTxPolling from "screens/components/TokenOperations/useTransactionStatus";
-import { isTelegramWebApp } from "utils";
 import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
-import { telegramWebApp } from "services/telegram";
 import useNotification from "hooks/useNotification";
 import {
   useTokenOperationsActions,
@@ -22,6 +19,9 @@ import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
 import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
+import { client, GAS_FEE, waitForSeqno } from "services/api";
+import { Address, Wallet } from "ton";
+import useMaxAmount from "hooks/useMaxAmount";
 
 interface Props {
   srcToken: PoolInfo;
@@ -36,6 +36,7 @@ interface Props {
   refreshAmountsOnActionChange: boolean;
   actionCategory: ActionCategory;
   actionType: ActionType;
+  gasFee: GAS_FEE;
 }
 
 const TokenOperations = ({
@@ -50,53 +51,26 @@ const TokenOperations = ({
   isInsufficientFunds,
   refreshAmountsOnActionChange,
   actionCategory,
-  actionType
+  actionType,
+  gasFee,
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [loading, setLoading] = useState(false);
-  const [txFinished, setTxFinished] = useState(false);
 
-  const {
-    srcTokenAmount,
-    destLoading,
-    srcLoading,
-    destTokenAmount,
-    totalBalances,
-  } = useTokenOperationsStore();
+  const { srcTokenAmount, destLoading, srcLoading, destTokenAmount } =
+    useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
+  const { maxAmount, maxAmountError } = useMaxAmount(gasFee, srcToken);
 
   const { onResetAmounts, getTokensBalance, resetTokensBalance } =
     useTokenOperationsActions();
-
-  const { pollTx, cancelPolling } = useTxPolling();
-  const successTextRef = useRef("");
   const { showNotification } = useNotification();
-
-  const onPollingFinished = async (fetchBalances?: boolean) => {
-    setLoading(false);
-    if (fetchBalances) {
-      successTextRef.current = createSuccessMessage();
-      gaAnalytics.sendEvent(actionCategory, actionType, successTextRef.current);
-
-      showNotification({
-        message: <>{successTextRef.current}</>,
-        variant: "success",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-        autoHideDuration: 6000,
-      });
-      onResetAmounts();
-      getTokensBalance(getBalances);
-      if (isTelegramWebApp()) {
-        setTxFinished(true);
-      }
-    }
-  };
 
   const insufficientFunds = isInsufficientFunds
     ? isInsufficientFunds(srcTokenAmount, destTokenAmount)
-    : srcTokenAmount > totalBalances.srcBalance;
+    : maxAmountError;
 
   const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
@@ -104,24 +78,35 @@ const TokenOperations = ({
     setLoading(true);
     const txRequest = await getTxRequest();
 
+    const waiter = await waitForSeqno(
+      client.openWalletFromAddress({
+        source: Address.parse(address!!),
+      })
+    );
     try {
-      await walletService.requestTransaction(
-        adapterId!!,
-        session,
-        txRequest,
-        () => pollTx(onPollingFinished)
-      );
+      await walletService.requestTransaction(adapterId!!, session, txRequest);
+      await waiter();
+      const msg = createSuccessMessage();
+      gaAnalytics.sendEvent(actionCategory, actionType, msg);
+      showNotification({
+        message: <>{msg}</>,
+        variant: "success",
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+        autoHideDuration: 6000,
+      });
+      onResetAmounts();
+      getTokensBalance(getBalances);
     } catch (error) {
-      cancelPolling();
-      setLoading(false);
       if (error instanceof Error) {
         showNotification({
           message: <>{error.message}</>,
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "center" },
-          autoHideDuration: 6000,
+          autoHideDuration: 60000,
         });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,6 +130,7 @@ const TokenOperations = ({
             token={srcToken}
             getAmountFunc={getAmountFunc}
             destTokenName={destToken.name}
+            maxAmount={maxAmount}
           />
 
           <Icon icon={icon} color={destToken.color} />
@@ -168,13 +154,6 @@ const TokenOperations = ({
                 }}
               />
               Insufficient funds
-            </ActionButton>
-          ) : txFinished ? (
-            <ActionButton
-              isDisabled={false}
-              onClick={() => telegramWebApp.close()}
-            >
-              Done
             </ActionButton>
           ) : (
             <ActionButton
