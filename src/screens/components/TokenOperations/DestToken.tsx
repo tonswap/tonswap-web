@@ -1,3 +1,4 @@
+import { Box } from "@mui/system";
 import SwapCard from "components/SwapCard";
 import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
@@ -55,7 +56,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       if (result === 0) {
         return;
       } else {
-        updateSrcTokenAmount( fromNano(result) );
+        updateSrcTokenAmount(fromNano(result));
       }
     }
   }, 600);
@@ -65,24 +66,24 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     balanceRef.current = value;
     if (!value) {
       updateSrcTokenLoading(false);
-      updateSrcTokenAmount('');
+      updateSrcTokenAmount("");
     } else {
       updateSrcTokenLoading(true);
       debounce();
     }
   };
 
-
   return (
-    <SwapCard
-    isSource={false}
+    <div style={{marginBottom: 35}}>
+       <SwapCard
       isLoading={destLoading}
       onChange={onChange}
       inputAmount={destTokenAmount}
       token={token}
-      availableAmount={totalBalances.destBalance}
-      availableAmountLoading={destAvailableAmountLoading}
+      balance={totalBalances.destBalance}
+      balanceLoading={destAvailableAmountLoading}
     />
+    </div>
   );
 }
 

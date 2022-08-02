@@ -115,6 +115,8 @@ const AddLiquidity =  () => {
       refreshAmountsOnActionChange={true}
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType ={ActionType.ADD_LIQUIDITY}
+      gasFee = {API.GAS_FEE.ADD_LIQUIDITY}
+
     />
   );
 }

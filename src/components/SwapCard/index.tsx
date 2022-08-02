@@ -9,30 +9,97 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
-import { useWalletStore } from "store/wallet/hooks";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 interface Props {
   inputAmount?: string;
-  availableAmount: string;
+  balance: string;
   onChange: (val: string) => void;
   token: PoolInfo;
   isLoading?: boolean;
-  availableAmountLoading: boolean;
-  isSource: boolean;
+  balanceLoading: boolean;
+  onMaxAmount?: () => void;
+  showMax?: boolean;
 }
 
-const StyledContainer = styled(Box)(({ isSource }: { isSource: boolean }) => ({
+function SwapCard({
+  inputAmount,
+  onChange,
+  token,
+  isLoading,
+  balanceLoading,
+  balance,
+  onMaxAmount,
+  showMax,
+}: Props) {
+  const expanded = useWebAppResize();
+  const navigate = useNavigateWithParams();
+  const { operationType } = useTokenOperationsStore();
+  const isTon = token.name === ton.name;
+
+  const onTokenSelect = () => {
+    if (isTon) {
+      return;
+    }
+    if (operationType === OperationType.SWAP) {
+      navigate(ROUTES.swap.navigateToTokens);
+    } else {
+      navigate(ROUTES.manageLiquidity.navigateToTokens);
+    }
+  };
+
+  return (
+    <StyledContainer className="swap-card">
+      <StyledBg color={token.color} />
+      <div style={{ position: "relative" }}>
+        <StyledInput expanded={expanded}>
+          <NumberInput
+            placeholder="0"
+            isLoading={isLoading}
+            value={inputAmount}
+            onChange={(val) => onChange(val)}
+          />
+          <StyledTokenDisplay
+            style={{
+              cursor: isTon ? "" : "pointer",
+              userSelect: isTon ? "none" : "all",
+            }}
+            onClick={onTokenSelect}
+          >
+            {token.image && <StyledAvatar src={token.image} alt="token" />}
+            <Typography>{token.displayName}</Typography>
+            {!isTon && <div className="arrow"></div>}
+          </StyledTokenDisplay>
+        </StyledInput>
+
+        <StyledBottom>
+          <UsdAmount
+            isLoading={isLoading}
+            value={inputAmount}
+            name={token.name}
+          />
+          <Balance
+            availableAmount={balance}
+            displayName={token.displayName}
+            loading={balanceLoading}
+            onMaxAmountClick={onMaxAmount}
+            showMax={showMax}
+          />
+        </StyledBottom>
+      </div>
+    </StyledContainer>
+  );
+}
+
+export default SwapCard;
+
+const StyledContainer = styled(Box)({
   borderRadius: 12,
   padding: "18px",
   display: "flex",
   position: "relative",
   overflow: "hidden",
   flexDirection: "column",
-  marginBottom: isSource ? 0 : 35,
-  ["@media (max-height:700px)"]: {
-    marginBottom: isSource ? 0 : 35,
-  },
-}));
+});
 
 const StyledTokenDisplay = styled(Box)({
   padding: "0px 8px",
@@ -112,74 +179,3 @@ const StyledBg = styled(Box)(({ color }: { color: string }) => ({
   pointerEvents: "none",
   opacity: 0.93,
 }));
-
-function SwapCard({
-  inputAmount,
-  onChange,
-  token,
-  isLoading,
-  availableAmountLoading,
-  isSource,
-  availableAmount,
-}: Props) {
-  const expanded = useWebAppResize();
-  const navigate = useNavigateWithParams();
-  const { address } = useWalletStore();
-  const { operationType } = useTokenOperationsStore();
-  const isTon = token.name === ton.name;
-
-  const onTokenSelect = () => {
-    if (isTon) {
-      return;
-    }
-    if (operationType === OperationType.SWAP) {
-      navigate(ROUTES.swap.navigateToTokens);
-    } else {
-      navigate(ROUTES.manageLiquidity.navigateToTokens);
-    }
-  };
-
-  return (
-    <StyledContainer isSource={isSource}>
-      <StyledBg color={token.color} />
-      <div style={{ position: "relative" }}>
-        <StyledInput expanded={expanded}>
-          <NumberInput
-            placeholder="0"
-            isLoading={isLoading}
-            value={inputAmount}
-            onChange={(val) => onChange(val)}
-          />
-          <StyledTokenDisplay
-            style={{
-              cursor: isTon ? "" : "pointer",
-              userSelect: isTon ? "none" : "all",
-            }}
-            onClick={onTokenSelect}
-          >
-            {token.image && <StyledAvatar src={token.image} alt="token" />}
-            <Typography>{token.displayName}</Typography>
-            {!isTon && <div className="arrow"></div>}
-          </StyledTokenDisplay>
-        </StyledInput>
-
-        <StyledBottom>
-          <UsdAmount
-            isLoading={isLoading}
-            value={inputAmount}
-            name={token.name}
-          />
-          <Balance
-            availableAmount={availableAmount}
-            displayName={token.displayName}
-            loading={availableAmountLoading}
-            onMaxAmountClick={() => onChange(availableAmount)}
-            showMax={inputAmount !== availableAmount && !!address && isSource}
-          />
-        </StyledBottom>
-      </div>
-    </StyledContainer>
-  );
-}
-
-export default SwapCard;
