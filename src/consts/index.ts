@@ -34,3 +34,5 @@ export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 export const BETA_TEXT = 'TonSwap is in Beta, use at your own risk'
 
 export const isDebug = () => getParamsFromUrl('debug')
+
+export const DECIMALS_LIMIT = 9

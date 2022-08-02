@@ -5,7 +5,7 @@ import ContentLoader from "components/ContentLoader";
 import useUsdValue from "hooks/useUsdValue";
 
 interface Props {
-  name: string;
+  tokenId: string;
   value?: string;
   isLoading?: boolean;
 }
@@ -15,8 +15,9 @@ const StyledContainer = styled(Box)({
 })
 
 
-function UsdAmount({ name, value, isLoading }: Props) {
-  const { loading: usdLoading, usd } = useUsdValue(name, value);
+function UsdAmount({ tokenId, value, isLoading }: Props) {
+  
+  const { loading: usdLoading, usd } = useUsdValue(tokenId, value);
 
   return (
     <StyledContainer>

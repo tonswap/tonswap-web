@@ -1,25 +1,21 @@
-import { Fade } from "@mui/material";
-import Title from "components/SelectWallet/Title";
 import SlidingMenu from "components/SlidingMenu";
-import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
-import useWebAppResize from "hooks/useWebAppResize";
-import { useMemo } from "react";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { useCallback, useMemo } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
-import { useTokenOperationsActions } from "store/token-operations/hooks";
-import { OperationType } from "store/token-operations/reducer";
-import { useTokensStore } from "store/tokens/hooks";
+import {
+  useTokenOperationsActions,
+  useTokenOperationsStore,
+} from "store/token-operations/hooks";
 import { getActionFromParams } from "utils";
 import Buy from "./Buy";
 import Sell from "./Sell";
 
 function SwapScreen() {
-  const { selectedToken } = useTokensStore();
-  const { toggleBuyToSell, toggleSellToBuy } =
-    useTokenOperationsActions();
-  const navigate = useNavigateWithParams()
+  const { selectedToken } = useTokenOperationsStore();
+  const { toggleBuyToSell, toggleSellToBuy } = useTokenOperationsActions();
+  const navigate = useNavigateWithParams();
   const params = useParams();
   const action = getActionFromParams(params);
 
@@ -40,14 +36,14 @@ function SwapScreen() {
     [navigate, selectedToken]
   );
 
-  const onTokenSelect = (tokenName: string) => {
-    navigate(ROUTES.swap.navigateToBuy.replace(":id", tokenName));
-  };
-
-
-
+  const onTokenSelect = useCallback(
+    (tokenId: string) => {
+      navigate(ROUTES.swap.navigateToBuy.replace(":id", tokenId));
+    },
+    [navigate]
+  );
   return (
-    <>     
+    <>
       {selectedToken && (
         <SlidingMenu
           symbol={selectedToken.displayName}

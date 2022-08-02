@@ -33,7 +33,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       return;
     }
     let result = 0;
-    const jetton = srcTokenName === "ton" ? token.name : srcTokenName;
+    const jetton = srcTokenName === "ton" ? token.tokenMinter : srcTokenName;
     try {
       result = await calculateTokens(
         jetton,

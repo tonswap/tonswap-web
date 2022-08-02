@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PoolInfo } from "services/api/addresses";
 
 import { getAmounts } from "./actions";
 
@@ -19,6 +20,8 @@ interface State {
   srcAvailableAmountLoading: boolean;
   destAvailableAmountLoading: boolean;
   operationType:OperationType;
+  selectedToken?: PoolInfo;
+
 }
 
 const initialState: State = {
@@ -52,6 +55,9 @@ const WalletOperationSlice = createSlice({
         srcBalance: "",
         destBalance: "",
       };
+    },
+    setSelectedToken(state, action: PayloadAction<PoolInfo | undefined>) {
+      state.selectedToken = action.payload;
     },
 
     setSrcTokenAmount(state, action) {
@@ -103,7 +109,8 @@ export const {
   setSrcTokenAmount,
   toggleAction,
   resetBalances,
-  setOperationType
+  setOperationType,
+  setSelectedToken
 } = WalletOperationSlice.actions;
 
 export default WalletOperationSlice.reducer;

@@ -3,8 +3,8 @@ import { MainNetPools, PoolInfo } from "services/api/addresses";
 export function poolInfoStringify(pools: PoolInfo[]) {
     let list = pools.map((pi) => {
       return {
-        ammMinter: pi.ammMinter?.toFriendly(),
-        tokenMinter: pi.tokenMinter?.toFriendly(),
+        ammMinter: pi.ammMinter,
+        tokenMinter: pi.tokenMinter,
         image: pi.image,
         displayName: pi.displayName,
         color: pi.color,

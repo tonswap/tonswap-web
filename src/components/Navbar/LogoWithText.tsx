@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import { useStyles } from "./styles";
 import TonLogo from "assets/images/shared/ton-logo.svg";
 import { styled } from "@mui/system";
-import { useTokensStore } from "store/tokens/hooks";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { OperationType } from "store/token-operations/reducer";
 import { ROUTES } from "router/routes";
@@ -22,8 +21,7 @@ const StyledText = styled(Typography)(({ theme }) => ({
 
 const LogoWithText = () => {
   const classes = useStyles();
-  const { selectedToken } = useTokensStore();
-  const { operationType } = useTokenOperationsStore();
+  const { operationType, selectedToken } = useTokenOperationsStore();
   const navigate = useNavigateWithParams();
 
   const onClick = () => {

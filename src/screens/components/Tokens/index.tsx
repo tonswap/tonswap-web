@@ -5,39 +5,21 @@ import Fade from "@mui/material/Fade";
 import { useEffect, useState } from "react";
 import ListToken from "./ListToken";
 import CustomToken from "./CustomToken";
-import { useTokensActions, useTokensStore } from "store/tokens/hooks";
+import { useTokensStore } from "store/tokens/hooks";
 import { styled } from "@mui/system";
 import { useTokenOperationsActions } from "store/token-operations/hooks";
+import { PoolInfo } from "services/api/addresses";
 
 interface Props {
   title: string;
   onTokenSelect: (name: string) => void;
 }
 
-const StyledContainer = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  gap: 11,
-  maxWidth: 380,
-  marginLeft: "auto",
-  marginRight: "auto",
-  minHeight: 300,
-});
-
-const StyledTitle = styled(Box)({
-  position: "sticky",
-  top: 54,
-  background: "white",
-  zIndex: 1,
-  paddingBottom: 10,
-});
-
 export const Tokens = ({ title, onTokenSelect }: Props) => {
   const classes = useStyles();
   const [addTokenModal, setAddTokenModal] = useState(false);
-  const { selectToken } = useTokensActions();
+  const { selectToken } = useTokenOperationsActions();
   const { clearStore } = useTokenOperationsActions();
-
   const { tokens } = useTokensStore();
 
   useEffect(() => {
@@ -65,11 +47,11 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 </StyledAddTokenButtonText>
               </StyledAddTokenButton>
             </Grid> */}
-            {tokens.map((token) => {
+            {tokens.map((token: PoolInfo) => {
               return (
                 <ListToken
-                  key={token.name}
-                  onSelect={() => onTokenSelect(token.name)}
+                  key={token.tokenMinter}
+                  onSelect={() => onTokenSelect(token.tokenMinter)}
                   token={token}
                 />
               );
@@ -80,3 +62,21 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     </Fade>
   );
 };
+
+const StyledContainer = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: 11,
+  maxWidth: 380,
+  marginLeft: "auto",
+  marginRight: "auto",
+  minHeight: 300,
+});
+
+const StyledTitle = styled(Box)({
+  position: "sticky",
+  top: 54,
+  background: "white",
+  zIndex: 1,
+  paddingBottom: 10,
+});

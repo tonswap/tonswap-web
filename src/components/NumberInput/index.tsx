@@ -2,6 +2,7 @@ import { Box, TextField } from "@mui/material";
 import NumberFormat from "react-number-format";
 import ContentLoader from "components/ContentLoader";
 import { styled } from "@mui/system";
+import { DECIMALS_LIMIT } from "consts";
 
 interface Props {
   value?: string;
@@ -13,13 +14,12 @@ interface Props {
 const StyledContainer = styled(Box)({
   height: "100%",
   width: "100%",
-  position:'relative',
-  display:'flex',
-  alignItems:'center',
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
   "& .MuiOutlinedInput-notchedOutline": {
     border: "none",
   },
- 
 });
 
 const StyledLoader = styled(Box)({
@@ -28,7 +28,6 @@ const StyledLoader = styled(Box)({
   top: "50%",
   transform: "translate(0, -50%)",
 });
-
 
 export function NumberInput({
   value,
@@ -53,16 +52,23 @@ export function NumberInput({
           },
           inputMode: "decimal",
         }}
-        className='input'
+        className="input"
         placeholder={isLoading ? "" : placeholder}
         autoComplete="off"
         value={isLoading ? "" : value || ""}
         customInput={TextField}
+        decimalScale={DECIMALS_LIMIT}
         decimalSeparator="."
         thousandSeparator=","
         onValueChange={({ value }, event: any) => {
           if (event.source !== "prop") {
-            onChange(value);
+            console.log(value);
+            if (value === ".") {
+              onChange("0.") ;
+            }else{
+              onChange(value);
+            }
+            
           }
         }}
       />

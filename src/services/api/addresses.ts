@@ -11,8 +11,8 @@ import Usdc from "assets/images/tokens/usdc.svg";
 import { localStorageTokensToObject } from "utils";
 
 export type PoolInfo = {
-  ammMinter?: Address;
-  tokenMinter?: Address;
+  ammMinter: string;
+  tokenMinter: string;
   image?: string;
   displayName: string;
   color: string;
@@ -30,86 +30,80 @@ export type PoolInfoRaw = {
   name: string;
 };
 
-const SandBoxPools: { [key: string]: PoolInfo } = {
-  luna: {
-    name: "luna",
-    displayName: "LUNA",
-    image: KittyKorn,
-    color: "#FFA40A",
-    ammMinter: Address.parse(
-      "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
-    ),
-    tokenMinter: Address.parse(
-      "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
-    ),
-  },
-};
+// const SandBoxPools: { [key: string]: PoolInfo } = {
+//   luna: {
+//     name: "luna",
+//     displayName: "LUNA",
+//     image: KittyKorn,
+//     color: "#FFA40A",
+//     ammMinter: Address.parse(
+//       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
+//     ),
+//     tokenMinter: Address.parse(
+//       "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
+//     ),
+//   },
+// };
 
-const TestNetPools: { [key: string]: PoolInfo } = {
-  kit: {
-    name: "kit",
-    ammMinter: Address.parse(
-      "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
-    ),
-    displayName: "KIT",
-    image: KittyKorn,
-    color: "#FFA40A",
-    tokenMinter: Address.parse(
-      "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
-    ),
-  },
-};
+// const TestNetPools: { [key: string]: PoolInfo } = {
+//   kit: {
+//     name: "kit",
+//     ammMinter: Address.parse(
+//       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
+//     ),
+//     displayName: "KIT",
+//     image: KittyKorn,
+//     color: "#FFA40A",
+//     tokenMinter: Address.parse(
+//       "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
+//     ),
+//   },
+// };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
- 
-  
-  'KittyCoin for TonSwap tests': {
+  "EQA_MjgZKgYFokx1IRyfEiDrvYYhtrOPfZcvL_1X0K-4av_Z": {
     name: "KittyCoin for TonSwap tests",
-    ammMinter: Address.parse(
-      "EQBp2DZ3lwZKGl3Cd4a_6E840BbT0L863e4Hr1QC6PVq6WB3"
-    ),
-    tokenMinter: Address.parse(
-      "EQA_MjgZKgYFokx1IRyfEiDrvYYhtrOPfZcvL_1X0K-4av_Z"
-    ),
+    ammMinter:  "EQBp2DZ3lwZKGl3Cd4a_6E840BbT0L863e4Hr1QC6PVq6WB3",
+    tokenMinter: "EQA_MjgZKgYFokx1IRyfEiDrvYYhtrOPfZcvL_1X0K-4av_Z",
     displayName: "KIT",
     image: KittyKorn,
     color: "#390075",
   },
-  'DinoCoin for TonSwap tests': {
+  EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban: {
     name: "DinoCoin for TonSwap tests",
-    ammMinter: Address.parse(
-      "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI"
-    ),
-    tokenMinter: Address.parse(
-      "EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban"
-    ),
+    ammMinter: "EQAI3UTR0ldQ1mDjyjivLR_qOsCtmYG5JvgDaACSxJ1N0nZI",
+    tokenMinter: "EQAmf7jp3F_yHcwMv8ya02Q4hcCb9OGs63jcHWg3wzEfzban",
     displayName: "DINO",
     image: DinoKorn,
     color: "#0E9D26",
   },
-  'USD Stable Coin': {
+  "USD Stable Coin": {
     name: "USD Stable Coin",
     displayName: "USDC",
     image: Usdc,
     color: "#055fa6",
-    isDisabled: true
+    isDisabled: true,
+    tokenMinter: 'USD Stable Coin',
+    ammMinter: 'USD Stable Coin'
   },
-  'Wrapped Bitcoin on TON': {
+  "Wrapped Bitcoin on TON": {
     name: "Wrapped Bitcoin on TON",
     displayName: "WBTC",
     image: Btc,
     color: "#E17E06",
-    isDisabled: true
+    isDisabled: true,
+    tokenMinter: 'Wrapped Bitcoin on TON',
+    ammMinter: 'Wrapped Bitcoin on TON'
   },
-  'Wrapped Ether on TON': {
+  "Wrapped Ether on TON": {
     name: "Wrapped Ether on TON",
     displayName: "ETH",
     image: Eth,
     color: "#5f73c2",
-    isDisabled: true
+    isDisabled: true,
+    tokenMinter: 'Wrapped Ether on TON',
+    ammMinter: 'Wrapped Bitcoin on TON'
   },
- 
-
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
@@ -122,15 +116,12 @@ export const ton: PoolInfo = {
   displayName: "TON",
   name: "ton",
   color: "#1490CD",
+  ammMinter: 'ton',
+  tokenMinter: 'ton'
 };
 
 let isTestNet = true;
 export const Pools = () => {
-  //   isTestNet ? TestNetPools : SandBoxPools;
-  if (process.env.NODE_ENV === "production") {
-    return MainNetPools();
-  }
-
   return MainNetPools();
 };
 
@@ -149,8 +140,6 @@ async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
   return res;
 }
 
-
-
 export async function getToken(
   client: TonClient,
   token: string,
@@ -161,14 +150,14 @@ export async function getToken(
   const jettonWallet =
     tokenCache[jettonWalletKey] ||
     (await fetchAndCache(
-      resolveJettonWallet(client, owner, Pools()[token].tokenMinter!!),
+      resolveJettonWallet(client, owner, Address.parse(Pools()[token].tokenMinter!!)),
       jettonWalletKey
     ));
   const lpWalletKey = `${token}:lpWallet`;
   const lpWallet =
     tokenCache[lpWalletKey] ||
     (await fetchAndCache(
-      resolveJettonWallet(client, owner, Pools()[token].ammMinter!!),
+      resolveJettonWallet(client, owner, Address.parse(Pools()[token].ammMinter!!)),
       lpWalletKey
     ));
 

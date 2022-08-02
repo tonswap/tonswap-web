@@ -14,6 +14,8 @@ export const StyledDetails = styled(Box)({
     width: "100%",
     paddingTop: 60,
     paddingBottom: 60,
+    marginLeft:'auto',
+    marginRight:'auto'
   });
   
   export const StyledPoolTokens = styled(Box)({

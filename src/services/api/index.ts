@@ -48,22 +48,22 @@ const callWithRetry = async (address: Address, method: string, params: any) => {
 };
 
 export const getTokenBalance = async (token: PoolInfo) => {
-  const tokenData = await getToken(client, token.name, getOwner());
+  const tokenData = await getToken(client, token.tokenMinter, getOwner());
 
   //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
 
-  return getTokenBalanceByMinter(tokenData.tokenMinter!!);
+  return getTokenBalanceByMinter(Address.parse(tokenData.tokenMinter!!));
 };
 
 export const getLPTokenBalance = async (token: string) => {
   const tokenData = await getToken(client, token, getOwner());
-  return _getJettonBalance(tokenData.lpWallet, tokenData.ammMinter!!);
+  return _getJettonBalance(tokenData.lpWallet, Address.parse(tokenData.ammMinter!!));
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
   const tokenObjects = await getToken(client, token, getOwner());
   const [jettonData, lpBalance] = await Promise.all([
-    getPoolData(tokenObjects.ammMinter!!),
+    getPoolData(Address.parse(tokenObjects.ammMinter!!)),
     getLPTokenBalance(token),
   ]);
   if (lpBalance.balance.toString() === "0") {
@@ -79,32 +79,6 @@ export const getTokensOfLPBalances = async (token: string) => {
   return [fromNano(tonSide2), fromNano(tokenSide2)];
 };
 
-// TODO: Remove later
-(window as any).getLPTokenBalance = getLPTokenBalance;
-(window as any).getData = getPoolData;
-
-const parseNumber = (
-  num: any,
-  units: number = 9,
-  decimalPoints: number = 4
-): number => {
-  if (num.toString().length <= 9) {
-    return parseFloat(
-      parseFloat(
-        "0." + num.toString().padStart(units).replaceAll(" ", "0")
-      ).toFixed(decimalPoints)
-    );
-  } else {
-    return parseFloat(
-      parseFloat(
-        num.div(new BN(10 ** units)).toString() +
-          "." +
-          num.mod(new BN(10 ** units)).toString()
-      ).toFixed(decimalPoints)
-    );
-  }
-};
-
 function getOwner() {
 
   const address = getWalletAddress()  
@@ -113,19 +87,7 @@ function getOwner() {
   return Address.parse(address as string);
 }
 
-// const _getWalletData = async (jettonWallet: Address) => {
-//     let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
 
-//     const balance = hexToBn(res.stack[0][1]);
-//     const walletOwner = bytesToAddress(res.stack[1][1].bytes);
-//     const jettonMaster = bytesToAddress(res.stack[2][1].bytes);
-
-//     return {
-//         balance,
-//         walletOwner,
-//         jettonMaster,
-//     };
-// };
 
 export async function _getJettonBalance(
   jettonWallet: Address,
@@ -207,21 +169,21 @@ export const getAmountsOut = async (
 ) => {
   const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
 
-  const tokenData = await getPoolData(tokenAmm!!);
+  const tokenData = await getPoolData(Address.parse(tokenAmm!!));
 
   if (srcAmount) {
     // TODO
     const amountIn = srcAmount;
     if (isSourceToken) {
       return getAmountOut(
-        tokenAmm!!,
+        Address.parse(tokenAmm!!),
         amountIn,
         tokenData.tokenReserves,
         tokenData.tonReserves
       );
     } else {
       return getAmountOut(
-        tokenAmm!!,
+        Address.parse(tokenAmm!!),
         amountIn,
         tokenData.tonReserves,
         tokenData.tokenReserves
@@ -233,14 +195,14 @@ export const getAmountsOut = async (
     const amountIn = destAmount || new BN(0);
     if (!isSourceToken) {
       return getAmountOut(
-        tokenAmm!!,
+        Address.parse(tokenAmm!!),
         amountIn,
         tokenData.tokenReserves,
         tokenData.tonReserves
       );
     } else {
       return getAmountOut(
-        tokenAmm!!,
+        Address.parse(tokenAmm!!),
         amountIn,
         tokenData.tonReserves,
         tokenData.tokenReserves
@@ -367,7 +329,7 @@ export const getTokenDollarValue = async (
     if(!tokenAmmMinter){
       throw new Error('Amm minter missing')
     }
-    const lpTokenData = await getPoolData(tokenAmmMinter);
+    const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter));
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     ratio = parseFloat(
@@ -405,7 +367,7 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-    tokenData.ammMinter!!,
+   Address.parse( tokenData.ammMinter!!),
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(GAS_FEE.FORWARD_TON),
@@ -431,7 +393,7 @@ export const generateBuyLink = async (
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
   const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
-  return sendTransaction(tokenObjects.ammMinter!!, value, boc64);
+  return sendTransaction(Address.parse(tokenObjects.ammMinter!!), value, boc64);
 };
 
 export const generateAddLiquidityLink = async (
@@ -442,7 +404,7 @@ export const generateAddLiquidityLink = async (
   const tokenData = await getToken(client, token, getOwner());
   const slippage = new BN(5);
   const transferAndLiq = await DexActions.addLiquidity(
-    tokenData.ammMinter!!,
+    Address.parse(tokenData.ammMinter!!),
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(tonAmount).add(toNano(GAS_FEE.FORWARD_TON)),
@@ -459,7 +421,7 @@ export const generateRemoveLiquidityLink = async (
   tonAmount: number | string
 ) => {
   const tokenData = await getToken(client, token, getOwner());
-  const jettonData = await getPoolData(tokenData.ammMinter!!);
+  const jettonData = await getPoolData(Address.parse(tokenData.ammMinter!!));
 
   let shareToRemove = toNano(tonAmount)
     .mul(jettonData.totalSupply)

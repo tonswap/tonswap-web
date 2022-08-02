@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getUsdAmount } from "screens/components/TokenOperations/util";
 
-function useUsdValue(name: string, value?: string, debounce?: number) {
+function useUsdValue(tokenId: string, value?: string, debounce?: number) {
   const [usd, setUsd] = useState("0");
   const [loading, setLoading] = useState(false);
   const debounceMilliseconds = debounce && debounce > 0 ? debounce : 300;
@@ -19,7 +19,7 @@ function useUsdValue(name: string, value?: string, debounce?: number) {
     timeoutRef.current = setTimeout(() => {
       (async () => {
         try {
-          const result = await getUsdAmount(name, value);
+          const result = await getUsdAmount(tokenId, value);
           setUsd(result);
         } catch (error) {
         } finally {
@@ -27,7 +27,7 @@ function useUsdValue(name: string, value?: string, debounce?: number) {
         }
       })();
     }, debounceMilliseconds);
-  }, [name, value, debounceMilliseconds]);
+  }, [tokenId, value, debounceMilliseconds]);
 
   return { usd, loading };
 }

@@ -10,6 +10,7 @@ import {
   setDestLoading,
   setDestTokenAmount,
   setOperationType,
+  setSelectedToken,
   setSrcLoading,
   setSrcTokenAmount,
   toggleAction,
@@ -18,6 +19,7 @@ import {
 import { getAmounts } from "./actions";
 import { useTokensStore } from "store/tokens/hooks";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
+import { PoolInfo } from "services/api/addresses";
 
 export const useTokenOperationsStore = () => {
   return useSelector((state: RootState) => state.tokenOperations);
@@ -35,10 +37,11 @@ export const useTokenOperationsActions = (): {
   toggleSellToBuy: () => void;
   clearStore: () => void;
   onOperationTypeChange: (value: OperationType) => void;
+  selectToken: (token?: PoolInfo) => void;
 } => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigateWithParams()
-  const { selectedToken } = useTokensStore();
+  const { selectedToken } = useTokenOperationsStore();
   const onResetAmounts = useCallback(() => {
     dispatch(resetAmounts());
   }, [dispatch]);
@@ -90,7 +93,7 @@ export const useTokenOperationsActions = (): {
     if (!selectedToken) {
       return;
     }
-    navigate(ROUTES.swap.navigateToSell.replace(":id", selectedToken.name));
+    navigate(ROUTES.swap.navigateToSell.replace(":id", selectedToken.tokenMinter));
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
@@ -98,7 +101,7 @@ export const useTokenOperationsActions = (): {
     if (!selectedToken) {
       return;
     }
-    navigate(ROUTES.swap.navigateToBuy.replace(":id", selectedToken.name));
+    navigate(ROUTES.swap.navigateToBuy.replace(":id", selectedToken.tokenMinter));
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
@@ -108,6 +111,15 @@ export const useTokenOperationsActions = (): {
     },
     [dispatch]
   );
+
+  const selectToken = useCallback(
+    (token?: PoolInfo) => {
+      dispatch(setSelectedToken(token));
+   
+    },
+    [dispatch]
+  );
+
 
   return {
     onResetAmounts,
@@ -120,6 +132,7 @@ export const useTokenOperationsActions = (): {
     toggleBuyToSell,
     toggleSellToBuy,
     clearStore,
-    onOperationTypeChange
+    onOperationTypeChange,
+    selectToken
   };
 };

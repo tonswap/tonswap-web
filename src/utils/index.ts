@@ -213,12 +213,9 @@ const localStorageTokensToObject = () => {
     return 
   }
   const result: {[key: string]: PoolInfo} = {}
-  customTokens.forEach((token: any) => {
-    if(token.ammMinter && token.tokenMinter) {
-      token.ammMinter = Address.parse(token.ammMinter);
-      token.tokenMinter = Address.parse(token.tokenMinter);
-    }
-    result[token.name] = token
+  customTokens.forEach((token: PoolInfo) => {
+ 
+    result[token.tokenMinter] = token
   });
   return result
 };

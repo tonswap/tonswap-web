@@ -66,7 +66,7 @@ function SwapCard({
             onClick={onTokenSelect}
           >
             {token.image && <StyledAvatar src={token.image} alt="token" />}
-            <Typography>{token.displayName}</Typography>
+            <Typography className="name">{token.displayName}</Typography>
             {!isTon && <div className="arrow"></div>}
           </StyledTokenDisplay>
         </StyledInput>
@@ -75,7 +75,7 @@ function SwapCard({
           <UsdAmount
             isLoading={isLoading}
             value={inputAmount}
-            name={token.name}
+            tokenId={token.tokenMinter}
           />
           <Balance
             availableAmount={balance}
@@ -111,6 +111,12 @@ const StyledTokenDisplay = styled(Box)({
   borderRadius: 12,
   height: "100%",
   boxShadow: "rgb(0 0 0 / 8%) 0px 6px 10px",
+  ".name": {
+    maxWidth: 70,
+    whiteSpace:'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
   ".arrow": {
     width: 7,
     height: 7,

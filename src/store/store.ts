@@ -9,16 +9,11 @@ const store = configureStore({
     tokenOperations,
     wallet,
     application,
-    tokens
+    tokens,
   },
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({}),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
-
 
 export default store;

@@ -43,7 +43,7 @@ const SrcToken = ({
       return;
     }
     let result = 0;
-    const jetton = token.name === "ton" ? destTokenName : token.name;
+    const jetton = token.name === "ton" ? destTokenName : token.tokenMinter;
     try {
       result = await calculateTokens(
         jetton,
@@ -93,7 +93,6 @@ const SrcToken = ({
   }, []);
 
 
-  console.log(maxAmount);
   
 
   return (

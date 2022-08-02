@@ -80,8 +80,8 @@ function CustomToken({ open, onClose }: Props) {
     try {
       const newToken: PoolInfo = {
         name: tokenData.name,
-        ammMinter: Address.parse(tokenData.ammMinter),
-        tokenMinter: Address.parse(tokenData.tokenMinter),
+        ammMinter: tokenData.ammMinter,
+        tokenMinter: tokenData.tokenMinter,
         color: getRandomColor(),
         displayName: tokenData.symbol.toUpperCase(),
         image: tokenData.image,

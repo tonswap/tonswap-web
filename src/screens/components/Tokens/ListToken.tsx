@@ -15,7 +15,7 @@ interface Props {
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
   const amount = token.isDisabled ? '0' : '1';
-  const { loading, usd } = useUsdValue(token.name, amount, 0);
+  const { loading, usd } = useUsdValue(token.tokenMinter!, amount, 0);
 
   return (
     <StyledToken

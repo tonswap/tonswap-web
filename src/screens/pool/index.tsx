@@ -43,11 +43,11 @@ type Pool = {
 };
 
 const getTokemByAmmMinter = (
-  ammMinter: Address,
+  ammMinter: string,
   tokens: PoolInfo[]
 ): Token | undefined => {
   const result = tokens.find(
-    (t) => t.ammMinter?.toFriendly() === ammMinter.toFriendly()
+    (t) => t.ammMinter === ammMinter
   );
   if (result) {
     return {
@@ -75,7 +75,7 @@ const getPool = async (
     poolDataRaw.tonReserves.mul(new BN(2)).toString()
   );
 
-  let tokenData = getTokemByAmmMinter(poolAddress, tokens);
+  let tokenData = getTokemByAmmMinter(poolAddress.toFriendly(), tokens);
   if (!tokenData) {
     const jData = await _getJettonBalance(jettonWalletAddress);
     const { name, symbol, image } = await getTokenData(jData.jettonMaster!!);

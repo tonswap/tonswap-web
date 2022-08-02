@@ -111,8 +111,8 @@ export function CreatePool() {
 
     const token: PoolInfo = {
       name: jData.name,
-      ammMinter: Address.parse(newPool),
-      tokenMinter: Address.parse(jAddress),
+      ammMinter: newPool,
+      tokenMinter: jAddress,
       color: getRandomColor(),
       displayName: jData.name.toUpperCase(),
       image: jData.image,

@@ -1,5 +1,11 @@
 import { Box, Fade } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import {
+  JSXElementConstructor,
+  ReactElement,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ActionButton } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
@@ -31,12 +37,13 @@ interface Props {
   getBalances: () => Promise<any>;
   getAmountFunc: any;
   getTxRequest: () => any;
-  createSuccessMessage: () => string;
   isInsufficientFunds?: (src: string, dest: string) => boolean;
   refreshAmountsOnActionChange: boolean;
   actionCategory: ActionCategory;
   actionType: ActionType;
   gasFee: GAS_FEE;
+  successMessage: string;
+  getNotification: () => ReactElement;
 }
 
 const TokenOperations = ({
@@ -47,12 +54,12 @@ const TokenOperations = ({
   getBalances,
   getAmountFunc,
   getTxRequest,
-  createSuccessMessage,
   isInsufficientFunds,
   refreshAmountsOnActionChange,
   actionCategory,
   actionType,
   gasFee,
+  getNotification,
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -86,10 +93,10 @@ const TokenOperations = ({
     try {
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-      const msg = createSuccessMessage();
-      gaAnalytics.sendEvent(actionCategory, actionType, msg);
+      gaAnalytics.sendEvent(actionCategory, actionType, "");
+      const message = getNotification();
       showNotification({
-        message: <>{msg}</>,
+        message,
         variant: "success",
         anchorOrigin: { vertical: "top", horizontal: "center" },
         autoHideDuration: 60000,
@@ -129,7 +136,7 @@ const TokenOperations = ({
           <SrcToken
             token={srcToken}
             getAmountFunc={getAmountFunc}
-            destTokenName={destToken.name}
+            destTokenName={destToken.tokenMinter}
             maxAmount={maxAmount}
           />
 
@@ -137,7 +144,7 @@ const TokenOperations = ({
           <DestToken
             getAmountFunc={getAmountFunc}
             token={destToken}
-            srcTokenName={srcToken.name}
+            srcTokenName={srcToken.tokenMinter}
           />
         </Box>
 

@@ -10,6 +10,8 @@ import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useEffect, useRef } from "react";
 import analytics from "services/analytics/ga";
 import { AppGrid } from "styles/styles";
+import { useParams } from "react-router-dom";
+import useEffectOnce from "hooks/useEffectOnce";
 analytics.init();
 
 const StyledAppContainer = styled(Box)({
@@ -49,15 +51,14 @@ if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
 
 const App = observer(() => {
   const { restoreSession } = useWalletActions();
-  const restoreSessionRef = useRef(false);
+  const params = useParams();
+  
 
-  useEffect(() => {
-    if (!restoreSessionRef.current) {
-      restoreSession();
-      restoreSessionRef.current = true;
-    }
-  }, []);
+  useEffectOnce(() => {
+    restoreSession();
+  })
 
+ 
   return (
     <>
       <StyledBeta>
