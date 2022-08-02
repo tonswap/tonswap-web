@@ -104,7 +104,8 @@ const parseNumber = (
 };
 
 function getOwner() {
-  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) || ZERO_ADDRESS;
+  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
+  if (!address) throw new Error("No owner logged in");
   return Address.parse(address as string);
 }
 

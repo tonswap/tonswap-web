@@ -131,13 +131,6 @@ function buildStateInit(contentData: { [s: string]: string }) {
   };
 }
 
-function getOwner() {
-  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) || ZERO_ADDRESS;
-  console.log(address);
-  
-  return address as string;
-}
-
 function base64ToCellCode(b64: string) {
   return Cell.fromBoc(Buffer.from(b64, "base64"))[0];
 }
