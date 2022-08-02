@@ -43,7 +43,6 @@ const reducer = createReducer(initialState, (builder) => {
       state.sessionLink = undefined;
       localStorage.removeItem("wallet:adapter-id");
       localStorage.removeItem("wallet:session");
-      localStorage.removeItem(LOCAL_STORAGE_ADDRESS);
     })
     .addCase(setSession, (state, action) => {
       const { payload } = action;
@@ -71,7 +70,6 @@ const reducer = createReducer(initialState, (builder) => {
       state.address = wallet.address;
       localStorage.setItem("wallet:adapter-id", adapterId);
       localStorage.setItem("wallet:session", JSON.stringify(state.session));
-      localStorage.setItem(LOCAL_STORAGE_ADDRESS, wallet.address);
       state.connectng = false
     });
 

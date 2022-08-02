@@ -20,7 +20,7 @@ const adapters: Adapter[] = [
     },
     {
       name: "TonKeeper",
-      type: Adapters.TON_WALLET,
+      type: Adapters.TON_KEEPER,
       icon: TonKeeper,
       mobileCompatible: true,
       description: 'A mobile wallet in your pocket',

@@ -1,5 +1,4 @@
 import BN from "bn.js";
-import { LOCAL_STORAGE_ADDRESS, ZERO_ADDRESS } from "consts";
 import {
   Address,
   Cell,

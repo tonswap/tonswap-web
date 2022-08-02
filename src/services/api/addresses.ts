@@ -125,7 +125,7 @@ export const ton: PoolInfo = {
 };
 
 let isTestNet = true;
-const Pools = () => {
+export const Pools = () => {
   //   isTestNet ? TestNetPools : SandBoxPools;
   if (process.env.NODE_ENV === "production") {
     return MainNetPools();
@@ -148,6 +148,8 @@ async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
   tokenCache[cacheKey] = res;
   return res;
 }
+
+
 
 export async function getToken(
   client: TonClient,

@@ -1,12 +1,14 @@
 import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
 import { cellToString, delay, hexToBn } from "utils";
 import { DexActions } from "./dex";
-import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
+import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { LOCAL_STORAGE_ADDRESS, ZERO_ADDRESS } from "consts";
+import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
+import store from "store/store";
+import { getWalletAddress } from "store/wallet/utils";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -104,7 +106,9 @@ const parseNumber = (
 };
 
 function getOwner() {
-  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
+
+  const address = getWalletAddress()  
+  
   if (!address) throw new Error("No owner logged in");
   return Address.parse(address as string);
 }
@@ -168,14 +172,8 @@ export const getTokenBalanceByMinter = async (minterAddress: Address) => {
 };
 
 export const getTonBalance = async () => {
-  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string;
-  if (!address) {
-    throw new Error("Address missing");
-  }
-
-  const balance = await client.getBalance(Address.parse(address));
-    
-
+  const balance = await client.getBalance(getOwner());
+  
   return fromNano(balance)
 };
 
@@ -355,6 +353,9 @@ export const getLiquidityAmount = async (
   return new BN(0);
 };
 
+
+
+
 export const getTokenDollarValue = async (
   token: string,
   amount: string
@@ -362,8 +363,11 @@ export const getTokenDollarValue = async (
   let ratio = 1;
 
   if (token !== "ton") {
-    const tokenData = await getToken(client, token, getOwner());
-    const lpTokenData = await getPoolData(tokenData.ammMinter!!);
+    const tokenAmmMinter = Pools()[token].ammMinter
+    if(!tokenAmmMinter){
+      throw new Error('Amm minter missing')
+    }
+    const lpTokenData = await getPoolData(tokenAmmMinter);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
     ratio = parseFloat(
