@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano } from "ton";
-import {  cellToString, hexToBn } from "utils";
+import { cellToString, hexToBn } from "utils";
 import { DexActions } from "./dex";
 import { bytesToAddress, bytesToBase64, getToken, PoolInfo } from "./addresses";
 import BN from "bn.js";
@@ -32,10 +32,9 @@ const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-
 export const isContractDeployed = (address: string) => {
-  return  client.isContractDeployed(Address.parse(address));
-}
+  return client.isContractDeployed(Address.parse(address));
+};
 
 const callWithRetry = async (address: Address, method: string, params: any) => {
   try {
@@ -48,9 +47,9 @@ const callWithRetry = async (address: Address, method: string, params: any) => {
 
 export const getTokenBalance = async (token: PoolInfo) => {
   const tokenData = await getToken(client, token.name, getOwner());
-      
+
   //sending jetton master, + owner wallet will resolve to jetton wallet and fetch the balance
-  
+
   return getTokenBalanceByMinter(tokenData.tokenMinter!!);
 };
 
@@ -62,7 +61,6 @@ export const getLPTokenBalance = async (token: string) => {
 export const getTokensOfLPBalances = async (token: string) => {
   const tokenObjects = await getToken(client, token, getOwner());
   const [jettonData, lpBalance] = await Promise.all([
-
     getPoolData(tokenObjects.ammMinter!!),
     getLPTokenBalance(token),
   ]);
@@ -106,8 +104,9 @@ const parseNumber = (
 };
 
 function getOwner() {
-  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) || ZERO_ADDRESS;
-  return Address.parse(address as string)
+  const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS);
+  if (!address) throw new Error("No owner logged in");
+  return Address.parse(address as string);
 }
 
 // const _getWalletData = async (jettonWallet: Address) => {
@@ -144,7 +143,7 @@ export async function _getJettonBalance(
     };
   } catch (e) {
     console.log(e);
-    
+
     return {
       balance: new BN(0),
       walletOwner: getOwner(),
@@ -170,10 +169,10 @@ export const getTokenBalanceByMinter = async (minterAddress: Address) => {
 
 export const getTonBalance = async () => {
   const address = localStorage.getItem(LOCAL_STORAGE_ADDRESS) as string;
-  if(!address){
-    throw new Error('Address missing')
+  if (!address) {
+    throw new Error("Address missing");
   }
-  
+
   const balance = await client.getBalance(Address.parse(address));
 
   return parseNumber(new BN(balance));
@@ -185,7 +184,6 @@ async function getAmountOut(
   reserveIn: BN,
   reserveOut: BN
 ) {
-  
   console.log(`GetAmountOut(amountIn), (reserveIn), (reserveOut)`);
   console.log(amountIn.toString(), reserveIn.toString(), reserveOut.toString());
 
@@ -194,13 +192,12 @@ async function getAmountOut(
     ["num", reserveIn.toString()],
     ["num", reserveOut.toString()],
   ]);
-  
+
   return hexToBn(res.stack[0][1]).toString();
 }
 
-
-export async function tokenToMinter(token:string) {
-  return (await getToken(client, token, getOwner())).ammMinter
+export async function tokenToMinter(token: string) {
+  return (await getToken(client, token, getOwner())).ammMinter;
 }
 
 export const getAmountsOut = async (
@@ -231,7 +228,8 @@ export const getAmountsOut = async (
         tokenData.tokenReserves
       );
     }
-  } else {  // Dest amount
+  } else {
+    // Dest amount
     // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
     const amountIn = destAmount || new BN(0);
     if (!isSourceToken) {
@@ -253,17 +251,13 @@ export const getAmountsOut = async (
 };
 
 export async function getPoolInfo(token: string) {
-  const tokenObjects: any = await getToken(
-    client,
-    token,
-    getOwner()
-  );
+  const tokenObjects: any = await getToken(client, token, getOwner());
   return getPoolData(tokenObjects.ammMinter);
 }
 
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
-  
+
   const totalSupply = hexToBn(res.stack[0][1]);
   const mintable = res.stack[1][1] as string;
   const jettonWalletAddressBytes = res.stack[2][1].bytes as string;
@@ -279,33 +273,41 @@ export async function getPoolData(ammMinter: Address) {
 }
 
 export async function getTokenData(jettonAddress: Address) {
-  let jettonDataRes = await client.callGetMethod(jettonAddress, "get_jetton_data", []);
+  let jettonDataRes = await client.callGetMethod(
+    jettonAddress,
+    "get_jetton_data",
+    []
+  );
   const totalSupply = hexToBn(jettonDataRes.stack[0][1]);
-  const owner = b64ToCell(jettonDataRes.stack[2][1].bytes).beginParse().readAddress();
-  
-  let cell = Cell.fromBoc(Buffer.from(jettonDataRes.stack[3][1].bytes, "base64"))[0];
-  
-  // metadata is on chain 
+  const owner = b64ToCell(jettonDataRes.stack[2][1].bytes)
+    .beginParse()
+    .readAddress();
 
-  // metadata is string 
+  let cell = Cell.fromBoc(
+    Buffer.from(jettonDataRes.stack[3][1].bytes, "base64")
+  )[0];
+
+  // metadata is on chain
+
+  // metadata is string
   //let uri = readString(cell);
   let metadata;
   try {
     let uri = cellToString(cell);
     //uri = "https://api.npoint.io/402e32572b294e845cde"
-    if(uri.length == 2) {
+    if (uri.length == 2) {
       throw "onchain data";
     }
     let metadataRes = await fetch(uri);
     metadata = await metadataRes.json();
-  } catch(e) {
+  } catch (e) {
     metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
   }
 
   return {
     owner,
     totalSupply,
-     ... metadata
+    ...metadata,
   };
 }
 
@@ -324,10 +326,9 @@ export const getLiquidityAmount = async (
 
   const tokenReserves = lpTokenData.tokenReserves;
   const tonReserves = lpTokenData.tonReserves;
-  if(tokenReserves.toString() === '0' && tonReserves.toString() === '0') {
-    return new BN(0)
+  if (tokenReserves.toString() === "0" && tonReserves.toString() === "0") {
+    return new BN(0);
   }
-
 
   console.log(
     `tokenReserves: ${fromNano(tokenReserves)} tonReserves: ${fromNano(
@@ -339,23 +340,15 @@ export const getLiquidityAmount = async (
 
   if (srcToken === "ton") {
     if (srcAmount != null) {
-      return new BN(srcAmount)
-        .mul(tokenReserves)
-        .div(tonReserves)
+      return new BN(srcAmount).mul(tokenReserves).div(tonReserves);
     } else if (destAmount != null) {
-      return toNano(destAmount)
-        .mul(tonReserves)
-        .div(tokenReserves)
+      return toNano(destAmount).mul(tonReserves).div(tokenReserves);
     }
   } else {
     if (srcAmount != null) {
-      return new BN(srcAmount)
-        .mul(tokenReserves)
-        .div(tonReserves)
+      return new BN(srcAmount).mul(tokenReserves).div(tonReserves);
     } else if (destAmount != null) {
-      return new BN(destAmount)
-        .mul(tonReserves)
-        .div(tokenReserves)
+      return new BN(destAmount).mul(tonReserves).div(tokenReserves);
     }
   }
   return new BN(0);
@@ -372,13 +365,17 @@ export const getTokenDollarValue = async (
     const lpTokenData = await getPoolData(tokenData.ammMinter!!);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
-    ratio = parseFloat(fromNano(tonReserves.mul(new BN(1e9)).div(tokenReserves)));
+    ratio = parseFloat(
+      fromNano(tonReserves.mul(new BN(1e9)).div(tokenReserves))
+    );
   }
 
   const cgPrice = await fetchPrice();
-  const tonPriceWithAmount = toNano(amount).mul(toNano(cgPrice)).div(new BN(1e9));
+  const tonPriceWithAmount = toNano(amount)
+    .mul(toNano(cgPrice))
+    .div(new BN(1e9));
 
-  return  fromNano(tonPriceWithAmount.mul(toNano(ratio) ).div(new BN(1e9)));
+  return fromNano(tonPriceWithAmount.mul(toNano(ratio)).div(new BN(1e9)));
 };
 
 let tonPrice = 0;
@@ -403,12 +400,12 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-      tokenData.ammMinter!!,
-      toNano(tokenAmount),
-      getOwner(), // owner wallet should get jetton-wallet excess messages + tons
-      toNano(GAS_FEE.FORWARD_TON),
-      OPS.SWAP_TOKEN,
-      toNano(tonAmount).mul(new BN(995)).div(new BN(1000))
+    tokenData.ammMinter!!,
+    toNano(tokenAmount),
+    getOwner(), // owner wallet should get jetton-wallet excess messages + tons
+    toNano(GAS_FEE.FORWARD_TON),
+    OPS.SWAP_TOKEN,
+    toNano(tonAmount).mul(new BN(995)).div(new BN(1000))
   );
   const boc64 = transfer.toBoc().toString("base64");
   const value = toNano(GAS_FEE.SWAP);
@@ -443,12 +440,12 @@ export const generateAddLiquidityLink = async (
     tokenData.ammMinter!!,
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
-    toNano(tonAmount).add( toNano( GAS_FEE.FORWARD_TON)),
+    toNano(tonAmount).add(toNano(GAS_FEE.FORWARD_TON)),
     slippage,
-    toNano(tonAmount)  // TODO dust issue 
+    toNano(tonAmount) // TODO dust issue
   );
   const boc64 = transferAndLiq.toBoc().toString("base64");
-  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY ));
+  const value = toNano(tonAmount).add(toNano(GAS_FEE.ADD_LIQUIDITY));
   return sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
@@ -465,10 +462,10 @@ export const generateRemoveLiquidityLink = async (
 
   const userLpBalance = (await getLPTokenBalance(token)).balance;
   // round up 98 and above to use the max lp
-  if((shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98)) )) {
+  if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
     shareToRemove = userLpBalance;
   }
-  
+
   const removeLiquidity = await DexActions.removeLiquidity(
     shareToRemove,
     getOwner()
@@ -479,9 +476,12 @@ export const generateRemoveLiquidityLink = async (
   return sendTransaction(tokenObjects.lpWallet, value, boc64);
 };
 
-
-
-function sendTransaction(to: Address, value: BN, boc64: string, stateInit = null) {
+function sendTransaction(
+  to: Address,
+  value: BN,
+  boc64: string,
+  stateInit = null
+) {
   return {
     to: to.toFriendly(),
     value: value.toString(),
@@ -496,21 +496,18 @@ export const getSeqno = async (
 ): Promise<{ gas_used: number; stack: any[] }> => {
   return client.callGetMethod(Address.parse(address), "seqno", []);
 };
- 
-
 
 function readString(cell: Cell) {
-  let str ="";
+  let str = "";
   let slice = cell.beginParse();
   let len = slice.readUint(10);
   return slice.readBuffer(len.toNumber()).toString();
 }
 
 function readString2(cell: Cell) {
-  let str ="";
-  return cellToString
+  let str = "";
+  return cellToString;
 }
-
 
 function b64ToCell(b64: string) {
   return Cell.fromBoc(Buffer.from(b64, "base64"))[0];

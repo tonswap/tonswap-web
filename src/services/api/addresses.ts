@@ -154,7 +154,7 @@ export async function getToken(
   token: string,
   owner: Address
 ) {
-  const jettonWalletKey = `${token}:jettonWallet`;
+  const jettonWalletKey = `${token}:jettonWallet:${owner}`;
 
   const jettonWallet =
     tokenCache[jettonWalletKey] ||
