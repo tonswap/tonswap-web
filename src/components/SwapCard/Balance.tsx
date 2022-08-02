@@ -7,9 +7,8 @@ interface Props {
   loading: boolean;
   displayName: string;
   availableAmount: string;
-  onMaxAmountClick: () => void;
+  onMaxAmountClick?: () => void;
   showMax?: boolean;
-
 }
 
 const StyledContainer = styled(Box)({
@@ -34,7 +33,7 @@ const StyledMaxButton = styled('button')({
     }
 })
 
-function Balance({ loading, displayName, availableAmount, onMaxAmountClick, showMax }: Props) {
+function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props) {
   return (
     <StyledContainer>
       {loading ? (
@@ -48,7 +47,7 @@ function Balance({ loading, displayName, availableAmount, onMaxAmountClick, show
             <BigNumberDisplay value={availableAmount} decimalScale={7} />
             {/* {` ${displayName}`} */}
           </Typography>
-          {showMax && <StyledMaxButton
+          {showMax && onMaxAmountClick && <StyledMaxButton
             onClick={onMaxAmountClick}
           >
            <Typography> MAX</Typography>

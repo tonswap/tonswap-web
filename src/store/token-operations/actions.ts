@@ -7,6 +7,7 @@ export const getAmounts = createAsyncThunk<
   () => Promise<[any, any]>
 >("token-operations/getAmounts", async (getBalances) => {
   const [srcTokenBalance, destTokenBalance] = await getBalances();
+  
   const srcBalance =
     typeof srcTokenBalance == "object"
       ? parseFloat(fromNano(srcTokenBalance.balance))

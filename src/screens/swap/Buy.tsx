@@ -1,22 +1,22 @@
 import * as API from "services/api";
 import TokenOperations from "screens/components/TokenOperations";
-import SouthRoundedIcon from '@mui/icons-material/SouthRounded';
+import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import { ton } from "services/api/addresses";
 import {
+  useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
 import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
-import { Fade } from "@mui/material";
 
 const Buy = () => {
-
   const { selectedToken } = useTokensStore();
   const { srcTokenAmount, destTokenAmount } = useTokenOperationsStore();
-  const {totalBalances} = useTokenOperationsStore()
+  const { totalBalances } = useTokenOperationsStore();
 
-  const getTxRequest = async () => {
+
+  const getTxRequest = async () => {    
     return API.generateBuyLink(
       selectedToken!!.name,
       srcTokenAmount,
@@ -51,9 +51,12 @@ const Buy = () => {
       srcToken={ton}
       destToken={selectedToken}
       submitButtonText={`Buy ${selectedToken?.displayName}`}
-      refreshAmountsOnActionChange={!totalBalances.destBalance && !totalBalances.srcBalance}
+      refreshAmountsOnActionChange={
+        !totalBalances.destBalance && !totalBalances.srcBalance
+      }
       actionCategory={ActionCategory.SWAP}
-      actionType ={ActionType.BUY}
+      actionType={ActionType.BUY}
+      gasFee = {API.GAS_FEE.SWAP}
     />
   );
 };

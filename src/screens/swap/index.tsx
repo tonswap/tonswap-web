@@ -17,17 +17,12 @@ import Sell from "./Sell";
 
 function SwapScreen() {
   const { selectedToken } = useTokensStore();
-  const { toggleBuyToSell, toggleSellToBuy, onOperationTypeChange } =
+  const { toggleBuyToSell, toggleSellToBuy } =
     useTokenOperationsActions();
   const navigate = useNavigateWithParams()
   const params = useParams();
   const action = getActionFromParams(params);
 
-  useEffectOnce(() => {
-    onOperationTypeChange(OperationType.SWAP);
-  });
-
-  
   const menuItems = useMemo(
     () =>
       selectedToken
