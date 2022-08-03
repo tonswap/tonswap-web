@@ -1,21 +1,15 @@
 import { ton } from "services/api/addresses";
-import { Box, SvgIcon, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { Theme } from "@mui/material/styles";
+import { SvgIcon } from "@mui/material";
 import TokenOperations from "screens/components/TokenOperations";
 import * as API from "services/api";
 import { ReactComponent as Plus } from "assets/images/shared/plus.svg";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
-import { toNano } from "ton";
 import BN from "bn.js";
-import { useCallback } from "react";
-import { toNanoSafe } from "utils";
 
 const AddLiquidity = () => {
-  const { srcTokenAmount, destTokenAmount, totalBalances, selectedToken } =
+  const { srcTokenAmount, destTokenAmount, selectedToken } =
     useTokenOperationsStore();
 
   const getTxRequest = () => {
@@ -63,19 +57,6 @@ const AddLiquidity = () => {
     ]);
   };
 
-  const isInsufficientFunds = (src: string, dest: string) => {
-    if (!src || !dest) {
-      return false;
-    }
-    if (
-      toNanoSafe(src).gte(toNanoSafe(totalBalances.srcBalance)) ||
-      toNanoSafe(dest).gte(toNanoSafe(totalBalances.destBalance))
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   useTokenFromParams();
 
   if (!selectedToken) {
@@ -91,7 +72,6 @@ const AddLiquidity = () => {
       getTxRequest={getTxRequest}
       destToken={selectedToken}
       submitButtonText={`Add TON/${selectedToken?.displayName} liquidity`}
-      isInsufficientFunds={isInsufficientFunds}
       refreshAmountsOnActionChange={true}
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType={ActionType.ADD_LIQUIDITY}

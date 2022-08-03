@@ -22,10 +22,10 @@ import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
-import useMaxAmount from "hooks/useMaxAmount";
 import SuccessModal from "./SuccessModal";
 import useTxError from "./useTxError";
 import useTxSuccessMessage from "./useTxSuccessMessage";
+import useValidation from "./useValidation";
 
 interface Props {
   srcToken: PoolInfo;
@@ -35,7 +35,6 @@ interface Props {
   getBalances: () => Promise<any>;
   getAmountFunc: any;
   getTxRequest: () => any;
-  isInsufficientFunds?: (src: string, dest: string) => boolean;
   refreshAmountsOnActionChange: boolean;
   actionCategory: ActionCategory;
   actionType: ActionType;
@@ -50,7 +49,6 @@ const TokenOperations = ({
   getBalances,
   getAmountFunc,
   getTxRequest,
-  isInsufficientFunds,
   refreshAmountsOnActionChange,
   actionCategory,
   actionType,
@@ -59,31 +57,23 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
 
-  const {
-    srcTokenAmount,
-    destLoading,
-    srcLoading,
-    destTokenAmount,
-    txPending,
-  } = useTokenOperationsStore();
+  const { txPending } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
-  const { maxAmount, maxAmountError } = useMaxAmount(gasFee, srcToken);
+
   useTxError();
   const successMessage = useTxSuccessMessage(actionType);
-
+  const { insufficientFunds, disabled, maxAmount } = useValidation(
+    actionType,
+    gasFee,
+    srcToken
+  );
   const {
     onResetAmounts,
     getTokensBalance,
     resetTokensBalance,
     sendTransaction,
   } = useTokenOperationsActions();
-
-  const insufficientFunds = isInsufficientFunds
-    ? isInsufficientFunds(srcTokenAmount, destTokenAmount)
-    : maxAmountError;
-
-  const isDisabled = !srcTokenAmount || srcLoading || destLoading;
 
   const onSubmit = async () => {
     const tx = async () => {
@@ -139,7 +129,10 @@ const TokenOperations = ({
           {!address ? (
             <ActionButton onClick={toggleModal}>Connect wallet</ActionButton>
           ) : insufficientFunds ? (
-            <ActionButton isDisabled onClick={() => {}}>
+            <ActionButton
+              isDisabled={disabled || insufficientFunds}
+              onClick={() => {}}
+            >
               <WarningAmberRoundedIcon
                 style={{
                   color: "#7D7D7D",
@@ -152,7 +145,7 @@ const TokenOperations = ({
           ) : (
             <ActionButton
               isLoading={txPending}
-              isDisabled={isDisabled}
+              isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >
               {submitButtonText}

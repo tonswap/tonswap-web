@@ -33,7 +33,7 @@ const SelectWallet = observer(() => {
       <MobileFlow closeModal={onClose} />
     </StyledModal>
   ) : (
-    <StyledModal open={open} onClose={onClose}>
+    <StyledModal open={open} onClose={onClose} maxWidth={500}>
       <DesktopFlow closeModal={onClose} />
     </StyledModal>
   );

@@ -38,7 +38,7 @@ function QR({ onClose, link, open }: Props) {
 
   return (
     <StyledContainer>
-      <Title onClose={onClose} text="Connect Tonhub" />
+      <Title text="Connect Tonhub" />
       <StyledQrBox>
         {link ? (
           <Fade in={true}>

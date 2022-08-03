@@ -4,15 +4,18 @@ import { Popup } from "components";
 import { ReactNode, useCallback } from "react";
 import { ActionType } from "services/wallets/types";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { useTokenOperationsActions, useTokenOperationsStore } from "store/token-operations/hooks";
-
+import {
+  useTokenOperationsActions,
+  useTokenOperationsStore,
+} from "store/token-operations/hooks";
+import SuccessIcon from "assets/images/shared/success.svg";
 interface Props {
   actionType: ActionType;
 }
 
 function SuccessModal({ actionType }: Props) {
-    const {txConfirmation, txSuccess} = useTokenOperationsStore()
-    const {closeSuccessModal} = useTokenOperationsActions()
+  const { txConfirmation, txSuccess } = useTokenOperationsStore();
+  const { closeSuccessModal } = useTokenOperationsActions();
 
   const createComponent = useCallback(() => {
     switch (actionType) {
@@ -20,11 +23,11 @@ function SuccessModal({ actionType }: Props) {
         return (
           <Container title="Purchase Confirmation">
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} purchased:</Typography>
+              <Typography>{txConfirmation.tokenName} Purchased</Typography>
               <Typography>{txConfirmation.destTokenAmount}</Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid: </Typography>
+              <Typography>TON Paid </Typography>
               <Typography>{txConfirmation.srcTokenAmount}</Typography>
             </Box>
           </Container>
@@ -33,11 +36,11 @@ function SuccessModal({ actionType }: Props) {
         return (
           <Container title="Purchase Confirmation">
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} Sold:</Typography>
+              <Typography>{txConfirmation.tokenName} Sold</Typography>
               <Typography>{txConfirmation.srcTokenAmount}</Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Received: </Typography>
+              <Typography>TON Received </Typography>
               <Typography>{txConfirmation.destTokenAmount}</Typography>
             </Box>
           </Container>
@@ -46,11 +49,11 @@ function SuccessModal({ actionType }: Props) {
         return (
           <Container title="Purchase Confirmation">
             <Box className="row">
-              <Typography>SHIBA purchased:</Typography>
+              <Typography>SHIBA purchased</Typography>
               <Typography>0.74</Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid: </Typography>
+              <Typography>TON Paid </Typography>
               <Typography>20</Typography>
             </Box>
           </Container>
@@ -59,18 +62,18 @@ function SuccessModal({ actionType }: Props) {
         return (
           <Container title="Purchase Confirmation">
             <Box className="row">
-              <Typography>SHIBA purchased:</Typography>
+              <Typography>SHIBA purchased</Typography>
               <Typography>0.74</Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid: </Typography>
+              <Typography>TON Paid </Typography>
               <Typography>20</Typography>
             </Box>
           </Container>
         );
 
       default:
-       return <></>
+        return <></>;
     }
   }, [actionType, txConfirmation]);
 
@@ -81,72 +84,71 @@ function SuccessModal({ actionType }: Props) {
   );
 }
 
-
 export default SuccessModal;
 
-
 interface ContainerProps {
-    children: ReactNode;
-    title: string;
-  }
-  
+  children: ReactNode;
+  title: string;
+}
 
 function Container({ children, title }: ContainerProps) {
-    return (
-      <StyledContainer>
-        <StyledHeader>
-        <CheckCircleRoundedIcon />
+  return (
+    <StyledContainer>
+      <StyledHeader>
+        <img src={SuccessIcon} className="icon" />
         <Typography>{title}</Typography>
-        </StyledHeader>
-        <StyledChildren>{children}</StyledChildren>
-      </StyledContainer>
-    );
-  }
+      </StyledHeader>
+      <StyledChildren>{children}</StyledChildren>
+    </StyledContainer>
+  );
+}
 
+const StyledHeader = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+  gap: 22,
+  flexDirection: "column",
+  "& p": {
+    fontSize: 19,
+    fontWeight: 500,
+  },
+  "& .icon": {
+    width: 45,
+    height: 45,
+    objectFit: "contain",
+  },
+});
 
-  const StyledHeader  = styled(Box)({
-    display:'flex',
-    alignItems:'center',
-    gap:10,
-    flexDirection:'column',
-    "& p": {
-      fontSize: 20
-    },
-    "& .MuiSvgIcon-root": {
-      color: "#21C004",
-      width: 30,
-      height:30,
-      "& *": {
-        color: "#21C004",
-      },
-    },
-  })
-  
-  const StyledChildren = styled(Box)({
+const StyledChildren = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: 13,
+  width: '100%',
+});
+
+const StyledContainer = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: 19,
+  alignItems: "center",
+  width: '100%',
+
+  "& *": {
+    color: "black",
+  },
+ 
+  "& p": {
+    fontSize: 14,
+  },
+  "& .row": {
     display: "flex",
-    flexDirection: "column",
-    gap: 3,
-  });
-  
-  const StyledContainer = styled(Box)({
-    display: "flex",
-    flexDirection:'column',
-    gap: 10,
+    gap: 20,
+    background: "#EEEEEE",
+    borderRadius: 12,
+    height: 49,
+    width:'100%',
     alignItems:'center',
-  
-  
-    "& *": {
-      color: "black",
-    },
-    "& .title": {
-      fontWeight: 500,
-      fontSize: 15,
-    },
-    "& p": {
-      fontSize: 14,
-    },
-    "& .row": {
-      display:'flex',
-      gap: 20
-    },
-  });
+    justifyContent:'space-between',
+    padding: '0px 20px'
+  },
+});

@@ -14,6 +14,7 @@ const StyledContainer = styled(Box)({
   position: "relative",
   padding: 2,
   width: "100%",
+  marginTop: 10,
   "::-webkit-scrollbar": {
     height: 0,
     display: "none",

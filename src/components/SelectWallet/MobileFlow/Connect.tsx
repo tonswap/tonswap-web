@@ -43,7 +43,7 @@ function Connect({open, href, adapterName = "", onClose }: Props) {
   return (
     <StyledContainer>
       <Box marginBottom="20px">
-        <Title onClose={onClose} text={`Connect with ${adapterName} `} />
+        <Title text={`Connect with ${adapterName} `} />
       </Box>
       <StyledLoadingButton  variant="contained" loading={!href}>
         {href &&  <StyledLink href={href}>Connect</StyledLink>}

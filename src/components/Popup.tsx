@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useIsExpandedView } from "store/application/hooks";
+import CloseImg from "assets/images/shared/close.svg";
+
 export interface Props {
   open: boolean;
   onClose?: () => void;
@@ -13,12 +15,13 @@ export interface Props {
   blur?: boolean;
   className?: string;
   maxWidth?: number;
+  minWidth?: number;
 }
 
 const StyledDrawer = styled(Box)(({ expanded }: { expanded: boolean }) => ({
-  padding: 15,
-  minHeight: expanded ? '45vh' : '60vh',
-  position:'relative'
+  padding: "28px",
+  minHeight: expanded ? "65vh" : "73vh",
+  position: "relative",
 }));
 
 export function Popup({
@@ -29,6 +32,7 @@ export function Popup({
   blur = true,
   className = "",
   maxWidth,
+  minWidth
 }: Props) {
   const expanded = useIsExpandedView();
 
@@ -38,16 +42,22 @@ export function Popup({
       open={open}
       onClose={onClose ? onClose : () => {}}
       onOpen={() => {}}
+      PaperProps={{
+        style: {
+          borderRadius: "15px 15px 0px 0px",
+        },
+      }}
       disableSwipeToOpen={false}
       ModalProps={{
         keepMounted: false,
       }}
     >
       <StyledDrawer expanded={expanded}>
-      <StyledClose onClick={onClose}>
-          <CloseRoundedIcon />
+        <StyledClose onClick={onClose} style={{ top: 14, right: 14 }}>
+          <img src={CloseImg} />
         </StyledClose>
-        {children}</StyledDrawer>
+        {children}
+      </StyledDrawer>
     </SwipeableDrawer>
   ) : (
     <Dialog
@@ -60,10 +70,10 @@ export function Popup({
           width: "100%",
           height: "100%",
           maxWidth: "unset",
-          background:'transparent',
-          display:'flex',
-          alignItems:'center',
-          justifyContent:'center'
+          background: "transparent",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         },
       }}
       BackdropProps={{
@@ -72,9 +82,9 @@ export function Popup({
         },
       }}
     >
-      <StyledDialogContent maxWidth={maxWidth}>
-        <StyledClose onClick={onClose}>
-          <CloseRoundedIcon />
+      <StyledDialogContent maxWidth={maxWidth} minWidth={minWidth}>
+        <StyledClose onClick={onClose} style={{ top: -50, right: -40 }}>
+          <img src={CloseImg} />
         </StyledClose>
         <StyledChildren>{children}</StyledChildren>
       </StyledDialogContent>
@@ -82,24 +92,26 @@ export function Popup({
   );
 }
 
-const StyledClose = styled(IconButton)(({theme}) => ({
+const StyledClose = styled(IconButton)(({ theme }) => ({
   position: "absolute",
-  top: 10,
-  right: 10,
-  "& .MuiSvgIcon-root": {
-    color: theme.palette.primary.main,
-    width: 30,
-    height: 30
-  }
+  padding: 0,
+  zIndex: 10,
+  "& img": {
+    width: 40,
+    height: 40,
+  },
 }));
 
-const StyledDialogContent = styled(Box)(({maxWidth}: {maxWidth?: number}) => ({
-  padding: '30px 15px 30px 15px',
-  position: "relative",
-  background:'white',
-  maxWidth: maxWidth,
-  width: '100%',
-  borderRadius: 12
-}));
+const StyledDialogContent = styled(Box)(
+  ({ maxWidth, minWidth }: { maxWidth?: number, minWidth?: number }) => ({
+    padding: "30px 15px 30px 15px",
+    position: "relative",
+    background: "white",
+    maxWidth,
+    width: "fit-content",
+    borderRadius: 12,
+    minWidth
+  })
+);
 
 const StyledChildren = styled(Box)({});

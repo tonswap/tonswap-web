@@ -12,13 +12,8 @@ const StyledContainer = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  background: "white",
-  maxWidth: 400,
-  margin: 'auto',
   position:'relative',
-  borderRadius: 12,
   overflow:'hidden',
-  padding: 15,
   width:'fit-content'
 });
 
@@ -26,7 +21,7 @@ interface Props {
   closeModal: () => void;
 }
 
-const DesktopFlow = observer(({ closeModal }: Props) => {
+const DesktopFlow = ({ closeModal }: Props) => {
   const {resetWallet, createWalletSession} = useWalletActions()
   const {sessionLink} = useWalletStore()
   const [showQr, setShowQr] = useState(false);
@@ -55,6 +50,6 @@ const DesktopFlow = observer(({ closeModal }: Props) => {
       <QR open={showQr} link={sessionLink} onClose={cancel} />
     </StyledContainer>
   );
-});
+}
 
 export default DesktopFlow;

@@ -33,7 +33,7 @@ interface State {
 }
 
 const initialState: State = {
-  txSuccess: true,
+  txSuccess: false,
   txPending: false,
   txConfirmation: {
     srcTokenAmount: "0",
