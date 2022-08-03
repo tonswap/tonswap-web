@@ -56,8 +56,6 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
       if (result === 0) {
         return;
       } else {
-        console.log("####",result.toString());
-        
         updateSrcTokenAmount(fromNano(result));
       }
     }
