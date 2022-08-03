@@ -44,7 +44,7 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
             <strong>Balance: </strong>
             {/* {availableAmount} */}
             {console.log(availableAmount)}
-            <BigNumberDisplay value={availableAmount} decimalScale={7} />
+            <BigNumberDisplay value={availableAmount} />
             {/* {` ${displayName}`} */}
           </Typography>
           {showMax && onMaxAmountClick && <StyledMaxButton

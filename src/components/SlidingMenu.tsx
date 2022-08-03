@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
 
 const StyledContainer = styled(Box)({
   maxWidth: "320px",
@@ -67,6 +68,8 @@ function SlidingMenu({ items, action, symbol }: Props) {
   const [allowTransition, setAllowTransition] = useState(false);
   const containerRef = useRef<any>();
   const montedRef = useRef(true);
+  const {srcLoading, destLoading} = useTokenOperationsStore()
+
 
   const onSelect = (index: number) => {
     if (!montedRef.current) {
@@ -93,8 +96,11 @@ function SlidingMenu({ items, action, symbol }: Props) {
     }
   }, [left]);
 
+
+  const isLoading = srcLoading || destLoading
+
   return (
-    <StyledContainer ref={containerRef}>
+    <StyledContainer ref={containerRef} style={{pointerEvents: isLoading ? 'none' : 'all'}}>
       <StyledSelected
         allowTransition={allowTransition}
         style={{ left: `${left}px`, width: `${width}px` }}

@@ -40,7 +40,7 @@ const ListToken = ({ token, onSelect }: Props) => {
         ) : (
 
           <Typography>
-            <BigNumberDisplay value={usd} decimalScale={7} />
+            <BigNumberDisplay prefix="$" value={usd} decimalScale={7} />
             {/* {`$${parseFloat(usd).toFixed(6)}`} */}
             </Typography>
         )}
