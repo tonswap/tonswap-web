@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tonswap AMM",
+  "name": "The first decentralized AMM on The Open Network",
   "icons": [
     {
       "src": "favicon.ico",
