@@ -25,13 +25,6 @@ function useValidation(
       destTokenAmount === "0" ||
       txPending;
 
-    if (disabled) {
-      return {
-        insufficientFunds: false,
-        disabled: true,
-        maxAmount,
-      };
-    }
     const fee = Number(gasFee + 0.01).toFixed(2);
 
     let insufficientFunds = false;
@@ -65,7 +58,7 @@ function useValidation(
     }    
 
     return {
-      insufficientFunds,
+      insufficientFunds: disabled ? false : insufficientFunds,
       disabled,
       maxAmount,
     };
