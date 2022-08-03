@@ -1,12 +1,11 @@
-import { Box, Fade } from "@mui/material";
+import { Box } from "@mui/material";
 import {
-  JSXElementConstructor,
   ReactElement,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { ActionButton } from "components";
+import { ActionButton, Popup } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -60,10 +59,13 @@ const TokenOperations = ({
   actionType,
   gasFee,
   getNotification,
+  successMessage
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [loading, setLoading] = useState(false);
+  const [txSuccess, setTxSuccess] = useState(false);
+  const txSuccessRef = useRef<ReactElement>(getNotification())
 
   const { srcTokenAmount, destLoading, srcLoading, destTokenAmount } =
     useTokenOperationsStore();
@@ -93,14 +95,9 @@ const TokenOperations = ({
     try {
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-      gaAnalytics.sendEvent(actionCategory, actionType, "");
-      const message = getNotification();
-      showNotification({
-        message,
-        variant: "success",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-        autoHideDuration: 60000,
-      });
+      gaAnalytics.sendEvent(actionCategory, actionType, successMessage);
+      txSuccessRef.current = getNotification();
+      setTxSuccess(true);
       onResetAmounts();
       getTokensBalance(getBalances);
     } catch (error) {
@@ -128,6 +125,9 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions>
+      <Popup open={txSuccess} onClose={() => setTxSuccess(false)} maxWidth={400}>
+        {txSuccessRef.current}
+      </Popup>
       <Box className={classes.content}>
         <Box
           className={classes.cards}

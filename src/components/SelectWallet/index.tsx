@@ -1,9 +1,7 @@
-import Modal from "@mui/material/Modal";
 import { styled } from "@mui/styles";
 import DesktopFlow from "./DesktopFlow";
 import MobileFlow from "./MobileFlow";
 import { isMobile } from "react-device-detect";
-import useWebAppResize from "hooks/useWebAppResize";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useWalletStore } from "store/wallet/hooks";
@@ -11,25 +9,14 @@ import {
   useShowWalletModal,
   useWalletModalToggle,
 } from "store/application/hooks";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { Box } from "@mui/system";
+import { Popup } from "components/Popup";
 
-const StyledModal = styled(Modal)({});
-
-
-
-
-const StyledDrawer = styled(Box)(({expanded}:{expanded: boolean}) => ({
-
-  padding: 20,
-  minHeight: expanded ? 300 : 550
-}))
+const StyledModal = styled(Popup)({});
 
 const SelectWallet = observer(() => {
   const { address } = useWalletStore();
   const open = useShowWalletModal();
   const toggleModal = useWalletModalToggle();
-  const expanded = useWebAppResize();
 
   const onClose = () => {
     toggleModal();
@@ -42,23 +29,12 @@ const SelectWallet = observer(() => {
   }, [address]);
 
   return isMobile ? (
-    <SwipeableDrawer
-      anchor="bottom"
-      open={open}
-      onClose={toggleModal}
-      onOpen={() => {}}
-      disableSwipeToOpen={false}
-      ModalProps={{
-        keepMounted: false,
-      }}
-    >
-     <StyledDrawer expanded={expanded}>
-     <MobileFlow  closeModal={onClose} />
-     </StyledDrawer>
-    </SwipeableDrawer>
+    <StyledModal open={open} onClose={onClose}>
+      <MobileFlow closeModal={onClose} />
+    </StyledModal>
   ) : (
     <StyledModal open={open} onClose={onClose}>
-       <DesktopFlow closeModal={onClose} />
+      <DesktopFlow closeModal={onClose} />
     </StyledModal>
   );
 });

@@ -15,7 +15,6 @@ const StyledContainer = styled(Box)({
   background: "white",
   maxWidth: 400,
   margin: 'auto',
-  top: '20vh',
   position:'relative',
   borderRadius: 12,
   overflow:'hidden',

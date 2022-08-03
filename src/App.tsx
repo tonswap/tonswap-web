@@ -49,9 +49,8 @@ if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
   localStorage.setItem(TELEGRAM_WEBAPP_PARAM, "1");
 }
 
-const App = observer(() => {
+const App = () => {
   const { restoreSession } = useWalletActions();
-  const params = useParams();
   
 
   useEffectOnce(() => {
@@ -74,6 +73,6 @@ const App = observer(() => {
       </StyledAppContainer>
     </>
   );
-});
+}
 
 export default App;
