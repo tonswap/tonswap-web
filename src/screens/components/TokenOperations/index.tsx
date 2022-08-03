@@ -1,9 +1,7 @@
-import { Box, Fade } from "@mui/material";
+import { Box } from "@mui/material";
 import {
-  JSXElementConstructor,
   ReactElement,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { ActionButton } from "components";
@@ -26,7 +24,7 @@ import Icon from "./Icon";
 import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
-import { Address, Wallet } from "ton";
+import { Address } from "ton";
 import useMaxAmount from "hooks/useMaxAmount";
 
 interface Props {
@@ -60,6 +58,7 @@ const TokenOperations = ({
   actionType,
   gasFee,
   getNotification,
+  successMessage
 }: Props) => {
   const expanded = useWebAppResize();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -93,7 +92,7 @@ const TokenOperations = ({
     try {
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-      gaAnalytics.sendEvent(actionCategory, actionType, "");
+      gaAnalytics.sendEvent(actionCategory, actionType, successMessage);
       const message = getNotification();
       showNotification({
         message,

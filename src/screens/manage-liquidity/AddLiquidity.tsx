@@ -12,6 +12,7 @@ import { ActionCategory, ActionType } from "services/wallets/types";
 import { toNano } from "ton";
 import BN from "bn.js";
 import { useCallback } from "react";
+import { toNanoSafe } from "utils";
 
 
 const AddLiquidity = () => {
@@ -37,7 +38,7 @@ const AddLiquidity = () => {
     if (!selectedToken?.name) {
       return;
     }
-    let data = await API.getPoolInfo(selectedToken?.name);
+    let data = await API.getPoolInfo(selectedToken?.tokenMinter);
     console.log({ data });
 
     if (
@@ -70,8 +71,8 @@ const AddLiquidity = () => {
       return false;
     }
     if (
-      toNano(src).gte(toNano(totalBalances.srcBalance)) ||
-      toNano(dest).gte(toNano(totalBalances.destBalance))
+      toNanoSafe(src).gte(toNanoSafe(totalBalances.srcBalance)) ||
+      toNanoSafe(dest).gte(toNanoSafe(totalBalances.destBalance))
     ) {
       return true;
     }

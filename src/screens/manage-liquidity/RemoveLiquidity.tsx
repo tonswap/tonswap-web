@@ -16,16 +16,14 @@ const RemoveLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } = useTokenOperationsStore();
 
   const getTxRequest = () => {
-    if (selectedToken) {
-      return API.generateRemoveLiquidityLink(
-        selectedToken?.tokenMinter,
-        srcTokenAmount
-      );
-    }
+    return API.generateRemoveLiquidityLink(
+      selectedToken!.tokenMinter,
+      srcTokenAmount
+    );
   };
 
   const getBalances = () => {
-    return API.getTokensOfLPBalances(selectedToken!!.name);
+    return API.getTokensOfLPBalances(selectedToken!!.tokenMinter);
   };
 
   const createSuccessMessage = `Successfully removed ${srcTokenAmount} TON and ${destTokenAmount} ${selectedToken?.displayName} liquidity`

@@ -35,7 +35,7 @@ function ManageLiquidityScreen() {
                 navigate(
                   ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
                     ":id",
-                    selectedToken?.name
+                    selectedToken?.tokenMinter
                   )
                 ),
             },
@@ -45,7 +45,7 @@ function ManageLiquidityScreen() {
                 navigate(
                   ROUTES.manageLiquidity.navigateToRemoveLiquidity.replace(
                     ":id",
-                    selectedToken?.name
+                    selectedToken?.tokenMinter
                   )
                 ),
             },
@@ -54,9 +54,9 @@ function ManageLiquidityScreen() {
     [navigate, selectedToken]
   );
 
-  const onTokenSelect = (tokenName: string) => {
+  const onTokenSelect = (tokenId: string) => {
     navigate(
-      ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", tokenName)
+      ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", tokenId)
     );
   };
 
