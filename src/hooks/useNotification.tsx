@@ -19,14 +19,16 @@ interface Params {
   onClose?: () => void;
   autoHideDuration?: number;
   anchorOrigin?: SnackbarOrigin;
+  className?: string;
 }
 
 function useNotification() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const showNotification = useCallback(
-    ({ message, variant, onClose, autoHideDuration, anchorOrigin }: Params) => {
+    ({ message, variant, onClose, autoHideDuration, anchorOrigin, className = '' }: Params) => {
       const key = enqueueSnackbar(<StyledMessage>{message}</StyledMessage>, {
+        className,
         anchorOrigin: anchorOrigin,
         variant,
         autoHideDuration: autoHideDuration || 5000,

@@ -12,6 +12,7 @@ import analytics from "services/analytics/ga";
 import { AppGrid } from "styles/styles";
 import { useParams } from "react-router-dom";
 import useEffectOnce from "hooks/useEffectOnce";
+import { useWebAppResize } from "store/application/hooks";
 analytics.init();
 
 const StyledAppContainer = styled(Box)({
@@ -28,20 +29,19 @@ const StyledAppContainer = styled(Box)({
 });
 
 const StyledRoutesContainer = styled(AppGrid)({
-  flex:1,
-
+  flex: 1,
 });
 
 const StyledBeta = styled(Box)({
   background: "#FC5F5F",
   width: "100%",
   height: 40,
-  display:'flex',
-  alignItems:'center',
-  justifyContent:'center',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   "& p": {
     color: "white",
-    fontSize: 14
+    fontSize: 14,
   },
 });
 
@@ -49,16 +49,14 @@ if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
   localStorage.setItem(TELEGRAM_WEBAPP_PARAM, "1");
 }
 
-const App = observer(() => {
+const App = () => {
   const { restoreSession } = useWalletActions();
-  const params = useParams();
-  
+  useWebAppResize();
 
   useEffectOnce(() => {
     restoreSession();
-  })
+  });
 
- 
   return (
     <>
       <StyledBeta>
@@ -70,10 +68,9 @@ const App = observer(() => {
         <StyledRoutesContainer>
           <AppRoutes />
         </StyledRoutesContainer>
-       
       </StyledAppContainer>
     </>
   );
-});
+};
 
 export default App;

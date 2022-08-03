@@ -101,7 +101,7 @@ function AdaptersList({
     <StyledContainer>
       <Fade in={!isLoading}>
       <StyledConnectModalTitle>
-        <Title onClose={onClose} text="Select Wallet" />
+        <Title text="Select Wallet" />
       </StyledConnectModalTitle>
       </Fade>
       <Fade in={!isLoading}>

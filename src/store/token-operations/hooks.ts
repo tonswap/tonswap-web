@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from "router/routes";
 import { RootState } from "store/store";
 import {
+  onSuccessModalClose,
   OperationType,
   resetAmounts,
   resetBalances,
@@ -13,11 +14,11 @@ import {
   setSelectedToken,
   setSrcLoading,
   setSrcTokenAmount,
+  setTxError,
   toggleAction,
 } from "./reducer";
 
-import { getAmounts } from "./actions";
-import { useTokensStore } from "store/tokens/hooks";
+import { getAmounts, onSendTransaction } from "./actions";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { PoolInfo } from "services/api/addresses";
 
@@ -38,10 +39,22 @@ export const useTokenOperationsActions = (): {
   clearStore: () => void;
   onOperationTypeChange: (value: OperationType) => void;
   selectToken: (token?: PoolInfo) => void;
+  sendTransaction: (txMethod: () =>  Promise<void>) => void;
+  hideTxError: () => void;
+  closeSuccessModal: () => void;
 } => {
   const dispatch = useDispatch<any>();
-  const navigate = useNavigateWithParams()
+  const navigate = useNavigateWithParams();
   const { selectedToken } = useTokenOperationsStore();
+
+  const closeSuccessModal = useCallback(() => {
+    dispatch(onSuccessModalClose());
+  }, [dispatch]);
+
+  const hideTxError = useCallback(() => {
+    dispatch(setTxError(undefined));
+  }, [dispatch]);
+
   const onResetAmounts = useCallback(() => {
     dispatch(resetAmounts());
   }, [dispatch]);
@@ -93,7 +106,9 @@ export const useTokenOperationsActions = (): {
     if (!selectedToken) {
       return;
     }
-    navigate(ROUTES.swap.navigateToSell.replace(":id", selectedToken.tokenMinter));
+    navigate(
+      ROUTES.swap.navigateToSell.replace(":id", selectedToken.tokenMinter)
+    );
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
@@ -101,7 +116,9 @@ export const useTokenOperationsActions = (): {
     if (!selectedToken) {
       return;
     }
-    navigate(ROUTES.swap.navigateToBuy.replace(":id", selectedToken.tokenMinter));
+    navigate(
+      ROUTES.swap.navigateToBuy.replace(":id", selectedToken.tokenMinter)
+    );
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
@@ -112,14 +129,21 @@ export const useTokenOperationsActions = (): {
     [dispatch]
   );
 
-  const selectToken = useCallback(
-    (token?: PoolInfo) => {
-      dispatch(setSelectedToken(token));
-   
+  const sendTransaction = useCallback(
+    (
+      txMethod: () => Promise<void>,
+    ) => {
+       dispatch(onSendTransaction(txMethod));
     },
     [dispatch]
   );
 
+  const selectToken = useCallback(
+    (token?: PoolInfo) => {
+      dispatch(setSelectedToken(token));
+    },
+    [dispatch]
+  );
 
   return {
     onResetAmounts,
@@ -133,6 +157,9 @@ export const useTokenOperationsActions = (): {
     toggleSellToBuy,
     clearStore,
     onOperationTypeChange,
-    selectToken
+    selectToken,
+    sendTransaction,
+    hideTxError,
+    closeSuccessModal
   };
 };

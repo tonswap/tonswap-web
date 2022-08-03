@@ -1,7 +1,5 @@
 import {styled} from '@mui/styles';
 import { Box, IconButton, Typography } from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { useTheme } from "@mui/material/styles";
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -12,19 +10,14 @@ const StyledContainer = styled(Box)({
 
 interface Props {
   text: string;
-  onClose: () => void;
 }
 
-function Title({ text, onClose }: Props) {
+function Title({ text }: Props) {
 
   
-  const theme = useTheme();
   return (
     <StyledContainer>
       <Typography style={{whiteSpace: 'nowrap', paddingRight:'20px', fontWeight:'500', fontSize:'18px'}}>{text}</Typography>
-      <IconButton  color="primary" onClick={onClose}>
-        <CloseRoundedIcon style={{ color: theme.palette.primary.main }} />
-      </IconButton>
     </StyledContainer>
   );
 }

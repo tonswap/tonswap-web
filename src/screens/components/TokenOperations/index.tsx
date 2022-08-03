@@ -1,31 +1,31 @@
 import { Box } from "@mui/material";
-import {
-  ReactElement,
-  useEffect,
-  useState,
-} from "react";
-import { ActionButton } from "components";
+import { useEffect } from "react";
+import { ActionButton, Popup } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
-import useWebAppResize from "hooks/useWebAppResize";
 import { walletService } from "services/wallets/WalletService";
-import useNotification from "hooks/useNotification";
 import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
 import { useWalletStore } from "store/wallet/hooks";
-import { useWalletModalToggle } from "store/application/hooks";
+import {
+  useIsExpandedView,
+  useWalletModalToggle,
+} from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
 import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
-import useMaxAmount from "hooks/useMaxAmount";
+import SuccessModal from "./SuccessModal";
+import useTxError from "./useTxError";
+import useTxSuccessMessage from "./useTxSuccessMessage";
+import useValidation from "./useValidation";
 
 interface Props {
   srcToken: PoolInfo;
@@ -35,13 +35,10 @@ interface Props {
   getBalances: () => Promise<any>;
   getAmountFunc: any;
   getTxRequest: () => any;
-  isInsufficientFunds?: (src: string, dest: string) => boolean;
   refreshAmountsOnActionChange: boolean;
   actionCategory: ActionCategory;
   actionType: ActionType;
   gasFee: GAS_FEE;
-  successMessage: string;
-  getNotification: () => ReactElement;
 }
 
 const TokenOperations = ({
@@ -52,68 +49,48 @@ const TokenOperations = ({
   getBalances,
   getAmountFunc,
   getTxRequest,
-  isInsufficientFunds,
   refreshAmountsOnActionChange,
   actionCategory,
   actionType,
   gasFee,
-  getNotification,
-  successMessage
 }: Props) => {
-  const expanded = useWebAppResize();
+  const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
-  const [loading, setLoading] = useState(false);
 
-  const { srcTokenAmount, destLoading, srcLoading, destTokenAmount } =
-    useTokenOperationsStore();
+  const { txPending } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
-  const { maxAmount, maxAmountError } = useMaxAmount(gasFee, srcToken);
 
-  const { onResetAmounts, getTokensBalance, resetTokensBalance } =
-    useTokenOperationsActions();
-  const { showNotification } = useNotification();
-
-  const insufficientFunds = isInsufficientFunds
-    ? isInsufficientFunds(srcTokenAmount, destTokenAmount)
-    : maxAmountError;
-
-  const isDisabled = !srcTokenAmount || srcLoading || destLoading;
+  useTxError();
+  const successMessage = useTxSuccessMessage(actionType);
+  const { insufficientFunds, disabled, maxAmount } = useValidation(
+    actionType,
+    gasFee,
+    srcToken
+  );
+  const {
+    onResetAmounts,
+    getTokensBalance,
+    resetTokensBalance,
+    sendTransaction,
+  } = useTokenOperationsActions();
 
   const onSubmit = async () => {
-    setLoading(true);
-    const txRequest = await getTxRequest();
-
-    const waiter = await waitForSeqno(
-      client.openWalletFromAddress({
-        source: Address.parse(address!!),
-      })
-    );
-    try {
+    const tx = async () => {
+      const txRequest = await getTxRequest();
+      const waiter = await waitForSeqno(
+        client.openWalletFromAddress({
+          source: Address.parse(address!!),
+        })
+      );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
       gaAnalytics.sendEvent(actionCategory, actionType, successMessage);
-      const message = getNotification();
-      showNotification({
-        message,
-        variant: "success",
-        anchorOrigin: { vertical: "top", horizontal: "center" },
-        autoHideDuration: 60000,
-      });
       onResetAmounts();
       getTokensBalance(getBalances);
-    } catch (error) {
-      if (error instanceof Error) {
-        showNotification({
-          message: <>{error.message}</>,
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "center" },
-          autoHideDuration: 60000,
-        });
-      }
-    } finally {
-      setLoading(false);
-    }
+    };
+
+    sendTransaction(tx);
   };
 
   useEffect(() => {
@@ -127,10 +104,11 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions>
+      <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
           className={classes.cards}
-          style={{ pointerEvents: loading ? "none" : "all" }}
+          style={{ pointerEvents: txPending ? "none" : "all" }}
         >
           <SrcToken
             token={srcToken}
@@ -151,7 +129,10 @@ const TokenOperations = ({
           {!address ? (
             <ActionButton onClick={toggleModal}>Connect wallet</ActionButton>
           ) : insufficientFunds ? (
-            <ActionButton isDisabled onClick={() => {}}>
+            <ActionButton
+              isDisabled={disabled || insufficientFunds}
+              onClick={() => {}}
+            >
               <WarningAmberRoundedIcon
                 style={{
                   color: "#7D7D7D",
@@ -163,8 +144,8 @@ const TokenOperations = ({
             </ActionButton>
           ) : (
             <ActionButton
-              isLoading={loading}
-              isDisabled={isDisabled}
+              isLoading={txPending}
+              isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >
               {submitButtonText}

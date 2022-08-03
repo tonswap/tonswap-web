@@ -1,6 +1,5 @@
 import { NumberInput } from "components/NumberInput";
 import { PoolInfo } from "services/api/addresses";
-import useWebAppResize from "hooks/useWebAppResize";
 import { ROUTES } from "router/routes";
 import { ton } from "tokens";
 import { styled, Box } from "@mui/system";
@@ -10,6 +9,7 @@ import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
+import { useIsExpandedView } from "store/application/hooks";
 interface Props {
   inputAmount?: string;
   balance: string;
@@ -31,7 +31,7 @@ function SwapCard({
   onMaxAmount,
   showMax,
 }: Props) {
-  const expanded = useWebAppResize();
+  const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
   const { operationType } = useTokenOperationsStore();
   const isTon = token.name === ton.name;

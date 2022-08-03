@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/system";
-import useWebAppResize from "hooks/useWebAppResize";
+import { useIsExpandedView } from "store/application/hooks";
 
 interface Props {
   icon: any;
@@ -29,7 +29,7 @@ const StylesIcon = styled(Box)(
 );
 
 function Icon({ icon, color }: Props) {
-  const expanded = useWebAppResize();
+  const expanded = useIsExpandedView();
   return (
     <StylesIcon color={color} expanded={expanded}>
       {icon}
