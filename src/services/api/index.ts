@@ -24,8 +24,8 @@ export const client = new TonClient({
 });
 
 export enum GAS_FEE {
-  SWAP = 0.08,
-  FORWARD_TON = 0.01,
+  SWAP = 0.09,
+  FORWARD_TON = 0.05,
   ADD_LIQUIDITY = 0.12,
   REMOVE_LIQUIDITY = 0.08,
 }
@@ -224,9 +224,11 @@ export async function getPoolData(ammMinter: Address) {
   const jettonWalletAddressBytes = res.stack[2][1].bytes as string;
   const tonReserves = hexToBn(res.stack[3][1]);
   const tokenReserves = hexToBn(res.stack[4][1]);
+  const admin = res.stack[5][1].bytes as string;
   return {
     totalSupply,
     jettonWalletAddress: bytesToAddress(jettonWalletAddressBytes),
+  //  adminAddress: bytesToAddress(admin),
     mintable,
     tonReserves,
     tokenReserves,
@@ -449,8 +451,9 @@ function sendTransaction(
   boc64: string,
   stateInit = null
 ) {
+  
   return {
-    to: to.toFriendly(),
+    to: to.toFriendly({bounceable: true}),
     value: value.toString(),
     timeout: 5 * 60 * 1000,
     //stateInit,

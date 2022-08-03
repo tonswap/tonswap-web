@@ -16,17 +16,19 @@ function useMaxAmount(gasFee: GAS_FEE, srcToken: PoolInfo) {
         maxAmountError: false,
       };
     }
-
+    let srcBalance = totalBalances.srcBalance.length > 18 ? totalBalances.srcBalance.substring(0, 18): totalBalances.srcBalance
     if (srcToken.name !== "ton") {
+
+
       return {
         maxAmount: totalBalances.srcBalance,
         maxAmountError: toNano(srcTokenAmount || "0").gt(
-          toNano(totalBalances.srcBalance)
+          toNano( srcBalance )
         ),
       };
     }
 
-    const maxAmount = toNano(totalBalances.srcBalance).sub(toNano(gasFee + 0.01));
+    const maxAmount = toNano(srcBalance);
 
     return {
       maxAmount: fromNano(maxAmount),
