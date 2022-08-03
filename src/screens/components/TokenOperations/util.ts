@@ -22,6 +22,8 @@ const calculateTokens = async (
   destAmount: null | BN,
   getAmountsFunc: any
 ) => {
+  console.log(tokenName);
+  
   if (srcAmount != null) {
     const amount = await getAmountsFunc(
       tokenName,

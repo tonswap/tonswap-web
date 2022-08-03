@@ -25,7 +25,7 @@ import Icon from "./Icon";
 import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
-import { Address, Wallet } from "ton";
+import { Address } from "ton";
 import useMaxAmount from "hooks/useMaxAmount";
 
 interface Props {

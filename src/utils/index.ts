@@ -1,7 +1,14 @@
 //https://github.com/tonwhales/ton-nft/blob/main/packages/utils/parseActionsList.ts
 import BN from "bn.js";
 
-import { Address, Cell, RawCurrencyCollection, RawMessage, Slice } from "ton";
+import {
+  Address,
+  Cell,
+  RawCurrencyCollection,
+  RawMessage,
+  Slice,
+  toNano,
+} from "ton";
 import {
   colors,
   TELEGRAM_WEBAPP_PARAM,
@@ -9,7 +16,7 @@ import {
   TOKENS_IN_LOCAL_STORAGE,
 } from "consts";
 import { isMobile } from "react-device-detect";
-import {  PoolInfo } from "services/api/addresses";
+import { PoolInfo } from "services/api/addresses";
 var Buffer = require("buffer/").Buffer; // note: the trailing slash is important!
 global.Buffer = Buffer;
 
@@ -184,21 +191,16 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 };
 
 const isTelegramWebApp = () => {
-  return true
+  return true;
   // const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
   // if (result && isMobile) {
   //   return true;
   // }
 };
 
-
-
-
-
-
 const getLocalStorageTokens = () => {
   const tokenFromLocalStorage = localStorage.getItem(TOKENS_IN_LOCAL_STORAGE);
-  
+
   if (
     tokenFromLocalStorage &&
     Array.isArray(JSON.parse(tokenFromLocalStorage))
@@ -208,16 +210,15 @@ const getLocalStorageTokens = () => {
 };
 
 const localStorageTokensToObject = () => {
-  const customTokens = getLocalStorageTokens()
-  if(!customTokens){
-    return 
+  const customTokens = getLocalStorageTokens();
+  if (!customTokens) {
+    return;
   }
-  const result: {[key: string]: PoolInfo} = {}
+  const result: { [key: string]: PoolInfo } = {};
   customTokens.forEach((token: PoolInfo) => {
- 
-    result[token.tokenMinter] = token
+    result[token.tokenMinter] = token;
   });
-  return result
+  return result;
 };
 
 const isDev = () => {
@@ -240,34 +241,44 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-function convertToCurrencySystem (value?: string | number) {
-
-  if(!value){
-    return 0
+function convertToCurrencySystem(value?: string | number) {
+  if (!value) {
+    return 0;
   }
   // Nine Zeroes for Billions
-  return Math.abs(Number(value)) >= 1.0e+9
-
-  ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
-  // Six Zeroes for Millions 
-  : Math.abs(Number(value)) >= 1.0e+6
-
-  ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
-  // Three Zeroes for Thousands
-  : Math.abs(Number(value)) >= 1.0e+3
-
-  ? (Math.abs(Number(value)) / 1.0e+3).toFixed(2) + "K"
-
-  : Math.abs(Number(value));
-
+  return Math.abs(Number(value)) >= 1.0e9
+    ? (Math.abs(Number(value)) / 1.0e9).toFixed(2) + "B"
+    : // Six Zeroes for Millions
+    Math.abs(Number(value)) >= 1.0e6
+    ? (Math.abs(Number(value)) / 1.0e6).toFixed(2) + "M"
+    : // Three Zeroes for Thousands
+    Math.abs(Number(value)) >= 1.0e3
+    ? (Math.abs(Number(value)) / 1.0e3).toFixed(2) + "K"
+    : Math.abs(Number(value));
 }
 
 const getActionFromParams = (value: any) => {
-  const result =  value["*"].split("/")[0];
-  return result.replace('-', ' ')
+  const result = value["*"].split("/")[0];
+  return result.replace("-", " ");
 };
 
+export const toNanoSafe = (value?: string | number): BN => {
+  console.log(value);
+  
+  if (!value) {
+    return toNano("0");
+  }
 
+  let result;
+  try {
+    result = toNano(value);
+  } catch (error) {
+    console.log(error);
+    
+    result = toNano("0");
+  }
+  return result;
+};
 
 export {
   delay,
@@ -281,5 +292,5 @@ export {
   localStorageTokensToObject,
   getLocalStorageTokens,
   convertToCurrencySystem,
-  getActionFromParams
+  getActionFromParams,
 };
