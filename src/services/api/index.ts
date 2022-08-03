@@ -177,7 +177,11 @@ export const getAmountsOut = async (
   srcAmount: BN | null,
   destAmount: BN | null
 ) => {
-  const tokenAmm = (await getToken(client, token, getOwner())).ammMinter;
+  const tokenAmm = Pools()[token].ammMinter
+ 
+  if(!tokenAmm){
+    throw new Error('Amm address missing')
+  }
 
   const tokenData = await getPoolData(Address.parse(tokenAmm!!));
 
