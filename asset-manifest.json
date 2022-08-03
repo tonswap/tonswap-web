@@ -1,12 +1,11 @@
 {
   "files": {
     "main.css": "/static/css/main.efc33db8.css",
-    "main.js": "/static/js/main.e089fe3a.js",
+    "main.js": "/static/js/main.7579a5af.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/KittyKorn.png": "/static/media/KittyKorn.83ef687abf466525d57a.png",
     "static/media/DinoKorn.png": "/static/media/DinoKorn.c9079598e12f9ad5d71f.png",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
-    "static/media/shiba.svg": "/static/media/shiba.46c0290735efcd7495b3df2b2c2629ae.svg",
     "static/media/usdc.svg": "/static/media/usdc.457fb8e05803cd3f316c391f996df8c0.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
     "static/media/success.svg": "/static/media/success.79a5c2f6fcc496326c3a8261c4463432.svg",
@@ -17,7 +16,6 @@
     "static/media/wallet.svg": "/static/media/wallet.fc714ee09ee6021c6120c77726ed285d.svg",
     "static/media/github.svg": "/static/media/github.2e4ee8dda7d31aa473b58b3329948d73.svg",
     "static/media/btc1.svg": "/static/media/btc1.0e1fa97493493367f45a929fcc9bb170.svg",
-    "static/media/usdt.svg": "/static/media/usdt.0199d80a8c0ddcd912b0973eaa2dd243.svg",
     "static/media/eth1.svg": "/static/media/eth1.f827adddcf99941a48898b6adf11dcf1.svg",
     "static/media/close.svg": "/static/media/close.bae43592c70f403d963844498955fc8e.svg",
     "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
@@ -25,10 +23,10 @@
     "static/media/plus.svg": "/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "static/media/ton-keeper.svg": "/static/media/ton-keeper.f7cdf8d79dcbbe8ba7f90303e67892dc.svg",
     "main.efc33db8.css.map": "/static/css/main.efc33db8.css.map",
-    "main.e089fe3a.js.map": "/static/js/main.e089fe3a.js.map"
+    "main.7579a5af.js.map": "/static/js/main.7579a5af.js.map"
   },
   "entrypoints": [
     "static/css/main.efc33db8.css",
-    "static/js/main.e089fe3a.js"
+    "static/js/main.7579a5af.js"
   ]
 }
