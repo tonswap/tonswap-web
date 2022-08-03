@@ -1,14 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PoolInfo } from "services/api/addresses";
 
-import { getAmounts } from "./actions";
+import { getAmounts, onSendTransaction } from "./actions";
 
-
-export enum OperationType  {
+export enum OperationType {
   SWAP,
-  MANAGE_LIQUIDITY
+  MANAGE_LIQUIDITY,
+}
+
+interface TxConfirmation {
+  destTokenAmount: string;
+  srcTokenAmount: string;
+  tokenName?: string;
 }
 interface State {
+  txPending: boolean;
+  txError?: string;
+  txSuccess: boolean;
   totalBalances: {
     destBalance: string;
     srcBalance: string;
@@ -19,12 +27,18 @@ interface State {
   srcTokenAmount: string;
   srcAvailableAmountLoading: boolean;
   destAvailableAmountLoading: boolean;
-  operationType:OperationType;
+  operationType: OperationType;
   selectedToken?: PoolInfo;
-
+  txConfirmation: TxConfirmation;
 }
 
 const initialState: State = {
+  txSuccess: true,
+  txPending: false,
+  txConfirmation: {
+    srcTokenAmount: "0",
+    destTokenAmount: "0",
+  },
   totalBalances: {
     srcBalance: "",
     destBalance: "",
@@ -35,7 +49,7 @@ const initialState: State = {
   destLoading: false,
   srcAvailableAmountLoading: false,
   destAvailableAmountLoading: false,
-  operationType: OperationType.SWAP
+  operationType: OperationType.SWAP,
 };
 
 const WalletOperationSlice = createSlice({
@@ -44,7 +58,7 @@ const WalletOperationSlice = createSlice({
   reducers: {
     resetState: () => initialState,
     setOperationType(state, action: PayloadAction<OperationType>) {
-      state.operationType = action.payload
+      state.operationType = action.payload;
     },
     resetAmounts(state) {
       state.destTokenAmount = "";
@@ -59,7 +73,9 @@ const WalletOperationSlice = createSlice({
     setSelectedToken(state, action: PayloadAction<PoolInfo | undefined>) {
       state.selectedToken = action.payload;
     },
-
+    onSuccessModalClose(state) {
+      state.txSuccess = false
+    },
     setSrcTokenAmount(state, action) {
       state.srcTokenAmount = action.payload;
     },
@@ -68,6 +84,9 @@ const WalletOperationSlice = createSlice({
     },
     setSrcLoading(state, action) {
       state.srcLoading = action.payload;
+    },
+    setTxError(state, action: PayloadAction<string | undefined>) {
+      state.txError = action.payload
     },
     setDestLoading(state, action) {
       state.destLoading = action.payload;
@@ -96,6 +115,22 @@ const WalletOperationSlice = createSlice({
         state.destAvailableAmountLoading = false;
         state.totalBalances.destBalance = action.payload.destBalance;
         state.totalBalances.srcBalance = action.payload.srcBalance;
+      })
+      .addCase(onSendTransaction.pending, (state, action) => {
+        state.txPending = true;
+        state.txConfirmation = {
+          destTokenAmount: state.destTokenAmount,
+          srcTokenAmount: state.srcTokenAmount,
+          tokenName: state.selectedToken?.displayName,
+        };
+      })
+      .addCase(onSendTransaction.rejected, (state, action) => {
+        state.txError = action.error.message;
+        state.txPending = false;
+      })
+      .addCase(onSendTransaction.fulfilled, (state, action) => {
+        state.txPending = false;
+        state.txSuccess = true;
       });
   },
 });
@@ -110,7 +145,9 @@ export const {
   toggleAction,
   resetBalances,
   setOperationType,
-  setSelectedToken
+  setSelectedToken,
+  setTxError,
+  onSuccessModalClose
 } = WalletOperationSlice.actions;
 
 export default WalletOperationSlice.reducer;

@@ -395,6 +395,8 @@ export const generateBuyLink = async (
   const boc64 = transfer.toBoc().toString("base64");
   const tokenObjects = await getToken(client, token, getOwner());
   const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
+  console.log({generateBuyLink: token, tonAmount});
+  
   return sendTransaction(Address.parse(tokenObjects.ammMinter!!), value, boc64);
 };
 

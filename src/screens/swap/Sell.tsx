@@ -6,8 +6,6 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import { ActionCategory, ActionType } from "services/wallets/types";
-import { useCallback, useMemo } from "react";
-import { Typography } from "@mui/material";
 
 const Sell = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } = useTokenOperationsStore();
@@ -28,24 +26,6 @@ const Sell = () => {
     ]);
   };
 
-  const successMessage = useMemo(
-    () =>
-      `Successfully swapped ${srcTokenAmount} ${selectedToken?.displayName} for ${destTokenAmount} TON`,
-    [srcTokenAmount, selectedToken, destTokenAmount]
-  );
-
-  const getNotification =   useCallback(
-    () => (
-      <>
-        <Typography className="title">Purchase Confirmation</Typography>
-        <Typography className="row">
-          {selectedToken?.displayName} purchased: {destTokenAmount}
-        </Typography>
-        <Typography className="row">TON Paid: {srcTokenAmount}</Typography>
-      </>
-    ),
-    [selectedToken, srcTokenAmount, destTokenAmount]
-  );
 
   useTokenFromParams();
 
@@ -57,7 +37,6 @@ const Sell = () => {
 
   return (
     <TokenOperations
-      successMessage={successMessage}
       icon={<SouthRoundedIcon />}
       getTxRequest={getTxRequest}
       getAmountFunc={API.getAmountsOut}
@@ -71,7 +50,6 @@ const Sell = () => {
       actionCategory={ActionCategory.SWAP}
       actionType={ActionType.SELL}
       gasFee={API.GAS_FEE.SWAP}
-      getNotification={getNotification}
     />
   );
 };

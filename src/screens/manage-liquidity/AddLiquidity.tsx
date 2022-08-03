@@ -14,7 +14,6 @@ import BN from "bn.js";
 import { useCallback } from "react";
 import { toNanoSafe } from "utils";
 
-
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, totalBalances, selectedToken } =
     useTokenOperationsStore();
@@ -64,8 +63,6 @@ const AddLiquidity = () => {
     ]);
   };
 
-  const createSuccessMessage = `Successfully added ${srcTokenAmount} TON and ${destTokenAmount} ${selectedToken?.displayName} liquidity`;
-
   const isInsufficientFunds = (src: string, dest: string) => {
     if (!src || !dest) {
       return false;
@@ -79,19 +76,6 @@ const AddLiquidity = () => {
     return false;
   };
 
-  const getNotification = useCallback(
-    () => (
-      <>
-        <Typography className="title">Purchase Confirmation</Typography>
-        <Typography className="row">
-          {selectedToken?.displayName} purchased: {destTokenAmount}
-        </Typography>
-        <Typography className="row">TON Paid: {srcTokenAmount}</Typography>
-      </>
-    ),
-    [selectedToken, srcTokenAmount, destTokenAmount]
-  );
-
   useTokenFromParams();
 
   if (!selectedToken) {
@@ -100,7 +84,6 @@ const AddLiquidity = () => {
 
   return (
     <TokenOperations
-      successMessage={createSuccessMessage}
       icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
       getAmountFunc={getAmountOut}
       getBalances={getBalances}
@@ -113,7 +96,6 @@ const AddLiquidity = () => {
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType={ActionType.ADD_LIQUIDITY}
       gasFee={API.GAS_FEE.ADD_LIQUIDITY}
-      getNotification={getNotification}
     />
   );
 };

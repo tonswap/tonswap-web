@@ -26,22 +26,9 @@ const RemoveLiquidity = () => {
     return API.getTokensOfLPBalances(selectedToken!!.tokenMinter);
   };
 
-  const createSuccessMessage = `Successfully removed ${srcTokenAmount} TON and ${destTokenAmount} ${selectedToken?.displayName} liquidity`
   useTokenFromParams();
 
 
-  const getNotification =  useCallback(
-    () => (
-      <>
-        <Typography className="title">Purchase Confirmation</Typography>
-        <Typography className="row">
-          {selectedToken?.displayName} purchased: {destTokenAmount}
-        </Typography>
-        <Typography className="row">TON Paid: {srcTokenAmount}</Typography>
-      </>
-    ),
-    [selectedToken, srcTokenAmount, destTokenAmount]
-  );
 
   
   if (!selectedToken) {
@@ -50,7 +37,6 @@ const RemoveLiquidity = () => {
 
   return (
     <TokenOperations
-      successMessage={createSuccessMessage}
       icon={<SvgIcon component={Minus} viewBox="0 0 13 22" />}
       getTxRequest={getTxRequest}
       getAmountFunc={API.getLiquidityAmount}
@@ -62,7 +48,6 @@ const RemoveLiquidity = () => {
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType ={ActionType.REMOVE_LIQUIDITY}
       gasFee = {API.GAS_FEE.REMOVE_LIQUIDITY}
-      getNotification={getNotification}
     />
   );
 }

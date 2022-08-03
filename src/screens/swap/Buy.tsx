@@ -9,7 +9,6 @@ import { ActionCategory, ActionType } from "services/wallets/types";
 import { Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { Box } from "@mui/system";
-import TxSuccessNotification from "components/TxSuccessNotification";
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -31,26 +30,8 @@ const Buy = () => {
     ]);
   };
 
-  const successMessage = useMemo(
-    () =>
-      `Successfully swapped ${srcTokenAmount} TON for ${destTokenAmount} ${selectedToken?.displayName}`,
-    [srcTokenAmount, destTokenAmount, selectedToken]
-  );
 
-  const getNotification = useCallback(() => {
-    return (
-      <TxSuccessNotification title="Purchase Confirmation">
-        <Box className="row">
-          <Typography>SHIBA purchased:</Typography>
-          <Typography>0.74</Typography>
-        </Box>
-        <Box className="row">
-          <Typography>TON Paid: </Typography>
-          <Typography>20</Typography>
-        </Box>
-      </TxSuccessNotification>
-    );
-  }, [srcTokenAmount, destTokenAmount, selectedToken]);
+
 
   useTokenFromParams();
 
@@ -60,7 +41,6 @@ const Buy = () => {
 
   return (
     <TokenOperations
-      successMessage={successMessage}
       icon={<SouthRoundedIcon />}
       getTxRequest={getTxRequest}
       getAmountFunc={API.getAmountsOut}
@@ -74,7 +54,6 @@ const Buy = () => {
       actionCategory={ActionCategory.SWAP}
       actionType={ActionType.BUY}
       gasFee={API.GAS_FEE.SWAP}
-      getNotification={getNotification}
     />
   );
 };
