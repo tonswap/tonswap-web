@@ -6,6 +6,7 @@ import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
+import { InInput } from "store/token-operations/reducer";
 import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
 import { calculateTokens } from "./util";
@@ -22,10 +23,15 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     totalBalances,
     destLoading,
     destAvailableAmountLoading,
+    inInput
   } = useTokenOperationsStore();
 
-  const { updateDestTokenAmount, updateSrcTokenAmount, updateSrcTokenLoading } =
-    useTokenOperationsActions();
+  const {
+    updateDestTokenAmount,
+    updateSrcTokenAmount,
+    updateSrcTokenLoading,
+    onInputChange,
+  } = useTokenOperationsActions();
 
   const balanceRef = useRef("");
   const debounce = useDebouncedCallback(async () => {
@@ -63,6 +69,7 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
 
   const onChange = (value: string) => {
     updateDestTokenAmount(value);
+    onInputChange(InInput.DEST);
     balanceRef.current = value;
     if (!value) {
       updateSrcTokenLoading(false);
@@ -73,16 +80,23 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
     }
   };
 
+  useEffect(() => {
+    if (destTokenAmount && inInput === InInput.DEST) {
+       onChange(destTokenAmount);
+    }
+  }, []);
+
+
   return (
-    <div style={{marginBottom: 35}}>
-       <SwapCard
-      isLoading={destLoading}
-      onChange={onChange}
-      inputAmount={destTokenAmount}
-      token={token}
-      balance={totalBalances.destBalance}
-      balanceLoading={destAvailableAmountLoading}
-    />
+    <div style={{ marginBottom: 35 }}>
+      <SwapCard
+        isLoading={destLoading}
+        onChange={onChange}
+        inputAmount={destTokenAmount}
+        token={token}
+        balance={totalBalances.destBalance}
+        balanceLoading={destAvailableAmountLoading}
+      />
     </div>
   );
 }

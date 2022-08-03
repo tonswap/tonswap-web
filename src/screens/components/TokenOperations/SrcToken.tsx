@@ -6,6 +6,7 @@ import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
+import { InInput } from "store/token-operations/reducer";
 import { useWalletStore } from "store/wallet/hooks";
 import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
@@ -28,6 +29,7 @@ const SrcToken = ({
     totalBalances,
     srcLoading,
     srcAvailableAmountLoading,
+    inInput
   } = useTokenOperationsStore();
 
   const { address } = useWalletStore();
@@ -35,6 +37,7 @@ const SrcToken = ({
     updateDestTokenAmount,
     updateSrcTokenAmount,
     updateDestTokenLoading,
+    onInputChange
   } = useTokenOperationsActions();
 
   const balanceRef = useRef("");
@@ -75,6 +78,7 @@ const SrcToken = ({
 
   const onChange = (value: string) => {
     updateSrcTokenAmount(value);
+    onInputChange(InInput.SOURCE)
     balanceRef.current = value;
 
     if (!value || Number(value) === 0) {
@@ -87,8 +91,8 @@ const SrcToken = ({
   };
 
   useEffect(() => {
-    if (srcTokenAmount) {
-      onChange(srcTokenAmount);
+    if (srcTokenAmount && inInput === InInput.SOURCE) {
+       onChange(srcTokenAmount);
     }
   }, []);
 

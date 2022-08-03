@@ -13,6 +13,11 @@ interface TxConfirmation {
   srcTokenAmount: string;
   tokenName?: string;
 }
+
+export enum InInput {
+  SOURCE,
+  DEST
+} 
 interface State {
   txPending: boolean;
   txError?: string;
@@ -30,9 +35,11 @@ interface State {
   operationType: OperationType;
   selectedToken?: PoolInfo;
   txConfirmation: TxConfirmation;
+  inInput: InInput,
 }
 
 const initialState: State = {
+  inInput: InInput.SOURCE,
   txSuccess: false,
   txPending: false,
   txConfirmation: {
@@ -59,6 +66,10 @@ const WalletOperationSlice = createSlice({
     resetState: () => initialState,
     setOperationType(state, action: PayloadAction<OperationType>) {
       state.operationType = action.payload;
+    },
+    setInInput(state, action:  PayloadAction<InInput> ) {
+      state.inInput = action.payload
+
     },
     resetAmounts(state) {
       state.destTokenAmount = "";
@@ -96,6 +107,7 @@ const WalletOperationSlice = createSlice({
 
       state.destTokenAmount = stateCopy.srcTokenAmount;
       state.srcTokenAmount = stateCopy.destTokenAmount;
+      state.inInput = state.inInput === InInput.DEST ? InInput.SOURCE  : InInput.DEST
       state.totalBalances = {
         srcBalance: stateCopy.totalBalances.destBalance,
         destBalance: stateCopy.totalBalances.srcBalance,
@@ -147,7 +159,8 @@ export const {
   setOperationType,
   setSelectedToken,
   setTxError,
-  onSuccessModalClose
+  onSuccessModalClose,
+  setInInput
 } = WalletOperationSlice.actions;
 
 export default WalletOperationSlice.reducer;

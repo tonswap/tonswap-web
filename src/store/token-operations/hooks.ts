@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from "router/routes";
 import { RootState } from "store/store";
 import {
+  InInput,
   onSuccessModalClose,
   OperationType,
   resetAmounts,
@@ -10,6 +11,7 @@ import {
   resetState,
   setDestLoading,
   setDestTokenAmount,
+  setInInput,
   setOperationType,
   setSelectedToken,
   setSrcLoading,
@@ -42,6 +44,7 @@ export const useTokenOperationsActions = (): {
   sendTransaction: (txMethod: () =>  Promise<void>) => void;
   hideTxError: () => void;
   closeSuccessModal: () => void;
+  onInputChange: (inInput :InInput) => void;
 } => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigateWithParams();
@@ -138,6 +141,15 @@ export const useTokenOperationsActions = (): {
     [dispatch]
   );
 
+
+  const onInputChange = useCallback(
+    (inInput: InInput) => {
+      dispatch(setInInput(inInput))
+    },
+    [dispatch],
+  )
+  
+
   const selectToken = useCallback(
     (token?: PoolInfo) => {
       dispatch(setSelectedToken(token));
@@ -160,6 +172,7 @@ export const useTokenOperationsActions = (): {
     selectToken,
     sendTransaction,
     hideTxError,
-    closeSuccessModal
+    closeSuccessModal,
+    onInputChange
   };
 };
