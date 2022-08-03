@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.b330f3c3.css",
-    "main.js": "/static/js/main.99cfed44.js",
+    "main.css": "/static/css/main.efc33db8.css",
+    "main.js": "/static/js/main.a98429a3.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/KittyKorn.png": "/static/media/KittyKorn.83ef687abf466525d57a.png",
     "static/media/DinoKorn.png": "/static/media/DinoKorn.c9079598e12f9ad5d71f.png",
@@ -9,6 +9,7 @@
     "static/media/shiba.svg": "/static/media/shiba.46c0290735efcd7495b3df2b2c2629ae.svg",
     "static/media/usdc.svg": "/static/media/usdc.457fb8e05803cd3f316c391f996df8c0.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
+    "static/media/success.svg": "/static/media/success.79a5c2f6fcc496326c3a8261c4463432.svg",
     "static/media/ton.svg": "/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
     "index.html": "/index.html",
     "static/media/telegram.svg": "/static/media/telegram.283c3956d6fb1304a3e1d22368de0480.svg",
@@ -18,15 +19,16 @@
     "static/media/btc1.svg": "/static/media/btc1.0e1fa97493493367f45a929fcc9bb170.svg",
     "static/media/usdt.svg": "/static/media/usdt.0199d80a8c0ddcd912b0973eaa2dd243.svg",
     "static/media/eth1.svg": "/static/media/eth1.f827adddcf99941a48898b6adf11dcf1.svg",
+    "static/media/close.svg": "/static/media/close.bae43592c70f403d963844498955fc8e.svg",
     "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
     "static/media/minus.svg": "/static/media/minus.f99e765f4bb101567ef1728f3e96bed1.svg",
     "static/media/plus.svg": "/static/media/plus.2a8a52422dc079ab8aa71a825fe41e4e.svg",
     "static/media/ton-keeper.svg": "/static/media/ton-keeper.f7cdf8d79dcbbe8ba7f90303e67892dc.svg",
-    "main.b330f3c3.css.map": "/static/css/main.b330f3c3.css.map",
-    "main.99cfed44.js.map": "/static/js/main.99cfed44.js.map"
+    "main.efc33db8.css.map": "/static/css/main.efc33db8.css.map",
+    "main.a98429a3.js.map": "/static/js/main.a98429a3.js.map"
   },
   "entrypoints": [
-    "static/css/main.b330f3c3.css",
-    "static/js/main.99cfed44.js"
+    "static/css/main.efc33db8.css",
+    "static/js/main.a98429a3.js"
   ]
 }
