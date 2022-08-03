@@ -161,6 +161,16 @@ export async function tokenToMinter(token: string) {
   return (await getToken(client, token, getOwner())).ammMinter;
 }
 
+// TODO move to contract so the contract will know what is fee
+function getAmountIn(amountOut: BN,  reserveIn : BN,  reserveOut: BN): BN {
+  let numerator = reserveIn.mul(amountOut).mul( new BN(1000));
+  let  denominator = reserveOut.sub(amountOut).mul(new BN(997));
+  let ret = numerator.div(denominator).add(new BN(1));
+  console.log('getAmountIn',ret.toString());
+  return ret;
+  
+}
+
 export const getAmountsOut = async (
   token: string,
   isSourceToken: boolean,
@@ -182,6 +192,7 @@ export const getAmountsOut = async (
         tokenData.tonReserves
       );
     } else {
+      
       return getAmountOut(
         Address.parse(tokenAmm!!),
         amountIn,
@@ -194,12 +205,7 @@ export const getAmountsOut = async (
     // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
     const amountIn = destAmount || new BN(0);
     if (!isSourceToken) {
-      return getAmountOut(
-        Address.parse(tokenAmm!!),
-        amountIn,
-        tokenData.tokenReserves,
-        tokenData.tonReserves
-      );
+      return getAmountIn(new BN(amountIn), tokenData.tonReserves, tokenData.tokenReserves)
     } else {
       return getAmountOut(
         Address.parse(tokenAmm!!),
@@ -391,12 +397,10 @@ export const generateBuyLink = async (
   let transfer = await DexActions.swapTon(
     toNano(tonAmount),
     toNano(tokenAmount).mul(new BN(995)).div(new BN(1000))
-  );
-  const boc64 = transfer.toBoc().toString("base64");
-  const tokenObjects = await getToken(client, token, getOwner());
-  const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
-  console.log({generateBuyLink: token, tonAmount});
-  
+    );
+    const boc64 = transfer.toBoc().toString("base64");
+    const tokenObjects = await getToken(client, token, getOwner());
+    const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
   return sendTransaction(Address.parse(tokenObjects.ammMinter!!), value, boc64);
 };
 
