@@ -16,9 +16,7 @@ export class TonhubWalletAdapter
   createSession(): Promise<TonhubCreatedSession> {
     const { location } = document;
     const url = `${location.protocol}//${location.host}`
-    console.log(location, url  );
     
-
     return this.tonhubConnector.createNewSession({
       name: APP_NAME,
       url,
