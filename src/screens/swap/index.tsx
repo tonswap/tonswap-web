@@ -69,4 +69,4 @@ function SwapScreen() {
   );
 }
 
-export { SwapScreen };
+export default SwapScreen

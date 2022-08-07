@@ -53,16 +53,10 @@ const App = () => {
   useWebAppResize();
 
 
-  useEffect(() => {
-    if(telegramWebApp.isInFrame()){
-      alert('in frame')
-    }
-  }, [])
-  
-
   useEffectOnce(() => {
     restoreSession();
   });
+  
 
   return (
     <>

@@ -6,14 +6,12 @@ try {
 }
 
 
+ 
 
-const isInFrame = () =>{
-  return (window as any).Telegram.WebView.isIframe
-}
+
 
 const telegramWebApp = {
   webapp,
-  isInFrame
 };
 
 export { telegramWebApp };

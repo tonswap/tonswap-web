@@ -87,4 +87,5 @@ function ManageLiquidityScreen() {
   );
 }
 
-export { ManageLiquidityScreen };
+export default ManageLiquidityScreen
+
