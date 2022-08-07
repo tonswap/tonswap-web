@@ -49,13 +49,13 @@ export function useWebAppResize() {
   useEffect(() => {
     
     const onChange = () => {
-      dispatch(setExpandedView(telegramWebApp.provider.isExpanded));
+      dispatch(setExpandedView(telegramWebApp.webapp.isExpanded));
     };
-    dispatch(setExpandedView(telegramWebApp.provider.isExpanded));
-    telegramWebApp.provider.onEvent("viewportChanged", onChange);
+    dispatch(setExpandedView(telegramWebApp.webapp.isExpanded));
+    telegramWebApp.webapp.onEvent("viewportChanged", onChange);
 
     return () => {
-      telegramWebApp.provider.offEvent("viewportChanged", onChange);
+      telegramWebApp.webapp.offEvent("viewportChanged", onChange);
     };
   }, []);
 }
