@@ -5,7 +5,13 @@ import ContentLoader from "components/ContentLoader";
 import { COMING_SOON } from "consts";
 import useUsdValue from "hooks/useUsdValue";
 import { PoolInfo } from "services/api/addresses";
-import { StyledImage, StyledToken, StyledTokenTexts, StyledUsdValue, useStyles } from "./styles";
+import {
+  StyledImage,
+  StyledToken,
+  StyledTokenTexts,
+  StyledUsdValue,
+  useStyles,
+} from "./styles";
 
 interface Props {
   token: PoolInfo;
@@ -14,8 +20,12 @@ interface Props {
 
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
-  const amount = token.isDisabled ? '0' : '1';
-  const { loading, usd } = useUsdValue(token.tokenMinter!, amount, 0);
+  const { loading, usd } = useUsdValue(
+    token.tokenMinter!,
+    "1",
+    0,
+    token.isDisabled
+  );
 
   return (
     <StyledToken
@@ -35,14 +45,12 @@ const ListToken = ({ token, onSelect }: Props) => {
         <Typography className="name">{token.name}</Typography>
       </StyledTokenTexts>
       <StyledUsdValue>
-        {token.isDisabled ? null : loading ? (
+        {loading ? (
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
-
           <Typography>
             <BigNumberDisplay prefix="$" value={usd} decimalScale={7} />
-            {/* {`$${parseFloat(usd).toFixed(6)}`} */}
-            </Typography>
+          </Typography>
         )}
       </StyledUsdValue>
     </StyledToken>

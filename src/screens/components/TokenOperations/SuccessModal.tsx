@@ -8,6 +8,7 @@ import {
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
 import SuccessIcon from "assets/images/shared/success.svg";
+import BigNumberDisplay from "components/BigNumberDisplay";
 interface Props {
   actionType: ActionType;
 }
@@ -23,11 +24,15 @@ function SuccessModal({ actionType }: Props) {
           <Container title="Purchase Confirmation">
             <Box className="row">
               <Typography>{txConfirmation.tokenName} Purchased</Typography>
-              <Typography>{txConfirmation.destTokenAmount}</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.destTokenAmount} />
+              </Typography>
             </Box>
             <Box className="row">
               <Typography>TON Paid </Typography>
-              <Typography>{txConfirmation.srcTokenAmount}</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
+              </Typography>
             </Box>
           </Container>
         );
@@ -36,37 +41,51 @@ function SuccessModal({ actionType }: Props) {
           <Container title="Purchase Confirmation">
             <Box className="row">
               <Typography>{txConfirmation.tokenName} Sold</Typography>
-              <Typography>{txConfirmation.srcTokenAmount}</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.srcTokenAmount} />{" "}
+              </Typography>
             </Box>
             <Box className="row">
               <Typography>TON Received </Typography>
-              <Typography>{txConfirmation.destTokenAmount}</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.destTokenAmount} />
+              </Typography>
             </Box>
           </Container>
         );
       case ActionType.REMOVE_LIQUIDITY:
         return (
-          <Container title="Purchase Confirmation">
+          <Container title="Liquidity Removed">
             <Box className="row">
-              <Typography>SHIBA purchased</Typography>
-              <Typography>0.74</Typography>
+              <Typography>
+                Ton removed from pool
+              </Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
+              </Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid </Typography>
-              <Typography>20</Typography>
+              <Typography>{txConfirmation.tokenName} removed from pool</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.destTokenAmount} />
+              </Typography>
             </Box>
           </Container>
         );
       case ActionType.ADD_LIQUIDITY:
         return (
-          <Container title="Purchase Confirmation">
+          <Container title="Liquidity Added">
             <Box className="row">
-              <Typography>SHIBA purchased</Typography>
-              <Typography>0.74</Typography>
+              <Typography>Ton added to pool </Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
+              </Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid </Typography>
-              <Typography>20</Typography>
+              <Typography>{txConfirmation.tokenName} added to pool</Typography>
+              <Typography>
+                <BigNumberDisplay value={txConfirmation.destTokenAmount} />
+              </Typography>
             </Box>
           </Container>
         );
@@ -122,7 +141,7 @@ const StyledChildren = styled(Box)({
   display: "flex",
   flexDirection: "column",
   gap: 13,
-  width: '100%',
+  width: "100%",
 });
 
 const StyledContainer = styled(Box)({
@@ -130,24 +149,25 @@ const StyledContainer = styled(Box)({
   flexDirection: "column",
   gap: 19,
   alignItems: "center",
-  width: '100%',
+  width: "100%",
 
   "& *": {
     color: "black",
   },
- 
-  "& p": {
-    fontSize: 14,
-  },
+
+
   "& .row": {
     display: "flex",
-    gap: 20,
+    gap: 40,
     background: "#EEEEEE",
     borderRadius: 12,
     height: 49,
-    width:'100%',
-    alignItems:'center',
-    justifyContent:'space-between',
-    padding: '0px 20px'
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "0px 20px",
+    "& p": {
+      fontSize: 14,
+    },
   },
 });

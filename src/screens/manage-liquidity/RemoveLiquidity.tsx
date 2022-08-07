@@ -8,8 +8,7 @@ import { ton } from "services/api/addresses";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
-import { useCallback } from "react";
-
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 
 const RemoveLiquidity = () => {
@@ -37,7 +36,7 @@ const RemoveLiquidity = () => {
 
   return (
     <TokenOperations
-      icon={<SvgIcon component={Minus} viewBox="0 0 13 22" />}
+      icon={<RemoveRoundedIcon />}
       getTxRequest={getTxRequest}
       getAmountFunc={API.getLiquidityAmount}
       getBalances={getBalances}

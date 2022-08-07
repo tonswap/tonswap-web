@@ -9,6 +9,7 @@ import UsdAmount from "./UsdAmount";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useApplicationStore, useIsExpandedView } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
+import { useWalletStore } from "store/wallet/hooks";
 interface Props {
   inputAmount?: string;
   balance: string;
@@ -33,6 +34,8 @@ function SwapCard({
   const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
   const { operationType } = useApplicationStore();
+  const {address} = useWalletStore()
+
   const isTon = token.name === ton.name;
 
   const onTokenSelect = () => {
@@ -71,7 +74,8 @@ function SwapCard({
         </StyledInput>
 
         <StyledBottom>
-          <UsdAmount
+         {address && <>
+         <UsdAmount
             isLoading={isLoading}
             value={inputAmount}
             tokenId={token.tokenMinter}
@@ -83,6 +87,7 @@ function SwapCard({
             onMaxAmountClick={onMaxAmount}
             showMax={showMax}
           />
+         </>}
         </StyledBottom>
       </div>
     </StyledContainer>

@@ -1,11 +1,22 @@
 import BN from "bn.js";
 import * as API from "services/api";
-import { ActionType } from "services/wallets/types";
-import store from "store/store";
 
-const getUsdAmount = async (tokenId: string, amount: string) => {
+
+const getUsdAmount = async (
+  tokenId: string,
+  amount: string,
+  disabled?: boolean
+) => {
+  let result;
   try {
-    const result = await API.getTokenDollarValue(tokenId, amount);
+    if (disabled) {
+      result = await API.fetchDisabledTokensPrice(tokenId);
+    } else {
+      result = await API.getTokenDollarValue(tokenId, amount);
+    }
+    
+    console.log(result);
+    
 
     return result;
   } catch (error) {
@@ -23,7 +34,7 @@ const calculateTokens = async (
   getAmountsFunc: any
 ) => {
   console.log(tokenName);
-  
+
   if (srcAmount != null) {
     const amount = await getAmountsFunc(
       tokenName,
@@ -43,7 +54,5 @@ const calculateTokens = async (
     return amount;
   }
 };
-
-
 
 export { getUsdAmount, calculateTokens };
