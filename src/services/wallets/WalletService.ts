@@ -41,7 +41,7 @@ export class WalletService {
 
 export const walletService = new WalletService();
 
-const tonhubConnector = new TonhubConnector({ testnet: IS_TESTNET });
+const tonhubConnector = new TonhubConnector({ network: IS_TESTNET ? "sandbox": "mainnet" });
 
 walletService.registerAdapter(Adapters.TON_HUB, new TonhubWalletAdapter(tonhubConnector));
 walletService.registerAdapter(Adapters.TON_WALLET, new TonWalletWalletAdapter());
