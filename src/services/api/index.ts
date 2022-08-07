@@ -272,11 +272,13 @@ export async function getTokenData(jettonAddress: Address) {
     if (uri.length == 2) {
       throw "onchain data";
     }
-    let metadataRes = await fetch(uri);
+    let metadataRes = await fetch(uri.replace("ipfs://", "https://ipfs.io/ipfs/"));
     metadata = await metadataRes.json();
   } catch (e) {
     metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
   }
+
+  metadata.image = metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/");
 
   return {
     owner,
