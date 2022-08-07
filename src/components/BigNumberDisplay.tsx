@@ -6,6 +6,7 @@ interface Props {
   prefix?: string;
 }
 function BigNumberDisplay({ value, decimalScale = 4, prefix }: Props) {
+  
   return value ? <NumberFormat 
   prefix = {prefix}
   displayType="text" value={value} thousandSeparator={true} decimalScale={decimalScale} /> : <>0</>

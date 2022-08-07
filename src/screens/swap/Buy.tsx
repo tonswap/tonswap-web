@@ -3,12 +3,8 @@ import TokenOperations from "screens/components/TokenOperations";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import { ton } from "services/api/addresses";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { useTokensStore } from "store/tokens/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
-import { Typography } from "@mui/material";
-import { useCallback, useMemo } from "react";
-import { Box } from "@mui/system";
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =

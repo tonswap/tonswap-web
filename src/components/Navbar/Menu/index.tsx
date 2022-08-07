@@ -7,10 +7,10 @@ import { useStyles } from "./style";
 import { ROUTES } from "router/routes";
 import { ActionButton } from "components/ActionButton";
 import { styled } from "@mui/system";
-import { COMING_SOON, isDebug } from "consts";
+import { COMING_SOON, isDebug, SUPPORT } from "consts";
 import Socials from "components/Socials";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
-
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 const StyledActions = styled(Box)({
   display: "flex",
   marginTop: 40,
@@ -74,6 +74,12 @@ function Menu({ open, hide }: Props) {
   };
 
 
+  const onSupport = () => {
+    hide();
+    window.open(SUPPORT, '_blank')
+  }
+
+
 
   return (
     <Drawer anchor="left" open={open} onClose={hide}>
@@ -105,6 +111,10 @@ function Menu({ open, hide }: Props) {
           <ActionButton customClassName={isDebug() ? '' :  "coming-soon"} onClick={onCreatePool}>
             Create New Pool 
             <small>{COMING_SOON}</small>
+          </ActionButton>
+          <ActionButton onClick={onSupport}>
+            <HelpOutlineRoundedIcon />
+            Support
           </ActionButton>
         </StyledActions>
         <StyledSocials>

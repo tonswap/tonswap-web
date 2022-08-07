@@ -28,6 +28,8 @@ export const COMING_SOON = '(coming soon)'
 export const GITHUB = 'https://github.com/tonswap'
 export const TELEGRAM = 'https://t.me/tonswap'
 
+export const SUPPORT = 'https://t.me/TonSwapCommunity'
+
 export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 
 
@@ -36,3 +38,6 @@ export const BETA_TEXT = 'TonSwap is in Beta, use at your own risk'
 export const isDebug = () => getParamsFromUrl('debug')
 
 export const DECIMALS_LIMIT = 9
+
+
+export const BASE_ERROR_MESSAGE = 'Oops, something went wrong'

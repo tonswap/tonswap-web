@@ -7,6 +7,7 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import BN from "bn.js";
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -65,7 +66,7 @@ const AddLiquidity = () => {
 
   return (
     <TokenOperations
-      icon={<SvgIcon component={Plus} viewBox="0 0 13 22" />}
+      icon={<AddRoundedIcon />}
       getAmountFunc={getAmountOut}
       getBalances={getBalances}
       srcToken={ton}

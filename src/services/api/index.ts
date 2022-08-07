@@ -4,7 +4,7 @@ import { DexActions } from "./dex";
 import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
+import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 import store from "store/store";
@@ -358,6 +358,18 @@ export const getTokenDollarValue = async (
   return fromNano(tonPriceWithAmount.mul(toNano(ratio)).div(new BN(1e9)));
 };
 
+
+
+export const fetchDisabledTokensPrice = async (name: string) => {
+  const coinsResponse = await fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
+  );
+  
+ const result = await  coinsResponse.json();
+    
+ return result[name].usd
+} 
+
 let tonPrice = 0;
 
 async function fetchPrice() {
@@ -476,13 +488,13 @@ export async function waitForSeqno(wallet: Wallet) {
   const seqnoBefore = await wallet.getSeqNo();
 
   return async () => {
-    for (let attempt = 0; attempt < 25; attempt++) {
+    for (let attempt = 0; attempt < 20; attempt++) {
       await delay(3000);
       const seqnoAfter = await wallet.getSeqNo();
       
       if (seqnoAfter > seqnoBefore) return;
     }
-    throw new Error("Timeout");
+    throw new Error(BASE_ERROR_MESSAGE);
   };
 }
 

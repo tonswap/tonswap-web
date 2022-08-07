@@ -15,7 +15,6 @@ import useNotification from "hooks/useNotification";
 import { StyledContainer } from "./styles";
 import SearchInput from "./SearchInput";
 import useContractPolling from "hooks/useContractPolling";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useTokensActions } from "store/tokens/hooks";
 import { useWalletStore } from "store/wallet/hooks";
@@ -40,7 +39,7 @@ const StyledContent = styled(Box)({
  function CreatePool() {
   
   const [jettonAddress, setJettonAddress] = useState("");
-  const [tokenBalance, setTokenBalance] = useState<number | undefined>();
+  const [tokenBalance, setTokenBalance] = useState<string | undefined>();
   const [txLoading, setTxLoading] = useState(false);
   const [getTokenLoading, setGetTokenLoading] = useState(false);
   const [tokenData, setTokenData] = useState<jettonData | undefined>();
@@ -77,12 +76,11 @@ const StyledContent = styled(Box)({
           futureAddress.toFriendly(),
           address.toFriendly(),
           jettonData
-        );
-
-        navigate(`${ROUTES.pool.base}/${futureAddress.toFriendly()}`);
+        );          
+        navigate(`${ROUTES.manageLiquidity.navigateToAddLiquidity.replace(':id', futureAddress.toFriendly())}`);
       } else {
         const jd = await getTokenBalanceByMinter(address);
-        let balance = parseFloat(fromNano(jd.balance.toString()));
+        let balance = fromNano(jd.balance)
         setTokenData(jettonData);
         setTokenBalance(balance);
         setGetTokenLoading(false);
@@ -150,7 +148,8 @@ const StyledContent = styled(Box)({
           variant: "success",
         });
         setTxLoading(false);
-        navigate(`${ROUTES.pool.base}/${tx.to}`);
+        
+        navigate(`${ROUTES.manageLiquidity.navigateToAddLiquidity.replace(':id', tx.to)}`);
       };
 
       const onTimeout = () => {
@@ -197,7 +196,7 @@ const StyledContent = styled(Box)({
 }
 
 interface TokenDetailsProps {
-  tokenBalance?: number;
+  tokenBalance?: string;
   tokenData: jettonData;
 }
 

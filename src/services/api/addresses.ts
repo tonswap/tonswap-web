@@ -30,36 +30,6 @@ export type PoolInfoRaw = {
   name: string;
 };
 
-// const SandBoxPools: { [key: string]: PoolInfo } = {
-//   luna: {
-//     name: "luna",
-//     displayName: "LUNA",
-//     image: KittyKorn,
-//     color: "#FFA40A",
-//     ammMinter: Address.parse(
-//       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
-//     ),
-//     tokenMinter: Address.parse(
-//       "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
-//     ),
-//   },
-// };
-
-// const TestNetPools: { [key: string]: PoolInfo } = {
-//   kit: {
-//     name: "kit",
-//     ammMinter: Address.parse(
-//       "EQBVkqmt206sSMkCr5yUgIHUPjEKnvI4UpHh__QUIbeMRHuH"
-//     ),
-//     displayName: "KIT",
-//     image: KittyKorn,
-//     color: "#FFA40A",
-//     tokenMinter: Address.parse(
-//       "EQCDEwcaliIbTcV13eLMfvZ3QAXaIGv9v4mxZbFKYCPRmh8B"
-//     ),
-//   },
-// };
-
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
   "EQAElpFC6AMzjYTFrSX-HntDvRK9C6em1X_pUhcdamCCVjv4": {
     name: "KittyCoin for TonSwap tests",
@@ -83,8 +53,8 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: Usdc,
     color: "#055fa6",
     isDisabled: true,
-    tokenMinter: 'USD Stable Coin',
-    ammMinter: 'USD Stable Coin'
+    tokenMinter: 'usd-coin',
+    ammMinter: 'usd-coin'
   },
   "Wrapped Bitcoin on TON": {
     name: "Wrapped Bitcoin on TON",
@@ -92,8 +62,8 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: Btc,
     color: "#E17E06",
     isDisabled: true,
-    tokenMinter: 'Wrapped Bitcoin on TON',
-    ammMinter: 'Wrapped Bitcoin on TON'
+    tokenMinter: 'bitcoin',
+    ammMinter: 'bitcoin'
   },
   "Wrapped Ether on TON": {
     name: "Wrapped Ether on TON",
@@ -101,8 +71,8 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image: Eth,
     color: "#5f73c2",
     isDisabled: true,
-    tokenMinter: 'Wrapped Ether on TON',
-    ammMinter: 'Wrapped Bitcoin on TON'
+    tokenMinter: 'ethereum',
+    ammMinter: 'ethereum'
   },
 };
 
