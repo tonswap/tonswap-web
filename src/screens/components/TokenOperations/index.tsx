@@ -23,9 +23,9 @@ import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
 import SuccessModal from "./SuccessModal";
-import useTxError from "./useTxError";
 import useTxSuccessMessage from "./useTxSuccessMessage";
 import useValidation from "./useValidation";
+import TxError from "./TxError";
 
 interface Props {
   srcToken: PoolInfo;
@@ -62,7 +62,6 @@ const TokenOperations = ({
   const { address, adapterId, session } = useWalletStore();
   
 
-  useTxError();
   const successMessage = useTxSuccessMessage(actionType);
   const { insufficientFunds, disabled, maxAmount } = useValidation(
     actionType,
@@ -106,6 +105,7 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions>
+      <TxError />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box

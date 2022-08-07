@@ -3,7 +3,6 @@ import { Box, styled } from "@mui/system";
 import { Popup } from "components";
 import { ReactNode, useCallback } from "react";
 import { ActionType } from "services/wallets/types";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import {
   useTokenOperationsActions,
   useTokenOperationsStore,
