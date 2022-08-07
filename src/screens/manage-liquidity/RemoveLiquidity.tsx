@@ -13,7 +13,7 @@ import { useCallback } from "react";
 
 
 const RemoveLiquidity = () => {
-  const { srcTokenAmount, destTokenAmount, selectedToken } = useTokenOperationsStore();
+  const { srcTokenAmount, selectedToken } = useTokenOperationsStore();
 
   const getTxRequest = () => {
     return API.generateRemoveLiquidityLink(

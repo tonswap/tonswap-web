@@ -69,14 +69,15 @@ export const getTokensOfLPBalances = async (token: string) => {
   if (lpBalance.balance.toString() === "0") {
     return [fromNano("0"), fromNano("0")];
   }
-  const tonSide2 = lpBalance.balance
+  const tonSide = lpBalance.balance
     .mul(jettonData.tonReserves)
     .div(jettonData.totalSupply);
-  const tokenSide2 = lpBalance.balance
+    
+  const tokenSide = lpBalance.balance
     .mul(jettonData.tokenReserves)
     .div(jettonData.totalSupply);
 
-  return [fromNano(tonSide2), fromNano(tokenSide2)];
+  return [fromNano(tonSide), fromNano(tokenSide)];
 };
 
 function getOwner() {
@@ -95,7 +96,7 @@ export async function _getJettonBalance(
 ) {
   try {
     console.log(
-      `fetching wallet_data from jettonWallet ${jettonWallet.toFriendly()}`
+      `_getJettonBalance::  jettonWallet at ${jettonWallet.toFriendly()}`
     );
 
     let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
@@ -308,8 +309,6 @@ export const getLiquidityAmount = async (
       tonReserves
     )}`
   );
-
-  // return muldiv(amount_a, reserve_b, reserve_a);
 
   if (srcToken === "ton") {
     if (srcAmount != null) {
