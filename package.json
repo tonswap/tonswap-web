@@ -39,7 +39,6 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "redux-persist": "^6.0.0",
-    "sass": "^1.49.9",
     "setimmediate": "^1.0.5",
     "stream-browserify": "^3.0.0",
     "ton": "^11.15.0",
@@ -54,7 +53,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build && cp build/index.html build/404.html",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "deploy-staging": "git push heroku master"
   },
   "eslintConfig": {
     "extends": [
