@@ -22,6 +22,8 @@ const SNAKE_PREFIX = 0x00;
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;
 
+const AMM_VERSION = "1";
+
 export type JettonMetaDataKeys =
   | "name"
   | "description"
@@ -67,7 +69,7 @@ const META_DATA_DEFUALT = {
 export async function poolStateInit(jettonMinter: Address, workchain: number) {
  // const jettonData = await getTokenData(jettonMinter);
   let metadata = {
-      name: `LP-${jettonMinter.toFriendly()}`,
+      name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
       ...META_DATA_DEFUALT,
   };
   const { codeCell, initDataCell } = buildStateInit(metadata);
