@@ -15,7 +15,6 @@ import useNotification from "hooks/useNotification";
 import { StyledContainer } from "./styles";
 import SearchInput from "./SearchInput";
 import useContractPolling from "hooks/useContractPolling";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { useTokensActions } from "store/tokens/hooks";
 import { useWalletStore } from "store/wallet/hooks";
