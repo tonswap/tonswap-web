@@ -158,6 +158,26 @@ async function getAmountOut(
   return hexToBn(res.stack[0][1]).toString();
 }
 
+
+
+async function getAmountIn2(
+  minterAddress: Address,
+  amountIn: BN,
+  reserveIn: BN,
+  reserveOut: BN
+) {
+  console.log(`GetAmountOut(amountIn), (reserveIn), (reserveOut)`);
+  console.log(amountIn.toString(), reserveIn.toString(), reserveOut.toString());
+
+  let res = await client.callGetMethod(minterAddress, "get_amount_in", [
+    ["num", amountIn.toString()],
+    ["num", reserveIn.toString()],
+    ["num", reserveOut.toString()],
+  ]);
+
+  return hexToBn(res.stack[0][1]).toString();
+}
+
 export async function tokenToMinter(token: string) {
   return (await getToken(client, token, getOwner())).ammMinter;
 }
@@ -190,12 +210,7 @@ export const getAmountsOut = async (
     // TODO
     const amountIn = srcAmount;
     if (isSourceToken) {
-      return getAmountOut(
-        Address.parse(tokenAmm!!),
-        amountIn,
-        tokenData.tokenReserves,
-        tokenData.tonReserves
-      );
+      return getAmountIn(new BN(amountIn), tokenData.tonReserves, tokenData.tokenReserves)
     } else {
       
       return getAmountOut(
