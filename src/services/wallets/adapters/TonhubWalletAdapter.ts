@@ -76,7 +76,7 @@ export class TonhubWalletAdapter
       value: request.value,
       timeout: request.timeout,
       stateInit: stateInitBuffer,
-      payload: request.payload,
+      payload: request.payload ? request.payload : new Cell().toBoc().toString("base64"),
     });
 
     if (response.type === "rejected") {
