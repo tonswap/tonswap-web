@@ -52,12 +52,12 @@ export class TonhubWalletAdapter
 
   async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
     
-    if(isMobile){
-      const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
-      window.location.href = link;
+    // if(isMobile){
+    //   const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
+    //   window.location.href = link;
      
-      return;
-    }
+    //   return;
+    // }
     const state = await this.tonhubConnector.getSessionState(session.id);
     
     if (state.state !== 'ready'){
