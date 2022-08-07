@@ -101,7 +101,7 @@ const getPool = async (
   };
 };
 
-const PoolScreen = observer(() => {
+const PoolScreen = () => {
   const navigate = useNavigateWithParams()
   const { id: ammMinter } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -201,7 +201,7 @@ const PoolScreen = observer(() => {
       </StyledContainer>
     </Fade>
   );
-});
+}
 
 interface TokenReservesProps {
   image?: string;
@@ -218,4 +218,4 @@ const TokenReserves = ({ image, name, reserves }: TokenReservesProps) => {
   );
 };
 
-export { PoolScreen };
+export  default PoolScreen

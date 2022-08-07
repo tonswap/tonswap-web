@@ -1,4 +1,4 @@
-export * from "./swap";
-export * from "./manage-liquidity";
-export * from "./CreatePool";
-export * from './pool'
+export {default as Swap} from "./swap";
+export {default as ManageLiquidity} from "./manage-liquidity";
+export {default as CreatePool} from "./CreatePool";
+export {default as Pool} from './pool'

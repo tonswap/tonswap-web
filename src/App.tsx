@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import { Box, Typography } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
@@ -6,13 +5,13 @@ import { BETA_TEXT, LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { styled } from "@mui/system";
 import { getParamsFromUrl } from "utils";
 import SelectWallet from "components/SelectWallet";
-import { useWalletActions, useWalletStore } from "store/wallet/hooks";
-import { useEffect, useRef } from "react";
+import { useWalletActions } from "store/wallet/hooks";
 import analytics from "services/analytics/ga";
 import { AppGrid } from "styles/styles";
-import { useParams } from "react-router-dom";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
+import { telegramWebApp } from "services/telegram";
+import { useEffect } from "react";
 analytics.init();
 
 const StyledAppContainer = styled(Box)({
@@ -53,9 +52,11 @@ const App = () => {
   const { restoreSession } = useWalletActions();
   useWebAppResize();
 
+
   useEffectOnce(() => {
     restoreSession();
   });
+  
 
   return (
     <>

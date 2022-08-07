@@ -1,9 +1,12 @@
 import SlidingMenu from "components/SlidingMenu";
+import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useCallback, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
+import { useApplicationActions } from "store/application/hooks";
+import { OperationType } from "store/application/reducer";
 import {
   useTokenOperationsActions,
   useTokenOperationsStore,
@@ -15,9 +18,16 @@ import Sell from "./Sell";
 function SwapScreen() {
   const { selectedToken } = useTokenOperationsStore();
   const { toggleBuyToSell, toggleSellToBuy } = useTokenOperationsActions();
+  const {onOperationTypeChange} = useApplicationActions()
   const navigate = useNavigateWithParams();
   const params = useParams();
   const action = getActionFromParams(params);
+
+  useEffectOnce(() => {
+    onOperationTypeChange(OperationType.SWAP)
+  })
+
+
 
   const menuItems = useMemo(
     () =>
@@ -69,4 +79,4 @@ function SwapScreen() {
   );
 }
 
-export { SwapScreen };
+export default SwapScreen

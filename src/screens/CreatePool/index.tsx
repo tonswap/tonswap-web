@@ -37,7 +37,7 @@ const StyledContent = styled(Box)({
   maxWidth: 400,
 });
 
-export function CreatePool() {
+ function CreatePool() {
   
   const [jettonAddress, setJettonAddress] = useState("");
   const [tokenBalance, setTokenBalance] = useState<number | undefined>();
@@ -230,3 +230,7 @@ const TokenDetails = ({ tokenBalance, tokenData }: TokenDetailsProps) => {
     </StyledTokenDetails>
   );
 };
+
+
+
+export default CreatePool

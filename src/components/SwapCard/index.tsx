@@ -4,12 +4,11 @@ import { ROUTES } from "router/routes";
 import { ton } from "tokens";
 import { styled, Box } from "@mui/system";
 import { Avatar, Typography } from "@mui/material";
-import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { OperationType } from "store/token-operations/reducer";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
-import { useIsExpandedView } from "store/application/hooks";
+import { useApplicationStore, useIsExpandedView } from "store/application/hooks";
+import { OperationType } from "store/application/reducer";
 interface Props {
   inputAmount?: string;
   balance: string;
@@ -33,13 +32,13 @@ function SwapCard({
 }: Props) {
   const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
-  const { operationType } = useTokenOperationsStore();
+  const { operationType } = useApplicationStore();
   const isTon = token.name === ton.name;
 
   const onTokenSelect = () => {
     if (isTon) {
       return;
-    }
+    }    
     if (operationType === OperationType.SWAP) {
       navigate(ROUTES.swap.navigateToTokens);
     } else {

@@ -3,11 +3,6 @@ import { PoolInfo } from "services/api/addresses";
 
 import { getAmounts, onSendTransaction } from "./actions";
 
-export enum OperationType {
-  SWAP,
-  MANAGE_LIQUIDITY,
-}
-
 interface TxConfirmation {
   destTokenAmount: string;
   srcTokenAmount: string;
@@ -32,7 +27,6 @@ interface State {
   srcTokenAmount: string;
   srcAvailableAmountLoading: boolean;
   destAvailableAmountLoading: boolean;
-  operationType: OperationType;
   selectedToken?: PoolInfo;
   txConfirmation: TxConfirmation;
   inInput: InInput,
@@ -56,7 +50,6 @@ const initialState: State = {
   destLoading: false,
   srcAvailableAmountLoading: false,
   destAvailableAmountLoading: false,
-  operationType: OperationType.SWAP,
 };
 
 const WalletOperationSlice = createSlice({
@@ -64,9 +57,7 @@ const WalletOperationSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
-    setOperationType(state, action: PayloadAction<OperationType>) {
-      state.operationType = action.payload;
-    },
+   
     setInInput(state, action:  PayloadAction<InInput> ) {
       state.inInput = action.payload
 
@@ -156,7 +147,6 @@ export const {
   setSrcTokenAmount,
   toggleAction,
   resetBalances,
-  setOperationType,
   setSelectedToken,
   setTxError,
   onSuccessModalClose,
