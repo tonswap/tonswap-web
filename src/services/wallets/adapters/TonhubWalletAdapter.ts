@@ -1,9 +1,7 @@
 import { APP_NAME } from 'consts';
-import { isMobile } from 'react-device-detect';
 import { ConfigStore } from 'ton';
 import { TonhubConnector } from 'ton-x';
 import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
-import { base64UrlEncode } from 'utils';
 import { TransactionRequest, Wallet, WalletAdapter } from '../types';
 
 const TONHUB_TIMEOUT = 5 * 60 * 1000;
