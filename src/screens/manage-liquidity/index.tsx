@@ -5,8 +5,9 @@ import { useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
-import { useTokenOperationsActions, useTokenOperationsStore } from "store/token-operations/hooks";
-import { OperationType } from "store/token-operations/reducer";
+import { useApplicationActions } from "store/application/hooks";
+import { OperationType } from "store/application/reducer";
+import {useTokenOperationsStore } from "store/token-operations/hooks";
 import { StyledTokenOperation } from "styles/styles";
 import { getActionFromParams } from "utils";
 import AddLiquidity from "./AddLiquidity";
@@ -15,10 +16,10 @@ import RemoveLiquidity from "./RemoveLiquidity";
 
 function ManageLiquidityScreen() {
   const { selectedToken } = useTokenOperationsStore();
-  const {onOperationTypeChange} = useTokenOperationsActions()
   const navigate = useNavigateWithParams()
   const params = useParams();
   const action = getActionFromParams(params);
+  const {onOperationTypeChange} = useApplicationActions()
 
 
   useEffectOnce(() => {

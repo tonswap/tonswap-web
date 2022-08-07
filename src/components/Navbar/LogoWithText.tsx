@@ -4,9 +4,10 @@ import { useStyles } from "./styles";
 import TonLogo from "assets/images/shared/ton-logo.svg";
 import { styled } from "@mui/system";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { OperationType } from "store/token-operations/reducer";
 import { ROUTES } from "router/routes";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
+import { useApplicationStore } from "store/application/hooks";
+import { OperationType } from "store/application/reducer";
 
 const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
@@ -21,8 +22,9 @@ const StyledText = styled(Typography)(({ theme }) => ({
 
 const LogoWithText = () => {
   const classes = useStyles();
-  const { operationType, selectedToken } = useTokenOperationsStore();
+  const {  selectedToken } = useTokenOperationsStore();
   const navigate = useNavigateWithParams();
+  const {operationType} = useApplicationStore()
 
   const onClick = () => {
     if (!selectedToken) {

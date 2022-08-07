@@ -5,14 +5,12 @@ import { RootState } from "store/store";
 import {
   InInput,
   onSuccessModalClose,
-  OperationType,
   resetAmounts,
   resetBalances,
   resetState,
   setDestLoading,
   setDestTokenAmount,
   setInInput,
-  setOperationType,
   setSelectedToken,
   setSrcLoading,
   setSrcTokenAmount,
@@ -39,7 +37,6 @@ export const useTokenOperationsActions = (): {
   toggleBuyToSell: () => void;
   toggleSellToBuy: () => void;
   clearStore: () => void;
-  onOperationTypeChange: (value: OperationType) => void;
   selectToken: (token?: PoolInfo) => void;
   sendTransaction: (txMethod: () =>  Promise<void>) => void;
   hideTxError: () => void;
@@ -125,12 +122,7 @@ export const useTokenOperationsActions = (): {
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
-  const onOperationTypeChange = useCallback(
-    (value: OperationType) => {
-      dispatch(setOperationType(value));
-    },
-    [dispatch]
-  );
+
 
   const sendTransaction = useCallback(
     (
@@ -168,7 +160,6 @@ export const useTokenOperationsActions = (): {
     toggleBuyToSell,
     toggleSellToBuy,
     clearStore,
-    onOperationTypeChange,
     selectToken,
     sendTransaction,
     hideTxError,

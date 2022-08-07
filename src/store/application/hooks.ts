@@ -4,8 +4,10 @@ import { telegramWebApp } from "services/telegram";
 import { RootState } from "store/store";
 import {
   ApplicationModal,
+  OperationType,
   setExpandedView,
   setOpenModal,
+  setOperationType,
   State,
 } from "./reducer";
 
@@ -58,4 +60,21 @@ export function useWebAppResize() {
       telegramWebApp.webapp.offEvent("viewportChanged", onChange);
     };
   }, []);
+}
+
+
+
+export const useApplicationActions = (): {
+  onOperationTypeChange: (value: OperationType) => void;
+} => {
+
+  const dispatch = useDispatch()
+  const onOperationTypeChange = useCallback(
+    (value: OperationType) => {      
+      dispatch(setOperationType(value));
+    },
+    [dispatch]
+  );
+
+  return {onOperationTypeChange}
 }
