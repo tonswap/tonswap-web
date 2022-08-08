@@ -161,11 +161,11 @@ const StyledContainer = styled(Box)({
     gap: 40,
     background: "#EEEEEE",
     borderRadius: 12,
-    height: 49,
+    minHeight: 49,
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "0px 20px",
+    padding: "10px 20px",
     "& p": {
       fontSize: 14,
     },
