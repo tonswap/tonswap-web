@@ -7,6 +7,7 @@ interface jettonData {
   name: string;
   image: string;
   balance: string;
+  symbol: string;
 }
 
 export type State = {

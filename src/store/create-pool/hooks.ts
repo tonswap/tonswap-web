@@ -85,6 +85,7 @@ export const useCreatePoolActions = (): {
             balance,
             name: jettonData.name,
             image: jettonData.image,
+            symbol: jettonData.symbol
           };
           dispatch(setTokenData(token));
         }
@@ -130,7 +131,7 @@ export const useCreatePoolActions = (): {
         ammMinter: tx.to,
         tokenMinter: jettonAddress,
         color: getRandomColor(),
-        displayName: tokenData.name.toUpperCase(),
+        displayName: tokenData.symbol.toUpperCase(),
         image: tokenData.image,
         isCustom: true,
       };
