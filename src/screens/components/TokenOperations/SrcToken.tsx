@@ -16,6 +16,7 @@ interface Props {
   destTokenName: string;
   getAmountFunc: any;
   maxAmount: string;
+  disableInputDependency?: boolean
 }
 
 const SrcToken = ({
@@ -23,6 +24,7 @@ const SrcToken = ({
   getAmountFunc,
   destTokenName,
   maxAmount,
+  disableInputDependency
 }: Props) => {
   const {
     srcTokenAmount,
@@ -78,6 +80,9 @@ const SrcToken = ({
 
   const onChange = (value: string) => {
     updateSrcTokenAmount(value);
+    if(disableInputDependency){
+      return 
+    }
     onInputChange(InInput.SOURCE)
     balanceRef.current = value;
 

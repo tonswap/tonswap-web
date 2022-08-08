@@ -55,6 +55,12 @@ function useValidation(
     }
 
     if (actionType === ActionType.REMOVE_LIQUIDITY) {
+      const srcError = toNanoSafe(srcTokenAmount).gt(toNanoSafe(totalBalances.destBalance));
+
+      const destError = toNanoSafe(destTokenAmount).gt(
+        toNanoSafe(totalBalances.destBalance)
+      );
+      insufficientFunds = srcError || destError;
     }    
 
     return {

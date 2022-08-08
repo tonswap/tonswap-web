@@ -38,7 +38,7 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
     <StyledContainer>
       {loading ? (
         <ContentLoader width={40} height={15} borderRadius="4px" />
-      ) : (
+      ) : availableAmount !== '0' ? (
         <>
           <Typography component="p" textAlign="right">
             <strong>Balance: </strong>
@@ -53,7 +53,7 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
            <Typography> MAX</Typography>
           </StyledMaxButton>}
         </>
-      )}
+      ) : null}
     </StyledContainer>
   );
 }

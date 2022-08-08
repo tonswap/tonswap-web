@@ -7,11 +7,16 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import BN from "bn.js";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { useEffect, useState } from "react";
+import { Address, fromNano } from "ton";
+import MainLoader from "components/MainLoader";
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
     useTokenOperationsStore();
+  const [haveReserves, setHaveReserves] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getTxRequest = () => {
     if (selectedToken) {
@@ -33,8 +38,6 @@ const AddLiquidity = () => {
       return;
     }
     let data = await API.getPoolInfo(selectedToken?.tokenMinter);
-    console.log({ data });
-
     if (
       data.tokenReserves.toString() == "0" &&
       data.tonReserves.toString() == "0"
@@ -51,6 +54,27 @@ const AddLiquidity = () => {
     return res;
   };
 
+  useEffect(() => {
+    if (selectedToken) {
+      const getTokenReserves = async () => {
+        try {
+          const res = await API.getPoolData(
+            Address.parse(selectedToken.ammMinter!!)
+          );
+          const tokenReserves = fromNano(res.tokenReserves);
+          const tonReserves = fromNano(res.tonReserves);
+          if (!res.tokenReserves.isZero() && !res.tonReserves.isZero()) {
+            setHaveReserves(true)
+          }
+        } catch (error) {
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      getTokenReserves();
+    }
+  }, [selectedToken]);
+
   const getBalances = () => {
     return Promise.all([
       API.getTonBalance(),
@@ -60,8 +84,8 @@ const AddLiquidity = () => {
 
   useTokenFromParams();
 
-  if (!selectedToken) {
-    return null;
+  if (!selectedToken || isLoading) {
+    return <MainLoader />;
   }
 
   return (
@@ -77,6 +101,7 @@ const AddLiquidity = () => {
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType={ActionType.ADD_LIQUIDITY}
       gasFee={API.GAS_FEE.ADD_LIQUIDITY}
+      disableInputDependency={!haveReserves}
     />
   );
 };

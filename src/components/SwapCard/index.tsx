@@ -7,7 +7,10 @@ import { Avatar, Typography } from "@mui/material";
 import Balance from "./Balance";
 import UsdAmount from "./UsdAmount";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
-import { useApplicationStore, useIsExpandedView } from "store/application/hooks";
+import {
+  useApplicationStore,
+  useIsExpandedView,
+} from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
 import { useWalletStore } from "store/wallet/hooks";
 interface Props {
@@ -34,14 +37,14 @@ function SwapCard({
   const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
   const { operationType } = useApplicationStore();
-  const {address} = useWalletStore()
+  const { address } = useWalletStore();
 
   const isTon = token.name === ton.name;
 
   const onTokenSelect = () => {
     if (isTon) {
       return;
-    }    
+    }
     if (operationType === OperationType.SWAP) {
       navigate(ROUTES.swap.navigateToTokens);
     } else {
@@ -74,20 +77,22 @@ function SwapCard({
         </StyledInput>
 
         <StyledBottom>
-         {address && <>
-         <UsdAmount
-            isLoading={isLoading}
-            value={inputAmount}
-            tokenId={token.tokenMinter}
-          />
-          <Balance
-            availableAmount={balance}
-            displayName={token.displayName}
-            loading={balanceLoading}
-            onMaxAmountClick={onMaxAmount}
-            showMax={showMax}
-          />
-         </>}
+          {address && (
+            <>
+              <UsdAmount
+                isLoading={isLoading}
+                value={inputAmount}
+                tokenId={token.tokenMinter}
+              />
+              <Balance
+                  availableAmount={balance}
+                  displayName={token.displayName}
+                  loading={balanceLoading}
+                  onMaxAmountClick={onMaxAmount}
+                  showMax={showMax}
+                />
+            </>
+          )}
         </StyledBottom>
       </div>
     </StyledContainer>
@@ -117,9 +122,9 @@ const StyledTokenDisplay = styled(Box)({
   boxShadow: "rgb(0 0 0 / 8%) 0px 6px 10px",
   ".name": {
     maxWidth: 70,
-    whiteSpace:'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   ".arrow": {
     width: 7,

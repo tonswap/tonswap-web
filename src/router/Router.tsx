@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ROUTES } from "./routes";
+import MainLoader from "components/MainLoader";
 
 const CreatePool = lazy(() => import("screens/CreatePool"));
 const Swap = lazy(() => import("screens/swap"));
@@ -12,13 +13,7 @@ const ManageLiquidity = lazy(() => import("screens/manage-liquidity"));
 function AppRoutes() {
   return (
     <>
-      <Suspense
-        fallback={
-          <StyledFallback>
-            <CircularProgress />
-          </StyledFallback>
-        }
-      >
+      <Suspense fallback={<MainLoader />}>
         <Routes>
           <Route path={`${ROUTES.swap.base}/*`} element={<Swap />} />
           <Route
@@ -38,11 +33,3 @@ function AppRoutes() {
 }
 
 export default AppRoutes;
-
-const StyledFallback = styled(Box)({
-  width: "100%",
-  height: "80vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});

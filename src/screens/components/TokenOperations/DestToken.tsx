@@ -15,9 +15,11 @@ interface Props {
   token: PoolInfo;
   srcTokenName: string;
   getAmountFunc: any;
+  disableInputDependency?: boolean
+
 }
 
-function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
+function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency }: Props) {
   const {
     destTokenAmount,
     totalBalances,
@@ -69,6 +71,9 @@ function DestToken({ token, srcTokenName, getAmountFunc }: Props) {
 
   const onChange = (value: string) => {
     updateDestTokenAmount(value);
+    if(disableInputDependency){
+      return 
+    }
     onInputChange(InInput.DEST);
     balanceRef.current = value;
     if (!value) {

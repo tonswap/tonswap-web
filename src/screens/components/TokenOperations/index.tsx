@@ -39,6 +39,7 @@ interface Props {
   actionCategory: ActionCategory;
   actionType: ActionType;
   gasFee: GAS_FEE;
+  disableInputDependency?: boolean;
 }
 
 const TokenOperations = ({
@@ -53,6 +54,7 @@ const TokenOperations = ({
   actionCategory,
   actionType,
   gasFee,
+  disableInputDependency,
 }: Props) => {
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -60,7 +62,6 @@ const TokenOperations = ({
   const { txPending } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
-  
 
   const successMessage = useTxSuccessMessage(actionType);
   const { insufficientFunds, disabled, maxAmount } = useValidation(
@@ -73,7 +74,6 @@ const TokenOperations = ({
     getTokensBalance,
     resetTokensBalance,
     sendTransaction,
-    
   } = useTokenOperationsActions();
 
   const onSubmit = async () => {
@@ -103,6 +103,7 @@ const TokenOperations = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
+
   return (
     <StyledTokenOperationActions>
       <TxError />
@@ -117,6 +118,7 @@ const TokenOperations = ({
             getAmountFunc={getAmountFunc}
             destTokenName={destToken.tokenMinter}
             maxAmount={maxAmount}
+            disableInputDependency={disableInputDependency}
           />
 
           <Icon icon={icon} color={destToken.color} />
@@ -124,6 +126,7 @@ const TokenOperations = ({
             getAmountFunc={getAmountFunc}
             token={destToken}
             srcTokenName={srcToken.tokenMinter}
+            disableInputDependency={disableInputDependency}
           />
         </Box>
 
