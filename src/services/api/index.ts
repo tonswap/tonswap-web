@@ -1,7 +1,13 @@
 import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
 import { cellToString, delay, hexToBn } from "utils";
 import { DexActions } from "./dex";
-import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
+import {
+  bytesToAddress,
+  bytesToBase64,
+  getToken,
+  PoolInfo,
+  Pools,
+} from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
 import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
@@ -57,7 +63,10 @@ export const getTokenBalance = async (token: PoolInfo) => {
 
 export const getLPTokenBalance = async (token: string) => {
   const tokenData = await getToken(client, token, getOwner());
-  return _getJettonBalance(tokenData.lpWallet, Address.parse(tokenData.ammMinter!!));
+  return _getJettonBalance(
+    tokenData.lpWallet,
+    Address.parse(tokenData.ammMinter!!)
+  );
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
@@ -72,7 +81,7 @@ export const getTokensOfLPBalances = async (token: string) => {
   const tonSide = lpBalance.balance
     .mul(jettonData.tonReserves)
     .div(jettonData.totalSupply);
-    
+
   const tokenSide = lpBalance.balance
     .mul(jettonData.tokenReserves)
     .div(jettonData.totalSupply);
@@ -81,14 +90,11 @@ export const getTokensOfLPBalances = async (token: string) => {
 };
 
 function getOwner() {
+  const address = getWalletAddress();
 
-  const address = getWalletAddress()  
-  
   if (!address) throw new Error("No owner logged in");
   return Address.parse(address as string);
 }
-
-
 
 export async function _getJettonBalance(
   jettonWallet: Address,
@@ -136,8 +142,8 @@ export const getTokenBalanceByMinter = async (minterAddress: Address) => {
 
 export const getTonBalance = async () => {
   const balance = await client.getBalance(getOwner());
-  
-  return fromNano(balance)
+
+  return fromNano(balance);
 };
 
 async function getAmountOut(
@@ -157,8 +163,6 @@ async function getAmountOut(
 
   return hexToBn(res.stack[0][1]).toString();
 }
-
-
 
 async function getAmountIn2(
   minterAddress: Address,
@@ -183,13 +187,12 @@ export async function tokenToMinter(token: string) {
 }
 
 // TODO move to contract so the contract will know what is fee
-function getAmountIn(amountOut: BN,  reserveIn : BN,  reserveOut: BN): BN {
-  let numerator = reserveIn.mul(amountOut).mul( new BN(1000));
-  let  denominator = reserveOut.sub(amountOut).mul(new BN(997));
+function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
+  let numerator = reserveIn.mul(amountOut).mul(new BN(1000));
+  let denominator = reserveOut.sub(amountOut).mul(new BN(997));
   let ret = numerator.div(denominator).add(new BN(1));
-  console.log('getAmountIn',ret.toString());
+  console.log("getAmountIn", ret.toString());
   return ret;
-  
 }
 
 export const getAmountsOut = async (
@@ -198,28 +201,26 @@ export const getAmountsOut = async (
   srcAmount: BN | null,
   destAmount: BN | null
 ) => {
-  const tokenAmm = Pools()[token].ammMinter
- 
-  if(!tokenAmm){
-    throw new Error('Amm address missing')
+  const tokenAmm = Pools()[token].ammMinter;
+
+  if (!tokenAmm) {
+    throw new Error("Amm address missing");
   }
 
   const tokenData = await getPoolData(Address.parse(tokenAmm!!));
   const tokenAmmAddr = Address.parse(tokenAmm!!);
-  
-  // Top Box Has value 
+
+  // Top Box Has value
   if (srcAmount) {
-    
     const amountIn = srcAmount;
     if (isSourceToken) {
       return getAmountOut(
         tokenAmmAddr,
         amountIn,
         tokenData.tokenReserves,
-        tokenData.tonReserves,
+        tokenData.tonReserves
       );
     } else {
-      
       return getAmountOut(
         tokenAmmAddr,
         amountIn,
@@ -233,10 +234,20 @@ export const getAmountsOut = async (
     const amountIn = destAmount || new BN(0);
     // Token -> TON
     if (!isSourceToken) {
-      return getAmountIn2(tokenAmmAddr, new BN(amountIn), tokenData.tonReserves, tokenData.tokenReserves)
-    //  TON -> Token
+      return getAmountIn2(
+        tokenAmmAddr,
+        new BN(amountIn),
+        tokenData.tonReserves,
+        tokenData.tokenReserves
+      );
+      //  TON -> Token
     } else {
-      return getAmountIn2(tokenAmmAddr, new BN(amountIn), tokenData.tokenReserves, tokenData.tonReserves)
+      return getAmountIn2(
+        tokenAmmAddr,
+        new BN(amountIn),
+        tokenData.tokenReserves,
+        tokenData.tonReserves
+      );
     }
   }
 };
@@ -258,7 +269,7 @@ export async function getPoolData(ammMinter: Address) {
   return {
     totalSupply,
     jettonWalletAddress: bytesToAddress(jettonWalletAddressBytes),
-  //  adminAddress: bytesToAddress(admin),
+    //  adminAddress: bytesToAddress(admin),
     mintable,
     tonReserves,
     tokenReserves,
@@ -291,7 +302,9 @@ export async function getTokenData(jettonAddress: Address) {
     if (uri.length == 2) {
       throw "onchain data";
     }
-    let metadataRes = await fetch(uri.replace("ipfs://", "https://ipfs.io/ipfs/"));
+    let metadataRes = await fetch(
+      uri.replace("ipfs://", "https://ipfs.io/ipfs/")
+    );
     metadata = await metadataRes.json();
   } catch (e) {
     metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
@@ -347,9 +360,6 @@ export const getLiquidityAmount = async (
   return new BN(0);
 };
 
-
-
-
 export const getTokenDollarValue = async (
   token: string,
   amount: string
@@ -357,9 +367,9 @@ export const getTokenDollarValue = async (
   let ratio = 1;
 
   if (token !== "ton") {
-    const tokenAmmMinter = Pools()[token].ammMinter
-    if(!tokenAmmMinter){
-      throw new Error('Amm minter missing')
+    const tokenAmmMinter = Pools()[token].ammMinter;
+    if (!tokenAmmMinter) {
+      throw new Error("Amm minter missing");
     }
     const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter));
     const tokenReserves = lpTokenData.tokenReserves;
@@ -377,17 +387,15 @@ export const getTokenDollarValue = async (
   return fromNano(tonPriceWithAmount.mul(toNano(ratio)).div(new BN(1e9)));
 };
 
-
-
 export const fetchDisabledTokensPrice = async (name: string) => {
   const coinsResponse = await fetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${name}&vs_currencies=usd&include_market_cap=false&include_24hr_vol=false&include_24hr_change=false&include_last_updated_at=false`
   );
-  
- const result = await  coinsResponse.json();
-    
- return result[name].usd
-} 
+
+  const result = await coinsResponse.json();
+
+  return result[name].usd;
+};
 
 let tonPrice = 0;
 
@@ -411,7 +419,7 @@ export const generateSellLink = async (
 ) => {
   const tokenData = await getToken(client, token, getOwner());
   let transfer = DexActions.transferOverload(
-   Address.parse( tokenData.ammMinter!!),
+    Address.parse(tokenData.ammMinter!!),
     toNano(tokenAmount),
     getOwner(), // owner wallet should get jetton-wallet excess messages + tons
     toNano(GAS_FEE.FORWARD_TON),
@@ -433,10 +441,10 @@ export const generateBuyLink = async (
   let transfer = await DexActions.swapTon(
     toNano(tonAmount),
     toNano(tokenAmount).mul(new BN(995)).div(new BN(1000))
-    );
-    const boc64 = transfer.toBoc().toString("base64");
-    const tokenObjects = await getToken(client, token, getOwner());
-    const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
+  );
+  const boc64 = transfer.toBoc().toString("base64");
+  const tokenObjects = await getToken(client, token, getOwner());
+  const value = toNano(tonAmount).add(toNano(GAS_FEE.SWAP));
   return sendTransaction(Address.parse(tokenObjects.ammMinter!!), value, boc64);
 };
 
@@ -493,9 +501,8 @@ function sendTransaction(
   boc64: string,
   stateInit = null
 ) {
-  
   return {
-    to: to.toFriendly({bounceable: true}),
+    to: to.toFriendly({ bounceable: true }),
     value: value.toString(),
     timeout: 5 * 60 * 1000,
     //stateInit,
@@ -510,8 +517,20 @@ export async function waitForSeqno(wallet: Wallet) {
     for (let attempt = 0; attempt < 20; attempt++) {
       await delay(3000);
       const seqnoAfter = await wallet.getSeqNo();
-      
+
       if (seqnoAfter > seqnoBefore) return;
+    }
+    throw new Error(BASE_ERROR_MESSAGE);
+  };
+}
+
+export  function waitForContractDeploy(contractAddress: string) {
+  return async () => {
+    for (let attempt = 0; attempt < 20; attempt++) {
+      await delay(3000);
+      const isDeployed = await isContractDeployed(contractAddress);
+
+      if (isDeployed) return;
     }
     throw new Error(BASE_ERROR_MESSAGE);
   };

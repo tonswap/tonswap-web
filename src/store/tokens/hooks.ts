@@ -29,8 +29,10 @@ export const useTokensActions = (): {
     (id: string) => {
       return tokens.find(t => t.tokenMinter === id)
     },
-    [dispatch, tokens]
+    [tokens]
   );
+
+  
 
 
   return { addToken: add, getTokenById };
