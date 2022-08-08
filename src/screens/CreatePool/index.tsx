@@ -6,9 +6,13 @@ import { styled } from "@mui/styles";
 import FullPageLoader from "components/FullPageLoader";
 import { StyledContainer } from "./styles";
 import SearchInput from "./SearchInput";
-import { useCreatePoolActions, useCreatePoolStore } from "store/create-pool/hooks";
+import {
+  useCreatePoolActions,
+  useCreatePoolStore,
+} from "store/create-pool/hooks";
 import BigNumberDisplay from "components/BigNumberDisplay";
-
+import { useWalletStore } from "store/wallet/hooks";
+import { useWalletModalToggle } from "store/application/hooks";
 
 const StyledContent = styled(Box)({
   display: "flex",
@@ -19,13 +23,14 @@ const StyledContent = styled(Box)({
   maxWidth: 400,
 });
 
- function CreatePool() {
-  
+function CreatePool() {
   const [txLoading, setTxLoading] = useState(false);
   const [getTokenLoading, setGetTokenLoading] = useState(false);
 
-  const {onSubmit, deployPoolTx, clearStore} = useCreatePoolActions()
-  const {tokenData, jettonAddress} = useCreatePoolStore()
+  const { onSubmit, deployPoolTx, clearStore } = useCreatePoolActions();
+  const { tokenData, jettonAddress } = useCreatePoolStore();
+  const { address } = useWalletStore();
+  const toggle = useWalletModalToggle();
 
   const validateForm = () => {
     return (
@@ -36,24 +41,20 @@ const StyledContent = styled(Box)({
   };
 
   const onJettonAddressSubmit = async (jAddress: string) => {
-    setGetTokenLoading(true)
-    await onSubmit(jAddress)
-    setGetTokenLoading(false)
+    setGetTokenLoading(true);
+    await onSubmit(jAddress);
+    setGetTokenLoading(false);
   };
 
-
-
   const onDeploy = async () => {
-    setTxLoading(true)
-    await deployPoolTx()
-    setTxLoading(false)
-  }
-
+    setTxLoading(true);
+    await deployPoolTx();
+    setTxLoading(false);
+  };
 
   useEffect(() => {
-    clearStore()
-  }, [clearStore])
-  
+    clearStore();
+  }, [clearStore]);
 
   return (
     <StyledContainer>
@@ -69,9 +70,13 @@ const StyledContent = styled(Box)({
 
         <TokenDetails />
 
-        <ActionButton isDisabled={!validateForm()} onClick={onDeploy}>
-          Deploy Pool 🚀
-        </ActionButton>
+        {address ? (
+          <ActionButton isDisabled={!validateForm()} onClick={onDeploy}>
+            Deploy Pool 🚀
+          </ActionButton>
+        ) : (
+          <ActionButton onClick={toggle}>Connect wallet</ActionButton>
+        )}
       </StyledContent>
     </StyledContainer>
   );
@@ -94,10 +99,10 @@ const StyledTokenDetails = styled(Box)({
 });
 
 const TokenDetails = () => {
-  const {tokenData} = useCreatePoolStore()
+  const { tokenData } = useCreatePoolStore();
 
-  if(!tokenData){
-    return null
+  if (!tokenData) {
+    return null;
   }
 
   return (
@@ -105,12 +110,13 @@ const TokenDetails = () => {
       <img src={tokenData.image} alt="" />
       <Box className="token-details-right">
         <Typography>Name: {tokenData.name}</Typography>
-        <Typography> My Balance: <BigNumberDisplay value={tokenData.balance} /></Typography>
+        <Typography>
+          {" "}
+          My Balance: <BigNumberDisplay value={tokenData.balance} />
+        </Typography>
       </Box>
     </StyledTokenDetails>
   );
 };
 
-
-
-export default CreatePool
+export default CreatePool;
