@@ -2,7 +2,7 @@ import { getParamsFromUrl } from "utils";
 
 const LOCAL_STORAGE_ADDRESS = "ton_address";
 const LAYOUT_MAX_WIDTH = "1200px";
-const TELEGRAM_WEBAPP_PARAM = "telegram_webapp";
+const TELEGRAM_WEBAPP_PARAM = "tg";
 const DESTINATION_PATH = "destination_path";
 const APP_NAME = "TonSwap";
 const TEST_MODE = "test-mode";

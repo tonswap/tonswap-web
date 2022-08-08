@@ -4,18 +4,15 @@ import { useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { Link } from "react-router-dom";
-import { ROUTES } from "router/routes";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
-import { isMobile } from "react-device-detect";
 import { useWalletStore } from "store/wallet/hooks";
 import { styled } from "@mui/system";
 import { AppGrid } from "styles/styles";
-import { useTokensStore } from "store/tokens/hooks";
+import { isTelegramWebApp } from "utils";
 
 const navbarHeight = "60px";
 const StyledAppBar = styled(AppBar)({
@@ -31,7 +28,6 @@ const StyledToolbar = styled(Toolbar)({
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { address } = useWalletStore();
 
   return (
     <>
@@ -63,7 +59,7 @@ export const Navbar = observer(() => {
             >
               <Grid item className={classes.leftGrid}>
                 <MenuToggle onClick={() => setOpen(true)} />
-                <LogoWithText />
+                {!isTelegramWebApp() &&  <LogoWithText />}
               </Grid>
 
               <WalletAddress />

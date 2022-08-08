@@ -3,7 +3,7 @@ import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { BETA_TEXT, LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
 import { styled } from "@mui/system";
-import { getParamsFromUrl } from "utils";
+import { getParamsFromUrl, isTelegramWebApp } from "utils";
 import SelectWallet from "components/SelectWallet";
 import { useWalletActions } from "store/wallet/hooks";
 import analytics from "services/analytics/ga";
@@ -44,9 +44,6 @@ const StyledBeta = styled(Box)({
   },
 });
 
-if (getParamsFromUrl(TELEGRAM_WEBAPP_PARAM)) {
-  localStorage.setItem(TELEGRAM_WEBAPP_PARAM, "1");
-}
 
 const App = () => {
   const { restoreSession } = useWalletActions();
@@ -56,6 +53,7 @@ const App = () => {
   useEffectOnce(() => {
     restoreSession();
   });
+
   
 
   return (

@@ -191,7 +191,7 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 };
 
 const isTelegramWebApp = () => {
-  return true;
+  return getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
   // const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
   // if (result && isMobile) {
   //   return true;
