@@ -516,19 +516,27 @@ export async function waitForSeqno(wallet: Wallet) {
   return async () => {
     for (let attempt = 0; attempt < 20; attempt++) {
       await delay(3000);
-      const seqnoAfter = await wallet.getSeqNo();
+      let seqnoAfter;
 
-      if (seqnoAfter > seqnoBefore) return;
+      try {
+        seqnoAfter = await wallet.getSeqNo();
+      } catch (error) {}
+
+      if (seqnoAfter && seqnoAfter > seqnoBefore) return;
     }
     throw new Error(BASE_ERROR_MESSAGE);
   };
 }
 
-export  function waitForContractDeploy(contractAddress: string) {
+export function waitForContractDeploy(contractAddress: string) {
   return async () => {
     for (let attempt = 0; attempt < 20; attempt++) {
       await delay(3000);
-      const isDeployed = await isContractDeployed(contractAddress);
+      let isDeployed;
+
+      try {
+        isDeployed = await isContractDeployed(contractAddress);
+      } catch (error) {}
 
       if (isDeployed) return;
     }
