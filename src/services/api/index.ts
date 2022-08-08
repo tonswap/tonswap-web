@@ -206,11 +206,18 @@ export const getAmountsOut = async (
 
   const tokenData = await getPoolData(Address.parse(tokenAmm!!));
   const tokenAmmAddr = Address.parse(tokenAmm!!);
+  
+  // Top Box Has value 
   if (srcAmount) {
-    // TODO
+    
     const amountIn = srcAmount;
     if (isSourceToken) {
-      return getAmountIn2(tokenAmmAddr, new BN(amountIn), tokenData.tonReserves, tokenData.tokenReserves)
+      return getAmountOut(
+        tokenAmmAddr,
+        amountIn,
+        tokenData.tokenReserves,
+        tokenData.tonReserves,
+      );
     } else {
       
       return getAmountOut(
@@ -224,15 +231,12 @@ export const getAmountsOut = async (
     // Dest amount
     // when calculating in amount by inputing dest amount we reverse the isSourceToken falg
     const amountIn = destAmount || new BN(0);
+    // Token -> TON
     if (!isSourceToken) {
       return getAmountIn2(tokenAmmAddr, new BN(amountIn), tokenData.tonReserves, tokenData.tokenReserves)
+    //  TON -> Token
     } else {
-      return getAmountOut(
-        tokenAmmAddr,
-        amountIn,
-        tokenData.tonReserves,
-        tokenData.tokenReserves
-      );
+      return getAmountIn2(tokenAmmAddr, new BN(amountIn), tokenData.tokenReserves, tokenData.tonReserves)
     }
   }
 };
