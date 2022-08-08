@@ -23,13 +23,13 @@ function UsdAmount({ tokenId, value, isLoading }: Props) {
     <StyledContainer>
       {isLoading || usdLoading ? (
         <ContentLoader width={40} height="15px" borderRadius="4px" />
-      ) : usd !== '0' ? (
+      ) :  (
         <Typography component="p">
           ~$
           <BigNumberDisplay value={usd} decimalScale={5} />
           {/* {toFixed(usd.toLocaleString())} */}
         </Typography>
-      ) : null}
+      )}
     </StyledContainer>
   );
 }
