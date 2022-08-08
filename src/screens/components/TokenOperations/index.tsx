@@ -105,7 +105,9 @@ const TokenOperations = ({
 
 
   return (
-    <StyledTokenOperationActions>
+    <StyledTokenOperationActions
+     style={{pointerEvents: txPending ? 'none' : 'all'}}
+    >
       <TxError />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>

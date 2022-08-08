@@ -68,7 +68,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
   const [allowTransition, setAllowTransition] = useState(false);
   const containerRef = useRef<any>();
   const montedRef = useRef(true);
-  const {srcLoading, destLoading} = useTokenOperationsStore()
+  const {srcLoading, destLoading, txPending} = useTokenOperationsStore()
 
 
   const onSelect = (index: number) => {
@@ -97,7 +97,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
   }, [left]);
 
 
-  const isLoading = srcLoading || destLoading
+  const isLoading = srcLoading || destLoading || txPending
 
   return (
     <StyledContainer ref={containerRef} style={{pointerEvents: isLoading ? 'none' : 'all'}}>
