@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.d09ab95d.js",
-    "static/js/622.a867fdd9.chunk.js": "/static/js/622.a867fdd9.chunk.js",
+    "main.js": "/static/js/main.852ed29c.js",
+    "static/js/554.34c808ca.chunk.js": "/static/js/554.34c808ca.chunk.js",
     "static/js/539.24e62fa1.chunk.js": "/static/js/539.24e62fa1.chunk.js",
-    "static/js/178.dc1dcabb.chunk.js": "/static/js/178.dc1dcabb.chunk.js",
+    "static/js/178.79b7f1d5.chunk.js": "/static/js/178.79b7f1d5.chunk.js",
     "static/js/960.f6e7ca6a.chunk.js": "/static/js/960.f6e7ca6a.chunk.js",
     "static/js/271.167e929d.chunk.js": "/static/js/271.167e929d.chunk.js",
-    "static/js/69.14d04f61.chunk.js": "/static/js/69.14d04f61.chunk.js",
-    "static/js/0.8b5460b2.chunk.js": "/static/js/0.8b5460b2.chunk.js",
-    "static/js/565.de673602.chunk.js": "/static/js/565.de673602.chunk.js",
-    "static/js/350.65c82942.chunk.js": "/static/js/350.65c82942.chunk.js",
+    "static/js/346.692d7356.chunk.js": "/static/js/346.692d7356.chunk.js",
+    "static/js/107.2b660db5.chunk.js": "/static/js/107.2b660db5.chunk.js",
+    "static/js/563.4bcf3658.chunk.js": "/static/js/563.4bcf3658.chunk.js",
+    "static/js/350.3f42a9df.chunk.js": "/static/js/350.3f42a9df.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/KittyKorn.png": "/static/media/KittyKorn.83ef687abf466525d57a.png",
     "static/media/DinoKorn.png": "/static/media/DinoKorn.c9079598e12f9ad5d71f.png",
@@ -32,6 +32,6 @@
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.d09ab95d.js"
+    "static/js/main.852ed29c.js"
   ]
 }
