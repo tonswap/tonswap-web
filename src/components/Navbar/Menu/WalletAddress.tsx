@@ -11,6 +11,7 @@ import { StyledConnectedChip, StyledConnectChip } from "./style";
 import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
 import WalletImg from 'assets/images/shared/wallet.svg'
+import gaAnalytics from "services/analytics/ga/ga";
 
 
 const StyledIconButton = styled("button")({
@@ -46,6 +47,13 @@ const WalletAddress = observer(() => {
   const onDisconnect = () => {
     resetWallet()
     setShowDisconnect(false)
+    gaAnalytics.disconnect()
+  }
+
+
+  const onConnect = ( ) => {
+    toggleModal()
+    gaAnalytics.connect()
   }
 
   return (
@@ -64,7 +72,7 @@ const WalletAddress = observer(() => {
           </IconButton>
         </StyledConnectedChip>
       ) : (
-        <StyledConnectChip onClick={toggleModal}>
+        <StyledConnectChip onClick={onConnect}>
           <img className="icon" src = {WalletImg} />
           <Typography className="address">Connect wallet</Typography>
         </StyledConnectChip>

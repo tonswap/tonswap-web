@@ -13,6 +13,7 @@ import {
 } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
 import { useWalletStore } from "store/wallet/hooks";
+import gaAnalytics from "services/analytics/ga/ga";
 interface Props {
   inputAmount?: string;
   balance: string;
@@ -41,13 +42,21 @@ function SwapCard({
 
   const isTon = token.name === ton.name;
 
+
+  const onMax = () => {
+    gaAnalytics.onMaxClick()
+    onMaxAmount?.()
+  }
+
   const onTokenSelect = () => {
     if (isTon) {
       return;
     }
     if (operationType === OperationType.SWAP) {
+      gaAnalytics.changeTokenInTrade(token.name)
       navigate(ROUTES.swap.navigateToTokens);
     } else {
+      gaAnalytics.changeTokenInManageLiquidity(token.name)
       navigate(ROUTES.manageLiquidity.navigateToTokens);
     }
   };
@@ -88,7 +97,7 @@ function SwapCard({
                   availableAmount={balance}
                   displayName={token.displayName}
                   loading={balanceLoading}
-                  onMaxAmountClick={onMaxAmount}
+                  onMaxAmountClick={onMax}
                   showMax={showMax}
                 />
             </>

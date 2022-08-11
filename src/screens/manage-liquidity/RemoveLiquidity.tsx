@@ -1,20 +1,19 @@
-import { observer } from "mobx-react";
 import TokenOperations from "screens/components/TokenOperations";
 import * as API from "services/api";
-import { SvgIcon, Typography } from "@mui/material";
-import { ReactComponent as Minus } from "assets/images/shared/minus.svg";
-
 import { ton } from "services/api/addresses";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+import gaAnalytics from "services/analytics/ga/ga";
 
 
 const RemoveLiquidity = () => {
   const { srcTokenAmount, selectedToken } = useTokenOperationsStore();
 
   const getTxRequest = () => {
+    gaAnalytics.removeLiquidityTransaction()
+
     return API.generateRemoveLiquidityLink(
       selectedToken!.tokenMinter,
       srcTokenAmount

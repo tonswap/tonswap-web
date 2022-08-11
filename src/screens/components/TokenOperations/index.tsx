@@ -18,14 +18,14 @@ import {
 } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
-import gaAnalytics from "services/analytics/ga";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
 import SuccessModal from "./SuccessModal";
-import useTxSuccessMessage from "./useTxSuccessMessage";
 import useValidation from "./useValidation";
 import TxError from "./TxError";
+import useTxAnalytics from "./useTxAnalytics";
+import gaAnalytics from "services/analytics/ga/ga";
 
 interface Props {
   srcToken: PoolInfo;
@@ -63,7 +63,9 @@ const TokenOperations = ({
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
 
-  const successMessage = useTxSuccessMessage(actionType);
+  const sendAnalyticsEvent = useTxAnalytics(actionCategory, actionType)
+
+
   const { insufficientFunds, disabled, maxAmount } = useValidation(
     actionType,
     gasFee,
@@ -86,7 +88,8 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-      gaAnalytics.sendEvent(actionCategory, actionType, successMessage);
+    
+      sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
     };
@@ -102,6 +105,12 @@ const TokenOperations = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
+
+
+  const onConnect = () => {
+    toggleModal()
+    gaAnalytics.connect()
+  }
 
 
   return (
@@ -134,7 +143,7 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={toggleModal}>Connect wallet</ActionButton>
+            <ActionButton onClick={onConnect}>Connect wallet</ActionButton>
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}

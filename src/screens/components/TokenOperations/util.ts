@@ -1,5 +1,6 @@
 import BN from "bn.js";
 import * as API from "services/api";
+import { ActionType } from "services/wallets/types";
 
 
 const getUsdAmount = async (
@@ -55,4 +56,31 @@ const calculateTokens = async (
   }
 };
 
-export { getUsdAmount, calculateTokens };
+type Args  = {
+  actionType: ActionType,
+  tokenName: string;
+  destTokenAmount: string;
+  srcTokenAmount: string;
+}
+
+const createAnalyticsMessage = ({actionType, tokenName, destTokenAmount, srcTokenAmount}: Args) => {
+  if (actionType === ActionType.BUY) {
+    return `Swapped ${srcTokenAmount} TON for ${destTokenAmount} ${tokenName}`;
+  }
+
+  if (actionType === ActionType.SELL) {
+    return `Swapped ${srcTokenAmount} ${tokenName} for ${destTokenAmount} TON`;
+  }
+  if (actionType === ActionType.ADD_LIQUIDITY) {
+    return `Added ${srcTokenAmount} TON and ${destTokenAmount} ${tokenName} liquidity`;
+  }
+  if (actionType === ActionType.REMOVE_LIQUIDITY) {
+    return `Removed ${srcTokenAmount} TON and ${destTokenAmount} ${tokenName} liquidity`;
+  }
+  return ''
+}
+
+
+
+
+export { getUsdAmount, calculateTokens, createAnalyticsMessage };

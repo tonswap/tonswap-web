@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
+import gaAnalytics from "services/analytics/ga/ga";
+import { PoolInfo } from "services/api/addresses";
 import { useApplicationActions } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
 import {useTokenOperationsStore } from "store/token-operations/hooks";
@@ -32,32 +34,39 @@ function ManageLiquidityScreen() {
         ? [
             {
               text: "Add liquidity",
-              method: () =>
-                navigate(
-                  ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
-                    ":id",
-                    selectedToken?.tokenMinter
+              method: () =>{
+                gaAnalytics.goToAddLiquidity()
+                  navigate(
+                    ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
+                      ":id",
+                      selectedToken?.tokenMinter
+                    )
                   )
-                ),
+              }
+              
             },
             {
               text: "Remove liquidity",
-              method: () =>
+              method: () => {
+                gaAnalytics.goToRemoveLiquidity()
                 navigate(
                   ROUTES.manageLiquidity.navigateToRemoveLiquidity.replace(
                     ":id",
                     selectedToken?.tokenMinter
                   )
-                ),
+                )
+              }
+                
             },
           ]
         : [],
     [navigate, selectedToken]
   );
 
-  const onTokenSelect = (tokenId: string) => {
+  const onTokenSelect = (token: PoolInfo) => {
+    gaAnalytics.selectTokenToManageLiquidity(token.displayName)
     navigate(
-      ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", tokenId)
+      ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", token.tokenMinter)
     );
   };
 

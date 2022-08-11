@@ -11,6 +11,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useEffect, useState } from "react";
 import { Address, fromNano } from "ton";
 import MainLoader from "components/MainLoader";
+import gaAnalytics from "services/analytics/ga/ga";
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -19,6 +20,7 @@ const AddLiquidity = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getTxRequest = () => {
+    gaAnalytics.addLiquidityTransaction()
     if (selectedToken) {
       return API.generateAddLiquidityLink(
         selectedToken?.tokenMinter,

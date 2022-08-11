@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import gaAnalytics from "services/analytics/ga";
+import gaAnalytics from "services/analytics/ga/ga";
 import { client, waitForSeqno } from "services/api";
 import { TransactionRequest } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";

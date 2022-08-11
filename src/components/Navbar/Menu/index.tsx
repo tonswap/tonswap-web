@@ -11,6 +11,7 @@ import { COMING_SOON, isDebug, SUPPORT } from "consts";
 import Socials from "components/Socials";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
+import gaAnalytics from "services/analytics/ga/ga";
 const StyledActions = styled(Box)({
   display: "flex",
   marginTop: 40,
@@ -65,20 +66,28 @@ function Menu({ open, hide }: Props) {
 
   const onManageLiquidity = () => {
     hide();
+    gaAnalytics.manageLiquidity()
     navigate(`${ROUTES.manageLiquidity.navigateToTokens}`);
   };
 
   const onSwapClick = () => {
     hide();
+    gaAnalytics.trade()
     navigate(ROUTES.swap.navigateToTokens);
   };
 
 
   const onSupport = () => {
     hide();
+    gaAnalytics.support()
     window.open(SUPPORT, '_blank')
   }
 
+
+  const onCloseMenuClick = () => {
+    hide()
+    gaAnalytics.closeMenu()
+  }
 
 
   return (
@@ -87,7 +96,7 @@ function Menu({ open, hide }: Props) {
         <Box className={classes.drawerTop}>
           <LogoWithText />
           <IconButton
-            onClick={hide}
+            onClick={onCloseMenuClick}
             size="large"
             edge="start"
             color="inherit"

@@ -5,6 +5,8 @@ import { useCallback, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
+import gaAnalytics from "services/analytics/ga/ga";
+import { PoolInfo } from "services/api/addresses";
 import { useApplicationActions } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
 import {
@@ -18,16 +20,14 @@ import Sell from "./Sell";
 function SwapScreen() {
   const { selectedToken } = useTokenOperationsStore();
   const { toggleBuyToSell, toggleSellToBuy } = useTokenOperationsActions();
-  const {onOperationTypeChange} = useApplicationActions()
+  const { onOperationTypeChange } = useApplicationActions();
   const navigate = useNavigateWithParams();
   const params = useParams();
   const action = getActionFromParams(params);
 
   useEffectOnce(() => {
-    onOperationTypeChange(OperationType.SWAP)
-  })
-
-
+    onOperationTypeChange(OperationType.SWAP);
+  });
 
   const menuItems = useMemo(
     () =>
@@ -35,11 +35,18 @@ function SwapScreen() {
         ? [
             {
               text: "Buy",
-              method: toggleSellToBuy,
+              method: () => {
+               gaAnalytics.goToBuy()
+
+                toggleSellToBuy();
+              },
             },
             {
               text: "Sell",
-              method: toggleBuyToSell,
+              method: () =>  {
+                gaAnalytics.goToSell()
+                toggleBuyToSell()
+              },
             },
           ]
         : [],
@@ -47,8 +54,9 @@ function SwapScreen() {
   );
 
   const onTokenSelect = useCallback(
-    (tokenId: string) => {
-      navigate(ROUTES.swap.navigateToBuy.replace(":id", tokenId));
+    (token: PoolInfo) => {
+      navigate(ROUTES.swap.navigateToBuy.replace(":id", token.tokenMinter));
+      gaAnalytics.selectTokenToTrade(token.displayName)
     },
     [navigate]
   );
@@ -79,4 +87,4 @@ function SwapScreen() {
   );
 }
 
-export default SwapScreen
+export default SwapScreen;

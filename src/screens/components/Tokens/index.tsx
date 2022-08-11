@@ -12,7 +12,7 @@ import { PoolInfo } from "services/api/addresses";
 
 interface Props {
   title: string;
-  onTokenSelect: (name: string) => void;
+  onTokenSelect: (token: PoolInfo) => void;
 }
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
@@ -51,7 +51,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
               return (
                 <ListToken
                   key={token.tokenMinter}
-                  onSelect={() => onTokenSelect(token.tokenMinter)}
+                  onSelect={() => onTokenSelect(token)}
                   token={token}
                 />
               );

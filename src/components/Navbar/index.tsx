@@ -9,10 +9,10 @@ import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
-import { useWalletStore } from "store/wallet/hooks";
 import { styled } from "@mui/system";
 import { AppGrid } from "styles/styles";
 import { isTelegramWebApp } from "utils";
+import gaAnalytics from "services/analytics/ga/ga";
 
 const navbarHeight = "60px";
 const StyledAppBar = styled(AppBar)({
@@ -28,6 +28,11 @@ const StyledToolbar = styled(Toolbar)({
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+
+  const onMenuToggleClick = () => {
+    setOpen(true);
+    gaAnalytics.openMenu()
+  };
 
   return (
     <>
@@ -58,8 +63,8 @@ export const Navbar = observer(() => {
               }}
             >
               <Grid item className={classes.leftGrid}>
-                <MenuToggle onClick={() => setOpen(true)} />
-                {!isTelegramWebApp() &&  <LogoWithText />}
+                <MenuToggle onClick={onMenuToggleClick} />
+                {!isTelegramWebApp() && <LogoWithText />}
               </Grid>
 
               <WalletAddress />

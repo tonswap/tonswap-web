@@ -5,6 +5,7 @@ import { ton } from "services/api/addresses";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
+import gaAnalytics from "services/analytics/ga/ga";
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -12,6 +13,7 @@ const Buy = () => {
   const { totalBalances } = useTokenOperationsStore();
 
   const getTxRequest = async () => {
+    gaAnalytics.buyTransaction()
     return API.generateBuyLink(
       selectedToken!!.tokenMinter,
       srcTokenAmount,

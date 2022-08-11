@@ -12,6 +12,7 @@ import { Theme } from "@mui/material/styles";
 import { Adapter, Adapters } from "services/wallets/types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { COMING_SOON } from "consts";
+import gaAnalytics from "services/analytics/ga/ga";
 
 const StyledListItem = styled(ListItem)(
   ({ disabled }: { disabled?: boolean }) => ({
@@ -93,6 +94,13 @@ function AdaptersList({
   adapterLoading,
   isLoading,
 }: Props) {
+
+
+  const onSelect = (adapter: Adapters) => {
+    select(adapter)
+    gaAnalytics.selectWallet(adapter)
+  }
+
   if (!open) {
     return null;
   }
@@ -116,7 +124,7 @@ function AdaptersList({
                 style={{ pointerEvents: isLoading ? "none" : "all" }}
               >
                 <StyledListItemButton
-                  onClick={disabled ? () => {} : () => select(type)}
+                  onClick={disabled ? () => {} : () => onSelect(type)}
                 >
                   <StyledIcon>
                     <img src={icon} />

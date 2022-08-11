@@ -6,12 +6,14 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import { ActionCategory, ActionType } from "services/wallets/types";
+import gaAnalytics from "services/analytics/ga/ga";
 
 const Sell = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } = useTokenOperationsStore();
   const { totalBalances } = useTokenOperationsStore();
 
   const getTxRequest = () => {
+    gaAnalytics.sellTransaction()
     return API.generateSellLink(
       selectedToken!.tokenMinter,
       srcTokenAmount,
