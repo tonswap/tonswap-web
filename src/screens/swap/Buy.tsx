@@ -47,7 +47,7 @@ const Buy = () => {
       getBalances={getBalances}
       srcToken={ton}
       destToken={selectedToken}
-      submitButtonText={`${t('buy')} ${selectedToken?.displayName}`}
+      submitButtonText={t('buy', { token: selectedToken?.displayName })}
       refreshAmountsOnActionChange={
         !totalBalances.destBalance && !totalBalances.srcBalance
       }

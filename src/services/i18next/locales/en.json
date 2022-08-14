@@ -1,11 +1,12 @@
 {
   "translation": {
     "connect-wallet": "Connect wallet",
-    "buy": "Buy",
-    "sell": "Sell",
+    "buy": "Buy {{token}}",
+    "sell": "Sell {{token}}",
     "insufficient-funds": "Insufficient funds",
     "trade": "Trade",
     "balance": "Balance",
-    "jettons-available": "Jettons available for trade"
+    "jettons-available": "Jettons available for trade",
+    "support": "Support"
   }
 }

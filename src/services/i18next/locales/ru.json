@@ -1,11 +1,12 @@
 {
   "translation": {
     "connect-wallet": "Shto GABARISH WALLET",
-    "buy": "Zeibis",
-    "sell": "SELOVICH",
+    "buy": "Zeibis {{token}}",
+    "sell": "SELOVICH {{token}}",
     "insufficient-funds": "Nada funds blat",
     "trade": "Trade Paszalsta",
     "balance": "Balancesky",
-    "jettons-available": "Джеттоны доступны для обмена"
+    "jettons-available": "Джеттоны доступны для обмена",
+    "support": "SUPPORT MALCHICK"
   }
 }
