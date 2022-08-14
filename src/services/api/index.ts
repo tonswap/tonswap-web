@@ -10,11 +10,12 @@ import {
 } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
+import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 import store from "store/store";
 import { getWalletAddress } from "store/wallet/utils";
+import i18next from "i18next";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -524,7 +525,7 @@ export async function waitForSeqno(wallet: Wallet) {
 
       if (seqnoAfter && seqnoAfter > seqnoBefore) return;
     }
-    throw new Error(BASE_ERROR_MESSAGE);
+    throw new Error(i18next.t("error-message"));
   };
 }
 
@@ -540,7 +541,7 @@ export function waitForContractDeploy(contractAddress: string) {
 
       if (isDeployed) return;
     }
-    throw new Error(BASE_ERROR_MESSAGE);
+    throw new Error(i18next.t("error-message"));
   };
 }
 

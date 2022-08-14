@@ -85,7 +85,7 @@ const WalletAddress = observer(() => {
         <ClickAwayListener onClickAway={() => setShowDisconnect(false)}>
           <StyledIconButton onClick={onDisconnect}>
             <PowerSettingsNewIcon style={{ width: 18 }} />
-            <Typography>Disconnect</Typography>
+            <Typography>{t('disconnect')}</Typography>
           </StyledIconButton>
         </ClickAwayListener>
       )}

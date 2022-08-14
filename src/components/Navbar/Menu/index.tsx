@@ -7,7 +7,7 @@ import { useStyles } from "./style";
 import { ROUTES } from "router/routes";
 import { ActionButton } from "components/ActionButton";
 import { styled } from "@mui/system";
-import { COMING_SOON, isDebug, SUPPORT } from "consts";
+import { isDebug, SUPPORT } from "consts";
 import Socials from "components/Socials";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
@@ -117,15 +117,15 @@ function Menu({ open, hide }: Props) {
           >
 
             Manage Liquidity
-            <small>{COMING_SOON}</small>
+            <small>{t('coming-soon')}</small>
           </ActionButton>
           <ActionButton customClassName={isDebug() ? '' : "coming-soon"} onClick={onCreatePool}>
             Create New Pool
-            <small>{COMING_SOON}</small>
+            <small>{t('coming-soon')}</small>
           </ActionButton>
           <ActionButton onClick={onSupport}>
             <HelpOutlineRoundedIcon />
-            Support
+            {t('support')}
           </ActionButton>
         </StyledActions>
         <StyledSocials>

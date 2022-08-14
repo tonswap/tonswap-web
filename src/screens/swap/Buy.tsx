@@ -7,6 +7,7 @@ import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -47,7 +48,7 @@ const Buy = () => {
       getBalances={getBalances}
       srcToken={ton}
       destToken={selectedToken}
-      submitButtonText={t('buy', { token: selectedToken?.displayName })}
+      submitButtonText={t('buy', { token: `${selectedToken?.displayName}` })}
       refreshAmountsOnActionChange={
         !totalBalances.destBalance && !totalBalances.srcBalance
       }

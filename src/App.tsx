@@ -9,6 +9,7 @@ import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
+import { useTranslation } from "react-i18next";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -42,6 +43,7 @@ const StyledBeta = styled(Box)({
 
 const App = () => {
   const { restoreSession } = useWalletActions();
+  const { t } = useTranslation()
   useWebAppResize();
 
   useEffectOnce(() => {
@@ -51,7 +53,7 @@ const App = () => {
   return (
     <>
       <StyledBeta>
-        <Typography>{BETA_TEXT}</Typography>
+        <Typography>{t('beta-text')}</Typography>
       </StyledBeta>
       <StyledAppContainer>
         <Navbar />

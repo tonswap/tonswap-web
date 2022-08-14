@@ -36,7 +36,7 @@ function SwapScreen() {
       selectedToken
         ? [
           {
-            text: `${t('buy')}`,
+            text: "buy",
             method: () => {
               gaAnalytics.goToBuy()
 
@@ -44,7 +44,7 @@ function SwapScreen() {
             },
           },
           {
-            text: `${t('sell')}`,
+            text: "sell",
             method: () => {
               gaAnalytics.goToSell()
               toggleBuyToSell()

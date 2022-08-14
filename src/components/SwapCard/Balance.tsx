@@ -52,7 +52,7 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
           {showMax && onMaxAmountClick && <StyledMaxButton
             onClick={onMaxAmountClick}
           >
-            <Typography> MAX</Typography>
+            <Typography> {t('max')}</Typography>
           </StyledMaxButton>}
         </>
       )}

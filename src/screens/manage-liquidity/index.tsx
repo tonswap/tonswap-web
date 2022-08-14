@@ -2,6 +2,7 @@ import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
@@ -9,7 +10,7 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { PoolInfo } from "services/api/addresses";
 import { useApplicationActions } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
-import {useTokenOperationsStore } from "store/token-operations/hooks";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { StyledTokenOperation } from "styles/styles";
 import { getActionFromParams } from "utils";
 import AddLiquidity from "./AddLiquidity";
@@ -21,8 +22,8 @@ function ManageLiquidityScreen() {
   const navigate = useNavigateWithParams()
   const params = useParams();
   const action = getActionFromParams(params);
-  const {onOperationTypeChange} = useApplicationActions()
-
+  const { onOperationTypeChange } = useApplicationActions()
+  const { t } = useTranslation()
 
   useEffectOnce(() => {
     onOperationTypeChange(OperationType.MANAGE_LIQUIDITY)
@@ -32,33 +33,33 @@ function ManageLiquidityScreen() {
     () =>
       selectedToken
         ? [
-            {
-              text: "Add liquidity",
-              method: () =>{
-                gaAnalytics.goToAddLiquidity()
-                  navigate(
-                    ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
-                      ":id",
-                      selectedToken?.tokenMinter
-                    )
-                  )
-              }
-              
-            },
-            {
-              text: "Remove liquidity",
-              method: () => {
-                gaAnalytics.goToRemoveLiquidity()
-                navigate(
-                  ROUTES.manageLiquidity.navigateToRemoveLiquidity.replace(
-                    ":id",
-                    selectedToken?.tokenMinter
-                  )
+          {
+            text: t('add-liquidity'),
+            method: () => {
+              gaAnalytics.goToAddLiquidity()
+              navigate(
+                ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
+                  ":id",
+                  selectedToken?.tokenMinter
                 )
-              }
-                
-            },
-          ]
+              )
+            }
+
+          },
+          {
+            text: t('remove-liquidity'),
+            method: () => {
+              gaAnalytics.goToRemoveLiquidity()
+              navigate(
+                ROUTES.manageLiquidity.navigateToRemoveLiquidity.replace(
+                  ":id",
+                  selectedToken?.tokenMinter
+                )
+              )
+            }
+
+          },
+        ]
         : [],
     [navigate, selectedToken]
   );
@@ -88,7 +89,7 @@ function ManageLiquidityScreen() {
           element={
             <Tokens
               onTokenSelect={onTokenSelect}
-              title="Select a token to manage liquidity"
+              title={t('select-token-liquidity')}
             />
           }
         />

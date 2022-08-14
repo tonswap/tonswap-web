@@ -61,20 +61,20 @@ function CreatePool() {
   return (
     <StyledContainer>
       <FullPageLoader open={txLoading}>
-        <Typography>Deploying pool...</Typography>
+        <Typography>{t('deploying-pool')}</Typography>
       </FullPageLoader>
       <FullPageLoader open={getTokenLoading}>
-        <Typography>Loading...</Typography>
+        <Typography>{t('loading')}</Typography>
       </FullPageLoader>
       <StyledContent>
-        <ScreenTitle title="Create a new Pool" />
+        <ScreenTitle title={t('create-new-pool')} />
         <SearchInput onSubmit={onJettonAddressSubmit} />
 
         <TokenDetails />
 
         {address ? (
           <ActionButton isDisabled={!validateForm()} onClick={onDeploy}>
-            Deploy Pool 🚀
+            {t('deploy-pool')} 🚀
           </ActionButton>
         ) : (
           <ActionButton onClick={toggle}>{t('connect-wallet')}</ActionButton>
@@ -102,6 +102,7 @@ const StyledTokenDetails = styled(Box)({
 
 const TokenDetails = () => {
   const { tokenData } = useCreatePoolStore();
+  const { t } = useTranslation()
 
   if (!tokenData) {
     return null;
@@ -111,10 +112,10 @@ const TokenDetails = () => {
     <StyledTokenDetails>
       <img src={tokenData.image} alt="" />
       <Box className="token-details-right">
-        <Typography>Name: {tokenData.name}</Typography>
+        <Typography>{t('token-name', { name: tokenData.name })}</Typography>
         <Typography>
           {" "}
-          My Balance: <BigNumberDisplay value={tokenData.balance} />
+          {t('my-balance')} <BigNumberDisplay value={tokenData.balance} />
         </Typography>
       </Box>
     </StyledTokenDetails>
