@@ -7,10 +7,12 @@ import useTokenFromParams from "hooks/useTokenFromParams";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 const Sell = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } = useTokenOperationsStore();
   const { totalBalances } = useTokenOperationsStore();
+  const { t } = useTranslation()
 
   const getTxRequest = () => {
     gaAnalytics.sellTransaction()
@@ -35,7 +37,7 @@ const Sell = () => {
     return null;
   }
 
- 
+
 
   return (
     <TokenOperations
@@ -45,7 +47,7 @@ const Sell = () => {
       getBalances={getBalances}
       srcToken={selectedToken}
       destToken={ton}
-      submitButtonText={`Sell ${selectedToken?.displayName}`}
+      submitButtonText={`${t('sell')} ${selectedToken?.displayName}`}
       refreshAmountsOnActionChange={
         !totalBalances.destBalance && !totalBalances.srcBalance
       }

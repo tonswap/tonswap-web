@@ -8,6 +8,7 @@ import { useWalletActions } from "store/wallet/hooks";
 import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
+import './services/i18next/i18n';
 
 const StyledAppContainer = styled(Box)({
   display: "flex",

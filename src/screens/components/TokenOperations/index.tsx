@@ -26,6 +26,7 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   srcToken: PoolInfo;
@@ -77,6 +78,8 @@ const TokenOperations = ({
     resetTokensBalance,
     sendTransaction,
   } = useTokenOperationsActions();
+  const { t } = useTranslation();
+
 
   const onSubmit = async () => {
     const tx = async () => {
@@ -88,7 +91,7 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-    
+
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
@@ -115,7 +118,7 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions
-     style={{pointerEvents: txPending ? 'none' : 'all'}}
+      style={{ pointerEvents: txPending ? 'none' : 'all' }}
     >
       <TxError />
       <SuccessModal actionType={actionType} />
@@ -143,11 +146,11 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={onConnect}>Connect wallet</ActionButton>
+            <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <WarningAmberRoundedIcon
                 style={{
@@ -156,7 +159,7 @@ const TokenOperations = ({
                   position: "relative",
                 }}
               />
-              Insufficient funds
+              {t('insufficient-funds')}
             </ActionButton>
           ) : (
             <ActionButton

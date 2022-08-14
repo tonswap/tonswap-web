@@ -6,11 +6,13 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
     useTokenOperationsStore();
   const { totalBalances } = useTokenOperationsStore();
+  const { t } = useTranslation()
 
   const getTxRequest = async () => {
     gaAnalytics.buyTransaction()
@@ -45,7 +47,7 @@ const Buy = () => {
       getBalances={getBalances}
       srcToken={ton}
       destToken={selectedToken}
-      submitButtonText={`Buy ${selectedToken?.displayName}`}
+      submitButtonText={`${t('buy')} ${selectedToken?.displayName}`}
       refreshAmountsOnActionChange={
         !totalBalances.destBalance && !totalBalances.srcBalance
       }

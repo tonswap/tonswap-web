@@ -13,6 +13,7 @@ import {
 import BigNumberDisplay from "components/BigNumberDisplay";
 import { useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
+import { useTranslation } from "react-i18next";
 
 const StyledContent = styled(Box)({
   display: "flex",
@@ -31,6 +32,7 @@ function CreatePool() {
   const { tokenData, jettonAddress } = useCreatePoolStore();
   const { address } = useWalletStore();
   const toggle = useWalletModalToggle();
+  const { t } = useTranslation();
 
   const validateForm = () => {
     return (
@@ -75,7 +77,7 @@ function CreatePool() {
             Deploy Pool 🚀
           </ActionButton>
         ) : (
-          <ActionButton onClick={toggle}>Connect wallet</ActionButton>
+          <ActionButton onClick={toggle}>{t('connect-wallet')}</ActionButton>
         )}
       </StyledContent>
     </StyledContainer>

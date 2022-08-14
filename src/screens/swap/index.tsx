@@ -2,6 +2,7 @@ import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
@@ -21,6 +22,7 @@ function SwapScreen() {
   const { selectedToken } = useTokenOperationsStore();
   const { toggleBuyToSell, toggleSellToBuy } = useTokenOperationsActions();
   const { onOperationTypeChange } = useApplicationActions();
+  const { t } = useTranslation();
   const navigate = useNavigateWithParams();
   const params = useParams();
   const action = getActionFromParams(params);
@@ -33,22 +35,22 @@ function SwapScreen() {
     () =>
       selectedToken
         ? [
-            {
-              text: "Buy",
-              method: () => {
-               gaAnalytics.goToBuy()
+          {
+            text: `${t('buy')}`,
+            method: () => {
+              gaAnalytics.goToBuy()
 
-                toggleSellToBuy();
-              },
+              toggleSellToBuy();
             },
-            {
-              text: "Sell",
-              method: () =>  {
-                gaAnalytics.goToSell()
-                toggleBuyToSell()
-              },
+          },
+          {
+            text: `${t('sell')}`,
+            method: () => {
+              gaAnalytics.goToSell()
+              toggleBuyToSell()
             },
-          ]
+          },
+        ]
         : [],
     [navigate, selectedToken]
   );
@@ -78,7 +80,7 @@ function SwapScreen() {
           element={
             <Tokens
               onTokenSelect={onTokenSelect}
-              title="Jettons available for trade"
+              title={t('jettons-available')}
             />
           }
         />

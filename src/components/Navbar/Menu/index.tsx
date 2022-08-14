@@ -12,6 +12,7 @@ import Socials from "components/Socials";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 const StyledActions = styled(Box)({
   display: "flex",
   marginTop: 40,
@@ -21,30 +22,30 @@ const StyledActions = styled(Box)({
   ".coming-soon": {
     pointerEvents: "none",
     background: "lightgray",
-      height: 'unset',
-    
-      "& .base-button-content": {
-        display:'flex',
-        flexDirection:'column!important',
-        gap:0,
-        "& small": {
-          fontSize: 13,
-          position:'relative',
-          top: '-4px'
-        }
+    height: 'unset',
+
+    "& .base-button-content": {
+      display: 'flex',
+      flexDirection: 'column!important',
+      gap: 0,
+      "& small": {
+        fontSize: 13,
+        position: 'relative',
+        top: '-4px'
       }
-     
+    }
+
   },
 });
 
 
 const StyledSocials = styled(Box)({
-  marginTop:'auto',
+  marginTop: 'auto',
   marginBottom: 30,
-    "& .socials": {
-      justifyContent:'center',
-     
-    }
+  "& .socials": {
+    justifyContent: 'center',
+
+  }
 })
 
 interface Props {
@@ -58,6 +59,7 @@ function Menu({ open, hide }: Props) {
 
   const classes = useStyles();
   const navigate = useNavigateWithParams();
+  const { t } = useTranslation();
 
   const onCreatePool = () => {
     hide();
@@ -108,17 +110,17 @@ function Menu({ open, hide }: Props) {
         </Box>
 
         <StyledActions>
-          <ActionButton onClick={onSwapClick}>Trade</ActionButton>
+          <ActionButton onClick={onSwapClick}>{t('trade')}</ActionButton>
           <ActionButton
             customClassName={isDebug() ? '' : "coming-soon"}
             onClick={onManageLiquidity}
           >
-           
-           Manage Liquidity
+
+            Manage Liquidity
             <small>{COMING_SOON}</small>
           </ActionButton>
-          <ActionButton customClassName={isDebug() ? '' :  "coming-soon"} onClick={onCreatePool}>
-            Create New Pool 
+          <ActionButton customClassName={isDebug() ? '' : "coming-soon"} onClick={onCreatePool}>
+            Create New Pool
             <small>{COMING_SOON}</small>
           </ActionButton>
           <ActionButton onClick={onSupport}>
@@ -127,9 +129,9 @@ function Menu({ open, hide }: Props) {
           </ActionButton>
         </StyledActions>
         <StyledSocials>
-        <Socials />
+          <Socials />
         </StyledSocials>
-       
+
       </Box>
     </Drawer>
   );

@@ -12,6 +12,8 @@ import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
 import WalletImg from 'assets/images/shared/wallet.svg'
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
+import SelectLanguage from "./SelectLanguage";
 
 
 const StyledIconButton = styled("button")({
@@ -38,9 +40,10 @@ const StyledContainer = styled(Grid)({
 });
 
 const WalletAddress = observer(() => {
-  const {resetWallet} = useWalletActions()
+  const { t } = useTranslation();
+  const { resetWallet } = useWalletActions()
   const toggleModal = useWalletModalToggle()
-  const {address} = useWalletStore()
+  const { address } = useWalletStore()
   const [showDisconnect, setShowDisconnect] = useState(false);
 
 
@@ -51,13 +54,14 @@ const WalletAddress = observer(() => {
   }
 
 
-  const onConnect = ( ) => {
+  const onConnect = () => {
     toggleModal()
     gaAnalytics.connect()
   }
 
   return (
     <StyledContainer item display="flex" gap="10px">
+      <SelectLanguage />
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />
@@ -73,8 +77,8 @@ const WalletAddress = observer(() => {
         </StyledConnectedChip>
       ) : (
         <StyledConnectChip onClick={onConnect}>
-          <img className="icon" src = {WalletImg} />
-          <Typography className="address">Connect wallet</Typography>
+          <img className="icon" src={WalletImg} />
+          <Typography className="address">{t('connect-wallet')}</Typography>
         </StyledConnectChip>
       )}
       {showDisconnect && (
