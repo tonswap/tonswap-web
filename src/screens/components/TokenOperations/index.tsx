@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { useEffect } from "react";
-import { ActionButton, Popup } from "components";
+import { useEffect, useState } from "react";
+import { ActionButton } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -26,6 +26,7 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import TxLoader from "./TxLoader";
 
 interface Props {
   srcToken: PoolInfo;
@@ -58,6 +59,7 @@ const TokenOperations = ({
 }: Props) => {
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
+  const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
 
   const { txPending } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
@@ -79,6 +81,7 @@ const TokenOperations = ({
   } = useTokenOperationsActions();
 
   const onSubmit = async () => {
+    setShowTxLoader(true)
     const tx = async () => {
       const txRequest = await getTxRequest();
       const waiter = await waitForSeqno(
@@ -88,7 +91,7 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-    
+
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
@@ -114,10 +117,9 @@ const TokenOperations = ({
 
 
   return (
-    <StyledTokenOperationActions
-     style={{pointerEvents: txPending ? 'none' : 'all'}}
-    >
+    <StyledTokenOperationActions>
       <TxError />
+      <TxLoader open={showTxLoader} adapterId={adapterId} cancel={() => setShowTxLoader(false)} />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
@@ -147,7 +149,7 @@ const TokenOperations = ({
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <WarningAmberRoundedIcon
                 style={{
@@ -160,7 +162,7 @@ const TokenOperations = ({
             </ActionButton>
           ) : (
             <ActionButton
-              isLoading={txPending}
+              isLoading={showTxLoader}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >

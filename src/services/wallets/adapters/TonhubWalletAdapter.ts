@@ -1,8 +1,8 @@
-import { APP_NAME } from 'consts';
-import {  Cell, ConfigStore } from 'ton';
-import { TonhubConnector } from 'ton-x';
-import { TonhubCreatedSession } from 'ton-x/dist/connector/TonhubConnector';
-import { TransactionRequest, Wallet, WalletAdapter } from '../types';
+import { APP_NAME } from "consts";
+import { Cell, ConfigStore } from "ton";
+import { TonhubConnector } from "ton-x";
+import { TonhubCreatedSession } from "ton-x/dist/connector/TonhubConnector";
+import { TransactionRequest, Wallet, WalletAdapter } from "../types";
 
 const TONHUB_TIMEOUT = 5 * 60 * 1000;
 
@@ -13,8 +13,8 @@ export class TonhubWalletAdapter
 
   createSession(): Promise<TonhubCreatedSession> {
     const { location } = document;
-    const url = `${location.protocol}//${location.host}`
-    
+    const url = `${location.protocol}//${location.host}`;
+
     return this.tonhubConnector.createNewSession({
       name: APP_NAME,
       url,
@@ -48,27 +48,23 @@ export class TonhubWalletAdapter
     return this.awaitReadiness(session);
   }
 
-  async requestTransaction(session: TonhubCreatedSession, request: TransactionRequest): Promise<void> {
-    
-    // if(isMobile){
-    //   const link = `https://tonhub.com/transfer/${request.to}?amount=${request.value}&bin=${base64UrlEncode(request.payload)}`;
-    //   window.location.href = link;
-     
-    //   return;
-    // }
+  async requestTransaction(
+    session: TonhubCreatedSession,
+    request: TransactionRequest
+  ): Promise<void> {
     const state = await this.tonhubConnector.getSessionState(session.id);
-    
-    if (state.state !== 'ready'){
-      throw new Error('State is not ready');
+
+    if (state.state !== "ready") {
+      throw new Error("State is not ready");
     }
-    
+
     let stateInitBuffer = null;
-    if(request.stateInit) {
-      let cell = new Cell()
+    if (request.stateInit) {
+      let cell = new Cell();
       request.stateInit.writeTo(cell);
       stateInitBuffer = cell.toBoc().toString("base64");
     }
-  
+
     const response = await this.tonhubConnector.requestTransaction({
       seed: session.seed,
       appPublicKey: state.wallet.appPublicKey,
@@ -76,7 +72,9 @@ export class TonhubWalletAdapter
       value: request.value,
       timeout: request.timeout,
       stateInit: stateInitBuffer,
-      payload: request.payload ? request.payload : new Cell().toBoc().toString("base64"),
+      payload: request.payload
+        ? request.payload
+        : new Cell().toBoc().toString("base64"),
     });
 
     if (response.type === "rejected") {
