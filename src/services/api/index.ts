@@ -256,7 +256,7 @@ export async function getPoolInfo(token: string) {
   const tokenObjects: any = await getToken(client, token, getOwner());
   return getPoolData(tokenObjects.ammMinter);
 }
-
+//tokenReserves -> Liquidity
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
 

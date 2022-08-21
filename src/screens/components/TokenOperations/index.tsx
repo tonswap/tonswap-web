@@ -26,6 +26,7 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import TradInfo from "./TradeInfo";
 
 interface Props {
   srcToken: PoolInfo;
@@ -59,7 +60,7 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
 
-  const { txPending } = useTokenOperationsStore();
+  const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
 
@@ -88,7 +89,7 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-    
+
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
@@ -115,7 +116,7 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions
-     style={{pointerEvents: txPending ? 'none' : 'all'}}
+      style={{ pointerEvents: txPending ? 'none' : 'all' }}
     >
       <TxError />
       <SuccessModal actionType={actionType} />
@@ -139,6 +140,7 @@ const TokenOperations = ({
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
           />
+          <TradInfo delta={srcTokenAmount} />
         </Box>
 
         <Box className={classes.button}>
@@ -147,7 +149,7 @@ const TokenOperations = ({
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <WarningAmberRoundedIcon
                 style={{
