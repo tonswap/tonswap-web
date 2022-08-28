@@ -9,6 +9,8 @@ import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 
+
+
 const StyledAppContainer = styled(Box)({
   display: "flex",
   flexDirection: "column",
