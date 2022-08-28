@@ -13,6 +13,7 @@ import { useWalletModalToggle } from "store/application/hooks";
 import WalletImg from 'assets/images/shared/wallet.svg'
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 import SelectLanguage from "./SelectLanguage";
 
 
@@ -61,7 +62,7 @@ const WalletAddress = observer(() => {
 
   return (
     <StyledContainer item display="flex" gap="10px">
-      <SelectLanguage />
+      {!isMobile && <SelectLanguage isMobile={false} />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />

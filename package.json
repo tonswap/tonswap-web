@@ -24,6 +24,7 @@
     "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
     "i18next": "^21.9.0",
+    "i18next-browser-languagedetector": "^6.1.5",
     "mobx": "^6.5.0",
     "mobx-react": "^7.3.0",
     "notistack": "^2.0.5",

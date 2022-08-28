@@ -13,6 +13,9 @@ import useNavigateWithParams from "hooks/useNavigateWithParams";
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
+import SelectLanguage from "./SelectLanguage";
+import { isMobile } from "react-device-detect";
+
 const StyledActions = styled(Box)({
   display: "flex",
   marginTop: 40,
@@ -85,7 +88,6 @@ function Menu({ open, hide }: Props) {
     window.open(SUPPORT, '_blank')
   }
 
-
   const onCloseMenuClick = () => {
     hide()
     gaAnalytics.closeMenu()
@@ -127,7 +129,9 @@ function Menu({ open, hide }: Props) {
             <HelpOutlineRoundedIcon />
             {t('support')}
           </ActionButton>
+          {isMobile && <SelectLanguage isMobile={true} />}
         </StyledActions>
+
         <StyledSocials>
           <Socials />
         </StyledSocials>
