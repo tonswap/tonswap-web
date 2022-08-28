@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import * as API from "services/api";
 import { GAS_FEE } from "services/api";
 import { PoolInfo } from "services/api/addresses";
+import { ActionType } from "services/wallets/types";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 
 interface Props {
     delta: string;
+    actionType: ActionType;
 }
 
 interface ImpactProps {
@@ -58,10 +60,7 @@ const StyledContent = styled(Box)({
     }
 });
 
-
-
-
-const TradeInfo = ({ delta }: Props) => {
+const TradeInfo = ({ delta, actionType }: Props) => {
     const { selectedToken } =
         useTokenOperationsStore();
     const [open, setOpen] = useState(false)
@@ -76,7 +75,7 @@ const TradeInfo = ({ delta }: Props) => {
         if (selectedToken) {
             const data = await API.getPoolInfo(selectedToken?.tokenMinter);
             const deltaX = Number(delta)
-            const X = Number(data.tokenReserves);
+            const X = actionType === ActionType.BUY ? Number(data.tonReserves) : Number(data.tokenReserves);
             const tradeFee = 0.003;
             const lambda = 1 - tradeFee;
             const gasFee = GAS_FEE.SWAP;

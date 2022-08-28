@@ -140,7 +140,7 @@ const TokenOperations = ({
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
           />
-          <TradeInfo delta={srcTokenAmount} />
+          <TradeInfo delta={srcTokenAmount} actionType={actionType} />
         </Box>
 
         <Box className={classes.button}>
