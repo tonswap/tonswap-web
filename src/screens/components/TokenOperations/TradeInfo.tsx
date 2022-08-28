@@ -1,22 +1,26 @@
-import { Button, SwipeableDrawer, Typography } from "@mui/material";
-import { styled, Box } from "@mui/system";
-import BN from "bn.js";
+import { Button, Divider, SwipeableDrawer, Typography } from "@mui/material";
+import { styled, Box, width } from "@mui/system";
 import { useEffect, useState } from "react";
 import * as API from "services/api";
 import { GAS_FEE } from "services/api";
 import { PoolInfo } from "services/api/addresses";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { fromNano } from "ton";
 
 interface Props {
     delta: string;
 }
 
+interface ImpactProps {
+    X: number;
+    lambda: number;
+    deltaX: number;
+}
+
 interface TradeInfoData {
-    tradeFee: number;
+    tradeFee: string | undefined;
     gasFee: number;
-    slippage: number;
-    impact: number;
+    slippage: string | undefined;
+    impact: string | undefined;
 }
 
 const StyledContainer = styled(Box)({
@@ -28,6 +32,13 @@ const StyledContainer = styled(Box)({
     flexDirection: "column",
 });
 
+const StyledRow = styled(Box)({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 300
+})
+
 
 const StyledContent = styled(Box)({
     "p": {
@@ -38,6 +49,8 @@ const StyledContent = styled(Box)({
     flexDirection: 'column',
     alignItems: 'center',
     gap: 22,
+    paddingTop: 20,
+    paddingBottom: 20,
     "img": {
         width: 45,
         height: 45,
@@ -48,26 +61,35 @@ const StyledContent = styled(Box)({
 
 
 
-const TradInfo = ({ delta }: Props) => {
+const TradeInfo = ({ delta }: Props) => {
     const { selectedToken } =
         useTokenOperationsStore();
     const [open, setOpen] = useState(false)
     const [tradeData, setTradeData] = useState<TradeInfoData>();
 
+    const calculateImpact = ({ X, lambda, deltaX }: ImpactProps): string => {
+        const impact = ((X * (1 - lambda)) + (deltaX * lambda)) / (X + (deltaX * lambda));
+        return (impact * 100).toFixed(3)
+    }
+
     const getTradeIntoData = async (selectedToken: PoolInfo | undefined) => {
         if (selectedToken) {
-            let data = await API.getPoolInfo(selectedToken?.tokenMinter);
-
-            const deltaNumber = Number(delta)
-            const tokenReserves = Number(data.tokenReserves);
-            const tradeFee = tokenReserves * 0.003;
+            const data = await API.getPoolInfo(selectedToken?.tokenMinter);
+            const deltaX = Number(delta)
+            const X = Number(data.tokenReserves);
+            const tradeFee = 0.003;
+            const lambda = 1 - tradeFee;
             const gasFee = GAS_FEE.SWAP;
-            const slippage = 0.05 * tokenReserves;
-            const impact = ((tokenReserves * (1 - (1 - tradeFee))) + (deltaNumber * tokenReserves * (1 - tradeFee))) / (tokenReserves + (deltaNumber * tokenReserves * (1 - tradeFee)))
+            const slippage = 0.005;
+            const impact = calculateImpact({ X, lambda, deltaX })
 
-            setTradeData({ tradeFee, gasFee, slippage, impact })
+            const trimmedTradeFee = (tradeFee * 100).toFixed(3);
+            const trimmedSlippage = (slippage * 100).toFixed(3);
+
+            setTradeData({ tradeFee: trimmedTradeFee, gasFee, slippage: trimmedSlippage, impact })
         }
     }
+
 
     const toggleDrawer = (open: boolean) => () => {
         setOpen(open)
@@ -94,14 +116,21 @@ const TradInfo = ({ delta }: Props) => {
                 }}
             >
                 <StyledContent>
-                    <Typography>Trade Fee: {tradeData?.tradeFee}</Typography>
-                    <Typography>Gas Fee: {tradeData?.gasFee}</Typography>
-                    <Typography>Slippage: {tradeData?.slippage}</Typography>
-                    <Typography>Price Impact: {tradeData?.impact}</Typography>
+                    <StyledRow>
+                        <Typography>Trade Fee:</Typography><Typography> {tradeData?.tradeFee} %</Typography>
+                    </StyledRow>
+                    <StyledRow>
+                        <Typography>Gas Fee:</Typography><Typography> {tradeData?.gasFee} %</Typography>
+                    </StyledRow>
+                    <StyledRow>
+                        <Typography>Slippage:</Typography><Typography>  {tradeData?.slippage} %</Typography>
+                    </StyledRow>
+                    <StyledRow>
+                        <Typography>Price Impact:</Typography><Typography>  {tradeData?.impact} %</Typography>
+                    </StyledRow>
                 </StyledContent>
             </SwipeableDrawer>
         </StyledContainer >
     );
 }
-
-export default TradInfo;
+export default TradeInfo;

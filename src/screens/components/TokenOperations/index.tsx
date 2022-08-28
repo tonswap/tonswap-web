@@ -26,7 +26,7 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
-import TradInfo from "./TradeInfo";
+import TradeInfo from "./TradeInfo";
 
 interface Props {
   srcToken: PoolInfo;
@@ -140,7 +140,7 @@ const TokenOperations = ({
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
           />
-          <TradInfo delta={srcTokenAmount} />
+          <TradeInfo delta={srcTokenAmount} />
         </Box>
 
         <Box className={classes.button}>
