@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LANGUAGE } from "./language";
 import languageLogo from "assets/images/shared/language.svg";
-import styled from "@emotion/styled";
+import { styled } from "@mui/styles";
 import { Box } from "@mui/system";
-import { FormControl, Select, MenuItem, SelectChangeEvent, IconButton } from "@mui/material";
+import { FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 interface Props {
