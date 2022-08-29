@@ -6,6 +6,7 @@ import { styled } from "@mui/styles";
 import { Box } from "@mui/system";
 import { FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import gaAnalytics from "services/analytics/ga/ga";
 
 interface Props {
     isMobile: boolean;
@@ -33,6 +34,7 @@ const SelectLanguage = ({ isMobile }: Props) => {
         const lang = event.target.value;
         setLanguage(lang);
         i18n.changeLanguage(lang);
+        gaAnalytics.onLanguageSelect(lang);
     };
 
     return (

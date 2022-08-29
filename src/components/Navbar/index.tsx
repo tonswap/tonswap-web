@@ -1,6 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
@@ -12,6 +12,7 @@ import MenuToggle from "./MenuToggle";
 import { styled } from "@mui/system";
 import { AppGrid } from "styles/styles";
 import { isTelegramWebApp } from "utils";
+import { useTranslation } from "react-i18next";
 import gaAnalytics from "services/analytics/ga/ga";
 
 const navbarHeight = "60px";
@@ -28,11 +29,21 @@ const StyledToolbar = styled(Toolbar)({
 export const Navbar = observer(() => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { i18n } = useTranslation();
+
 
   const onMenuToggleClick = () => {
     setOpen(true);
     gaAnalytics.openMenu()
   };
+
+  const onDetectLanguage = () => {
+    gaAnalytics.onLanguageSelect(i18n.language)
+  }
+
+  useEffect(() => {
+    onDetectLanguage();
+  }, [])
 
   return (
     <>
