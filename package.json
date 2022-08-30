@@ -62,10 +62,6 @@
     "eject": "react-app-rewired eject",
     "deploy-staging": "git push heroku master"
   },
-  "engines": {
-    "node": "14.19.3",
-    "npm": "8.17.0"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
