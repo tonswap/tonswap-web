@@ -10,12 +10,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { StyledConnectedChip, StyledConnectChip } from "./style";
 import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
-import WalletImg from 'assets/images/shared/wallet.svg'
+import WalletImg from "assets/images/shared/wallet.svg";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import SelectLanguage from "./SelectLanguage";
-
 
 const StyledIconButton = styled("button")({
   cursor: "pointer",
@@ -42,27 +41,25 @@ const StyledContainer = styled(Grid)({
 
 const WalletAddress = observer(() => {
   const { t } = useTranslation();
-  const { resetWallet } = useWalletActions()
-  const toggleModal = useWalletModalToggle()
-  const { address } = useWalletStore()
+  const { resetWallet } = useWalletActions();
+  const toggleModal = useWalletModalToggle();
+  const { address } = useWalletStore();
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-
   const onDisconnect = () => {
-    resetWallet()
-    setShowDisconnect(false)
-    gaAnalytics.disconnect()
-  }
-
+    resetWallet();
+    setShowDisconnect(false);
+    gaAnalytics.disconnect();
+  };
 
   const onConnect = () => {
-    toggleModal()
-    gaAnalytics.connect()
-  }
+    toggleModal();
+    gaAnalytics.connect();
+  };
 
   return (
-    <StyledContainer item display="flex" gap="10px">
-      {!isMobile && <SelectLanguage isMobile={false} />}
+    <StyledContainer item display="flex" gap="30px">
+      {!isMobile && <SelectLanguage />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />
@@ -79,14 +76,14 @@ const WalletAddress = observer(() => {
       ) : (
         <StyledConnectChip onClick={onConnect}>
           <img className="icon" src={WalletImg} />
-          <Typography className="address">{t('connect-wallet')}</Typography>
+          <Typography className="address">{t("connect-wallet")}</Typography>
         </StyledConnectChip>
       )}
       {showDisconnect && (
         <ClickAwayListener onClickAway={() => setShowDisconnect(false)}>
           <StyledIconButton onClick={onDisconnect}>
             <PowerSettingsNewIcon style={{ width: 18 }} />
-            <Typography>{t('disconnect')}</Typography>
+            <Typography>{t("disconnect")}</Typography>
           </StyledIconButton>
         </ClickAwayListener>
       )}

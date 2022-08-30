@@ -1,80 +1,82 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LANGUAGE } from "./language";
-import languageLogo from "assets/images/shared/language.svg";
 import { styled } from "@mui/styles";
 import { Box } from "@mui/system";
-import { FormControl, Select, MenuItem, SelectChangeEvent } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { IconButton, Typography } from "@mui/material";
 import gaAnalytics from "services/analytics/ga/ga";
 
-interface Props {
-    isMobile: boolean;
+enum LANGUAGES {
+  EN = "en",
+  RU = "ru",
 }
 
+const languages = [
+  {
+    text: "Eng",
+    value: LANGUAGES.EN,
+  },
+  {
+    text: "Ru",
+    value: LANGUAGES.RU,
+  },
+];
+
 const StyledContainer = styled(Box)({
-    display: "flex",
-    alignItems: "baseline",
-    justifyContent: "center",
-    img: {
-        width: 26,
-        height: 26,
-    },
+  display: "flex",
+  justifyContent: "center",
+  position: "relative",
+  gap: 15,
+
+  "& .line": {
+    position: "absolute",
+    left: "52%",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    height: 20,
+    width: 1,
+    background: "black",
+    margin: 0,
+    padding: 0,
+  },
 });
 
-const SelectLanguage = ({ isMobile }: Props) => {
-    const { i18n } = useTranslation();
+const SelectLanguage = () => {
+  const { i18n } = useTranslation();
 
-    const [language, setLanguage] = useState<string>(() => {
-        const defaultLanguage = i18n.language === "en" ? LANGUAGE.en : LANGUAGE.ru
-        return defaultLanguage;
-    });
+  const [language, setLanguage] = useState<LANGUAGES>(
+    i18n.language as LANGUAGES
+  );
 
-    const handleLangChange = (event: SelectChangeEvent) => {
-        const lang = event.target.value;
-        setLanguage(lang);
-        i18n.changeLanguage(lang);
-        gaAnalytics.onLanguageSelect(lang);
-    };
+  const changeLanguage = (_language: LANGUAGES) => {
+    setLanguage(_language);
+    i18n.changeLanguage(_language);
+    gaAnalytics.onLanguageSelect(_language);
+  };
 
-    return (
-        <StyledContainer>
-            {isMobile &&
-                <Box
-                    component="img"
-                    sx={{
-                        position: 'relative',
-                        height: 26,
-                        width: 26,
-                        top: 8,
-                    }}
-                    alt="language"
-                    src={languageLogo}
-                />}
-            <FormControl variant="standard" sx={{
-                position: 'relative',
-                m: 1,
-                minWidth: 120,
-                bottom: isMobile ? 0 : 5
-            }}
+  return (
+    <StyledContainer>
+      <div className="line" />
+      {languages.map((lang) => {
+        const isSelected = lang.value === language;
+        return (
+          <IconButton
+            className="language-select"
+            style={{ color: " #313855" }}
+            onClick={() => changeLanguage(lang.value)}
+            key={lang.value}
+          >
+            <Typography
+              style={{
+                fontWeight: isSelected ? 600 : 400,
+              }}
             >
-                <Select
-                    value={language}
-                    onChange={handleLangChange}
-                    style={{
-                        fontWeight: isMobile ? 400 : 600,
-                        paddingLeft: 5,
-                        color: "#000"
-                    }}
-                    IconComponent={() => <ArrowDropDownIcon style={{ color: "#000" }} />}
-
-                >
-                    <MenuItem value={LANGUAGE.en}>English</MenuItem>
-                    <MenuItem value={LANGUAGE.ru}>Русский</MenuItem>
-                </Select>
-            </FormControl>
-        </StyledContainer >
-    );
+              {lang.text}
+            </Typography>
+          </IconButton>
+        );
+      })}
+    </StyledContainer>
+  );
 };
 
 export default SelectLanguage;

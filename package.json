@@ -59,7 +59,7 @@
     "build": "GENERATE_SOURCEMAP=false react-app-rewired build && cp build/index.html build/404.html",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "deploy-staging": "git push heroku master"
+    "deploy-staging": "npm run build && gh-pages deploy build"
   },
   "eslintConfig": {
     "extends": [
