@@ -2,9 +2,6 @@
   "name": "tonswap-web",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "16.x"
-  },
   "dependencies": {
     "@aws-crypto/sha256-js": "^2.0.1",
     "@emotion/react": "^11.8.2",
