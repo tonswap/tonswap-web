@@ -264,7 +264,7 @@ const getActionFromParams = (value: any) => {
 
 export const toNanoSafe = (value?: string | number): BN => {
   console.log(value);
-  
+
   if (!value) {
     return toNano("0");
   }
@@ -274,7 +274,7 @@ export const toNanoSafe = (value?: string | number): BN => {
     result = toNano(value);
   } catch (error) {
     console.log(error);
-    
+
     result = toNano("0");
   }
   return result;

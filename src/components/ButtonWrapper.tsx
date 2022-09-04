@@ -30,7 +30,7 @@ export const ButtonWrapper = ({
             <>{text} {image}</>
         </ActionButton>
     } else {
-        return <MainButton text={text} disabled={isDisabled} progress={isLoading} onClick={onClick} />
+        return <MainButton text={text} disabled={isDisabled} onClick={onClick} />
     }
 }
 
