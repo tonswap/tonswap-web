@@ -27,7 +27,6 @@ import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import TradeInfo from "./TradeInfo";
 
 interface Props {
   srcToken: PoolInfo;
