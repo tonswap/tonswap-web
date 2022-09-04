@@ -186,9 +186,9 @@ class GaAnalytics {
   }
 
   onLanguageSelect(lang: string) {
-    if (lang === LANGUAGE.en) {
+    if (lang === LANGUAGE.EN) {
       this.sendEvent(AnalyticsCategory.Language, AnalyticsLanguages.English);
-    } else if (lang === LANGUAGE.ru) {
+    } else if (lang === LANGUAGE.RU) {
       this.sendEvent(AnalyticsCategory.Language, AnalyticsLanguages.Russian);
     }
   }

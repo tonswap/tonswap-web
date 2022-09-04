@@ -2,22 +2,19 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/styles";
 import { Box } from "@mui/system";
-import { IconButton, Typography } from "@mui/material";
+import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import gaAnalytics from "services/analytics/ga/ga";
-
-enum LANGUAGES {
-  EN = "en",
-  RU = "ru",
-}
+import { LANGUAGE } from "./language";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const languages = [
   {
     text: "Eng",
-    value: LANGUAGES.EN,
+    value: LANGUAGE.EN,
   },
   {
-    text: "Ru",
-    value: LANGUAGES.RU,
+    text: "Рус",
+    value: LANGUAGE.RU,
   },
 ];
 
@@ -43,11 +40,12 @@ const StyledContainer = styled(Box)({
 const SelectLanguage = () => {
   const { i18n } = useTranslation();
 
-  const [language, setLanguage] = useState<LANGUAGES>(
-    i18n.language as LANGUAGES
+  const [language, setLanguage] = useState<LANGUAGE>(
+    i18n.language as LANGUAGE
   );
 
-  const changeLanguage = (_language: LANGUAGES) => {
+  const changeLanguage = (event: SelectChangeEvent) => {
+    const _language = event.target.value as LANGUAGE;
     setLanguage(_language);
     i18n.changeLanguage(_language);
     gaAnalytics.onLanguageSelect(_language);
@@ -55,26 +53,24 @@ const SelectLanguage = () => {
 
   return (
     <StyledContainer>
-      <div className="line" />
-      {languages.map((lang) => {
-        const isSelected = lang.value === language;
-        return (
-          <IconButton
-            className="language-select"
-            style={{ color: " #313855" }}
-            onClick={() => changeLanguage(lang.value)}
-            key={lang.value}
-          >
-            <Typography
-              style={{
-                fontWeight: isSelected ? 600 : 400,
-              }}
-            >
-              {lang.text}
-            </Typography>
-          </IconButton>
-        );
-      })}
+      <FormControl>
+        <Select
+          labelId="demo-simple-select-label"
+          value={language}
+          label=""
+          onChange={changeLanguage}
+          IconComponent={() => <ArrowDropDownIcon style={{ color: "#000" }} />}
+
+        >
+          {languages.map((lang) => {
+            return (
+              <MenuItem key={lang.value} value={lang.value}>
+                {lang.text}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
     </StyledContainer>
   );
 };
