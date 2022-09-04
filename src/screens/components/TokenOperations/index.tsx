@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect } from "react";
-import { ActionButton, Popup } from "components";
+import { ButtonWrapper } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -26,11 +26,8 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
-<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
-=======
 import TradeInfo from "./TradeInfo";
->>>>>>> 7468c1c50fe15fb35a10a2feb98d69ae593ed549
 
 interface Props {
   srcToken: PoolInfo;
@@ -152,29 +149,27 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
+            <ButtonWrapper onClick={onConnect} text={t('connect-wallet')} />
           ) : insufficientFunds ? (
-            <ActionButton
+            <ButtonWrapper
               isDisabled={disabled || insufficientFunds}
               onClick={() => { }}
-            >
-              <WarningAmberRoundedIcon
+              text={t('insufficient-funds')}
+              image={<WarningAmberRoundedIcon
                 style={{
                   color: "#7D7D7D",
                   top: "-2px",
                   position: "relative",
                 }}
-              />
-              {t('insufficient-funds')}
-            </ActionButton>
+              />}
+            />
           ) : (
-            <ActionButton
+            <ButtonWrapper
               isLoading={txPending}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
-            >
-              {submitButtonText}
-            </ActionButton>
+              text={submitButtonText}
+            />
           )}
         </Box>
       </Box>
