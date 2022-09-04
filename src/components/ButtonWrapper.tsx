@@ -4,19 +4,21 @@ import { isTelegramWebApp } from "utils";
 import { ActionButton } from "./ActionButton";
 
 type Props = {
-    children: string | ReactNode;
     isLoading?: boolean;
     customClassName?: string;
     onClick: () => void;
     isDisabled?: boolean;
+    text: string;
+    image?: string | ReactNode;
 };
 
 export const ButtonWrapper = ({
-    children,
     isLoading,
     customClassName = "",
     onClick,
     isDisabled,
+    text,
+    image
 }: Props) => {
 
     if (!isTelegramWebApp()) {
@@ -25,11 +27,10 @@ export const ButtonWrapper = ({
             isLoading={isLoading}
             customClassName={customClassName}
             isDisabled={isDisabled}>
-            {children}
+            <>{text} {image}</>
         </ActionButton>
     } else {
-        const buttonText = children as string;
-        return <MainButton text={buttonText} disabled={isDisabled} progress={isLoading} onClick={onClick} />
+        return <MainButton text={text} disabled={isDisabled} progress={isLoading} onClick={onClick} />
     }
 }
 

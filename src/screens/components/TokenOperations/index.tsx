@@ -26,7 +26,6 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
-import { isTelegramWebApp } from "utils";
 
 interface Props {
   srcToken: PoolInfo;
@@ -144,32 +143,27 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ButtonWrapper onClick={onConnect}>Connect wallet</ButtonWrapper>
+            <ButtonWrapper onClick={onConnect} text={'Connect wallet'} />
           ) : insufficientFunds ? (
             <ButtonWrapper
               isDisabled={disabled || insufficientFunds}
               onClick={() => { }}
-            >
-              {!isTelegramWebApp() ?
-                <>
-                  <WarningAmberRoundedIcon
-                    style={{
-                      color: "#7D7D7D",
-                      top: "-2px",
-                      position: "relative",
-                    }}
-                  />  Insufficient funds
-                </> :
-                'Insufficient funds'}
-            </ButtonWrapper>
+              text={'Insufficient funds'}
+              image={<WarningAmberRoundedIcon
+                style={{
+                  color: "#7D7D7D",
+                  top: "-2px",
+                  position: "relative",
+                }}
+              />}
+            />
           ) : (
             <ButtonWrapper
               isLoading={txPending}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
-            >
-              {submitButtonText}
-            </ButtonWrapper>
+              text={submitButtonText}
+            />
           )}
         </Box>
       </Box>
