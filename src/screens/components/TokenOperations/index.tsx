@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useEffect } from "react";
-import { ActionButton, Popup } from "components";
+import { ButtonWrapper } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -26,6 +26,7 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import { isTelegramWebApp } from "utils";
 
 interface Props {
   srcToken: PoolInfo;
@@ -88,7 +89,7 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-    
+
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
@@ -115,7 +116,7 @@ const TokenOperations = ({
 
   return (
     <StyledTokenOperationActions
-     style={{pointerEvents: txPending ? 'none' : 'all'}}
+      style={{ pointerEvents: txPending ? 'none' : 'all' }}
     >
       <TxError />
       <SuccessModal actionType={actionType} />
@@ -143,29 +144,32 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={onConnect}>Connect wallet</ActionButton>
+            <ButtonWrapper onClick={onConnect}>Connect wallet</ButtonWrapper>
           ) : insufficientFunds ? (
-            <ActionButton
+            <ButtonWrapper
               isDisabled={disabled || insufficientFunds}
-              onClick={() => {}}
+              onClick={() => { }}
             >
-              <WarningAmberRoundedIcon
-                style={{
-                  color: "#7D7D7D",
-                  top: "-2px",
-                  position: "relative",
-                }}
-              />
-              Insufficient funds
-            </ActionButton>
+              {!isTelegramWebApp() ?
+                <>
+                  <WarningAmberRoundedIcon
+                    style={{
+                      color: "#7D7D7D",
+                      top: "-2px",
+                      position: "relative",
+                    }}
+                  />  Insufficient funds
+                </> :
+                'Insufficient funds'}
+            </ButtonWrapper>
           ) : (
-            <ActionButton
+            <ButtonWrapper
               isLoading={txPending}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >
               {submitButtonText}
-            </ActionButton>
+            </ButtonWrapper>
           )}
         </Box>
       </Box>
