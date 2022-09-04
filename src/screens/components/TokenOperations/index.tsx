@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { ButtonWrapper } from "components";
 import { useEffect, useState } from "react";
-import { ActionButton } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -27,11 +26,8 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
-<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
-=======
 import TxLoader from "./TxLoader";
->>>>>>> cbcbccd76677b284ffd0cf3fb4c6755fbe4c1a2a
 
 interface Props {
   srcToken: PoolInfo;
@@ -124,78 +120,62 @@ const TokenOperations = ({
 
 
   return (
-<<<<<<< HEAD
-    <StyledTokenOperationActions
-      style={{ pointerEvents: txPending ? 'none' : 'all' }}
-    >
-=======
     <StyledTokenOperationActions>
->>>>>>> cbcbccd76677b284ffd0cf3fb4c6755fbe4c1a2a
-        <TxError />
-        <TxLoader open={showTxLoader} adapterId={adapterId} cancel={() => setShowTxLoader(false)} />
-        <SuccessModal actionType={actionType} />
-        <Box className={classes.content}>
-          <Box
-            className={classes.cards}
-            style={{ pointerEvents: txPending ? "none" : "all" }}
-          >
-            <SrcToken
-              token={srcToken}
-              getAmountFunc={getAmountFunc}
-              destTokenName={destToken.tokenMinter}
-              maxAmount={maxAmount}
-              disableInputDependency={disableInputDependency}
-            />
+      <TxError />
+      <TxLoader open={showTxLoader} adapterId={adapterId} cancel={() => setShowTxLoader(false)} />
+      <SuccessModal actionType={actionType} />
+      <Box className={classes.content}>
+        <Box
+          className={classes.cards}
+          style={{ pointerEvents: txPending ? "none" : "all" }}
+        >
+          <SrcToken
+            token={srcToken}
+            getAmountFunc={getAmountFunc}
+            destTokenName={destToken.tokenMinter}
+            maxAmount={maxAmount}
+            disableInputDependency={disableInputDependency}
+          />
 
-            <Icon icon={icon} color={destToken.color} />
-            <DestToken
-              getAmountFunc={getAmountFunc}
-              token={destToken}
-              srcTokenName={srcToken.tokenMinter}
-              disableInputDependency={disableInputDependency}
-              srcTokenAmount={srcTokenAmount}
-              actionType={actionType}
-            />
-          </Box>
-
-          <Box className={classes.button}>
-            {!address ? (
-              <ButtonWrapper onClick={onConnect} text={t('connect-wallet')} />
-            ) : insufficientFunds ? (
-              <ButtonWrapper
-                isDisabled={disabled || insufficientFunds}
-                onClick={() => { }}
-<<<<<<< HEAD
-                text={t('insufficient-funds')}
-                image={<WarningAmberRoundedIcon
-=======
-            >
-              <WarningAmberRoundedIcon
->>>>>>> cbcbccd76677b284ffd0cf3fb4c6755fbe4c1a2a
-                  style={{
-                    color: "#7D7D7D",
-                    top: "-2px",
-                    position: "relative",
-                  }}
-                />}
-              />
-            ) : (
-<<<<<<< HEAD
-              <ButtonWrapper
-                isLoading={txPending}
-=======
-            <ActionButton
-              isLoading={showTxLoader}
->>>>>>> cbcbccd76677b284ffd0cf3fb4c6755fbe4c1a2a
-                isDisabled={disabled || insufficientFunds}
-                onClick={onSubmit}
-                text={submitButtonText}
-              />
-            )}
-          </Box>
+          <Icon icon={icon} color={destToken.color} />
+          <DestToken
+            getAmountFunc={getAmountFunc}
+            token={destToken}
+            srcTokenName={srcToken.tokenMinter}
+            disableInputDependency={disableInputDependency}
+            srcTokenAmount={srcTokenAmount}
+            actionType={actionType}
+          />
         </Box>
-      </StyledTokenOperationActions>
-      );
-};
 
-      export default TokenOperations;
+        <Box className={classes.button}>
+          {!address ? (
+            <ButtonWrapper onClick={onConnect} text={t('connect-wallet')} />
+          ) : insufficientFunds ? (
+            <ButtonWrapper
+              isDisabled={disabled || insufficientFunds}
+              onClick={() => { }}
+              text={t('insufficient-funds')}
+              image={<WarningAmberRoundedIcon
+
+                style={{
+                  color: "#7D7D7D",
+                  top: "-2px",
+                  position: "relative",
+                }}
+              />}
+            />
+          ) : (
+            <ButtonWrapper
+              isLoading={txPending}
+              isDisabled={disabled || insufficientFunds}
+              onClick={onSubmit}
+              text={submitButtonText}
+            />
+          )}
+        </Box>
+      </Box>
+    </StyledTokenOperationActions>)
+}
+
+export default TokenOperations;
