@@ -9,11 +9,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const languages = [
   {
-    text: "Eng",
+    text: "EN",
     value: LANGUAGE.EN,
   },
   {
-    text: "Рус",
+    text: "РY",
     value: LANGUAGE.RU,
   },
 ];
@@ -41,7 +41,7 @@ const SelectLanguage = () => {
   const { i18n } = useTranslation();
 
   const [language, setLanguage] = useState<LANGUAGE>(
-    i18n.language as LANGUAGE
+    i18n.language === "en-US" ? LANGUAGE.EN : i18n.language as LANGUAGE
   );
 
   const changeLanguage = (event: SelectChangeEvent) => {
@@ -60,7 +60,6 @@ const SelectLanguage = () => {
           label=""
           onChange={changeLanguage}
           IconComponent={() => <ArrowDropDownIcon style={{ color: "#000" }} />}
-
         >
           {languages.map((lang) => {
             return (
