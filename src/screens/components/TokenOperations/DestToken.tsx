@@ -2,6 +2,7 @@ import { Box } from "@mui/system";
 import SwapCard from "components/SwapCard";
 import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
+import { ActionType } from "services/wallets/types";
 import {
   useTokenOperationsActions,
   useTokenOperationsStore,
@@ -16,10 +17,11 @@ interface Props {
   srcTokenName: string;
   getAmountFunc: any;
   disableInputDependency?: boolean
-
+  srcTokenAmount: string;
+  actionType: ActionType;
 }
 
-function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency }: Props) {
+function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency, srcTokenAmount, actionType }: Props) {
   const {
     destTokenAmount,
     totalBalances,
@@ -71,8 +73,8 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency 
 
   const onChange = (value: string) => {
     updateDestTokenAmount(value);
-    if(disableInputDependency){
-      return 
+    if (disableInputDependency) {
+      return
     }
     onInputChange(InInput.DEST);
     balanceRef.current = value;
@@ -87,7 +89,7 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency 
 
   useEffect(() => {
     if (destTokenAmount && inInput === InInput.DEST) {
-       onChange(destTokenAmount);
+      onChange(destTokenAmount);
     }
   }, []);
 
@@ -101,6 +103,8 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency 
         token={token}
         balance={totalBalances.destBalance}
         balanceLoading={destAvailableAmountLoading}
+        srcTokenAmount={srcTokenAmount}
+        actionType={actionType}
       />
     </div>
   );
