@@ -57,8 +57,11 @@ const zeroAddress = Address.parse(
 
 /* eslint no-eval: 0 */
 const client = new TonClient({
-  endpoint: rpcUrl,
+  endpoint: localStorage.getItem('rpcUrl') as string,
 });
+
+console.log(client);
+
 
 const META_DATA_DEFUALT = {
   description: "LP Pool",

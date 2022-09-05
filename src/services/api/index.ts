@@ -26,7 +26,7 @@ if (document.location.href.indexOf("testnet=") > -1) {
 
 /* eslint no-eval: 0 */
 export const client = new TonClient({
-  endpoint: rpcUrl,
+  endpoint: localStorage.getItem('rpcUrl') as string,
 });
 
 export enum GAS_FEE {

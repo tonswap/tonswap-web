@@ -8,6 +8,8 @@ import { useWalletActions } from "store/wallet/hooks";
 import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
+import { delay } from "utils";
+import { useState } from "react";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -40,12 +42,30 @@ const StyledBeta = styled(Box)({
 });
 
 const App = () => {
+  const [appReady, setAppReady] = useState(false)
   const { restoreSession } = useWalletActions();
   useWebAppResize();
-
   useEffectOnce(() => {
     restoreSession();
   });
+
+
+
+
+
+useEffectOnce(() => {
+  const getInfura = async() => {
+    await delay(1000)
+    setAppReady(true)
+  }
+  localStorage.setItem('rpcUrl', "https://mainnet.tonhubapi.com/jsonRPC")
+  getInfura()
+})
+  
+
+  if(!appReady){
+    return null
+  }
 
   return (
     <>
