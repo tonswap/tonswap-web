@@ -42,7 +42,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB": {
         name: "DinoCoin for TonSwap tests",
         ammMinter: "EQD09ZDrfYXU-HeK-hdxwPQ3cjBOIsfsGUByyp_SIDaPXErV",
-        tokenMinter: "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB",
+        tokenMinter: "EQAG57v8WL4U188JmkFJZd5VIbqoFfwx3trefJbfJ5pD1JAP",
         displayName: "DINO",
         image: DinoKorn,
         color: "#0E9D26",
