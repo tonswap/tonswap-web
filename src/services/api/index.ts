@@ -191,7 +191,6 @@ function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
   let numerator = reserveIn.mul(amountOut).mul(new BN(1000));
   let denominator = reserveOut.sub(amountOut).mul(new BN(997));
   let ret = numerator.div(denominator).add(new BN(1));
-  console.log("getAmountIn", ret.toString());
   return ret;
 }
 

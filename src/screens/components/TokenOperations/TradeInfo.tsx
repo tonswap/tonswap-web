@@ -42,6 +42,8 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
 
+    
+
     const calculateImpact = ({ X, gamma, deltaX }: ImpactProps): string => {
         const impact = ((X * (1 - gamma)) + (deltaX * gamma)) / (X + (deltaX * gamma));
         return (impact * 100).toFixed(3)
@@ -61,6 +63,16 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
             const trimmedTradeFee = (tradeFee * 100).toFixed(3);
             const trimmedSlippage = (slippage * 100).toFixed(3);
             setTradeData({ tradeFee: trimmedTradeFee, gasFee, slippage: trimmedSlippage, impact })
+            console.log({
+                tonReserves: parseFloat(fromNano(data.tonReserves)),
+                tokenReserves: parseFloat(fromNano(data.tokenReserves)),
+                X,
+                gamma,
+                gasFee,
+                slippage,
+                impact
+            });
+            
         }
     }
 
@@ -68,6 +80,9 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
         getTradeIntoData(selectedToken);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [delta])
+
+
+
 
     return (
         <StyledContainer className="swap-card" color={tokenColor}>
