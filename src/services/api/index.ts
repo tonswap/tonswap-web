@@ -24,9 +24,12 @@ if (document.location.href.indexOf("testnet=") > -1) {
   rpcUrl = "https://sandbox.tonhubapi.com/jsonRPC";
 }
 
+console.log(localStorage.getItem("rpcUrl") as string);
+console.log(rpcUrl);
+
 /* eslint no-eval: 0 */
 export const client = new TonClient({
-  endpoint: localStorage.getItem('rpcUrl') as string,
+  endpoint: localStorage.getItem("rpcUrl") as string,
 });
 
 export enum GAS_FEE {

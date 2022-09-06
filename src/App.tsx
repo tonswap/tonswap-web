@@ -10,6 +10,8 @@ import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import { delay } from "utils";
 import { useState } from "react";
+import { Client, Config } from "@orbs-network/ton-rpc-gw";
+import axios from "axios";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -42,29 +44,39 @@ const StyledBeta = styled(Box)({
 });
 
 const App = () => {
-  const [appReady, setAppReady] = useState(false)
+  const [appReady, setAppReady] = useState(false);
   const { restoreSession } = useWalletActions();
   useWebAppResize();
   useEffectOnce(() => {
     restoreSession();
   });
 
+  useEffectOnce(() => {
+    const getTonRpc = async () => {
+      try {
+        const config: Config = {
+          urlVersion: 1,
+          network: "mainnet",
+          protocol: "toncenter",
+        };
+        const client = new Client(config);
+        await client.init();
+        const url = client.getNextNodeUrl("jsonRPC");
+        console.log(url);
 
+        localStorage.setItem("rpcUrl", url);
 
+        setAppReady(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    getTonRpc();
+  });
 
-useEffectOnce(() => {
-  const getInfura = async() => {
-    await delay(1000)
-    setAppReady(true)
-  }
-  localStorage.setItem('rpcUrl', "https://mainnet.tonhubapi.com/jsonRPC")
-  getInfura()
-})
-  
-
-  if(!appReady){
-    return null
+  if (!appReady) {
+    return null;
   }
 
   return (

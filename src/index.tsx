@@ -13,6 +13,8 @@ import { ThemeProvider as MakeStylesProvider } from "@mui/styles";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import store from "store/store";
+import { QueryClient, QueryClientProvider } from "react-query";
+export const queryClient = new QueryClient();
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -21,7 +23,9 @@ ReactDOM.render(
       <Router basename={process.env.PUBLIC_URL}>
         <SnackbarProvider maxSnack={3}>
           <Provider store={store}>
-            <App />
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
           </Provider>
         </SnackbarProvider>
       </Router>

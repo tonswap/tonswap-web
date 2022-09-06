@@ -54,14 +54,14 @@ const ammJettonWalletCode = `B5EE9C72410210010002DB000114FF00F4A413F4BCF2C80B010
 const zeroAddress = Address.parse(
   "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
 );
+console.log(localStorage.getItem("rpcUrl"));
 
 /* eslint no-eval: 0 */
 const client = new TonClient({
-  endpoint: localStorage.getItem('rpcUrl') as string,
+  endpoint: localStorage.getItem("rpcUrl") as string,
 });
 
 console.log(client);
-
 
 const META_DATA_DEFUALT = {
   description: "LP Pool",
@@ -70,10 +70,10 @@ const META_DATA_DEFUALT = {
 };
 
 export async function poolStateInit(jettonMinter: Address, workchain: number) {
- // const jettonData = await getTokenData(jettonMinter);
+  // const jettonData = await getTokenData(jettonMinter);
   let metadata = {
-      name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
-      ...META_DATA_DEFUALT,
+    name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
+    ...META_DATA_DEFUALT,
   };
   const { codeCell, initDataCell } = buildStateInit(metadata);
   const futureAddress = await contractAddress({
@@ -128,7 +128,9 @@ function buildStateInit(contentData: { [s: string]: string }) {
   dataCell.bits.writeAddress(zeroAddress); // token_wallet_address starts as null
   dataCell.bits.writeCoins(0); // ton-reserves
   dataCell.bits.writeCoins(0); // token-reserves
-  dataCell.bits.writeAddress(Address.parse("EQAxZiaJf80xadJw4qvFN5WkNACXAP56Wa00svHTf4iAjpqy"));  // TODO (admin client side is quite dangerous)
+  dataCell.bits.writeAddress(
+    Address.parse("EQAxZiaJf80xadJw4qvFN5WkNACXAP56Wa00svHTf4iAjpqy")
+  ); // TODO (admin client side is quite dangerous)
   dataCell.refs.push(contentCell); // meta-data
   dataCell.refs.push(Cell.fromBoc(ammJettonWalletCode)[0]); // wallet-code
   return {
