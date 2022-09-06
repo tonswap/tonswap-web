@@ -33,7 +33,7 @@ export type PoolInfoRaw = {
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC": {
         name: "KittyCoin for TonSwap tests",
-        ammMinter: "EQBVyErgx7BCboNXOx0CwA9KYuLY4kXMHanURAGvMWeO-VCE",
+        ammMinter: "EQAPym289T58PFRLOztjvxhuuKXHj2PZQLnIqSp01_9SNFll",
         tokenMinter: "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC",
         displayName: "KIT",
         image: KittyKorn,
