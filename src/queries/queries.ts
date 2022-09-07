@@ -1,9 +1,10 @@
 import { Client, Config } from "@orbs-network/ton-rpc-gw";
+import { TON_RPC_NAME } from "consts";
 import { useQuery } from "react-query";
 
 export const useTonClient = () => {
   return useQuery(
-    ["ton-client"],
+    ["tonClient"],
     async () => {
       const config: Config = {
         urlVersion: 1,
@@ -12,7 +13,9 @@ export const useTonClient = () => {
       };
       const client = new Client(config);
       await client.init();
-      return { client, rpcUrl: client.getNextNodeUrl("jsonRPC") };
+      const url = client.getRandNodeUrl("jsonRPC");
+      localStorage.setItem(TON_RPC_NAME, url);
+      return client;
     },
     {
       staleTime: Infinity,

@@ -1,17 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { BETA_TEXT, LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
+import { BETA_TEXT, LAYOUT_MAX_WIDTH } from "consts";
 import { styled } from "@mui/system";
 import SelectWallet from "components/SelectWallet";
 import { useWalletActions } from "store/wallet/hooks";
 import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
-import { delay } from "utils";
-import { useState } from "react";
-import { Client, Config } from "@orbs-network/ton-rpc-gw";
-import axios from "axios";
+import { useTonClient } from "queries/queries";
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -44,38 +41,14 @@ const StyledBeta = styled(Box)({
 });
 
 const App = () => {
-  const [appReady, setAppReady] = useState(false);
+  const { isSuccess: tonRpcReady } = useTonClient();
   const { restoreSession } = useWalletActions();
   useWebAppResize();
   useEffectOnce(() => {
     restoreSession();
   });
 
-  useEffectOnce(() => {
-    const getTonRpc = async () => {
-      try {
-        const config: Config = {
-          urlVersion: 1,
-          network: "mainnet",
-          protocol: "toncenter",
-        };
-        const client = new Client(config);
-        await client.init();
-        const url = client.getNextNodeUrl("jsonRPC");
-        console.log(url);
-
-        localStorage.setItem("rpcUrl", url);
-
-        setAppReady(true);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getTonRpc();
-  });
-
-  if (!appReady) {
+  if (!tonRpcReady) {
     return null;
   }
 
