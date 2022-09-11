@@ -11,6 +11,8 @@ const StyledViewRow = styled(Box)({
     display: "flex",
     flexDirection: "row",
     justifyContent: "baseline",
+    position: "relative",
+    top: 8,
 })
 
 const ArrowWrap = styled(Box)({
@@ -23,7 +25,7 @@ const ArrowWrap = styled(Box)({
 const ShowTradeInfoButton = ({ show, changeShow }: Props) => {
     return (
         <Button onClick={changeShow}>
-            <StyledViewRow>
+            <StyledViewRow onClick={changeShow}>
                 <Typography>
                     {show ? 'Close Info' : 'View Info'}
                 </Typography>

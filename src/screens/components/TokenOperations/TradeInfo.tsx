@@ -13,7 +13,6 @@ import TradeInfoRow from "./TradeInfoRow";
 interface Props {
     delta?: string;
     actionType?: ActionType;
-    tokenColor: string;
 }
 
 interface ImpactProps {
@@ -29,17 +28,15 @@ interface TradeInfoData {
     impact: string | undefined;
 }
 
-const StyledContainer = styled(Box)(({ color }: { color: string }) => ({
-    padding: 20,
+const StyledContainer = styled(Box)({
     borderRadius: 12,
     display: "flex",
     position: "relative",
     overflow: "hidden",
     flexDirection: "column",
-    backgroundColor: color,
-}));
+});
 
-const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
+const TradeInfo = ({ delta, actionType }: Props) => {
     const { selectedToken } =
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
@@ -86,7 +83,7 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
     }, [delta])
 
     return (
-        <StyledContainer className="swap-card" color={tokenColor}>
+        <StyledContainer className="swap-card">
             <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
             <Collapse orientation="vertical" in={showInfo}>
                 <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />

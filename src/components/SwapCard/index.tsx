@@ -112,11 +112,11 @@ function SwapCard({
             )}
           </StyledBottom>
         </div>
+        {srcTokenAmount && actionType &&
+          <StyledFooterTradeInfo>
+            <TradeInfo delta={srcTokenAmount} actionType={actionType} />
+          </StyledFooterTradeInfo>}
       </StyledContainer>
-      {srcTokenAmount && actionType &&
-        <StyledFooterTradeInfo>
-          <TradeInfo delta={srcTokenAmount} actionType={actionType} tokenColor={token.color} />
-        </StyledFooterTradeInfo>}
     </>
   );
 }
@@ -185,7 +185,6 @@ const StyledBottom = styled(Box)({
 const StyledFooterTradeInfo = styled(Box)({
   alignItems: "center",
   position: "relative",
-  bottom: 16,
   p: {
     color: "white",
     fontSize: 12,
