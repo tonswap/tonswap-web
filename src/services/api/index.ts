@@ -10,7 +10,7 @@ import {
 } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
+import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 import store from "store/store";
@@ -28,13 +28,15 @@ if (document.location.href.indexOf("testnet=") > -1) {
 /* eslint no-eval: 0 */
 export const client = new TonClient({
   endpoint: rpcUrl,
+  //apiKey: "j46He&x63GFc",
 });
 
 export enum GAS_FEE {
   SWAP = 0.09,
   FORWARD_TON = 0.05,
-  ADD_LIQUIDITY = 0.12,
-  REMOVE_LIQUIDITY = 0.08,
+  ADD_LIQUIDITY_FORWARD_TON = 0.09, //0.12
+  ADD_LIQUIDITY = 0.2,
+  REMOVE_LIQUIDITY = 0.2,
 }
 
 const sleep = (milliseconds: number) => {
@@ -525,7 +527,7 @@ export async function waitForSeqno(wallet: Wallet) {
 
       if (seqnoAfter && seqnoAfter > seqnoBefore) return;
     }
-    throw new Error(i18next.t("error-message"));
+    throw new Error(BASE_ERROR_MESSAGE);
   };
 }
 
@@ -541,7 +543,7 @@ export function waitForContractDeploy(contractAddress: string) {
 
       if (isDeployed) return;
     }
-    throw new Error(i18next.t("error-message"));
+    throw new Error(BASE_ERROR_MESSAGE);
   };
 }
 
