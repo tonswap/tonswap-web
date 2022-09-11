@@ -30,6 +30,7 @@ interface TradeInfoData {
 
 const StyledContainer = styled(Box)({
     borderRadius: 12,
+    paddingRight: 12,
     display: "flex",
     position: "relative",
     overflow: "hidden",
@@ -48,7 +49,7 @@ const TradeInfo = ({ delta, actionType }: Props) => {
 
     const calculateImpact = ({ X, gamma, deltaX }: ImpactProps): string => {
         const impact = ((X * (1 - gamma)) + (deltaX * gamma)) / (X + (deltaX * gamma));
-        return (impact * 100).toFixed(3)
+        return (impact * 100).toFixed(2)
     }
 
     const getTradeIntoData = async (selectedToken: PoolInfo | undefined) => {
@@ -62,8 +63,8 @@ const TradeInfo = ({ delta, actionType }: Props) => {
             const slippage = 0.005;
             const impact = calculateImpact({ X, gamma, deltaX })
 
-            const trimmedTradeFee = (tradeFee * 100).toFixed(3);
-            const trimmedSlippage = (slippage * 100).toFixed(3);
+            const trimmedTradeFee = (tradeFee * 100).toFixed(2);
+            const trimmedSlippage = (slippage * 100).toFixed(2);
             setTradeData({ tradeFee: trimmedTradeFee, gasFee, slippage: trimmedSlippage, impact })
             console.log({
                 tonReserves: parseFloat(fromNano(data.tonReserves)),

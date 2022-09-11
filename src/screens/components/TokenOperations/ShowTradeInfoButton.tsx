@@ -13,6 +13,7 @@ const StyledViewRow = styled(Box)({
     justifyContent: "baseline",
     position: "relative",
     top: 8,
+    left: 8,
 })
 
 const ArrowWrap = styled(Box)({
@@ -27,7 +28,7 @@ const ShowTradeInfoButton = ({ show, changeShow }: Props) => {
         <Button onClick={changeShow}>
             <StyledViewRow onClick={changeShow}>
                 <Typography>
-                    {show ? 'Close Info' : 'View Info'}
+                    {show ? 'Less Info' : 'More Info'}
                 </Typography>
                 <ArrowWrap>
                     {show ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
