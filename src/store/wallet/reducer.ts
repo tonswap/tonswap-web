@@ -50,7 +50,6 @@ const reducer = createReducer(initialState, (builder) => {
         typeof payload === "string" ? JSON.parse(payload) : payload;
       state.session = session;
 
-      console.log(session);
       
 
      try {
