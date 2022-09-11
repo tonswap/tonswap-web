@@ -1,3 +1,4 @@
+import { Collapse } from "@mui/material";
 import { styled, Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import * as API from "services/api";
@@ -6,6 +7,7 @@ import { PoolInfo } from "services/api/addresses";
 import { ActionType } from "services/wallets/types";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { fromNano } from "ton";
+import ShowTradeInfoButton from "./ShowTradeInfoButton";
 import TradeInfoRow from "./TradeInfoRow";
 
 interface Props {
@@ -41,8 +43,11 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
     const { selectedToken } =
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
+    const [showInfo, setShowInfo] = useState<boolean>(false);
 
-    
+    const onShowInfo = () => {
+        setShowInfo(!showInfo);
+    }
 
     const calculateImpact = ({ X, gamma, deltaX }: ImpactProps): string => {
         const impact = ((X * (1 - gamma)) + (deltaX * gamma)) / (X + (deltaX * gamma));
@@ -72,7 +77,6 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
                 slippage,
                 impact
             });
-            
         }
     }
 
@@ -81,15 +85,15 @@ const TradeInfo = ({ delta, actionType, tokenColor }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [delta])
 
-
-
-
     return (
         <StyledContainer className="swap-card" color={tokenColor}>
-            <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
-            <TradeInfoRow title={'Gas Fee:'} value={`${tradeData?.gasFee} TON`} />
-            <TradeInfoRow title={'Slippage:'} value={`${tradeData?.slippage}%`} />
-            <TradeInfoRow title={'Price Impact:'} value={`${tradeData?.impact}%`} />
+            <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
+            <Collapse orientation="vertical" in={showInfo}>
+                <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
+                <TradeInfoRow title={'Gas Fee:'} value={`${tradeData?.gasFee} TON`} />
+                <TradeInfoRow title={'Slippage:'} value={`${tradeData?.slippage}%`} />
+                <TradeInfoRow title={'Price Impact:'} value={`${tradeData?.impact}%`} />
+            </Collapse>
         </StyledContainer >
     );
 }
