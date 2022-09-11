@@ -50,7 +50,7 @@ function TxLoader({ open, address, cancel, adapterId }: Props) {
         <Backdrop
             sx={{
                 color: "#fff",
-                zIndex: (theme) => theme.zIndex.drawer + 1,
+                zIndex: 999,
                 backdropFilter: "blur(5px) ",
             }}
             open={isMobile(adapterId) && open}>
