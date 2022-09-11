@@ -27,13 +27,15 @@ if (document.location.href.indexOf("testnet=") > -1) {
 /* eslint no-eval: 0 */
 export const client = new TonClient({
   endpoint: rpcUrl,
+  //apiKey: "j46He&x63GFc",
 });
 
 export enum GAS_FEE {
   SWAP = 0.09,
   FORWARD_TON = 0.05,
-  ADD_LIQUIDITY = 0.12,
-  REMOVE_LIQUIDITY = 0.08,
+  ADD_LIQUIDITY_FORWARD_TON = 0.09, //0.12
+  ADD_LIQUIDITY = 0.2,
+  REMOVE_LIQUIDITY = 0.2,
 }
 
 const sleep = (milliseconds: number) => {
@@ -191,7 +193,6 @@ function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
   let numerator = reserveIn.mul(amountOut).mul(new BN(1000));
   let denominator = reserveOut.sub(amountOut).mul(new BN(997));
   let ret = numerator.div(denominator).add(new BN(1));
-  console.log("getAmountIn", ret.toString());
   return ret;
 }
 
@@ -256,7 +257,7 @@ export async function getPoolInfo(token: string) {
   const tokenObjects: any = await getToken(client, token, getOwner());
   return getPoolData(tokenObjects.ammMinter);
 }
-
+//tokenReserves -> Liquidity
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
 

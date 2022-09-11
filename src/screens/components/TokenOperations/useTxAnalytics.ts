@@ -30,7 +30,6 @@ function useTxAnalytics(
       return;
     }
 
-    console.log(message);
 
     return gaAnalytics.sendEvent(actionCategory, actionType, message);
   }, [

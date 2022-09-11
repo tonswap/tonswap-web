@@ -33,7 +33,7 @@ export type PoolInfoRaw = {
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC": {
         name: "KittyCoin for TonSwap tests",
-        ammMinter: "EQBVyErgx7BCboNXOx0CwA9KYuLY4kXMHanURAGvMWeO-VCE",
+        ammMinter: "EQAPym289T58PFRLOztjvxhuuKXHj2PZQLnIqSp01_9SNFll",
         tokenMinter: "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC",
         displayName: "KIT",
         image: KittyKorn,
@@ -41,7 +41,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     },
     "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB": {
         name: "DinoCoin for TonSwap tests",
-        ammMinter: "EQD09ZDrfYXU-HeK-hdxwPQ3cjBOIsfsGUByyp_SIDaPXErV",
+        ammMinter: "EQAG57v8WL4U188JmkFJZd5VIbqoFfwx3trefJbfJ5pD1JAP",
         tokenMinter: "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB",
         displayName: "DINO",
         image: DinoKorn,
