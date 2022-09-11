@@ -61,7 +61,7 @@ const TokenOperations = ({
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
 
-  const { txPending } = useTokenOperationsStore();
+  const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
 
@@ -115,11 +115,17 @@ const TokenOperations = ({
     gaAnalytics.connect()
   }
 
+  const closeTransactionLoader = () => {
+    setShowTxLoader(false)
+  }
+
 
   return (
-    <StyledTokenOperationActions>
+    <StyledTokenOperationActions
+      style={{ pointerEvents: txPending ? 'none' : 'all' }}
+    >
       <TxError />
-      <TxLoader open={showTxLoader} adapterId={adapterId} cancel={() => setShowTxLoader(false)} />
+      <TxLoader open={showTxLoader} address={address} adapterId={adapterId} cancel={closeTransactionLoader} />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
@@ -140,6 +146,8 @@ const TokenOperations = ({
             token={destToken}
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
+            srcTokenAmount={srcTokenAmount}
+            actionType={actionType}
           />
         </Box>
 

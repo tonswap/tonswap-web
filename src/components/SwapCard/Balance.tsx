@@ -43,7 +43,6 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
           <Typography component="p" textAlign="right">
             <strong>Balance: </strong>
             {/* {availableAmount} */}
-            {console.log(availableAmount)}
             <BigNumberDisplay value={availableAmount} />
             {/* {` ${displayName}`} */}
           </Typography>

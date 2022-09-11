@@ -41,7 +41,6 @@ class GaAnalytics {
   }
 
   selectTokenToManageLiquidity(name: string) {
-    
     this.sendEvent(
       AnalyticsCategory.Click,
       AnalyticsClickAction.SELECT_TOKEN_TO_MANAGE_LIQUIDITY,

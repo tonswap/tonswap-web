@@ -1,32 +1,29 @@
 import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Button, styled, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Button, styled, Typography, Stack } from "@mui/material";
 import { Adapters } from "services/wallets/types";
+import { useTokenOperationsStore } from "store/token-operations/hooks";
 
 
 interface Props {
     open: boolean;
-    adapterId: string | undefined;
+    address: string | undefined;
     cancel: () => void;
+    adapterId: string | undefined;
 }
 
 const StyledContainer = styled(Box)({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: 10,
-    backgroundColor: "#193E61",
-    borderRadius: 25,
-    padding: 8
+    justifyItems: "space-between",
+    textAlign: "center",
+    backgroundColor: 'white',
+    color: '#000',
+    width: 250,
+    gap: 20,
+    borderRadius: 10,
+    padding: 8,
 });
-
-const StyledButtons = styled(Box)({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-})
 
 function isMobile(adapterId: string | undefined): boolean {
     return adapterId === Adapters.TON_HUB;
@@ -35,15 +32,17 @@ function isMobile(adapterId: string | undefined): boolean {
 function showApproveText(adapterId: string | undefined): string {
     switch (adapterId) {
         case Adapters.TON_HUB:
-            return 'Please approve transaction in your wallet app Ton Hub';
+            return 'Please approve this transaction in your wallet app (Tonhub)';
         default:
             return 'Wallet App';
     }
 }
 
-function TxLoader({ open, cancel, adapterId }: Props) {
+function TxLoader({ open, address, cancel, adapterId }: Props) {
+    const { srcTokenAmount } = useTokenOperationsStore();
+
     const openWallet = () => {
-        const link = "https://tonhub.com/";
+        const link = `https://tonhub.com/transfer/${address}?amount=${srcTokenAmount}`;
         window.location.replace(link);
     }
 
@@ -51,17 +50,16 @@ function TxLoader({ open, cancel, adapterId }: Props) {
         <Backdrop
             sx={{
                 color: "#fff",
-                zIndex: (theme) => 999,
+                zIndex: (theme) => theme.zIndex.drawer + 1,
                 backdropFilter: "blur(5px) ",
             }}
             open={isMobile(adapterId) && open}>
             <StyledContainer>
-                <CircularProgress color="inherit" />
                 <Typography>{showApproveText(adapterId)}</Typography>
-                <StyledButtons>
-                    <Button variant="contained" onClick={openWallet}>Open Wallet</Button>
-                    <Button variant="outlined" onClick={cancel}>Cancel</Button>
-                </StyledButtons>
+                <Stack spacing={4} direction="row">
+                    <Button variant="text" onClick={cancel}>CANCEL</Button>
+                    <Button variant="text" onClick={openWallet}>WALLET APP</Button>
+                </Stack>
             </StyledContainer>
         </Backdrop>
     );
