@@ -87,8 +87,8 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         <StyledContainer className="swap-card">
             <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
             <Collapse orientation="vertical" in={showInfo}>
-                <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
                 <TradeInfoRow title={'Gas Fee:'} value={`${tradeData?.gasFee} TON`} />
+                <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
                 <TradeInfoRow title={'Slippage:'} value={`${tradeData?.slippage}%`} />
                 <TradeInfoRow title={'Price Impact:'} value={`${tradeData?.impact}%`} />
             </Collapse>
