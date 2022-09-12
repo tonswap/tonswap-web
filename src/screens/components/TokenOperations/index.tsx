@@ -184,7 +184,7 @@ const TokenOperations = ({
             </ActionButton>
           ) : (
             <ActionButton
-              isLoading={showTxLoader}
+              isLoading={showTxLoader || txPending}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >
