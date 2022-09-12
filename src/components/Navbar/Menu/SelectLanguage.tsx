@@ -6,6 +6,7 @@ import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import gaAnalytics from "services/analytics/ga/ga";
 import { LANGUAGE } from "./language";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import LanguageIcon from '@mui/icons-material/Language';
 
 const languages = [
   {
@@ -20,7 +21,9 @@ const languages = [
 
 const StyledContainer = styled(Box)({
   display: "flex",
+  flexDirection: "row",
   justifyContent: "center",
+  alignContent: "baseline",
   position: "relative",
   gap: 15,
 
@@ -53,7 +56,8 @@ const SelectLanguage = () => {
 
   return (
     <StyledContainer>
-      <FormControl>
+      <LanguageIcon sx={{ width: 35, height: 35 }} />
+      <FormControl variant="standard">
         <Select
           labelId="demo-simple-select-label"
           value={language}
