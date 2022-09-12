@@ -47,6 +47,14 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         image: DinoKorn,
         color: "#0E9D26",
     },
+    "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
+        name: "Wrapped Solana",
+        ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
+        tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
+        displayName: "WSOL",
+        image:"https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422",
+        color: "#2fa4b0",
+    },
     "USD Stable Coin": {
         name: "USD Stable Coin",
         displayName: "USDC",
