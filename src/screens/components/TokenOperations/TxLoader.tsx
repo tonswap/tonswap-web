@@ -8,6 +8,7 @@ interface Props {
     open: boolean;
     address: string | undefined;
     cancel: () => void;
+    close: () => void;
     adapterId: string | undefined;
 }
 
@@ -37,12 +38,13 @@ function showApproveText(adapterId: string | undefined): string {
     }
 }
 
-function TxLoader({ open, address, cancel, adapterId }: Props) {
+function TxLoader({ open, address, cancel, close, adapterId }: Props) {
     const { srcTokenAmount } = useTokenOperationsStore();
 
     const openWallet = () => {
         const link = `https://tonhub.com/transfer/${address}?amount=${srcTokenAmount}`;
         window.location.replace(link);
+        close();
     }
 
     return (

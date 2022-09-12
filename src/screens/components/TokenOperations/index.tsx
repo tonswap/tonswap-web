@@ -123,7 +123,7 @@ const TokenOperations = ({
   return (
     <StyledTokenOperationActions>
       <TxError />
-      <TxLoader open={showTxLoader} address={address} adapterId={adapterId} cancel={closeTransactionLoader} />
+      <TxLoader open={showTxLoader} address={address} adapterId={adapterId} cancel={closeTransactionLoader} close={closeTransactionLoader} />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
