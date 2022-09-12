@@ -15,6 +15,7 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import SelectLanguage from "./SelectLanguage";
+import { isTelegramWebApp } from "utils";
 
 const StyledIconButton = styled("button")({
   cursor: "pointer",
@@ -59,7 +60,7 @@ const WalletAddress = observer(() => {
 
   return (
     <StyledContainer item display="flex" gap="30px">
-      {!isMobile && <SelectLanguage />}
+      {!isMobile && !isTelegramWebApp() && <SelectLanguage />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />

@@ -15,6 +15,7 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import SelectLanguage from "./SelectLanguage";
 import { isMobile } from "react-device-detect";
+import { isTelegramWebApp } from "utils";
 
 const StyledActions = styled(Box)({
   display: "flex",
@@ -123,7 +124,7 @@ function Menu({ open, hide }: Props) {
             <HelpOutlineRoundedIcon />
             {t("support")}
           </ActionButton>
-          {isMobile && <SelectLanguage />}
+          {(isMobile || isTelegramWebApp()) && <SelectLanguage />}
         </StyledActions>
 
         <StyledSocials>
