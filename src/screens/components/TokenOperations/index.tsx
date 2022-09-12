@@ -139,7 +139,6 @@ const TokenOperations = ({
       <TxError />
       <TxLoader
         open={showTxLoader}
-        address={address}
         adapterId={adapterId}
         close={closeTransactionLoader}
         confirm={submitTransaction}
