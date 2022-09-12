@@ -49,6 +49,9 @@ function SwapCard({
 
   const isTon = token.name === ton.name;
 
+  const actionBuyOrSell = (): boolean => {
+    return actionType === ActionType.BUY || actionType === ActionType.SELL;
+  }
 
   const onMax = () => {
     gaAnalytics.onMaxClick()
@@ -112,7 +115,7 @@ function SwapCard({
             )}
           </StyledBottom>
         </div>
-        {srcTokenAmount && actionType &&
+        {srcTokenAmount && actionBuyOrSell() &&
           <StyledFooterTradeInfo>
             <TradeInfo delta={srcTokenAmount} actionType={actionType} />
           </StyledFooterTradeInfo>}
