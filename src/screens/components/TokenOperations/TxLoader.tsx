@@ -7,8 +7,8 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 interface Props {
     open: boolean;
     address: string | undefined;
-    cancel: () => void;
     close: () => void;
+    confirm: () => void;
     adapterId: string | undefined;
 }
 
@@ -25,10 +25,6 @@ const StyledContainer = styled(Box)({
     borderRadius: 10,
 });
 
-function isMobile(adapterId: string | undefined): boolean {
-    return adapterId === Adapters.TON_HUB;
-}
-
 function showApproveText(adapterId: string | undefined): string {
     switch (adapterId) {
         case Adapters.TON_HUB:
@@ -38,10 +34,11 @@ function showApproveText(adapterId: string | undefined): string {
     }
 }
 
-function TxLoader({ open, address, cancel, close, adapterId }: Props) {
+function TxLoader({ open, address, close, confirm, adapterId }: Props) {
     const { srcTokenAmount } = useTokenOperationsStore();
 
     const openWallet = () => {
+        confirm();
         const link = `https://tonhub.com/transfer/${address}?amount=${srcTokenAmount}`;
         window.location.replace(link);
         close();
@@ -54,13 +51,13 @@ function TxLoader({ open, address, cancel, close, adapterId }: Props) {
                 zIndex: (theme) => theme.zIndex.drawer + 1,
                 backdropFilter: "blur(5px) ",
             }}
-            open={isMobile(adapterId) && open}>
+            open={open}>
             <StyledContainer>
                 <Typography sx={{ p: 1.5 }}>{showApproveText(adapterId)}</Typography>
                 <Divider orientation="horizontal" sx={{ position: "relative", top: 20 }} flexItem />
                 <Stack spacing={4} direction="row" divider={
                     <Divider orientation="vertical" variant="fullWidth" flexItem />}>
-                    <Button variant="text" sx={{ m: 0.8, position: "relative", left: 6 }} onClick={cancel}>Cancel</Button>
+                    <Button variant="text" sx={{ m: 0.8, position: "relative", left: 6 }} onClick={close}>Cancel</Button>
                     <Button variant="text" sx={{ m: 0.8, position: "relative", right: 6 }} onClick={openWallet}>Wallet App</Button>
                 </Stack>
             </StyledContainer>

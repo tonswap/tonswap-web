@@ -18,7 +18,7 @@ import {
 } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
-import { ActionCategory, ActionType } from "services/wallets/types";
+import { ActionCategory, ActionType, Adapters } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
 import SuccessModal from "./SuccessModal";
@@ -80,8 +80,19 @@ const TokenOperations = ({
     sendTransaction,
   } = useTokenOperationsActions();
 
-  const onSubmit = async () => {
-    setShowTxLoader(true)
+  function isMobile(): boolean {
+    return adapterId === Adapters.TON_HUB;
+  }
+
+  const onSubmit = () => {
+    if (isMobile()) {
+      setShowTxLoader(true)
+    } else {
+      submitTransaction()
+    }
+  };
+
+  const submitTransaction = async () => {
     const tx = async () => {
       const txRequest = await getTxRequest();
       const waiter = await waitForSeqno(
@@ -98,7 +109,7 @@ const TokenOperations = ({
     };
 
     sendTransaction(tx);
-  };
+  }
 
   useEffect(() => {
     if (address && refreshAmountsOnActionChange) {
@@ -119,11 +130,10 @@ const TokenOperations = ({
     setShowTxLoader(false)
   }
 
-
   return (
     <StyledTokenOperationActions>
       <TxError />
-      <TxLoader open={showTxLoader} address={address} adapterId={adapterId} cancel={closeTransactionLoader} close={closeTransactionLoader} />
+      <TxLoader open={showTxLoader} address={address} adapterId={adapterId} close={closeTransactionLoader} confirm={submitTransaction} />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
