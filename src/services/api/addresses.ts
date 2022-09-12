@@ -52,7 +52,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
         tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
         displayName: "WSOL",
-        image:"https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422",
+        image:"https://bafkreiadj3ntztd44xhntqu26kyubn2rihu24if7qncp4npn3pvwacl5wi.ipfs.nftstorage.link/",
         color: "#2fa4b0",
     },
     "USD Stable Coin": {
