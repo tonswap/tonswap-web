@@ -66,15 +66,6 @@ const TradeInfo = ({ delta, actionType }: Props) => {
             const trimmedTradeFee = (tradeFee * 100).toFixed(2);
             const trimmedSlippage = (slippage * 100).toFixed(2);
             setTradeData({ tradeFee: trimmedTradeFee, gasFee, slippage: trimmedSlippage, impact })
-            console.log({
-                tonReserves: parseFloat(fromNano(data.tonReserves)),
-                tokenReserves: parseFloat(fromNano(data.tokenReserves)),
-                X,
-                gamma,
-                gasFee,
-                slippage,
-                impact
-            });
         }
     }
 
@@ -89,7 +80,7 @@ const TradeInfo = ({ delta, actionType }: Props) => {
             <Collapse orientation="vertical" in={showInfo}>
                 <TradeInfoRow title={'Gas Fee:'} value={`${tradeData?.gasFee} TON`} />
                 <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
-                <TradeInfoRow title={'Slippage:'} value={`${tradeData?.slippage}%`} />
+                <TradeInfoRow title={'Max Slippage:'} value={`${tradeData?.slippage}%`} />
                 <TradeInfoRow title={'Price Impact:'} value={`${tradeData?.impact}%`} />
             </Collapse>
         </StyledContainer >
