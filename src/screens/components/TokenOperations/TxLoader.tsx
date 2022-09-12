@@ -1,5 +1,5 @@
 import Backdrop from "@mui/material/Backdrop";
-import { Box, Button, styled, Typography, Stack } from "@mui/material";
+import { Box, Button, styled, Typography, Stack, Divider } from "@mui/material";
 import { Adapters } from "services/wallets/types";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 
@@ -22,7 +22,6 @@ const StyledContainer = styled(Box)({
     width: 250,
     gap: 20,
     borderRadius: 10,
-    padding: 8,
 });
 
 function isMobile(adapterId: string | undefined): boolean {
@@ -55,10 +54,12 @@ function TxLoader({ open, address, cancel, adapterId }: Props) {
             }}
             open={isMobile(adapterId) && open}>
             <StyledContainer>
-                <Typography>{showApproveText(adapterId)}</Typography>
-                <Stack spacing={4} direction="row">
-                    <Button variant="text" onClick={cancel}>CANCEL</Button>
-                    <Button variant="text" onClick={openWallet}>WALLET APP</Button>
+                <Typography sx={{ p: 1.5 }}>{showApproveText(adapterId)}</Typography>
+                <Divider orientation="horizontal" sx={{ position: "relative", top: 20 }} flexItem />
+                <Stack spacing={4} direction="row" divider={
+                    <Divider orientation="vertical" variant="fullWidth" flexItem />}>
+                    <Button variant="text" sx={{ m: 0.8, position: "relative", left: 6 }} onClick={cancel}>Cancel</Button>
+                    <Button variant="text" sx={{ m: 0.8, position: "relative", right: 6 }} onClick={openWallet}>Wallet App</Button>
                 </Stack>
             </StyledContainer>
         </Backdrop>
