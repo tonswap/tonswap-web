@@ -33,7 +33,7 @@ export type PoolInfoRaw = {
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC": {
         name: "KittyCoin for TonSwap tests",
-        ammMinter: "EQAPym289T58PFRLOztjvxhuuKXHj2PZQLnIqSp01_9SNFll",
+        ammMinter: "EQCSjnLz6xxsbWKmV_iePAbo3edduyXrzpq7hzyEgKNZcZdm",
         tokenMinter: "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC",
         displayName: "KIT",
         image: KittyKorn,
@@ -46,6 +46,14 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "DINO",
         image: DinoKorn,
         color: "#0E9D26",
+    },
+    "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
+        name: "Wrapped Solana",
+        ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
+        tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
+        displayName: "WSOL",
+        image:"https://bafkreiadj3ntztd44xhntqu26kyubn2rihu24if7qncp4npn3pvwacl5wi.ipfs.nftstorage.link/",
+        color: "#2fa4b0",
     },
     "USD Stable Coin": {
         name: "USD Stable Coin",
