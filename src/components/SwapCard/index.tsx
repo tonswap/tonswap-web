@@ -14,6 +14,9 @@ import {
 import { OperationType } from "store/application/reducer";
 import { useWalletStore } from "store/wallet/hooks";
 import gaAnalytics from "services/analytics/ga/ga";
+import TradeInfo from "screens/components/TokenOperations/TradeInfo";
+import { ActionType } from "services/wallets/types";
+
 interface Props {
   inputAmount?: string;
   balance: string;
@@ -23,6 +26,8 @@ interface Props {
   balanceLoading: boolean;
   onMaxAmount?: () => void;
   showMax?: boolean;
+  srcTokenAmount?: string;
+  actionType?: ActionType;
 }
 
 function SwapCard({
@@ -34,6 +39,8 @@ function SwapCard({
   balance,
   onMaxAmount,
   showMax,
+  srcTokenAmount,
+  actionType
 }: Props) {
   const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
@@ -62,49 +69,55 @@ function SwapCard({
   };
 
   return (
-    <StyledContainer className="swap-card">
-      <StyledBg color={token.color} />
-      <div style={{ position: "relative" }}>
-        <StyledInput expanded={expanded}>
-          <NumberInput
-            placeholder="0"
-            isLoading={isLoading}
-            value={inputAmount}
-            onChange={(val) => onChange(val)}
-          />
-          <StyledTokenDisplay
-            style={{
-              cursor: isTon ? "" : "pointer",
-              userSelect: isTon ? "none" : "all",
-            }}
-            onClick={onTokenSelect}
-          >
-            {token.image && <StyledAvatar src={token.image} alt="token" />}
-            <Typography className="name">{token.displayName}</Typography>
-            {!isTon && <div className="arrow"></div>}
-          </StyledTokenDisplay>
-        </StyledInput>
+    <>
+      <StyledContainer className="swap-card">
+        <StyledBg color={token.color} />
+        <div style={{ position: "relative" }}>
+          <StyledInput expanded={expanded}>
+            <NumberInput
+              placeholder="0"
+              isLoading={isLoading}
+              value={inputAmount}
+              onChange={(val) => onChange(val)}
+            />
+            <StyledTokenDisplay
+              style={{
+                cursor: isTon ? "" : "pointer",
+                userSelect: isTon ? "none" : "all",
+              }}
+              onClick={onTokenSelect}
+            >
+              {token.image && <StyledAvatar src={token.image} alt="token" />}
+              <Typography className="name">{token.displayName}</Typography>
+              {!isTon && <div className="arrow"></div>}
+            </StyledTokenDisplay>
+          </StyledInput>
 
-        <StyledBottom>
-          {address && (
-            <>
-              <UsdAmount
-                isLoading={isLoading}
-                value={inputAmount}
-                tokenId={token.tokenMinter}
-              />
-              <Balance
+          <StyledBottom>
+            {address && (
+              <>
+                <UsdAmount
+                  isLoading={isLoading}
+                  value={inputAmount}
+                  tokenId={token.tokenMinter}
+                />
+                <Balance
                   availableAmount={balance}
                   displayName={token.displayName}
                   loading={balanceLoading}
                   onMaxAmountClick={onMax}
                   showMax={showMax}
                 />
-            </>
-          )}
-        </StyledBottom>
-      </div>
-    </StyledContainer>
+              </>
+            )}
+          </StyledBottom>
+        </div>
+        {srcTokenAmount && actionType &&
+          <StyledFooterTradeInfo>
+            <TradeInfo delta={srcTokenAmount} actionType={actionType} />
+          </StyledFooterTradeInfo>}
+      </StyledContainer>
+    </>
   );
 }
 
@@ -162,6 +175,16 @@ const StyledBottom = styled(Box)({
   alignItems: "center",
   height: 25,
   marginTop: 10,
+  p: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: 400,
+  },
+});
+
+const StyledFooterTradeInfo = styled(Box)({
+  alignItems: "center",
+  position: "relative",
   p: {
     color: "white",
     fontSize: 12,

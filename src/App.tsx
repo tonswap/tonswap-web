@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { BETA_TEXT, LAYOUT_MAX_WIDTH, TELEGRAM_WEBAPP_PARAM } from "consts";
+import { BETA_TEXT, LAYOUT_MAX_WIDTH } from "consts";
 import { styled } from "@mui/system";
 import SelectWallet from "components/SelectWallet";
 import { useWalletActions } from "store/wallet/hooks";
@@ -10,6 +10,8 @@ import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
 import { useTranslation } from "react-i18next";
+
+
 
 const StyledAppContainer = styled(Box)({
   display: "flex",

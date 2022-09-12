@@ -33,8 +33,8 @@ export const client = new TonClient({
 
 export enum GAS_FEE {
   SWAP = 0.09,
-  FORWARD_TON = 0.05,
-  ADD_LIQUIDITY_FORWARD_TON = 0.09, //0.12
+  FORWARD_TON = 0.09,
+  ADD_LIQUIDITY_FORWARD_TON = 0.12, //0.12
   ADD_LIQUIDITY = 0.2,
   REMOVE_LIQUIDITY = 0.2,
 }
@@ -194,7 +194,6 @@ function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
   let numerator = reserveIn.mul(amountOut).mul(new BN(1000));
   let denominator = reserveOut.sub(amountOut).mul(new BN(997));
   let ret = numerator.div(denominator).add(new BN(1));
-  console.log("getAmountIn", ret.toString());
   return ret;
 }
 
@@ -259,7 +258,7 @@ export async function getPoolInfo(token: string) {
   const tokenObjects: any = await getToken(client, token, getOwner());
   return getPoolData(tokenObjects.ammMinter);
 }
-
+//tokenReserves -> Liquidity
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
 
@@ -484,9 +483,9 @@ export const generateRemoveLiquidityLink = async (
 
   const userLpBalance = (await getLPTokenBalance(token)).balance;
   // round up 98 and above to use the max lp
-  if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
-    shareToRemove = userLpBalance;
-  }
+  // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
+  //     shareToRemove = userLpBalance;
+  // }
 
   const removeLiquidity = await DexActions.removeLiquidity(
     shareToRemove,

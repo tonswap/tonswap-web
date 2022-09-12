@@ -26,7 +26,11 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+<<<<<<< HEAD
 import { useTranslation } from "react-i18next";
+=======
+import TradeInfo from "./TradeInfo";
+>>>>>>> 6885036bb94557934835c64ae884c9bad6e1baaa
 
 interface Props {
   srcToken: PoolInfo;
@@ -60,7 +64,7 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
 
-  const { txPending } = useTokenOperationsStore();
+  const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
 
@@ -141,6 +145,8 @@ const TokenOperations = ({
             token={destToken}
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
+            srcTokenAmount={srcTokenAmount}
+            actionType={actionType}
           />
         </Box>
 

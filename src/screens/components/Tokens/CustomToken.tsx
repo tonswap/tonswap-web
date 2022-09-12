@@ -132,7 +132,6 @@ function CustomToken({ open, onClose }: Props) {
         tokenMinter: value,
         ammMinter: futureAddress.toFriendly(),
       });
-      console.log(isDeployed);
 
       setIsPoolDeployed(isDeployed);
     } catch (error) {
