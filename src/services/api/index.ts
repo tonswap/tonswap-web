@@ -373,9 +373,9 @@ export const generateRemoveLiquidityLink = async (token: string, tonAmount: numb
 
     const userLpBalance = (await getLPTokenBalance(token)).balance;
     // round up 98 and above to use the max lp
-    if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
-        shareToRemove = userLpBalance;
-    }
+    // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
+    //     shareToRemove = userLpBalance;
+    // }
 
     const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
     const boc64 = removeLiquidity.toBoc().toString("base64");
