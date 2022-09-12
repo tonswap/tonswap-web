@@ -16,7 +16,6 @@ const getUsdAmount = async (
       result = await API.getTokenDollarValue(tokenId, amount);
     }
     
-    console.log(result);
     
 
     return result;
@@ -34,7 +33,6 @@ const calculateTokens = async (
   destAmount: null | BN,
   getAmountsFunc: any
 ) => {
-  console.log(tokenName);
 
   if (srcAmount != null) {
     const amount = await getAmountsFunc(
