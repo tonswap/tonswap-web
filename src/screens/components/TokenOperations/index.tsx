@@ -121,9 +121,7 @@ const TokenOperations = ({
 
 
   return (
-    <StyledTokenOperationActions
-      style={{ pointerEvents: txPending ? 'none' : 'all' }}
-    >
+    <StyledTokenOperationActions>
       <TxError />
       <TxLoader open={showTxLoader} address={address} adapterId={adapterId} cancel={closeTransactionLoader} />
       <SuccessModal actionType={actionType} />
