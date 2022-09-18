@@ -3,7 +3,7 @@ import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
 import gaAnalytics from "services/analytics/ga/ga";
@@ -17,6 +17,11 @@ import {
 import { getActionFromParams } from "utils";
 import Buy from "./Buy";
 import Sell from "./Sell";
+import {
+  TransitionGroup,
+  CSSTransition,
+  SwitchTransition
+} from "react-transition-group";
 
 function SwapScreen() {
   const { selectedToken } = useTokenOperationsStore();
@@ -26,6 +31,7 @@ function SwapScreen() {
   const navigate = useNavigateWithParams();
   const params = useParams();
   const action = getActionFromParams(params);
+  let location = useLocation();
 
   useEffectOnce(() => {
     onOperationTypeChange(OperationType.SWAP);
@@ -72,19 +78,33 @@ function SwapScreen() {
         />
       )}
 
-      <Routes>
-        <Route path={ROUTES.swap.buy} element={<Buy />} />
-        <Route path={ROUTES.swap.sell} element={<Sell />} />
-        <Route
-          path={ROUTES.swap.tokens}
-          element={
-            <Tokens
-              onTokenSelect={onTokenSelect}
-              title={t('jettons-available')}
+      <SwitchTransition>
+        {/*
+            This is no different than other usage of
+            <CSSTransition>, just make sure to pass
+            `location` to `Switch` so it can match
+            the old location as it animates out.
+          */}
+        <CSSTransition
+          key={location.pathname}
+          classNames="fade"
+          timeout={1800}
+        >
+          <Routes>
+            <Route path={ROUTES.swap.buy} element={<Buy />} />
+            <Route path={ROUTES.swap.sell} element={<Sell />} />
+            <Route
+              path={ROUTES.swap.tokens}
+              element={
+                <Tokens
+                  onTokenSelect={onTokenSelect}
+                  title={t('jettons-available')}
+                />
+              }
             />
-          }
-        />
-      </Routes>
+          </Routes>
+        </CSSTransition>
+      </SwitchTransition>
     </>
   );
 }
