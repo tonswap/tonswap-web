@@ -26,6 +26,8 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
+import TradeInfo from "./TradeInfo";
 import TxLoader from "./TxLoader";
 
 interface Props {
@@ -79,6 +81,8 @@ const TokenOperations = ({
     resetTokensBalance,
     sendTransaction,
   } = useTokenOperationsActions();
+  const { t } = useTranslation();
+
 
   function isMobile(): boolean {
     return adapterId === Adapters.TON_HUB;
@@ -135,7 +139,6 @@ const TokenOperations = ({
       <TxError />
       <TxLoader
         open={showTxLoader}
-        address={address}
         adapterId={adapterId}
         close={closeTransactionLoader}
         confirm={submitTransaction}
@@ -167,7 +170,7 @@ const TokenOperations = ({
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={onConnect}>Connect wallet</ActionButton>
+            <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
@@ -180,7 +183,7 @@ const TokenOperations = ({
                   position: "relative",
                 }}
               />
-              Insufficient funds
+              {t('insufficient-funds')}
             </ActionButton>
           ) : (
             <ActionButton

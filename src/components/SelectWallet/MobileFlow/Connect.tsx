@@ -1,7 +1,8 @@
-import {styled} from '@mui/styles';
+import { styled } from '@mui/styles';
 import { Box } from "@mui/material";
 import Title from "../Title";
 import { LoadingButton } from '@mui/lab';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSelect: () => void;
@@ -20,22 +21,24 @@ const StyledContainer = styled(Box)({
 
 
 const StyledLink = styled('a')({
-  width:'100%',
-  height:'100%',
+  width: '100%',
+  height: '100%',
   display: 'flex',
-  alignItems:'center',
-  justifyContent:'center',
-  textDecoration:'none',
-  color:'white',
-  fontSize:'16px'
+  alignItems: 'center',
+  justifyContent: 'center',
+  textDecoration: 'none',
+  color: 'white',
+  fontSize: '16px'
 })
 
 
 const StyledLoadingButton = styled(LoadingButton)({
-  height:'35px'
+  height: '35px'
 })
 
-function Connect({open, href, adapterName = "", onClose }: Props) {
+function Connect({ open, href, adapterName = "", onClose }: Props) {
+  const { t } = useTranslation()
+
   if (!open) {
     return null;
   }
@@ -43,10 +46,10 @@ function Connect({open, href, adapterName = "", onClose }: Props) {
   return (
     <StyledContainer>
       <Box marginBottom="20px">
-        <Title text={`Connect with ${adapterName} `} />
+        <Title text={t('connect-with', { adapter: adapterName })} />
       </Box>
-      <StyledLoadingButton  variant="contained" loading={!href}>
-        {href &&  <StyledLink href={href}>Connect</StyledLink>}
+      <StyledLoadingButton variant="contained" loading={!href}>
+        {href && <StyledLink href={href}>Connect</StyledLink>}
       </StyledLoadingButton>
     </StyledContainer>
   );

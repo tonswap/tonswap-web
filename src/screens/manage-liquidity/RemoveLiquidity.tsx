@@ -6,10 +6,12 @@ import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 
 const RemoveLiquidity = () => {
   const { srcTokenAmount, selectedToken } = useTokenOperationsStore();
+  const { t } = useTranslation();
 
   const getTxRequest = () => {
     gaAnalytics.removeLiquidityTransaction()
@@ -28,7 +30,7 @@ const RemoveLiquidity = () => {
 
 
 
-  
+
   if (!selectedToken) {
     return null;
   }
@@ -41,11 +43,11 @@ const RemoveLiquidity = () => {
       getBalances={getBalances}
       srcToken={ton}
       destToken={selectedToken}
-      submitButtonText={`Remove TON/${selectedToken?.displayName} liquidity`}
+      submitButtonText={t('remove-ton-liquidity', { token: selectedToken?.displayName })}
       refreshAmountsOnActionChange={true}
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
-      actionType ={ActionType.REMOVE_LIQUIDITY}
-      gasFee = {API.GAS_FEE.REMOVE_LIQUIDITY}
+      actionType={ActionType.REMOVE_LIQUIDITY}
+      gasFee={API.GAS_FEE.REMOVE_LIQUIDITY}
     />
   );
 }

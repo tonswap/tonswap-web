@@ -11,8 +11,8 @@ import Title from "./Title";
 import { Theme } from "@mui/material/styles";
 import { Adapter, Adapters } from "services/wallets/types";
 import CircularProgress from "@mui/material/CircularProgress";
-import { COMING_SOON } from "consts";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 const StyledListItem = styled(ListItem)(
   ({ disabled }: { disabled?: boolean }) => ({
@@ -94,7 +94,7 @@ function AdaptersList({
   adapterLoading,
   isLoading,
 }: Props) {
-
+  const { t } = useTranslation()
 
   const onSelect = (adapter: Adapters) => {
     select(adapter)
@@ -131,7 +131,7 @@ function AdaptersList({
                   </StyledIcon>
                   <StyledListItemRight>
                     <Typography variant="h5">
-                      {name} <small>{disabled ? COMING_SOON : ""}</small>
+                      {name} <small>{disabled ? t('coming-soon') : ""}</small>
                     </Typography>
                     <Typography>{description}</Typography>
                   </StyledListItemRight>

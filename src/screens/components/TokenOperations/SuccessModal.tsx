@@ -9,6 +9,7 @@ import {
 } from "store/token-operations/hooks";
 import SuccessIcon from "assets/images/shared/success.svg";
 import BigNumberDisplay from "components/BigNumberDisplay";
+import { useTranslation } from "react-i18next";
 interface Props {
   actionType: ActionType;
 }
@@ -16,20 +17,21 @@ interface Props {
 function SuccessModal({ actionType }: Props) {
   const { txConfirmation, txSuccess } = useTokenOperationsStore();
   const { closeSuccessModal } = useTokenOperationsActions();
+  const { t } = useTranslation()
 
   const createComponent = useCallback(() => {
     switch (actionType) {
       case ActionType.BUY:
         return (
-          <Container title="Purchase Confirmation">
+          <Container title={t('purchase-confirmation')}>
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} Purchased</Typography>
+              <Typography>{t('token-purchased', { token: txConfirmation.tokenName })}</Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.destTokenAmount} />
               </Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Paid </Typography>
+              <Typography>{t('ton-paid')}</Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
               </Typography>
@@ -38,15 +40,15 @@ function SuccessModal({ actionType }: Props) {
         );
       case ActionType.SELL:
         return (
-          <Container title="Purchase Confirmation">
+          <Container title={t('purchase-confirmation')}>
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} Sold</Typography>
+              <Typography>{t('token-received', { token: txConfirmation.tokenName })}</Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.srcTokenAmount} />{" "}
               </Typography>
             </Box>
             <Box className="row">
-              <Typography>TON Received </Typography>
+              <Typography>{t('ton-received')}</Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.destTokenAmount} />
               </Typography>
@@ -55,17 +57,18 @@ function SuccessModal({ actionType }: Props) {
         );
       case ActionType.REMOVE_LIQUIDITY:
         return (
-          <Container title="Liquidity Removed">
+          <Container title={t('liquidity-removed')}>
             <Box className="row">
               <Typography>
-                Ton removed from pool
+                {t('ton-removed-pool')}
               </Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
               </Typography>
             </Box>
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} removed from pool</Typography>
+              <Typography>{t('token-removed-pool', { token: txConfirmation.tokenName })}
+              </Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.destTokenAmount} />
               </Typography>
@@ -74,15 +77,18 @@ function SuccessModal({ actionType }: Props) {
         );
       case ActionType.ADD_LIQUIDITY:
         return (
-          <Container title="Liquidity Added">
+          <Container title={t('liquidity-added')}>
             <Box className="row">
-              <Typography>Ton added to pool </Typography>
+              <Typography>
+                {t('ton-added-pool')}
+              </Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.srcTokenAmount} />
               </Typography>
             </Box>
             <Box className="row">
-              <Typography>{txConfirmation.tokenName} added to pool</Typography>
+              <Typography>{t('token-added-pool', { token: txConfirmation.tokenName })}
+              </Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.destTokenAmount} />
               </Typography>
