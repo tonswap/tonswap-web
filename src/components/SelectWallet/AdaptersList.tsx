@@ -34,14 +34,14 @@ const StyledListItemButton = styled(ListItemButton)({
 
 const StyledContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
   width: "100%",
-  position:'relative',
+  position: 'relative',
   "& .MuiCircularProgress-root": {
-    position:'absolute',
-    left:'40%',
-    top:'50%',
+    position: 'absolute',
+    left: '40%',
+    top: '50%',
     transform: 'translate(-50%, -50%)'
-  }, 
-})) ;
+  },
+}));
 
 const StyledConnectModalTitle = styled(Box)({
   paddingLeft: "10px",
@@ -108,9 +108,9 @@ function AdaptersList({
   return (
     <StyledContainer>
       <Fade in={!isLoading}>
-      <StyledConnectModalTitle>
-        <Title text="Select Wallet" />
-      </StyledConnectModalTitle>
+        <StyledConnectModalTitle>
+          <Title text="Select Wallet" />
+        </StyledConnectModalTitle>
       </Fade>
       <Fade in={!isLoading}>
         <StyledList>
@@ -124,7 +124,7 @@ function AdaptersList({
                 style={{ pointerEvents: isLoading ? "none" : "all" }}
               >
                 <StyledListItemButton
-                  onClick={disabled ? () => {} : () => onSelect(type)}
+                  onClick={disabled ? () => { } : () => onSelect(type)}
                 >
                   <StyledIcon>
                     <img src={icon} />
@@ -141,7 +141,7 @@ function AdaptersList({
           })}
         </StyledList>
       </Fade>
-     {isLoading &&  <CircularProgress />}
+      {isLoading && <CircularProgress />}
     </StyledContainer>
   );
 }

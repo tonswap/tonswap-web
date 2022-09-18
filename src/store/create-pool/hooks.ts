@@ -76,7 +76,6 @@ export const useCreatePoolActions = (): {
             ":id",
             jAddress
           )}`;
-          console.log(route);
           navigate(route);
         } else {
           const jd = await getTokenBalanceByMinter(address);
