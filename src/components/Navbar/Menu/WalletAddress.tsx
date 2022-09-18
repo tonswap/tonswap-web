@@ -38,6 +38,7 @@ const StyledIconButton = styled("button")({
 
 const StyledContainer = styled(Grid)({
   position: "relative",
+  alignItems: "baseline"
 });
 
 const WalletAddress = observer(() => {
@@ -61,7 +62,7 @@ const WalletAddress = observer(() => {
 
   return (
     <StyledContainer item display="flex" gap="30px">
-      {!isMobileTelegram && <SelectLanguage isMobileTelegram={false} />}
+      {!isMobileTelegram && <SelectLanguage />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />

@@ -8,10 +8,6 @@ import { LANGUAGE } from "./language";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import LanguageIcon from '@mui/icons-material/Language';
 
-type Props = {
-  isMobileTelegram: boolean;
-}
-
 const languages = [
   {
     text: "EN",
@@ -25,28 +21,16 @@ const languages = [
 
 const StyledContainer = styled(Box)({
   display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  alignContent: "baseline",
+  flexDirection: "column",
+  alignItems: "center",
   position: "relative",
-  gap: 15,
-
-  "& .line": {
-    position: "absolute",
-    left: "52%",
-    transform: "translate(-50%, -50%)",
-    top: "50%",
-    height: 20,
-    width: 1,
-    background: "black",
-    margin: 0,
-    padding: 0,
-  },
+  height: 23,
+  width: 100
 });
 
-const SelectLanguage = ({ isMobileTelegram }: Props) => {
+const SelectLanguage = () => {
   const { i18n } = useTranslation();
-
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [language, setLanguage] = useState<LANGUAGE>(
     i18n.language === "en-US" ? LANGUAGE.EN : i18n.language as LANGUAGE
   );
@@ -60,24 +44,25 @@ const SelectLanguage = ({ isMobileTelegram }: Props) => {
 
   return (
     <StyledContainer>
-      {!isMobileTelegram && <LanguageIcon sx={{ width: 35, height: 35 }} />}
-      <FormControl variant="standard">
-        <Select
-          labelId="demo-simple-select-label"
-          value={language}
-          label=""
-          onChange={changeLanguage}
-          IconComponent={() => <ArrowDropDownIcon style={{ color: "#000" }} />}
-        >
-          {languages.map((lang) => {
-            return (
-              <MenuItem key={lang.value} value={lang.value}>
-                {lang.text}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+      <LanguageIcon onClick={() => setShowDropdown(!showDropdown)} />
+      {showDropdown &&
+        <FormControl variant="standard">
+          <Select
+            labelId="demo-simple-select-label"
+            value={language}
+            label=""
+            onChange={changeLanguage}
+            IconComponent={() => <ArrowDropDownIcon style={{ color: "#000" }} />}
+          >
+            {languages.map((lang) => {
+              return (
+                <MenuItem key={lang.value} value={lang.value}>
+                  {lang.text}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>}
     </StyledContainer>
   );
 };

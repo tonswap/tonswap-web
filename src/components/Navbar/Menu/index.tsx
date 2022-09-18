@@ -16,7 +16,6 @@ import { useTranslation } from "react-i18next";
 import SelectLanguage from "./SelectLanguage";
 import { isMobile } from "react-device-detect";
 import { isTelegramWebApp } from "utils";
-import LanguageIcon from '@mui/icons-material/Language';
 
 const StyledActions = styled(Box)({
   display: "flex",
@@ -41,12 +40,6 @@ const StyledActions = styled(Box)({
     },
   },
 });
-
-const LanguageIconWrapper = styled(Box)({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-})
 
 const StyledSocials = styled(Box)({
   marginTop: "auto",
@@ -100,6 +93,7 @@ function Menu({ open, hide }: Props) {
       <Box className={classes.drawer}>
         <Box className={classes.drawerTop}>
           <LogoWithText />
+          {isMobileTelegram && <SelectLanguage />}
           <IconButton
             onClick={onCloseMenuClick}
             size="large"
@@ -113,10 +107,6 @@ function Menu({ open, hide }: Props) {
         </Box>
 
         <StyledActions>
-          {isMobileTelegram &&
-            <LanguageIconWrapper>
-              <LanguageIcon sx={{ width: 35, height: 35 }} />
-            </LanguageIconWrapper>}
           <ActionButton onClick={onSwapClick}>{t("trade")}</ActionButton>
           <ActionButton
             customClassName={isDebug() ? "" : "coming-soon"}
@@ -136,7 +126,6 @@ function Menu({ open, hide }: Props) {
             <HelpOutlineRoundedIcon />
             {t("support")}
           </ActionButton>
-          {isMobileTelegram && <SelectLanguage isMobileTelegram={true} />}
         </StyledActions>
         <StyledSocials>
           <Socials />
