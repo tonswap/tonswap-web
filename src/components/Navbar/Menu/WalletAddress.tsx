@@ -46,6 +46,7 @@ const WalletAddress = observer(() => {
   const toggleModal = useWalletModalToggle();
   const { address } = useWalletStore();
   const [showDisconnect, setShowDisconnect] = useState(false);
+  const isMobileTelegram = isMobile || isTelegramWebApp();
 
   const onDisconnect = () => {
     resetWallet();
@@ -60,7 +61,7 @@ const WalletAddress = observer(() => {
 
   return (
     <StyledContainer item display="flex" gap="30px">
-      {!isMobile && !isTelegramWebApp() && <SelectLanguage />}
+      {!isMobileTelegram && <SelectLanguage isMobileTelegram={false} />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />

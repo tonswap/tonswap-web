@@ -39,7 +39,7 @@ const StyledBeta = styled(Box)({
   justifyContent: "center",
   "& p": {
     color: "white",
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 

@@ -8,6 +8,10 @@ import { LANGUAGE } from "./language";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import LanguageIcon from '@mui/icons-material/Language';
 
+type Props = {
+  isMobileTelegram: boolean;
+}
+
 const languages = [
   {
     text: "EN",
@@ -40,7 +44,7 @@ const StyledContainer = styled(Box)({
   },
 });
 
-const SelectLanguage = () => {
+const SelectLanguage = ({ isMobileTelegram }: Props) => {
   const { i18n } = useTranslation();
 
   const [language, setLanguage] = useState<LANGUAGE>(
@@ -56,7 +60,7 @@ const SelectLanguage = () => {
 
   return (
     <StyledContainer>
-      <LanguageIcon sx={{ width: 35, height: 35 }} />
+      {!isMobileTelegram && <LanguageIcon sx={{ width: 35, height: 35 }} />}
       <FormControl variant="standard">
         <Select
           labelId="demo-simple-select-label"
