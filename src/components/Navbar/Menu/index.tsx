@@ -113,9 +113,10 @@ function Menu({ open, hide }: Props) {
         </Box>
 
         <StyledActions>
-          <LanguageIconWrapper>
-            <LanguageIcon sx={{ width: 35, height: 35 }} />
-          </LanguageIconWrapper>
+          {isMobileTelegram &&
+            <LanguageIconWrapper>
+              <LanguageIcon sx={{ width: 35, height: 35 }} />
+            </LanguageIconWrapper>}
           <ActionButton onClick={onSwapClick}>{t("trade")}</ActionButton>
           <ActionButton
             customClassName={isDebug() ? "" : "coming-soon"}
