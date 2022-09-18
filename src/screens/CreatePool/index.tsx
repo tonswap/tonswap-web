@@ -13,6 +13,7 @@ import {
 import BigNumberDisplay from "components/BigNumberDisplay";
 import { useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
+import { useTranslation } from "react-i18next";
 
 const StyledContent = styled(Box)({
   display: "flex",
@@ -31,6 +32,7 @@ function CreatePool() {
   const { tokenData, jettonAddress } = useCreatePoolStore();
   const { address } = useWalletStore();
   const toggle = useWalletModalToggle();
+  const { t } = useTranslation();
 
   const validateForm = () => {
     return (
@@ -59,23 +61,23 @@ function CreatePool() {
   return (
     <StyledContainer>
       <FullPageLoader open={txLoading}>
-        <Typography>Deploying pool...</Typography>
+        <Typography>{t('deploying-pool')}</Typography>
       </FullPageLoader>
       <FullPageLoader open={getTokenLoading}>
-        <Typography>Loading...</Typography>
+        <Typography>{t('loading')}</Typography>
       </FullPageLoader>
       <StyledContent>
-        <ScreenTitle title="Create a new Pool" />
+        <ScreenTitle title={t('create-new-pool')} />
         <SearchInput onSubmit={onJettonAddressSubmit} />
 
         <TokenDetails />
 
         {address ? (
           <ActionButton isDisabled={!validateForm()} onClick={onDeploy}>
-            Deploy Pool 🚀
+            {t('deploy-pool')} 🚀
           </ActionButton>
         ) : (
-          <ActionButton onClick={toggle}>Connect wallet</ActionButton>
+          <ActionButton onClick={toggle}>{t('connect-wallet')}</ActionButton>
         )}
       </StyledContent>
     </StyledContainer>
@@ -100,6 +102,7 @@ const StyledTokenDetails = styled(Box)({
 
 const TokenDetails = () => {
   const { tokenData } = useCreatePoolStore();
+  const { t } = useTranslation()
 
   if (!tokenData) {
     return null;
@@ -109,10 +112,10 @@ const TokenDetails = () => {
     <StyledTokenDetails>
       <img src={tokenData.image} alt="" />
       <Box className="token-details-right">
-        <Typography>Name: {tokenData.name}</Typography>
+        <Typography>{t('token-name', { name: tokenData.name })}</Typography>
         <Typography>
           {" "}
-          My Balance: <BigNumberDisplay value={tokenData.balance} />
+          {t('my-balance')} <BigNumberDisplay value={tokenData.balance} />
         </Typography>
       </Box>
     </StyledTokenDetails>

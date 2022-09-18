@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 
 const StyledContainer = styled(Box)({
@@ -9,8 +10,8 @@ const StyledContainer = styled(Box)({
   background: "rgba(118, 118, 128, 0.12)",
   borderRadius: 8.91,
   height: 32,
-  marginLeft:'auto',
-  marginRight:'auto',
+  marginLeft: 'auto',
+  marginRight: 'auto',
   overflow: "auto",
   position: "relative",
   padding: 2,
@@ -68,7 +69,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
   const [allowTransition, setAllowTransition] = useState(false);
   const containerRef = useRef<any>();
   const montedRef = useRef(true);
-  const {srcLoading, destLoading, txPending} = useTokenOperationsStore()
+  const { srcLoading, destLoading, txPending } = useTokenOperationsStore()
 
 
   const onSelect = (index: number) => {
@@ -100,7 +101,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
   const isLoading = srcLoading || destLoading || txPending
 
   return (
-    <StyledContainer ref={containerRef} style={{pointerEvents: isLoading ? 'none' : 'all'}}>
+    <StyledContainer ref={containerRef} style={{ pointerEvents: isLoading ? 'none' : 'all' }}>
       <StyledSelected
         allowTransition={allowTransition}
         style={{ left: `${left}px`, width: `${width}px` }}
@@ -141,6 +142,7 @@ const SlidingMenuItem = ({
   index,
   symbol,
 }: SlidingMenuItemProps) => {
+  const { t } = useTranslation()
   useEffect(() => {
     if (selected) {
       onSelect(index);
@@ -156,7 +158,7 @@ const SlidingMenuItem = ({
   return (
     <StyledOption style={{ width }} onClick={onClick}>
       <Typography style={{ fontWeight: 500 }}>
-        {item.text} {symbol}
+        {t(item.text, { token: symbol })}
       </Typography>
     </StyledOption>
   );

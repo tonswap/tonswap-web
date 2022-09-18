@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { isTelegramWebApp } from "utils";
 import { ActionButton } from "./ActionButton";
-import { MainButton } from '@twa-dev/sdk/react';
+import MainButton from '@twa-dev/mainbutton';
 
 type Props = {
     isLoading?: boolean;
@@ -30,8 +30,7 @@ export const ButtonWrapper = ({
             <>{text} {image}</>
         </ActionButton>
     } else {
-        console.log('telegram web app')
-        return <MainButton text={text} disabled={isDisabled} progress={isLoading} onClick={() => onClick} />
+        return <MainButton text={text} disabled={isDisabled} progress={isLoading} onClick={onClick} />
     }
 }
 

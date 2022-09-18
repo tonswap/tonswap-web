@@ -10,9 +10,12 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { StyledConnectedChip, StyledConnectChip } from "./style";
 import { useWalletActions, useWalletStore } from "store/wallet/hooks";
 import { useWalletModalToggle } from "store/application/hooks";
-import WalletImg from 'assets/images/shared/wallet.svg'
+import WalletImg from "assets/images/shared/wallet.svg";
 import gaAnalytics from "services/analytics/ga/ga";
-
+import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
+import SelectLanguage from "./SelectLanguage";
+import { isTelegramWebApp } from "utils";
 
 const StyledIconButton = styled("button")({
   cursor: "pointer",
@@ -35,29 +38,31 @@ const StyledIconButton = styled("button")({
 
 const StyledContainer = styled(Grid)({
   position: "relative",
+  alignItems: "baseline"
 });
 
 const WalletAddress = observer(() => {
-  const {resetWallet} = useWalletActions()
-  const toggleModal = useWalletModalToggle()
-  const {address} = useWalletStore()
+  const { t } = useTranslation();
+  const { resetWallet } = useWalletActions();
+  const toggleModal = useWalletModalToggle();
+  const { address } = useWalletStore();
   const [showDisconnect, setShowDisconnect] = useState(false);
-
+  const isMobileTelegram = isMobile || isTelegramWebApp();
 
   const onDisconnect = () => {
-    resetWallet()
-    setShowDisconnect(false)
-    gaAnalytics.disconnect()
-  }
+    resetWallet();
+    setShowDisconnect(false);
+    gaAnalytics.disconnect();
+  };
 
-
-  const onConnect = ( ) => {
-    toggleModal()
-    gaAnalytics.connect()
-  }
+  const onConnect = () => {
+    toggleModal();
+    gaAnalytics.connect();
+  };
 
   return (
-    <StyledContainer item display="flex" gap="10px">
+    <StyledContainer item display="flex" gap="30px">
+      {!isMobileTelegram && <SelectLanguage />}
       {address ? (
         <StyledConnectedChip>
           <img alt="wallet" className="icon" src={WalletAddressImg} />
@@ -73,15 +78,15 @@ const WalletAddress = observer(() => {
         </StyledConnectedChip>
       ) : (
         <StyledConnectChip onClick={onConnect}>
-          <img className="icon" src = {WalletImg} />
-          <Typography className="address">Connect wallet</Typography>
+          <img className="icon" src={WalletImg} />
+          <Typography className="address">{t("connect-wallet")}</Typography>
         </StyledConnectChip>
       )}
       {showDisconnect && (
         <ClickAwayListener onClickAway={() => setShowDisconnect(false)}>
           <StyledIconButton onClick={onDisconnect}>
             <PowerSettingsNewIcon style={{ width: 18 }} />
-            <Typography>Disconnect</Typography>
+            <Typography>{t("disconnect")}</Typography>
           </StyledIconButton>
         </ClickAwayListener>
       )}

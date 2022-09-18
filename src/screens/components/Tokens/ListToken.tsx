@@ -2,8 +2,8 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import BigNumberDisplay from "components/BigNumberDisplay";
 import ContentLoader from "components/ContentLoader";
-import { COMING_SOON } from "consts";
 import useUsdValue from "hooks/useUsdValue";
+import { useTranslation } from "react-i18next";
 import { PoolInfo } from "services/api/addresses";
 import {
   StyledImage,
@@ -26,11 +26,12 @@ const ListToken = ({ token, onSelect }: Props) => {
     0,
     token.isDisabled
   );
+  const { t } = useTranslation()
 
   return (
     <StyledToken
       color={token.color}
-      onClick={token.isDisabled ? () => {} : onSelect}
+      onClick={token.isDisabled ? () => { } : onSelect}
       className={classes.token}
       style={{
         cursor: token.isDisabled ? "" : "pointer",
@@ -40,7 +41,7 @@ const ListToken = ({ token, onSelect }: Props) => {
       {token.image && <StyledImage src={token.image} alt="token" />}
       <StyledTokenTexts>
         <Typography className="symbol">
-          {token.displayName} {token.isDisabled ? COMING_SOON : ""}
+          {token.displayName} {token.isDisabled ? t('coming-soon') : ""}
         </Typography>
         <Typography className="name">{token.name}</Typography>
       </StyledTokenTexts>

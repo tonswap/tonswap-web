@@ -12,12 +12,14 @@ import { useEffect, useState } from "react";
 import { Address, fromNano } from "ton";
 import MainLoader from "components/MainLoader";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
     useTokenOperationsStore();
   const [haveReserves, setHaveReserves] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation()
 
   const getTxRequest = () => {
     gaAnalytics.addLiquidityTransaction()
@@ -98,7 +100,7 @@ const AddLiquidity = () => {
       srcToken={ton}
       getTxRequest={getTxRequest}
       destToken={selectedToken}
-      submitButtonText={`Add TON/${selectedToken?.displayName} liquidity`}
+      submitButtonText={t('add-ton-liquidity', { token: selectedToken?.displayName })}
       refreshAmountsOnActionChange={true}
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType={ActionType.ADD_LIQUIDITY}

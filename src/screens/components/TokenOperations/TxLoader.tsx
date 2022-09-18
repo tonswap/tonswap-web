@@ -6,7 +6,6 @@ import { useTokenOperationsStore } from "store/token-operations/hooks";
 
 interface Props {
     open: boolean;
-    address: string | undefined;
     close: () => void;
     confirm: () => void;
     getTxRequest: () => any;
@@ -35,7 +34,7 @@ function showApproveText(adapterId: string | undefined): string {
     }
 }
 
-function TxLoader({ open, address, close, confirm, getTxRequest, adapterId }: Props) {
+function TxLoader({ open, close, confirm, getTxRequest, adapterId }: Props) {
     const { srcTokenAmount } = useTokenOperationsStore();
 
     const openWallet = async () => {

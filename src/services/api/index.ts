@@ -15,6 +15,7 @@ import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 import store from "store/store";
 import { getWalletAddress } from "store/wallet/utils";
+import i18next from "i18next";
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
@@ -469,23 +470,31 @@ export const generateAddLiquidityLink = async (
   return sendTransaction(tokenData.jettonWallet, value, boc64);
 };
 
-export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
-    const tokenData = await getToken(client, token, getOwner());
-    const jettonData = await getPoolData(Address.parse(tokenData.ammMinter!!));
+export const generateRemoveLiquidityLink = async (
+  token: string,
+  tonAmount: number | string
+) => {
+  const tokenData = await getToken(client, token, getOwner());
+  const jettonData = await getPoolData(Address.parse(tokenData.ammMinter!!));
 
-    let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
+  let shareToRemove = toNano(tonAmount)
+    .mul(jettonData.totalSupply)
+    .div(jettonData.tonReserves);
 
-    const userLpBalance = (await getLPTokenBalance(token)).balance;
-    // round up 98 and above to use the max lp
-    // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
-    //     shareToRemove = userLpBalance;
-    // }
+  const userLpBalance = (await getLPTokenBalance(token)).balance;
+  // round up 98 and above to use the max lp
+  // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
+  //     shareToRemove = userLpBalance;
+  // }
 
-    const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
-    const boc64 = removeLiquidity.toBoc().toString("base64");
-    const tokenObjects: any = await getToken(client, token, getOwner());
-    const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
-    return sendTransaction(tokenObjects.lpWallet, value, boc64);
+  const removeLiquidity = await DexActions.removeLiquidity(
+    shareToRemove,
+    getOwner()
+  );
+  const boc64 = removeLiquidity.toBoc().toString("base64");
+  const tokenObjects: any = await getToken(client, token, getOwner());
+  const value = toNano(GAS_FEE.REMOVE_LIQUIDITY);
+  return sendTransaction(tokenObjects.lpWallet, value, boc64);
 };
 
 function sendTransaction(

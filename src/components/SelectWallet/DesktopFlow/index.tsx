@@ -1,10 +1,9 @@
-import {styled} from '@mui/styles';
+import { styled } from '@mui/styles';
 import { Box } from "@mui/material";
 import QR from "./QR";
 import AdaptersList from "../AdaptersList";
 import { useState } from "react";
 import { Adapters } from "services/wallets/types";
-import { observer } from "mobx-react-lite";
 import { adapters } from "services/wallets/config";
 import { useWalletActions, useWalletStore } from 'store/wallet/hooks';
 
@@ -12,9 +11,9 @@ const StyledContainer = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  position:'relative',
-  overflow:'hidden',
-  width:'fit-content'
+  position: 'relative',
+  overflow: 'hidden',
+  width: 'fit-content'
 });
 
 interface Props {
@@ -22,8 +21,8 @@ interface Props {
 }
 
 const DesktopFlow = ({ closeModal }: Props) => {
-  const {resetWallet, createWalletSession} = useWalletActions()
-  const {sessionLink} = useWalletStore()
+  const { resetWallet, createWalletSession } = useWalletActions()
+  const { sessionLink } = useWalletStore()
   const [showQr, setShowQr] = useState(false);
 
   const onSelect = (adapter: Adapters) => {
