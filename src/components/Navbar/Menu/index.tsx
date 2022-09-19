@@ -112,14 +112,14 @@ function Menu({ open, hide }: Props) {
             customClassName={isDebug() ? "" : "coming-soon"}
             onClick={onManageLiquidity}
           >
-            Manage Liquidity
+            {t("manage-liquidity")}
             <small>{t("coming-soon")}</small>
           </ActionButton>
           <ActionButton
             customClassName={isDebug() ? "" : "coming-soon"}
             onClick={onCreatePool}
           >
-            Create New Pool
+            {t("create-new-pool")}
             <small>{t("coming-soon")}</small>
           </ActionButton>
           <ActionButton onClick={onSupport}>

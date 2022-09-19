@@ -1,6 +1,7 @@
 import { Collapse } from "@mui/material";
 import { styled, Box } from "@mui/system";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as API from "services/api";
 import { GAS_FEE } from "services/api";
 import { PoolInfo } from "services/api/addresses";
@@ -38,6 +39,7 @@ const StyledContainer = styled(Box)({
 });
 
 const TradeInfo = ({ delta, actionType }: Props) => {
+    const {t} = useTranslation()
     const { selectedToken } =
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
@@ -78,12 +80,12 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         <StyledContainer className="swap-card">
             <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
             <Collapse orientation="vertical" in={showInfo}>
-                <TradeInfoRow title={'Gas Fee:'} value={`${tradeData?.gasFee} TON`} />
-                <TradeInfoRow title={'Trade Fee:'} value={`${tradeData?.tradeFee}%`} />
-                <TradeInfoRow title={'Max Slippage:'} value={`${tradeData?.slippage}%`} />
-                <TradeInfoRow title={'Price Impact:'} value={`${tradeData?.impact}%`} />
+                <TradeInfoRow title={t('gas-fee')} value={`${tradeData?.gasFee} TON`} />
+                <TradeInfoRow title={t('trade-fee')} value={`${tradeData?.tradeFee}%`} />
+                <TradeInfoRow title={t('max-slippage')} value={`${tradeData?.slippage}%`} />
+                <TradeInfoRow title={t('price-impact')} value={`${tradeData?.impact}%`} />
             </Collapse>
         </StyledContainer >
-    );
+);
 }
 export default TradeInfo;

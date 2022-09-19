@@ -1,6 +1,7 @@
 import { Box, Button, styled, Typography } from "@mui/material";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useTranslation } from "react-i18next";
 
 interface Props {
     show: boolean;
@@ -24,11 +25,12 @@ const ArrowWrap = styled(Box)({
 
 
 const ShowTradeInfoButton = ({ show, changeShow }: Props) => {
+    const {t} = useTranslation()
     return (
         <Button onClick={changeShow}>
             <StyledViewRow onClick={changeShow}>
                 <Typography>
-                    {show ? 'Less Info' : 'More Info'}
+                    {show ? t('less-info') : t('more-info')}
                 </Typography>
                 <ArrowWrap>
                     {show ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}

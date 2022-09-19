@@ -47,6 +47,13 @@
     "failed-pool-info": "Failed to get Pool info",
     "token-ton": "{{token}} / TON",
     "tokens-locked": "Total Tokens Locked",
-    "buy-pool": "Buy"
+    "buy-pool": "Buy",
+    "manage-liquidity":"Manage Liquidity",
+    "gas-fee":"Gas Fee:",
+    "trade-fee":"Trade Fee:",
+    "max-slippage":"Max Slippage:",
+    "price-impact":"Price Impact:",
+    "less-info":"Less Info",
+    "more-info":"More Info"
   }
 }
