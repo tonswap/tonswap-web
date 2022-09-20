@@ -65,6 +65,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
       "https://bafkreifbyn4o56paustubq4v77ql62swvayr6ey3reiqrsveneauq2pfvy.ipfs.nftstorage.link/",
     color: "#515151",
   },
+  "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
+    name: "Huebel Bolt",
+    ammMinter: "EQDaawC8QbsAidBa88rB8Ng4ZqtHxYYXY9fCF3DKoJanOi32",
+    tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
+    displayName: "BOLT",
+    image:
+      "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
+    color: "#7c7c7c",
+  },
   "USD Stable Coin": {
     name: "USD Stable Coin",
     displayName: "USDC",
