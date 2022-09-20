@@ -304,6 +304,7 @@ export async function getTokenData(jettonAddress: Address) {
     if (uri.length == 2) {
       throw "onchain data";
     }
+
     let metadataRes = await fetch(
       uri.replace("ipfs://", "https://ipfs.io/ipfs/")
     );
@@ -312,7 +313,31 @@ export async function getTokenData(jettonAddress: Address) {
     metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
   }
 
-  metadata.image = metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+  let image: string | undefined;
+
+  if (metadata.image) {
+    image = metadata.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+  } else if (metadata.image_data) {
+    try {
+      const imgData = Buffer.from(metadata.image_data, "base64").toString();
+      let type: string;
+
+      if (/<svg xmlns/.test(imgData)) {
+        type = "svg+xml";
+      } else if (/png/i.test(imgData)) {
+        type = "png";
+      } else {
+        console.warn("Defaulting to jpeg");
+        type = "jpeg"; // Fallback
+      }
+
+      image = `data:image/${type};base64,${metadata.image_data}`;
+    } catch (e) {
+      console.error("Error parsing img metadata");
+    }
+  }
+
+  metadata.image = image;
 
   return {
     owner,
