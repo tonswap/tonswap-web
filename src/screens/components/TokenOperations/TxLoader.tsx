@@ -8,7 +8,6 @@ interface Props {
     open: boolean;
     close: () => void;
     confirm: () => void;
-    getTxRequest: () => any;
     adapterId: string | undefined;
 }
 
@@ -34,12 +33,11 @@ function showApproveText(adapterId: string | undefined): string {
     }
 }
 
-function TxLoader({ open, close, confirm, getTxRequest, adapterId }: Props) {
+function TxLoader({ open, close, confirm, adapterId }: Props) {
     const { srcTokenAmount } = useTokenOperationsStore();
 
     const openWallet = async () => {
         confirm();
-        const request = await getTxRequest();
         const link = `https://tonhub.com/transfer`;
         window.location.replace(link);
         close();

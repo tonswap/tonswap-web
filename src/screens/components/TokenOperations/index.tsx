@@ -29,6 +29,7 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import TradeInfo from "./TradeInfo";
 import TxLoader from "./TxLoader";
+import { isMobile } from "react-device-detect";
 
 interface Props {
   srcToken: PoolInfo;
@@ -84,12 +85,10 @@ const TokenOperations = ({
   const { t } = useTranslation();
 
 
-  function isMobile(): boolean {
-    return adapterId === Adapters.TON_HUB;
-  }
+
 
   const onSubmit = () => {
-    if (isMobile()) {
+    if ( adapterId === Adapters.TON_HUB && isMobile) {
       setShowTxLoader(true)
     } else {
       submitTransaction()
@@ -142,7 +141,7 @@ const TokenOperations = ({
         adapterId={adapterId}
         close={closeTransactionLoader}
         confirm={submitTransaction}
-        getTxRequest={getTxRequest} />
+       />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
