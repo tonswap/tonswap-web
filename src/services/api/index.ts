@@ -32,7 +32,7 @@ export const client = new TonClient({
 });
 
 export enum GAS_FEE {
-  SWAP = 0.09,
+  SWAP = 0.14,
   FORWARD_TON = 0.09,
   ADD_LIQUIDITY_FORWARD_TON = 0.12, //0.12
   ADD_LIQUIDITY = 0.2,
