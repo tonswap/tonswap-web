@@ -40,7 +40,7 @@ function TxLoader({ open, close, confirm, getTxRequest, adapterId }: Props) {
     const openWallet = async () => {
         confirm();
         const request = await getTxRequest();
-        const link = `https://tonhub.com/transfer/${request.to}?amount=${srcTokenAmount}`;
+        const link = `https://tonhub.com/transfer`;
         window.location.replace(link);
         close();
     }
