@@ -12,6 +12,7 @@ i18n
     resources: {
       en,
       ru,
+      zh,
     },
     fallbackLng: "en",
     interpolation: {
