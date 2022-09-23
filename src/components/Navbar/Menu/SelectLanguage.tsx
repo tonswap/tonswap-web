@@ -17,6 +17,10 @@ const languages = [
     text: "РY",
     value: LANGUAGE.RU,
   },
+    {
+    text: "ZH",
+    value: LANGUAGE.ZH,
+  },
 ];
 
 const StyledContainer = styled(Box)({
