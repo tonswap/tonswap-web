@@ -74,6 +74,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
       "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
     color: "#7c7c7c",
   },
+    "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE": {
+    name: "Hedge coin",
+    ammMinter: "EQB90pO1r7oIGfEI2f3hlzdm3yfn0yVPvuAvGvhnKqdIcoam",
+    tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
+    displayName: "HEDGE",
+    image:
+      "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
+    color: "#8A6E53",
+  },
   "USD Stable Coin": {
     name: "USD Stable Coin",
     displayName: "USDC",
