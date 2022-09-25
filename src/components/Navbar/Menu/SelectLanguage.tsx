@@ -14,7 +14,7 @@ const languages = [
     value: LANGUAGE.EN,
   },
   {
-    text: "РY",
+    text: "RU",
     value: LANGUAGE.RU,
   },
     {
