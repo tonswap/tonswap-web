@@ -69,7 +69,7 @@ const getPool = async (
   if (!poolDataRaw) {
     throw new Error("Failed to find pool");
   }
-  const jettonWalletAddress = poolDataRaw.jettonWalletAddress;
+  const jettonWalletAddress = poolDataRaw.jettonWalletAddress as Address;
 
   const poolTvl = await getUsdAmount(
     "ton",
