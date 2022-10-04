@@ -50,4 +50,4 @@ export const DECIMALS_LIMIT = 9;
 
 export const BASE_ERROR_MESSAGE = "Oops, something went wrong";
 
-export const TON_RPC_NAME = "rpcUrl";
+export const TON_RPC_NAME = "tonswap_amm_rpc";

@@ -14,6 +14,7 @@ import {
   TELEGRAM_WEBAPP_PARAM,
   TEST_MODE,
   TOKENS_IN_LOCAL_STORAGE,
+  TON_RPC_NAME,
 } from "consts";
 import { isMobile } from "react-device-detect";
 import { PoolInfo } from "services/api/addresses";
@@ -279,6 +280,11 @@ export const toNanoSafe = (value?: string | number): BN => {
   }
   return result;
 };
+
+
+export const getGatewayUrl = () => localStorage.getItem(TON_RPC_NAME);
+
+export const getJsonRpc = () => `${getGatewayUrl()}/jsonRPC`;
 
 export {
   delay,

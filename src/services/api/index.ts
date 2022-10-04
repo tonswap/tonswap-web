@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
-import { cellToString, delay, hexToBn } from "utils";
+import { cellToString, delay, getJsonRpc, hexToBn } from "utils";
 import { DexActions } from "./dex";
 import {
   bytesToAddress,
@@ -12,24 +12,14 @@ import BN from "bn.js";
 import { OPS } from "./ops";
 import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
-import axios from "axios";
-import store from "store/store";
+
 import { getWalletAddress } from "store/wallet/utils";
 
-let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
 
-if (document.location.href.indexOf("testnet=") > -1) {
-  rpcUrl = "https://testnet.tonhubapi.com/jsonRPC";
-} else if (document.location.href.indexOf("sandbox=") > -1) {
-  rpcUrl = "https://sandbox.tonhubapi.com/jsonRPC";
-}
-
-console.log(localStorage.getItem("rpcUrl") as string);
-console.log(rpcUrl);
 
 /* eslint no-eval: 0 */
 export const client = new TonClient({
-  endpoint: localStorage.getItem("rpcUrl") as string,
+  endpoint: getJsonRpc(),
 });
 
 export enum GAS_FEE {

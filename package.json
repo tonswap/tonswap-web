@@ -11,6 +11,7 @@
     "@mui/material": "^5.5.2",
     "@mui/styles": "^5.5.1",
     "@mui/system": "^5.8.1",
+    "@orbs-network/ton-gateway": "^1.1.1",
     "@orbs-network/ton-rpc-gw": "github:orbs-network/ton-rpc-gw",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.2",
