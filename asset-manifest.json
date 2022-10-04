@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.1f04de87.js",
+    "main.js": "/static/js/main.ed12cba4.js",
     "static/js/554.5dc88b83.chunk.js": "/static/js/554.5dc88b83.chunk.js",
     "static/js/539.af9029f5.chunk.js": "/static/js/539.af9029f5.chunk.js",
     "static/js/178.9bfd3973.chunk.js": "/static/js/178.9bfd3973.chunk.js",
@@ -9,7 +9,7 @@
     "static/js/271.a94e89ee.chunk.js": "/static/js/271.a94e89ee.chunk.js",
     "static/js/745.38c97c5b.chunk.js": "/static/js/745.38c97c5b.chunk.js",
     "static/js/912.c14d280b.chunk.js": "/static/js/912.c14d280b.chunk.js",
-    "static/js/563.9eb9dca2.chunk.js": "/static/js/563.9eb9dca2.chunk.js",
+    "static/js/563.238a1489.chunk.js": "/static/js/563.238a1489.chunk.js",
     "static/js/465.672e6d76.chunk.js": "/static/js/465.672e6d76.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/KittyKorn.png": "/static/media/KittyKorn.83ef687abf466525d57a.png",
@@ -32,6 +32,6 @@
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.1f04de87.js"
+    "static/js/main.ed12cba4.js"
   ]
 }
