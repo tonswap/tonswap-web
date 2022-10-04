@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { useEffect } from "react";
-import { ActionButton, Popup } from "components";
+import { useEffect, useState } from "react";
+import { ActionButton } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -18,7 +18,7 @@ import {
 } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
-import { ActionCategory, ActionType } from "services/wallets/types";
+import { ActionCategory, ActionType, Adapters } from "services/wallets/types";
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
 import SuccessModal from "./SuccessModal";
@@ -26,6 +26,10 @@ import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
+import TradeInfo from "./TradeInfo";
+import TxLoader from "./TxLoader";
+import { isMobile } from "react-device-detect";
 
 interface Props {
   srcToken: PoolInfo;
@@ -58,8 +62,9 @@ const TokenOperations = ({
 }: Props) => {
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
+  const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
 
-  const { txPending } = useTokenOperationsStore();
+  const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
   const { address, adapterId, session } = useWalletStore();
 
@@ -77,8 +82,20 @@ const TokenOperations = ({
     resetTokensBalance,
     sendTransaction,
   } = useTokenOperationsActions();
+  const { t } = useTranslation();
 
-  const onSubmit = async () => {
+
+
+
+  const onSubmit = () => {
+    if ( adapterId === Adapters.TON_HUB && isMobile) {
+      setShowTxLoader(true)
+    } else {
+      submitTransaction()
+    }
+  };
+
+  const submitTransaction = async () => {
     const tx = async () => {
       const txRequest = await getTxRequest();
       const waiter = await waitForSeqno(
@@ -88,14 +105,14 @@ const TokenOperations = ({
       );
       await walletService.requestTransaction(adapterId!!, session, txRequest);
       await waiter();
-    
+
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
     };
 
     sendTransaction(tx);
-  };
+  }
 
   useEffect(() => {
     if (address && refreshAmountsOnActionChange) {
@@ -112,12 +129,19 @@ const TokenOperations = ({
     gaAnalytics.connect()
   }
 
+  const closeTransactionLoader = () => {
+    setShowTxLoader(false)
+  }
 
   return (
-    <StyledTokenOperationActions
-     style={{pointerEvents: txPending ? 'none' : 'all'}}
-    >
+    <StyledTokenOperationActions>
       <TxError />
+      <TxLoader
+        open={showTxLoader}
+        adapterId={adapterId}
+        close={closeTransactionLoader}
+        confirm={submitTransaction}
+       />
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
@@ -138,16 +162,18 @@ const TokenOperations = ({
             token={destToken}
             srcTokenName={srcToken.tokenMinter}
             disableInputDependency={disableInputDependency}
+            srcTokenAmount={srcTokenAmount}
+            actionType={actionType}
           />
         </Box>
 
         <Box className={classes.button}>
           {!address ? (
-            <ActionButton onClick={onConnect}>Connect wallet</ActionButton>
+            <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
           ) : insufficientFunds ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <WarningAmberRoundedIcon
                 style={{
@@ -156,11 +182,11 @@ const TokenOperations = ({
                   position: "relative",
                 }}
               />
-              Insufficient funds
+              {t('insufficient-funds')}
             </ActionButton>
           ) : (
             <ActionButton
-              isLoading={txPending}
+              isLoading={showTxLoader || txPending}
               isDisabled={disabled || insufficientFunds}
               onClick={onSubmit}
             >

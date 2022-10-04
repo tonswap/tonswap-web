@@ -15,6 +15,7 @@ import AddressText from "components/AddressText";
 import FullPageLoader from "components/FullPageLoader";
 import useNotification from "hooks/useNotification";
 import { useTokensActions } from "store/tokens/hooks";
+import { useTranslation } from "react-i18next";
 
 const StyledContainer = styled(Box)({
   maxWidth: "500px",
@@ -74,7 +75,8 @@ function CustomToken({ open, onClose }: Props) {
   const [getTokenLoading, setGetTokenLoading] = useState(false);
   const [jettonAddress, setJettonAddress] = useState("");
   const { showNotification } = useNotification();
-  const {addToken} = useTokensActions()
+  const { addToken } = useTokensActions()
+  const { t } = useTranslation()
 
   const create = (tokenData: Token) => {
     try {
@@ -90,7 +92,7 @@ function CustomToken({ open, onClose }: Props) {
 
       addToken(newToken);
       onClose();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const onChange = async (e: any) => {
@@ -124,13 +126,12 @@ function CustomToken({ open, onClose }: Props) {
           tonReserves: parseFloat(fromNano(poolData.tonReserves)).toFixed(2),
         });
       }
-      
+
       setToken({
         ...jettonData,
         tokenMinter: value,
         ammMinter: futureAddress.toFriendly(),
       });
-      console.log(isDeployed);
 
       setIsPoolDeployed(isDeployed);
     } catch (error) {
@@ -150,13 +151,13 @@ function CustomToken({ open, onClose }: Props) {
   return (
     <Popup open={open} onClose={onClose}>
       <FullPageLoader open={getTokenLoading}>
-        <Typography>Loading...</Typography>
+        <Typography>{t('loading')}</Typography>
       </FullPageLoader>
       <StyledContainer>
-        <StyledTitle>Add custom token</StyledTitle>
+        <StyledTitle>{t('add-custom-token')}</StyledTitle>
         <StyledInput>
           <TextField
-            label="Jetton address"
+            label={t('jetton-address')}
             onChange={onChange}
             value={jettonAddress}
           />
@@ -164,14 +165,14 @@ function CustomToken({ open, onClose }: Props) {
 
         {token && (
           <>
-          
+
             <StyledTokenDetails>
               <TokenPreview
                 name={token.name.toUpperCase()}
                 image={token.image}
               />
               <StyledTokenDetailsAddress>
-                <StyledSectionTitle>Amm minter: </StyledSectionTitle>
+                <StyledSectionTitle>{t('amm-minter')}</StyledSectionTitle>
                 <AddressText address={token.ammMinter} />
               </StyledTokenDetailsAddress>
             </StyledTokenDetails>
@@ -179,29 +180,29 @@ function CustomToken({ open, onClose }: Props) {
             {pool && (
               <StyledReserves>
                 <StyledSectionTitle>
-                  Pool Reservers {token.name.toUpperCase()}-TON
+                  {t('pool-reservers', { token: token.name.toUpperCase() })}
                 </StyledSectionTitle>
-                  <StyledReservesFlex>
+                <StyledReservesFlex>
                   <StyledReserve>
-                  <TokenPreview
-                    name={token.name.toUpperCase()}
-                    image={token.image}
-                  />
-                  <StyledReserveAmount>
-                    {convertToCurrencySystem(pool.tokenReserves)}
-                  </StyledReserveAmount>
-                </StyledReserve>
+                    <TokenPreview
+                      name={token.name.toUpperCase()}
+                      image={token.image}
+                    />
+                    <StyledReserveAmount>
+                      {convertToCurrencySystem(pool.tokenReserves)}
+                    </StyledReserveAmount>
+                  </StyledReserve>
 
-                <StyledReserve>
-                  <TokenPreview
-                    name={'TON'}
-                    image={TonIcon}
-                  />
-                  <StyledReserveAmount>
-                    {convertToCurrencySystem(pool.tonReserves)}
-                  </StyledReserveAmount>
-                </StyledReserve>
-                  </StyledReservesFlex>
+                  <StyledReserve>
+                    <TokenPreview
+                      name={'TON'}
+                      image={TonIcon}
+                    />
+                    <StyledReserveAmount>
+                      {convertToCurrencySystem(pool.tonReserves)}
+                    </StyledReserveAmount>
+                  </StyledReserve>
+                </StyledReservesFlex>
               </StyledReserves>
             )}
           </>
@@ -209,7 +210,7 @@ function CustomToken({ open, onClose }: Props) {
 
         <Box marginTop="50px">
           <ActionButton isDisabled={!isPoolDeployed} onClick={onCreate}>
-            Add token
+            {t('add-token')}
           </ActionButton>
         </Box>
       </StyledContainer>
@@ -222,25 +223,25 @@ export default CustomToken;
 
 const StyledTokenDetails = styled(Box)({
   marginTop: 30,
- 
+
 });
 
 
 const StyledTokenDetailsAddress = styled(Box)({
   marginTop: 20,
- 
+
 })
 
 const StyledSectionTitle = styled(Typography)({
   fontSize: 16,
-    fontWeight: 500,
-    marginBottom: 10
+  fontWeight: 500,
+  marginBottom: 10
 })
 
 const StyledReservesFlex = styled(Box)({
-  display:'flex',
-  flexDirection:'column',
-  gap:20
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 20
 })
 
 
@@ -250,8 +251,8 @@ const StyledReserves = styled(Box)({
 
 
 const StyledReserve = styled(Box)({
-display:'flex',
-alignItems:'center',
+  display: 'flex',
+  alignItems: 'center',
 })
 
 

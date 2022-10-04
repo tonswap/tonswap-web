@@ -11,8 +11,8 @@ import Title from "./Title";
 import { Theme } from "@mui/material/styles";
 import { Adapter, Adapters } from "services/wallets/types";
 import CircularProgress from "@mui/material/CircularProgress";
-import { COMING_SOON } from "consts";
 import gaAnalytics from "services/analytics/ga/ga";
+import { useTranslation } from "react-i18next";
 
 const StyledListItem = styled(ListItem)(
   ({ disabled }: { disabled?: boolean }) => ({
@@ -34,14 +34,14 @@ const StyledListItemButton = styled(ListItemButton)({
 
 const StyledContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
   width: "100%",
-  position:'relative',
+  position: 'relative',
   "& .MuiCircularProgress-root": {
-    position:'absolute',
-    left:'40%',
-    top:'50%',
+    position: 'absolute',
+    left: '40%',
+    top: '50%',
     transform: 'translate(-50%, -50%)'
-  }, 
-})) ;
+  },
+}));
 
 const StyledConnectModalTitle = styled(Box)({
   paddingLeft: "10px",
@@ -94,7 +94,7 @@ function AdaptersList({
   adapterLoading,
   isLoading,
 }: Props) {
-
+  const { t } = useTranslation()
 
   const onSelect = (adapter: Adapters) => {
     select(adapter)
@@ -108,9 +108,9 @@ function AdaptersList({
   return (
     <StyledContainer>
       <Fade in={!isLoading}>
-      <StyledConnectModalTitle>
-        <Title text="Select Wallet" />
-      </StyledConnectModalTitle>
+        <StyledConnectModalTitle>
+          <Title text="Select Wallet" />
+        </StyledConnectModalTitle>
       </Fade>
       <Fade in={!isLoading}>
         <StyledList>
@@ -124,14 +124,14 @@ function AdaptersList({
                 style={{ pointerEvents: isLoading ? "none" : "all" }}
               >
                 <StyledListItemButton
-                  onClick={disabled ? () => {} : () => onSelect(type)}
+                  onClick={disabled ? () => { } : () => onSelect(type)}
                 >
                   <StyledIcon>
                     <img src={icon} />
                   </StyledIcon>
                   <StyledListItemRight>
                     <Typography variant="h5">
-                      {name} <small>{disabled ? COMING_SOON : ""}</small>
+                      {name} <small>{disabled ? t('coming-soon') : ""}</small>
                     </Typography>
                     <Typography>{description}</Typography>
                   </StyledListItemRight>
@@ -141,7 +141,7 @@ function AdaptersList({
           })}
         </StyledList>
       </Fade>
-     {isLoading &&  <CircularProgress />}
+      {isLoading && <CircularProgress />}
     </StyledContainer>
   );
 }

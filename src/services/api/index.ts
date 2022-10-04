@@ -23,10 +23,11 @@ export const client = new TonClient({
 });
 
 export enum GAS_FEE {
-  SWAP = 0.09,
-  FORWARD_TON = 0.05,
-  ADD_LIQUIDITY = 0.12,
-  REMOVE_LIQUIDITY = 0.08,
+  SWAP = 0.14,
+  FORWARD_TON = 0.09,
+  ADD_LIQUIDITY_FORWARD_TON = 0.12, //0.12
+  ADD_LIQUIDITY = 0.2,
+  REMOVE_LIQUIDITY = 0.2,
 }
 
 const sleep = (milliseconds: number) => {
@@ -184,7 +185,6 @@ function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
   let numerator = reserveIn.mul(amountOut).mul(new BN(1000));
   let denominator = reserveOut.sub(amountOut).mul(new BN(997));
   let ret = numerator.div(denominator).add(new BN(1));
-  console.log("getAmountIn", ret.toString());
   return ret;
 }
 
@@ -249,7 +249,7 @@ export async function getPoolInfo(token: string) {
   const tokenObjects: any = await getToken(client, token, getOwner());
   return getPoolData(tokenObjects.ammMinter);
 }
-
+//tokenReserves -> Liquidity
 export async function getPoolData(ammMinter: Address) {
   let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
 
@@ -295,6 +295,7 @@ export async function getTokenData(jettonAddress: Address) {
     if (uri.length == 2) {
       throw "onchain data";
     }
+
     let metadataRes = await fetch(
       uri.replace("ipfs://", "https://ipfs.io/ipfs/")
     );
@@ -303,7 +304,31 @@ export async function getTokenData(jettonAddress: Address) {
     metadata = parseJettonOnchainMetadata(cell.beginParse()).metadata;
   }
 
-  metadata.image = metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+  let image: string | undefined;
+
+  if (metadata.image) {
+    image = metadata.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+  } else if (metadata.image_data) {
+    try {
+      const imgData = Buffer.from(metadata.image_data, "base64").toString();
+      let type: string;
+
+      if (/<svg xmlns/.test(imgData)) {
+        type = "svg+xml";
+      } else if (/png/i.test(imgData)) {
+        type = "png";
+      } else {
+        console.warn("Defaulting to jpeg");
+        type = "jpeg"; // Fallback
+      }
+
+      image = `data:image/${type};base64,${metadata.image_data}`;
+    } catch (e) {
+      console.error("Error parsing img metadata");
+    }
+  }
+
+  metadata.image = image;
 
   return {
     owner,
@@ -474,9 +499,9 @@ export const generateRemoveLiquidityLink = async (
 
   const userLpBalance = (await getLPTokenBalance(token)).balance;
   // round up 98 and above to use the max lp
-  if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
-    shareToRemove = userLpBalance;
-  }
+  // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
+  //     shareToRemove = userLpBalance;
+  // }
 
   const removeLiquidity = await DexActions.removeLiquidity(
     shareToRemove,

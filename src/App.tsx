@@ -9,6 +9,10 @@ import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import { useTonClient } from "queries/queries";
+import './services/i18next/i18n';
+import { useTranslation } from "react-i18next";
+
+
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -36,13 +40,14 @@ const StyledBeta = styled(Box)({
   justifyContent: "center",
   "& p": {
     color: "white",
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 
 const App = () => {
   const { isSuccess: tonRpcReady } = useTonClient();
   const { restoreSession } = useWalletActions();
+  const { t } = useTranslation()
   useWebAppResize();
   useEffectOnce(() => {
     restoreSession();
@@ -55,7 +60,7 @@ const App = () => {
   return (
     <>
       <StyledBeta>
-        <Typography>{BETA_TEXT}</Typography>
+        <Typography>{t('beta-text')}</Typography>
       </StyledBeta>
       <StyledAppContainer>
         <Navbar />

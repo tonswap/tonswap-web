@@ -1,6 +1,6 @@
 {
   "name": "tonswap-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@aws-crypto/sha256-js": "^2.0.1",
@@ -25,6 +25,8 @@
     "add": "^2.0.6",
     "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
+    "i18next": "^21.9.0",
+    "i18next-browser-languagedetector": "^6.1.5",
     "mobx": "^6.5.0",
     "mobx-react": "^7.3.0",
     "notistack": "^2.0.5",
@@ -36,6 +38,7 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "^17.0.2",
     "react-ga4": "^1.4.1",
+    "react-i18next": "^11.18.3",
     "react-number-format": "^4.9.1",
     "react-qr-code": "^2.0.7",
     "react-query": "^3.39.2",
@@ -59,7 +62,7 @@
     "build": "GENERATE_SOURCEMAP=false react-app-rewired build && cp build/index.html build/404.html",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
-    "deploy-staging": "git push heroku master"
+    "deploy-staging": "npm run build && gh-pages deploy build"
   },
   "eslintConfig": {
     "extends": [
@@ -86,6 +89,7 @@
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
     "@types/react-copy-to-clipboard": "^5.0.2",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "ipfs-core-types": "^0.11.1"
   }
 }

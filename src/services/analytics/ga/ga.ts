@@ -1,6 +1,11 @@
+import { LANGUAGE } from "components/Navbar/Menu/language";
 import ReactGA from "react-ga4";
 import store from "store/store";
-import { AnalyticsCategory, AnalyticsClickAction } from "./types";
+import {
+  AnalyticsCategory,
+  AnalyticsClickAction,
+  AnalyticsLanguages,
+} from "./types";
 
 const getToken = () =>
   store.getState().tokenOperations.selectedToken?.displayName;
@@ -41,7 +46,6 @@ class GaAnalytics {
   }
 
   selectTokenToManageLiquidity(name: string) {
-    
     this.sendEvent(
       AnalyticsCategory.Click,
       AnalyticsClickAction.SELECT_TOKEN_TO_MANAGE_LIQUIDITY,
@@ -179,6 +183,14 @@ class GaAnalytics {
 
   connect() {
     this.sendEvent(AnalyticsCategory.Click, AnalyticsClickAction.CONNECT);
+  }
+
+  onLanguageSelect(lang: string) {
+    if (lang === LANGUAGE.EN) {
+      this.sendEvent(AnalyticsCategory.Language, AnalyticsLanguages.English);
+    } else if (lang === LANGUAGE.RU) {
+      this.sendEvent(AnalyticsCategory.Language, AnalyticsLanguages.Russian);
+    }
   }
 }
 

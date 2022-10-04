@@ -28,6 +28,7 @@ import TokenPreview from "components/TokenPreview";
 import { useTokensStore } from "store/tokens/hooks";
 import { BN } from "bn.js";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
+import { useTranslation } from "react-i18next";
 
 type Token = {
   name: string;
@@ -94,7 +95,7 @@ const getPool = async (
     },
     pool: {
       tonReserves: Number(fromNano(poolDataRaw.tonReserves)).toFixed(2),
-      tokenReserves:  Number(fromNano(poolDataRaw.tokenReserves)).toFixed(2),
+      tokenReserves: Number(fromNano(poolDataRaw.tokenReserves)).toFixed(2),
       tvl: poolTvl,
       address: ammMinter,
     },
@@ -107,16 +108,17 @@ const PoolScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();
   const [pool, setPool] = useState<Pool | undefined>();
-  const {tokens} = useTokensStore()
+  const { tokens } = useTokensStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
-    
+
     if (ammMinter) {
       (async () => {
         try {
           const data = await getPool(ammMinter, tokens);
-            setToken(data.token)
-            setPool(data.pool)
+          setToken(data.token)
+          setPool(data.pool)
         } catch (error) {
 
         } finally {
@@ -141,7 +143,7 @@ const PoolScreen = () => {
       <StyledContainer>
         <StyledError>
           <ErrorOutlineIcon />
-          <Typography>Failed to get Pool info</Typography>
+          <Typography>{t('failed-pool-info')}</Typography>
         </StyledError>
       </StyledContainer>
     );
@@ -155,7 +157,7 @@ const PoolScreen = () => {
             <img src={token.image || DefaultTokenIcon} />
             <img src={TonIcon} />
             <Box className="pair-name">
-              <Typography>{token.name.toUpperCase()} / TON</Typography>
+              <Typography>{t('token-ton', { token: token.name.toUpperCase() })}</Typography>
             </Box>
           </StyledPoolTokens>
           <StyledPoolActions>
@@ -164,21 +166,21 @@ const PoolScreen = () => {
                 navigate(ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", token.name))
               }
             >
-              Add Liquidity
+              {t('add-liquidity')}
             </ActionButton>
             <ActionButton
               onClick={() =>
                 navigate(ROUTES.swap.buy.replace(":id", token.name))
               }
             >
-              Buy
+              {t('buy-pool')}
             </ActionButton>
           </StyledPoolActions>
         </StyledHeader>
         <StyledDetails>
           <StyledReserves>
             <Typography className="reserves-title">
-              Total Tokens Locked
+              {t('tokens-locked')}
             </Typography>
             <Box className="flex">
               <TokenReserves
@@ -218,4 +220,4 @@ const TokenReserves = ({ image, name, reserves }: TokenReservesProps) => {
   );
 };
 
-export  default PoolScreen
+export default PoolScreen

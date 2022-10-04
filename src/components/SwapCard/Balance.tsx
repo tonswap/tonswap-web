@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { styled, Box, borderRadius } from "@mui/system";
 import BigNumberDisplay from "components/BigNumberDisplay";
 import ContentLoader from "components/ContentLoader";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   loading: boolean;
@@ -13,27 +14,28 @@ interface Props {
 
 const StyledContainer = styled(Box)({
   height: "100%",
-  display:'flex',
-  alignItems:'center',
-  gap:5 ,
-  marginRight:12,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 5,
+  marginRight: 12,
 });
 
 const StyledMaxButton = styled('button')({
-    background: "rgba(255,255,255, 0.1)",
-    padding:'0px 10px',
-    borderRadius: 10,
-    height: '100%',
-   
-    cursor:'pointer',
-    "p": {
-        color:'white',
-        fontSize: 12,
-        fontWeight: 500
-    }
+  background: "rgba(255,255,255, 0.1)",
+  padding: '0px 10px',
+  borderRadius: 10,
+  height: '100%',
+
+  cursor: 'pointer',
+  "p": {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 500
+  }
 })
 
 function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props) {
+  const { t } = useTranslation();
   return (
     <StyledContainer>
       {loading ? (
@@ -41,16 +43,15 @@ function Balance({ loading, availableAmount, onMaxAmountClick, showMax }: Props)
       ) : (
         <>
           <Typography component="p" textAlign="right">
-            <strong>Balance: </strong>
+            <strong>{`${t('balance')}: `}</strong>
             {/* {availableAmount} */}
-            {console.log(availableAmount)}
             <BigNumberDisplay value={availableAmount} />
             {/* {` ${displayName}`} */}
           </Typography>
           {showMax && onMaxAmountClick && <StyledMaxButton
             onClick={onMaxAmountClick}
           >
-           <Typography> MAX</Typography>
+            <Typography> {t('max')}</Typography>
           </StyledMaxButton>}
         </>
       )}
