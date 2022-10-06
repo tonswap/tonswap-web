@@ -29,11 +29,14 @@ import { useTokensStore } from "store/tokens/hooks";
 import { BN } from "bn.js";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { addToken } from "store/tokens/reducer";
 
 type Token = {
   name: string;
   image?: string;
   symbol: string;
+  minter: string;
 };
 
 type Pool = {
@@ -55,6 +58,7 @@ const getTokemByAmmMinter = (
       name: result.name,
       symbol: result.displayName,
       image: result.image,
+      minter: "",
     };
   }
 };
@@ -80,7 +84,7 @@ const getPool = async (
   if (!tokenData) {
     const jData = await _getJettonBalance(jettonWalletAddress);
     const { name, symbol, image } = await getTokenData(jData.jettonMaster!!);
-    tokenData = { name, symbol, image };
+    tokenData = { name, symbol, image, minter: (jData.jettonMaster!!).toFriendly() };
   }
 
   if (!tokenData) {
@@ -92,12 +96,14 @@ const getPool = async (
       name: tokenData.name,
       image: tokenData.image,
       symbol: tokenData.symbol,
+      minter: tokenData.minter
     },
     pool: {
       tonReserves: Number(fromNano(poolDataRaw.tonReserves)).toFixed(2),
       tokenReserves: Number(fromNano(poolDataRaw.tokenReserves)).toFixed(2),
       tvl: poolTvl,
       address: ammMinter,
+      
     },
   };
 };
@@ -110,6 +116,27 @@ const PoolScreen = () => {
   const [pool, setPool] = useState<Pool | undefined>();
   const { tokens } = useTokensStore()
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
+  const onBuyClick = async () => {
+    let poolInfo: PoolInfo =  {
+          ammMinter: ammMinter!!,
+          tokenMinter: token?.minter!!,
+          image: token?.image!!,
+          displayName: token?.symbol!!,
+          color: "#dd5fbe",
+          name: token?.name!!,
+          isCustom: true,
+          isDisabled: false,
+      }
+      dispatch(addToken(poolInfo));
+    setTimeout(() => {
+        
+        
+        token && navigate(ROUTES.swap.navigateToBuy.replace(":id", token?.minter!!))
+          
+      }, 2);
+  }
 
   useEffect(() => {
 
@@ -161,17 +188,15 @@ const PoolScreen = () => {
             </Box>
           </StyledPoolTokens>
           <StyledPoolActions>
-            <ActionButton
+            {/* <ActionButton
               onClick={() =>
                 navigate(ROUTES.manageLiquidity.navigateToAddLiquidity.replace(":id", token.name))
               }
             >
               {t('add-liquidity')}
-            </ActionButton>
+            </ActionButton> */}
             <ActionButton
-              onClick={() =>
-                navigate(ROUTES.swap.buy.replace(":id", token.name))
-              }
+              onClick={ onBuyClick}
             >
               {t('buy-pool')}
             </ActionButton>

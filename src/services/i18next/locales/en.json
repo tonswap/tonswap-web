@@ -47,7 +47,7 @@
     "failed-pool-info": "Failed to get Pool info",
     "token-ton": "{{token}} / TON",
     "tokens-locked": "Total Tokens Locked",
-    "buy-pool": "Buy",
+    "buy-pool": "Buy/Sell",
     "manage-liquidity":"Manage Liquidity",
     "gas-fee":"Gas Fee:",
     "trade-fee":"Trade Fee:",
