@@ -83,15 +83,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
       "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
     color: "#8A6E53",
   },
-    "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L": {
-    name: "TonTake",
-    ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
-    tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
-    displayName: "TAKE",
-    image:
-      "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
-    color: "#83ABCD",
-  },
   "USD Stable Coin": {
     name: "USD Stable Coin",
     displayName: "USDC",
