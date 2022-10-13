@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.d697650e.js",
+    "main.js": "/static/js/main.a397dbfe.js",
     "static/js/554.5dc88b83.chunk.js": "/static/js/554.5dc88b83.chunk.js",
     "static/js/539.af9029f5.chunk.js": "/static/js/539.af9029f5.chunk.js",
     "static/js/178.9bfd3973.chunk.js": "/static/js/178.9bfd3973.chunk.js",
@@ -17,9 +17,9 @@
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
     "static/media/usdc.svg": "/static/media/usdc.457fb8e05803cd3f316c391f996df8c0.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
+    "index.html": "/index.html",
     "static/media/success.svg": "/static/media/success.79a5c2f6fcc496326c3a8261c4463432.svg",
     "static/media/ton.svg": "/static/media/ton.097bcb5f892039116605e51999f36bdc.svg",
-    "index.html": "/index.html",
     "static/media/telegram.svg": "/static/media/telegram.283c3956d6fb1304a3e1d22368de0480.svg",
     "static/media/wallet-address.svg": "/static/media/wallet-address.57b60a11e4d5fd39eac76f18f88060ee.svg",
     "static/media/wallet.svg": "/static/media/wallet.fc714ee09ee6021c6120c77726ed285d.svg",
@@ -32,6 +32,6 @@
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.d697650e.js"
+    "static/js/main.a397dbfe.js"
   ]
 }
