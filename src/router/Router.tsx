@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/system";
-import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ROUTES } from "./routes";
 import MainLoader from "components/MainLoader";
@@ -11,6 +11,12 @@ const Pool = lazy(() => import("screens/pool"));
 const ManageLiquidity = lazy(() => import("screens/manage-liquidity"));
 
 function AppRoutes() {
+  let location = useLocation();
+
+  useEffect(() => {
+    (window as any)._mfq.push(["newPageView", location.pathname]);
+  }, [location]);
+
   return (
     <>
       <Suspense fallback={<MainLoader />}>
