@@ -5,6 +5,7 @@ import en from "./locales/en.json";
 import ru from "./locales/ru.json";
 import zh from "./locales/zh.json";
 import es from "./locales/es.json";
+import pt from "./locales/pt.json";
 
 i18n
   .use(LanguageDetector)
@@ -15,6 +16,7 @@ i18n
       ru,
       zh,
       es,
+      pt,
     },
     fallbackLng: "en",
     interpolation: {
