@@ -92,6 +92,24 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
       "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
     color: "#83ABCD",
   },
+    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
+    name: "Tegro Token",
+    ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
+    tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
+    displayName: "TGR",
+    image:
+      "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
+    color: "#69ABE8",
+  },
+    "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
+    name: "TonexCoin",
+    ammMinter: "EQAJb0r7kkjeS3nKUiwmuhScl_eQpAhC5B0aikwaqdbxTPTn",
+    tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
+    displayName: "TNX",
+    image:
+      "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
+    color: "#234054",
+  },
   "USD Stable Coin": {
     name: "USD Stable Coin",
     displayName: "USDC",
