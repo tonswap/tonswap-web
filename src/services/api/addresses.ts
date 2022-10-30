@@ -31,23 +31,7 @@ export type PoolInfoRaw = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-  "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC": {
-    name: "KittyCoin for TonSwap tests",
-    ammMinter: "EQCSjnLz6xxsbWKmV_iePAbo3edduyXrzpq7hzyEgKNZcZdm",
-    tokenMinter: "EQDw8mvCaC1-kZaJK2aFFl5zuHXoXI2UkTCcVTbBSeqk9EYC",
-    displayName: "KIT",
-    image: KittyKorn,
-    color: "#390075",
-  },
-  "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB": {
-    name: "DinoCoin for TonSwap tests",
-    ammMinter: "EQAG57v8WL4U188JmkFJZd5VIbqoFfwx3trefJbfJ5pD1JAP",
-    tokenMinter: "EQDH9-eeozoEMtbxSMSL3Ogrjw0nlKTTw0q1KwySJPn2-YmB",
-    displayName: "DINO",
-    image: DinoKorn,
-    color: "#0E9D26",
-  },
-  EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
+  "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
     name: "Wrapped Solana",
     ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
     tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
