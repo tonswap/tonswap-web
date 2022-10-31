@@ -40,7 +40,7 @@ function SwapCard({
   onMaxAmount,
   showMax,
   srcTokenAmount,
-  actionType
+  actionType,
 }: Props) {
   const expanded = useIsExpandedView();
   const navigate = useNavigateWithParams();
@@ -51,22 +51,22 @@ function SwapCard({
 
   const actionBuyOrSell = (): boolean => {
     return actionType === ActionType.BUY || actionType === ActionType.SELL;
-  }
+  };
 
   const onMax = () => {
-    gaAnalytics.onMaxClick()
-    onMaxAmount?.()
-  }
+    gaAnalytics.onMaxClick();
+    onMaxAmount?.();
+  };
 
   const onTokenSelect = () => {
     if (isTon) {
       return;
     }
     if (operationType === OperationType.SWAP) {
-      gaAnalytics.changeTokenInTrade(token.name)
+      gaAnalytics.changeTokenInTrade(token.name);
       navigate(ROUTES.swap.navigateToTokens);
     } else {
-      gaAnalytics.changeTokenInManageLiquidity(token.name)
+      gaAnalytics.changeTokenInManageLiquidity(token.name);
       navigate(ROUTES.manageLiquidity.navigateToTokens);
     }
   };
@@ -115,10 +115,11 @@ function SwapCard({
             )}
           </StyledBottom>
         </div>
-        {srcTokenAmount && actionBuyOrSell() &&
+        {srcTokenAmount && actionBuyOrSell() && address && (
           <StyledFooterTradeInfo>
             <TradeInfo delta={srcTokenAmount} actionType={actionType} />
-          </StyledFooterTradeInfo>}
+          </StyledFooterTradeInfo>
+        )}
       </StyledContainer>
     </>
   );
