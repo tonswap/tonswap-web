@@ -13,7 +13,7 @@ const OFFCHAIN_CONTENT_PREFIX = 0x01;
 
 const AMM_VERSION = "1.1";
 
-export type JettonMetaDataKeys = "name" | "description" | "image" | "symbol" | "decimals";
+export type JettonMetaDataKeys = "name" | "description" | "image" | "symbol" | "image_data" | "decimals";
 const sha256 = (str: string) => {
     const sha = new Sha256();
     sha.update(str);
@@ -28,6 +28,7 @@ const jettonOnChainMetadataSpec: {
     image: "ascii",
     symbol: "utf8",
     decimals: "utf8",
+    image_data: undefined,
 };
 
 let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
@@ -187,52 +188,55 @@ async function parseJettonOffchainMetadata(contentSlice: Slice): Promise<{
         isIpfs: /(^|\/)ipfs[.:]/.test(jsonURI),
     };
 }
-
 export function parseJettonOnchainMetadata(contentSlice: Slice): {
     metadata: { [s in JettonMetaDataKeys]?: string };
     isJettonDeployerFaultyOnChainData: boolean;
-} {
+  } {
     // Note that this relies on what is (perhaps) an internal implementation detail:
     // "ton" library dict parser converts: key (provided as buffer) => BN(base10)
     // and upon parsing, it reads it back to a BN(base10)
     // tl;dr if we want to read the map back to a JSON with string keys, we have to convert BN(10) back to hex
     const toKey = (str: string) => new BN(str, "hex").toString(10);
     const KEYLEN = 256;
-
+  
     let isJettonDeployerFaultyOnChainData = false;
-
+  
     const dict = contentSlice.readDict(KEYLEN, (s) => {
-        let buffer = Buffer.from("");
-
-        const sliceToVal = (s: Slice, v: Buffer) => {
-            s.toCell().beginParse();
-            if (s.readUint(8).toNumber() !== SNAKE_PREFIX) throw new Error("Only snake format is supported");
-
-            v = Buffer.concat([v, s.readRemainingBytes()]);
-            if (s.remainingRefs === 1) {
-                v = sliceToVal(s.readRef(), v);
-            }
-
-            return v;
-        };
-
-        if (s.remainingRefs === 0) {
-            isJettonDeployerFaultyOnChainData = true;
-            return sliceToVal(s, buffer);
+      let buffer = Buffer.from("");
+  
+      const sliceToVal = (s: Slice, v: Buffer, isFirst: boolean) => {
+        s.toCell().beginParse();
+        if (isFirst && s.readUint(8).toNumber() !== SNAKE_PREFIX)
+          throw new Error("Only snake format is supported");
+  
+        v = Buffer.concat([v, s.readRemainingBytes()]);
+        if (s.remainingRefs === 1) {
+          v = sliceToVal(s.readRef(), v, false);
         }
-
-        return sliceToVal(s.readRef(), buffer);
+  
+        return v;
+      };
+  
+      if (s.remainingRefs === 0) {
+        isJettonDeployerFaultyOnChainData = true;
+        return sliceToVal(s, buffer, true);
+      }
+  
+      return sliceToVal(s.readRef(), buffer, true);
     });
-
+  
     const res: { [s in JettonMetaDataKeys]?: string } = {};
-
+  
     Object.keys(jettonOnChainMetadataSpec).forEach((k) => {
-        const val = dict.get(toKey(sha256(k).toString("hex")))?.toString(jettonOnChainMetadataSpec[k as JettonMetaDataKeys]);
-        if (val) res[k as JettonMetaDataKeys] = val;
+      const val = dict
+        .get(toKey(sha256(k).toString("hex")))
+        ?.toString(jettonOnChainMetadataSpec[k as JettonMetaDataKeys]);
+      if (val) res[k as JettonMetaDataKeys] = val;
     });
-
+  
     return {
-        metadata: res,
-        isJettonDeployerFaultyOnChainData,
+      metadata: res,
+      isJettonDeployerFaultyOnChainData,
     };
-}
+  }
+  
