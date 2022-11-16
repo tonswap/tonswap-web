@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import SwapCard from "components/SwapCard";
 import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";

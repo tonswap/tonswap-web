@@ -11,228 +11,204 @@ import Usdc from "assets/images/tokens/usdc.svg";
 import { localStorageTokensToObject } from "utils";
 
 export type PoolInfo = {
-  ammMinter: string;
-  tokenMinter: string;
-  image?: string;
-  displayName: string;
-  color: string;
-  name: string;
-  isCustom?: boolean;
-  isDisabled?: boolean;
+    ammMinter: string;
+    tokenMinter: string;
+    image?: string;
+    displayName: string;
+    color: string;
+    name: string;
+    isCustom?: boolean;
+    isDisabled?: boolean;
+    decimals: number;
 };
 
 export type PoolInfoRaw = {
-  ammMinter?: string;
-  tokenMinter?: string;
-  image: string;
-  displayName: string;
-  color: string;
-  name: string;
+    ammMinter?: string;
+    tokenMinter?: string;
+    image: string;
+    displayName: string;
+    color: string;
+    name: string;
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-  "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
-    name: "Wrapped Solana",
-    ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
-    tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
-    displayName: "WSOL",
-    image:
-      "https://bafkreiadj3ntztd44xhntqu26kyubn2rihu24if7qncp4npn3pvwacl5wi.ipfs.nftstorage.link/",
-    color: "#2fa4b0",
-  },
-  "EQALr-K836vMmF5gOBzYmEHlS29-iG6AGsmHFzzgpMiy9ERi": {
-    name: "Wrapped NEAR",
-    ammMinter: "EQBJ4iUkm55hxNtLkG4gtLxQ2Mcvsne3u-OINdg0uFguK_wY",
-    tokenMinter: "EQALr-K836vMmF5gOBzYmEHlS29-iG6AGsmHFzzgpMiy9ERi",
-    displayName: "WNEAR",
-    image:
-      "https://bafkreifbyn4o56paustubq4v77ql62swvayr6ey3reiqrsveneauq2pfvy.ipfs.nftstorage.link/",
-    color: "#515151",
-  },
-  "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
-    name: "Huebel Bolt",
-    ammMinter: "EQDaawC8QbsAidBa88rB8Ng4ZqtHxYYXY9fCF3DKoJanOi32",
-    tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
-    displayName: "BOLT",
-    image:
-      "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
-    color: "#7c7c7c",
-  },
-    "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE": {
-    name: "Hedge coin",
-    ammMinter: "EQB90pO1r7oIGfEI2f3hlzdm3yfn0yVPvuAvGvhnKqdIcoam",
-    tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
-    displayName: "HEDGE",
-    image:
-      "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
-    color: "#8A6E53",
-  },
-    "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L": {
-    name: "TonTake",
-    ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
-    tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
-    displayName: "TAKE",
-    image:
-      "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
-    color: "#83ABCD",
-  },
-    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
-    name: "Tegro Token",
-    ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
-    tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
-    displayName: "TGR",
-    image:
-      "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
-    color: "#69ABE8",
-  },
+    EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
+        name: "Wrapped Solana",
+        ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
+        tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
+        displayName: "WSOL",
+        image: "https://bafkreiadj3ntztd44xhntqu26kyubn2rihu24if7qncp4npn3pvwacl5wi.ipfs.nftstorage.link/",
+        color: "#2fa4b0",
+        decimals: 9,
+    },
+    "EQALr-K836vMmF5gOBzYmEHlS29-iG6AGsmHFzzgpMiy9ERi": {
+        name: "Wrapped NEAR",
+        ammMinter: "EQBJ4iUkm55hxNtLkG4gtLxQ2Mcvsne3u-OINdg0uFguK_wY",
+        tokenMinter: "EQALr-K836vMmF5gOBzYmEHlS29-iG6AGsmHFzzgpMiy9ERi",
+        displayName: "WNEAR",
+        image: "https://bafkreifbyn4o56paustubq4v77ql62swvayr6ey3reiqrsveneauq2pfvy.ipfs.nftstorage.link/",
+        color: "#515151",
+        decimals: 9,
+    },
+    "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
+        name: "Huebel Bolt",
+        ammMinter: "EQDaawC8QbsAidBa88rB8Ng4ZqtHxYYXY9fCF3DKoJanOi32",
+        tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
+        displayName: "BOLT",
+        image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
+        color: "#7c7c7c",
+        decimals: 9,
+    },
+    EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE: {
+        name: "Hedge coin",
+        ammMinter: "EQB90pO1r7oIGfEI2f3hlzdm3yfn0yVPvuAvGvhnKqdIcoam",
+        tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
+        displayName: "HEDGE",
+        image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
+        color: "#8A6E53",
+        decimals: 9,
+    },
+    EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L: {
+        name: "TonTake",
+        ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
+        tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
+        displayName: "TAKE",
+        image: "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
+        color: "#83ABCD",
+        decimals: 9,
+    },
+    EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y: {
+        name: "Tegro Token",
+        ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
+        tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
+        displayName: "TGR",
+        image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
+        color: "#69ABE8",
+        decimals: 9,
+    },
     "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
-    name: "TonexCoin",
-    ammMinter: "EQAJb0r7kkjeS3nKUiwmuhScl_eQpAhC5B0aikwaqdbxTPTn",
-    tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
-    displayName: "TNX",
-    image:
-      "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
-    color: "#234054",
-  },
-  "USD Stable Coin": {
-    name: "USD Stable Coin",
-    displayName: "USDC",
-    image: Usdc,
-    color: "#055fa6",
-    isDisabled: true,
-    tokenMinter: "usd-coin",
-    ammMinter: "usd-coin",
-  },
-  "Wrapped Bitcoin on TON": {
-    name: "Wrapped Bitcoin on TON",
-    displayName: "WBTC",
-    image: Btc,
-    color: "#E17E06",
-    isDisabled: true,
-    tokenMinter: "bitcoin",
-    ammMinter: "bitcoin",
-  },
-  "Wrapped Ether on TON": {
-    name: "Wrapped Ether on TON",
-    displayName: "ETH",
-    image: Eth,
-    color: "#5f73c2",
-    isDisabled: true,
-    tokenMinter: "ethereum",
-    ammMinter: "ethereum",
-  },
+        name: "TonexCoin",
+        ammMinter: "EQAJb0r7kkjeS3nKUiwmuhScl_eQpAhC5B0aikwaqdbxTPTn",
+        tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
+        displayName: "TNX",
+        image: "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
+        color: "#234054",
+        decimals: 9,
+    },
+    "USD Stable Coin": {
+        name: "USD Stable Coin",
+        displayName: "USDC",
+        image: Usdc,
+        color: "#055fa6",
+        isDisabled: true,
+        tokenMinter: "usd-coin",
+        ammMinter: "usd-coin",
+        decimals: 9,
+    },
+    "Wrapped Bitcoin on TON": {
+        name: "Wrapped Bitcoin on TON",
+        displayName: "WBTC",
+        image: Btc,
+        color: "#E17E06",
+        isDisabled: true,
+        tokenMinter: "bitcoin",
+        ammMinter: "bitcoin",
+        decimals: 9,
+    },
+    "Wrapped Ether on TON": {
+        name: "Wrapped Ether on TON",
+        displayName: "ETH",
+        image: Eth,
+        color: "#5f73c2",
+        isDisabled: true,
+        tokenMinter: "ethereum",
+        ammMinter: "ethereum",
+        decimals: 9,
+    },
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
-  return { ...MainNetPoolsRoot, ...localStorageTokensToObject() };
+    return { ...MainNetPoolsRoot, ...localStorageTokensToObject() };
 };
 
 export const ton: PoolInfo = {
-  isCustom: false,
-  image: Ton,
-  displayName: "TON",
-  name: "ton",
-  color: "#1490CD",
-  ammMinter: "ton",
-  tokenMinter: "ton",
+    isCustom: false,
+    image: Ton,
+    displayName: "TON",
+    name: "ton",
+    color: "#1490CD",
+    ammMinter: "ton",
+    tokenMinter: "ton",
 };
 
 let isTestNet = true;
 export const Pools = () => {
-  return MainNetPools();
+    return MainNetPools();
 };
 
 const tokenCache: { [key: string]: Address } = {};
 
 export function addToken(key: string, pool: PoolInfo) {
-  const pools = Pools();
-  pools[key] = pool;
+    const pools = Pools();
+    pools[key] = pool;
 }
 
 async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
-  console.log("fetch and cache");
+    console.log("fetch and cache");
 
-  const res = await fn;
-  tokenCache[cacheKey] = res;
-  return res;
+    const res = await fn;
+    tokenCache[cacheKey] = res;
+    return res;
 }
 
-export async function getToken(
-  client: TonClient,
-  token: string,
-  owner: Address
-) {
-  const jettonWalletKey = `${token}:jettonWallet:${owner}`;
+export async function getToken(client: TonClient, token: string, owner: Address) {
+    const jettonWalletKey = `${token}:jettonWallet:${owner}`;
 
-  const jettonWallet =
-    tokenCache[jettonWalletKey] ||
-    (await fetchAndCache(
-      resolveJettonWallet(
-        client,
-        owner,
-        Address.parse(Pools()[token].tokenMinter!!)
-      ),
-      jettonWalletKey
-    ));
-  const lpWalletKey = `${token}:lpWallet`;
-  const lpWallet =
-    tokenCache[lpWalletKey] ||
-    (await fetchAndCache(
-      resolveJettonWallet(
-        client,
-        owner,
-        Address.parse(Pools()[token].ammMinter!!)
-      ),
-      lpWalletKey
-    ));
+    const jettonWallet = tokenCache[jettonWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].tokenMinter!!)), jettonWalletKey));
+    const lpWalletKey = `${token}:lpWallet`;
+    const lpWallet = tokenCache[lpWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].ammMinter!!)), lpWalletKey));
 
-  return {
-    ...Pools()[token],
-    jettonWallet,
-    lpWallet,
-  };
+    return {
+        ...Pools()[token],
+        jettonWallet,
+        lpWallet,
+    };
 }
 
-export async function resolveJettonWallet(
-  client: TonClient,
-  walletAddress: Address,
-  jettonMaster: Address
-) {
-  let cell = new Cell();
-  cell.bits.writeAddress(walletAddress);
+export async function resolveJettonWallet(client: TonClient, walletAddress: Address, jettonMaster: Address) {
+    let cell = new Cell();
+    cell.bits.writeAddress(walletAddress);
 
-  // tonweb style - this way its more optimized for browser
-  const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
-  let res = await client.callGetMethod(jettonMaster, "get_wallet_address", [
-    ["tvm.Slice", b64data],
-  ]);
+    // tonweb style - this way its more optimized for browser
+    const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
+    let res = await client.callGetMethod(jettonMaster, "get_wallet_address", [["tvm.Slice", b64data]]);
 
-  return bytesToAddress(res.stack[0][1].bytes);
+    return bytesToAddress(res.stack[0][1].bytes);
 }
 
 export function bytesToAddress(bufferB64: string) {
-  const buff = Buffer.from(bufferB64, "base64");
-  let c2 = Cell.fromBoc(buff);
-  return c2[0].beginParse().readAddress() as Address;
+    const buff = Buffer.from(bufferB64, "base64");
+    let c2 = Cell.fromBoc(buff);
+    return c2[0].beginParse().readAddress() as Address;
 }
 
 const base64abc = (() => {
-  const abc = [];
-  const A = "A".charCodeAt(0);
-  const a = "a".charCodeAt(0);
-  const n = "0".charCodeAt(0);
-  for (let i = 0; i < 26; ++i) {
-    abc.push(String.fromCharCode(A + i));
-  }
-  for (let i = 0; i < 26; ++i) {
-    abc.push(String.fromCharCode(a + i));
-  }
-  for (let i = 0; i < 10; ++i) {
-    abc.push(String.fromCharCode(n + i));
-  }
-  abc.push("+");
-  abc.push("/");
-  return abc;
+    const abc = [];
+    const A = "A".charCodeAt(0);
+    const a = "a".charCodeAt(0);
+    const n = "0".charCodeAt(0);
+    for (let i = 0; i < 26; ++i) {
+        abc.push(String.fromCharCode(A + i));
+    }
+    for (let i = 0; i < 26; ++i) {
+        abc.push(String.fromCharCode(a + i));
+    }
+    for (let i = 0; i < 10; ++i) {
+        abc.push(String.fromCharCode(n + i));
+    }
+    abc.push("+");
+    abc.push("/");
+    return abc;
 })();
 
 /**
@@ -240,29 +216,29 @@ const base64abc = (() => {
  * @return {string}
  */
 export function bytesToBase64(bytes: any) {
-  let result = "";
-  let i;
-  const l = bytes.length;
-  for (i = 2; i < l; i += 3) {
-    result += base64abc[bytes[i - 2] >> 2];
-    result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-    result += base64abc[((bytes[i - 1] & 0x0f) << 2) | (bytes[i] >> 6)];
-    result += base64abc[bytes[i] & 0x3f];
-  }
-  if (i === l + 1) {
-    // 1 octet missing
-    result += base64abc[bytes[i - 2] >> 2];
-    result += base64abc[(bytes[i - 2] & 0x03) << 4];
-    result += "==";
-  }
-  if (i === l) {
-    // 2 octets missing
-    result += base64abc[bytes[i - 2] >> 2];
-    result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-    result += base64abc[(bytes[i - 1] & 0x0f) << 2];
-    result += "=";
-  }
-  return result;
+    let result = "";
+    let i;
+    const l = bytes.length;
+    for (i = 2; i < l; i += 3) {
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[((bytes[i - 1] & 0x0f) << 2) | (bytes[i] >> 6)];
+        result += base64abc[bytes[i] & 0x3f];
+    }
+    if (i === l + 1) {
+        // 1 octet missing
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[(bytes[i - 2] & 0x03) << 4];
+        result += "==";
+    }
+    if (i === l) {
+        // 2 octets missing
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[(bytes[i - 1] & 0x0f) << 2];
+        result += "=";
+    }
+    return result;
 }
 
 // Deployer : https://sandbox.tonwhales.com/explorer/address/EQBdPuDE6-9QE6c7dZZWbfhsE2jS--EfcwfEvGaWjKeW8vfO

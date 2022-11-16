@@ -1,5 +1,5 @@
 import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
-import { cellToString, delay, hexToBn } from "utils";
+import { cellToString, delay, fromDecimals, hexToBn } from "utils";
 import { DexActions } from "./dex";
 import {
   bytesToAddress,
@@ -73,13 +73,13 @@ export const getLPTokenBalance = async (token: string) => {
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
-  const tokenObjects = await getToken(client, token, getOwner());
+  const tokenObject = await getToken(client, token, getOwner());
   const [jettonData, lpBalance] = await Promise.all([
-    getPoolData(Address.parse(tokenObjects.ammMinter!!)),
+    getPoolData(Address.parse(tokenObject.ammMinter!!)),
     getLPTokenBalance(token),
   ]);
   if (lpBalance.balance.toString() === "0") {
-    return [fromNano("0"), fromNano("0")];
+    return [fromDecimals("0", tokenObject.decimals), fromDecimals("0", tokenObject.decimals)];
   }
   const tonSide = lpBalance.balance
     .mul(jettonData.tonReserves)
@@ -342,6 +342,7 @@ export async function getTokenData(jettonAddress: Address) {
   return {
     owner,
     totalSupply,
+    decimals: 9, // override by metadata
     ...metadata,
   };
 }

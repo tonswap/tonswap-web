@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import SwapCard from "components/SwapCard/index";
 import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
@@ -10,6 +9,7 @@ import { InInput } from "store/token-operations/reducer";
 import { useWalletStore } from "store/wallet/hooks";
 import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
+import { fromDecimals } from "utils";
 import { calculateTokens } from "./util";
 interface Props {
   token: PoolInfo;
@@ -73,7 +73,7 @@ const SrcToken = ({
       if (result === 0) {
         return;
       } else {
-        updateDestTokenAmount(fromNano(result));
+        updateDestTokenAmount(fromDecimals(result, token.decimals));
       }
     }
   }, 600);
