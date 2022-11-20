@@ -31,6 +31,15 @@ export type PoolInfoRaw = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
+  "EQB2-xzts2ZHekOfnWaW7cthemLmR0iz3-orUfj8fRpFrz2x": {
+    name: "Fanzee Token",
+    ammMinter: "EQB2-xzts2ZHekOfnWaW7cthemLmR0iz3-orUfj8fRpFrz2x",
+    tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
+    displayName: "FNZ",
+    image:
+      "https://bafkreihhy7jd434aycrmxci3oij4wajxpepbhdfusedfun7fvyzn2qfcq4.ipfs.nftstorage.link/",
+    color: "#CCAAFF",
+  },
   "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
     name: "Wrapped Solana",
     ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
@@ -75,15 +84,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     image:
       "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
     color: "#83ABCD",
-  },
-    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
-    name: "Tegro Token",
-    ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
-    tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
-    displayName: "TGR",
-    image:
-      "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
-    color: "#69ABE8",
   },
     "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
     name: "TonexCoin",
