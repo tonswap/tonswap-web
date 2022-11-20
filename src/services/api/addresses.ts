@@ -31,7 +31,7 @@ export type PoolInfoRaw = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-  "EQB2-xzts2ZHekOfnWaW7cthemLmR0iz3-orUfj8fRpFrz2x": {
+  "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
     name: "Fanzee Token",
     ammMinter: "EQB2-xzts2ZHekOfnWaW7cthemLmR0iz3-orUfj8fRpFrz2x",
     tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
