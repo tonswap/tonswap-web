@@ -15,35 +15,60 @@ const StyledContainer = styled(Box)({
   position: "relative",
 });
 
+
 interface Props {
   closeModal: () => void;
 }
 
 const MobileFlow = observer(({ closeModal }: Props) => {
+  
   const { sessionLink } = useWalletStore();
   const { createWalletSession } = useWalletActions();
   const [selectedAdapter, setSelectedAdapter] = useState<
     Adapters | undefined
-  >();
-  const ref = useRef<any>();
+    >();
+  
   const filteredAdapters = useMemo(
     () => adapters.filter((m) => m.mobileCompatible),
     []
   );
 
-  const onSelect = (adapter: Adapters) => {
-    if(sessionLink){
-      window.location.href = sessionLink
-    }
+  const onSelect = async (adapter: Adapters) => {
    
-    // createWalletSession(adapter);
-    // setSelectedAdapter(adapters.find((m) => m.type === adapter)?.type);
+    await createWalletSession(adapter);
+    setSelectedAdapter(adapters.find((m) => m.type === adapter)?.type);
   };
 
-  useEffect(() => {
-    createWalletSession(Adapters.TON_HUB);
-  }, []);
+  const openDeepLink = () => {
+    if (sessionLink) {
+      window.location.href = sessionLink;
+    }
+  }
 
+  const createSessions = async () => {
+    // const tonhub = await createWalletSession(Adapters.TON_HUB)
+    // const tonkeeper = await createWalletSession(Adapters.TON_KEEPER) 
+  }
+
+  useEffect(() => {
+
+   // createSessions()
+  }, []);
+  if (sessionLink && selectedAdapter) {
+
+    const currentAdapter =  filteredAdapters.filter((a) => a.type == selectedAdapter )
+    return (<StyledContainer style={{ width: "100%", display:"flex" }}>
+      <AdaptersList
+        adapterLoading={selectedAdapter}
+        adapters={currentAdapter}
+        onClose={closeModal}
+        open={true}
+        select={openDeepLink}
+        isLoading={false}
+        title={"Click to connect"}
+      />
+    </StyledContainer>)
+  }
 
   return (
     <StyledContainer style={{ width: "100%" }}>
@@ -53,7 +78,7 @@ const MobileFlow = observer(({ closeModal }: Props) => {
         onClose={closeModal}
         open={true}
         select={onSelect}
-        isLoading={!sessionLink}
+        isLoading={false}
       />
     </StyledContainer>
   );
