@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.bb8fe437.js",
-    "static/js/554.5dc88b83.chunk.js": "/static/js/554.5dc88b83.chunk.js",
+    "main.js": "/static/js/main.733b6da9.js",
+    "static/js/554.90c2f910.chunk.js": "/static/js/554.90c2f910.chunk.js",
     "static/js/539.931bb1b7.chunk.js": "/static/js/539.931bb1b7.chunk.js",
     "static/js/178.97fde900.chunk.js": "/static/js/178.97fde900.chunk.js",
     "static/js/960.a0af2be7.chunk.js": "/static/js/960.a0af2be7.chunk.js",
@@ -10,8 +10,9 @@
     "static/js/745.587a18ea.chunk.js": "/static/js/745.587a18ea.chunk.js",
     "static/js/912.cc73ba45.chunk.js": "/static/js/912.cc73ba45.chunk.js",
     "static/js/563.d3caf354.chunk.js": "/static/js/563.d3caf354.chunk.js",
-    "static/js/465.1d7fabf7.chunk.js": "/static/js/465.1d7fabf7.chunk.js",
+    "static/js/465.15f72fc4.chunk.js": "/static/js/465.15f72fc4.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
+    "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
     "static/media/usdc.svg": "/static/media/usdc.457fb8e05803cd3f316c391f996df8c0.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
@@ -25,11 +26,10 @@
     "static/media/btc1.svg": "/static/media/btc1.0e1fa97493493367f45a929fcc9bb170.svg",
     "static/media/eth1.svg": "/static/media/eth1.f827adddcf99941a48898b6adf11dcf1.svg",
     "static/media/close.svg": "/static/media/close.bae43592c70f403d963844498955fc8e.svg",
-    "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
-    "static/media/ton-keeper.svg": "/static/media/ton-keeper.f7cdf8d79dcbbe8ba7f90303e67892dc.svg"
+    "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg"
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.bb8fe437.js"
+    "static/js/main.733b6da9.js"
   ]
 }
