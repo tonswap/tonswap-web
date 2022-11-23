@@ -11,7 +11,6 @@ const adapters: Adapter[] = [
         mobileCompatible: true,
         description: "A mobile wallet in your pocket",
         disabled: false,
-        logoBackground: "#000",
     },
     {
         name: "Tonhub",
