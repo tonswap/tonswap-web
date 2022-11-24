@@ -100,29 +100,29 @@ export const useCreatePoolActions = (): {
                 throw new Error("Invalid address");
             }
 
-            const tx = await deployPool(Address.parse(jettonAddress));
+            const transactionData = await deployPool(Address.parse(jettonAddress));
 
-            if (!tx) {
+            if (!transactionData) {
                 throw new Error("Transaction error");
             }
 
-            if (!tx || tx.error) {
-                throw new Error(tx.error);
+            if (!transactionData || transactionData.error) {
+                throw new Error(transactionData.error);
             }
-            const awaiter = waitForContractDeploy(tx.to);
+            const isContractDeployedYet = waitForContractDeploy(transactionData.to);
 
-            let url = await walletService.requestTransaction(adapterId!!, session, tx);
+            let url = await walletService.requestTransaction(adapterId!!, session, transactionData);
             // ton keeper
             if (typeof url == "string") {
                 if (isMobile) {
                     window.location.href = url;
                 }
             }
-            await awaiter();
+            await isContractDeployedYet();
 
             const token: PoolInfo = {
                 name: tokenData.name,
-                ammMinter: tx.to,
+                ammMinter: transactionData.to,
                 tokenMinter: jettonAddress,
                 color: getRandomColor(),
                 displayName: tokenData.symbol.toUpperCase(),
