@@ -13,7 +13,8 @@ const OFFCHAIN_CONTENT_PREFIX = 0x01;
 
 const AMM_VERSION = "1.1";
 
-export type JettonMetaDataKeys = "name" | "description" | "image" | "symbol" | "image_data" | "decimals";
+export type JettonMetaDataKeys = "name" | "description" | "image" | "symbol" | "image_data" | "decimals" | "poolToken";
+
 const sha256 = (str: string) => {
     const sha = new Sha256();
     sha.update(str);
@@ -28,6 +29,7 @@ const jettonOnChainMetadataSpec: {
     image: "ascii",
     symbol: "utf8",
     decimals: "utf8",
+    poolToken: "utf8",
     image_data: undefined,
 };
 
@@ -51,9 +53,10 @@ const META_DATA_DEFUALT = {
 };
 
 export async function poolStateInit(jettonMinter: Address, workchain: number) {
-    // const jettonData = await getTokenData(jettonMinter);
+    const jettonData = await getTokenData(jettonMinter);
     let metadata = {
         name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
+        poolToken: jettonMinter.toFriendly(),
         ...META_DATA_DEFUALT,
     };
     const { codeCell, initDataCell } = buildStateInit(metadata);

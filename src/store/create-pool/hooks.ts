@@ -112,7 +112,7 @@ export const useCreatePoolActions = (): {
             const isContractDeployedYet = waitForContractDeploy(transactionData.to);
 
             let url = await walletService.requestTransaction(adapterId!!, session, transactionData);
-            // ton keeper
+            // ton keeper uses deep links
             if (typeof url == "string") {
                 if (isMobile) {
                     window.location.href = url;
