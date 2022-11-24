@@ -1,17 +1,17 @@
 import BN from "bn.js";
 import { Address, Cell, contractAddress, toNano, TonClient, beginDict, beginCell, StateInit, Slice } from "ton";
-import { _getJettonBalance } from ".";
+import { getTokenData, _getJettonBalance } from ".";
 import { Sha256 } from "@aws-crypto/sha256-js";
 import { walletService } from "services/wallets/WalletService";
 import { TransactionRequest } from "services/wallets/types";
 import axios from "axios";
 
-const POOL_INIT_COST = 0.15;
+const POOL_INIT_COST = 0.5;
 const SNAKE_PREFIX = 0x00;
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;
 
-const AMM_VERSION = "1.1";
+const AMM_VERSION = "1.2";
 
 export type JettonMetaDataKeys = "name" | "description" | "image" | "symbol" | "image_data" | "decimals" | "poolToken";
 
@@ -46,16 +46,16 @@ const client = new TonClient({
 });
 
 const META_DATA_DEFUALT = {
-    description: "LP Pool",
-    //  decimals: "9",
-    image: "https://bafkreia3ktmxxobtn6exd5juehf3k4tmcl46cej7buk3ce2nub7xl2573i.ipfs.nftstorage.link/",
+    description: "TonSwap Liquidity Provider Jetton.",
+    decimals: "9",
+    image: "ipfs://bafkreia3ktmxxobtn6exd5juehf3k4tmcl46cej7buk3ce2nub7xl2573i",
     symbol: "TONSWAP-LP",
 };
 
 export async function poolStateInit(jettonMinter: Address, workchain: number) {
-    // const jettonData = await getTokenData(jettonMinter);
+    const jettonData = await getTokenData(jettonMinter);
     let metadata = {
-        name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
+        name: `LP-${jettonData.symbol}-V${AMM_VERSION}`,
         poolToken: jettonMinter.toFriendly(),
         ...META_DATA_DEFUALT,
     };

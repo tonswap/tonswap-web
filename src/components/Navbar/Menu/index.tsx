@@ -109,11 +109,11 @@ function Menu({ open, hide }: Props) {
         <StyledActions>
           <ActionButton onClick={onSwapClick}>{t("trade")}</ActionButton>
           <ActionButton
-            customClassName={isDebug() ? "" : "coming-soon"}
+            customClassName={isDebug() ? "" : ""}
             onClick={onManageLiquidity}
           >
             {t("manage-liquidity")}
-            <small>{t("coming-soon")}</small>
+            
           </ActionButton>
           <ActionButton
             customClassName={isDebug() ? "" : "coming-soon"}

@@ -63,7 +63,7 @@ const AddLiquidity = () => {
       const getTokenReserves = async () => {
         try {
           const res = await API.getPoolData(
-            Address.parse(selectedToken.ammMinter!!)
+            Address.parse(selectedToken.ammMinter!!), selectedToken.ammVersion
           );
           const tokenReserves = fromNano(res.tokenReserves);
           const tonReserves = fromNano(res.tonReserves);

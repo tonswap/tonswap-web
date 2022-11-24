@@ -162,14 +162,15 @@ function getAmountIn(amountOut: BN, reserveIn: BN, reserveOut: BN): BN {
     return ret;
 }
 
-export const getAmountsOut = async (token: string, isSourceToken: boolean, srcAmount: BN | null, destAmount: BN | null) => {
-    const tokenAmm = Pools()[token].ammMinter;
+export const getAmountsOut = async (tokenName: string, isSourceToken: boolean, srcAmount: BN | null, destAmount: BN | null) => {
+    const token = Pools()[tokenName];
+    const tokenAmm = token.ammMinter;
 
     if (!tokenAmm) {
         throw new Error("Amm address missing");
     }
 
-    const tokenData = await getPoolData(Address.parse(tokenAmm!!));
+    const tokenData = await getPoolData(Address.parse(tokenAmm!!), token.ammVersion);
     const tokenAmmAddr = Address.parse(tokenAmm!!);
 
     // Top Box Has value
@@ -196,11 +197,12 @@ export const getAmountsOut = async (token: string, isSourceToken: boolean, srcAm
 
 export async function getPoolInfo(token: string) {
     const tokenObjects: any = await getToken(client, token, getOwner());
-    return getPoolData(tokenObjects.ammMinter);
+    return getPoolData(tokenObjects.ammMinter, tokenObjects.ammVersion);
 }
 //tokenReserves -> Liquidity
-export async function getPoolData(ammMinter: Address) {
-    let res = await client.callGetMethod(ammMinter, "get_jetton_data", []);
+export async function getPoolData(ammMinter: Address, version = 1.2) {
+    let command = version == 1.1 ? "get_jetton_data" : "get_pool_data";
+    let res = await client.callGetMethod(ammMinter, command, []);
 
     const totalSupply = hexToBn(res.stack[0][1]);
     const mintable = res.stack[1][1] as string;
@@ -278,7 +280,7 @@ export async function getTokenData(jettonAddress: Address) {
 
 export const getLiquidityAmount = async (srcToken: string, destToken: string, srcAmount: BN | null, destAmount: BN | null): Promise<BN> => {
     const tokenObjects: any = await getToken(client, srcToken !== "ton" ? srcToken : destToken, getOwner());
-    const lpTokenData = await getPoolData(tokenObjects.ammMinter);
+    const lpTokenData = await getPoolData(tokenObjects.ammMinter, tokenObjects.ammVersion);
 
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
@@ -304,15 +306,16 @@ export const getLiquidityAmount = async (srcToken: string, destToken: string, sr
     return new BN(0);
 };
 
-export const getTokenDollarValue = async (token: string, amount: string): Promise<string> => {
+export const getTokenDollarValue = async (tokenName: string, amount: string): Promise<string> => {
     let ratio = 1;
 
-    if (token !== "ton") {
-        const tokenAmmMinter = Pools()[token].ammMinter;
+    if (tokenName !== "ton") {
+        const token = Pools()[tokenName];
+        const tokenAmmMinter = token.ammMinter;
         if (!tokenAmmMinter) {
             throw new Error("Amm minter missing");
         }
-        const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter));
+        const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter), token.ammVersion);
         const tokenReserves = lpTokenData.tokenReserves;
         const tonReserves = lpTokenData.tonReserves;
         ratio = parseFloat(fromNano(tonReserves.mul(new BN(1e9)).div(tokenReserves)));
