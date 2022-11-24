@@ -53,7 +53,7 @@ const META_DATA_DEFUALT = {
 };
 
 export async function poolStateInit(jettonMinter: Address, workchain: number) {
-    const jettonData = await getTokenData(jettonMinter);
+    // const jettonData = await getTokenData(jettonMinter);
     let metadata = {
         name: `LP-${AMM_VERSION}-${jettonMinter.toFriendly()}`,
         poolToken: jettonMinter.toFriendly(),
