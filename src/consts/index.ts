@@ -36,9 +36,9 @@ export {
 export const COMING_SOON = "(coming soon)";
 
 export const GITHUB = "https://github.com/tonswap";
-export const TELEGRAM = "https://t.me/tonswap";
+export const TELEGRAM = "https://t.me/mint_xyz";
 
-export const SUPPORT = "https://t.me/TonSwapCommunity";
+export const SUPPORT = "https://t.me/Mint_xyz_chat";
 
 export const ZERO_ADDRESS = "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c";
 
