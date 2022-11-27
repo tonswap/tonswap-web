@@ -75,7 +75,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     },
     "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
         name: "Huebel Bolt",
-        ammMinter: "EQDaawC8QbsAidBa88rB8Ng4ZqtHxYYXY9fCF3DKoJanOi32",
+        ammMinter: "EQBIzHiopIkaXdXdSZ6Sm57kZV0y_5tZjnGO4fTUsMT0lOUz",
         tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
         displayName: "BOLT",
         ammVersion: 1.1,
