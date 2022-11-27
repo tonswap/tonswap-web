@@ -9,7 +9,7 @@
     "jettons-available": "可用於交易的jettons",
     "support": "支援",
     "max": "MAX",
-    "disconnect": "未連接",
+    "disconnect": "斷開連結",
     "connect-with": "連接 {{adapter}} ",
     "token-purchased": "購買{{token}}  ",
     "token-received": "收到{{token}}  ",
