@@ -78,7 +78,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         ammMinter: "EQBIzHiopIkaXdXdSZ6Sm57kZV0y_5tZjnGO4fTUsMT0lOUz",
         tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
         displayName: "BOLT",
-        ammVersion: 1.1,
         image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
         color: "#7c7c7c",
     },
