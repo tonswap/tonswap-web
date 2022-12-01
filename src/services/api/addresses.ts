@@ -66,7 +66,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         tokenMinter: "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV",
         image: "https://bafkreie6ydxbcmq7xqalyxvqo6tq4fo7ecycv5jy2dwafn2yhelcubjaeq.ipfs.nftstorage.link/",
         displayName: "AMBR",
-        color: "#F8DC7F",
+        color: "#F8BD58",
         name: "Ambra",
         isCustom: true,
         decimals: 9,
