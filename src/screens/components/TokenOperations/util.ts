@@ -10,7 +10,6 @@ const getUsdAmount = async (tokenId: string, amount: string, disabled?: boolean)
         } else {
             result = await API.getTokenDollarValue(tokenId, amount);
         }
-        console.log("=> ", tokenId, result);
 
         return result;
     } catch (error) {

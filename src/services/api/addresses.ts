@@ -43,6 +43,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isCustom: true,
         decimals: 9,
     },
+    "EQAW42HutyDem98Be1f27PoXobghh81umTQ-cGgaKVmRLS7-": {
+        ammMinter: "EQDXAi23o05pbnxMGIQVFDrZt6fdPeRZlMQ0sPPm0tpEju5I",
+        tokenMinter: "EQAW42HutyDem98Be1f27PoXobghh81umTQ-cGgaKVmRLS7-",
+        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/eth.png",
+        displayName: "oETH",
+        color: "#3EAAB1",
+        name: "Orbit Bridge TON Ethereum",
+        decimals: 18,
+    },
     EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
         name: "Wrapped Solana",
         ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
