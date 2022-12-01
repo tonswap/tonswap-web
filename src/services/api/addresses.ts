@@ -97,7 +97,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "BOLT",
         image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
         color: "#7c7c7c",
-        decimals: 6,
+        decimals: 9,
     },
 
     "USD Stable Coin": {
