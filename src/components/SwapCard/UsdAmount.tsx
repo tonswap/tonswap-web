@@ -26,7 +26,7 @@ function UsdAmount({ tokenId, value, isLoading }: Props) {
       ) :  (
         <Typography component="p">
           ~$
-          <BigNumberDisplay value={usd} decimalScale={5} />
+          <BigNumberDisplay value={usd} decimalScale={2} />
           {/* {toFixed(usd.toLocaleString())} */}
         </Typography>
       )}
