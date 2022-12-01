@@ -1,20 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.176dda53.js",
+    "main.js": "/static/js/main.d60afc36.js",
     "static/js/554.d19b553e.chunk.js": "/static/js/554.d19b553e.chunk.js",
-    "static/js/539.b077a7c5.chunk.js": "/static/js/539.b077a7c5.chunk.js",
+    "static/js/539.9494049a.chunk.js": "/static/js/539.9494049a.chunk.js",
     "static/js/178.59523a07.chunk.js": "/static/js/178.59523a07.chunk.js",
-    "static/js/960.48e5d955.chunk.js": "/static/js/960.48e5d955.chunk.js",
+    "static/js/960.4648d5f1.chunk.js": "/static/js/960.4648d5f1.chunk.js",
     "static/js/271.a94e89ee.chunk.js": "/static/js/271.a94e89ee.chunk.js",
     "static/js/745.587a18ea.chunk.js": "/static/js/745.587a18ea.chunk.js",
     "static/js/912.cc73ba45.chunk.js": "/static/js/912.cc73ba45.chunk.js",
-    "static/js/702.e6a24ba4.chunk.js": "/static/js/702.e6a24ba4.chunk.js",
+    "static/js/702.8490fc7d.chunk.js": "/static/js/702.8490fc7d.chunk.js",
     "static/js/465.8538665a.chunk.js": "/static/js/465.8538665a.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
-    "static/media/usdc.svg": "/static/media/usdc.457fb8e05803cd3f316c391f996df8c0.svg",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
     "index.html": "/index.html",
     "static/media/success.svg": "/static/media/success.79a5c2f6fcc496326c3a8261c4463432.svg",
@@ -24,12 +23,11 @@
     "static/media/wallet.svg": "/static/media/wallet.fc714ee09ee6021c6120c77726ed285d.svg",
     "static/media/github.svg": "/static/media/github.2e4ee8dda7d31aa473b58b3329948d73.svg",
     "static/media/btc1.svg": "/static/media/btc1.0e1fa97493493367f45a929fcc9bb170.svg",
-    "static/media/eth1.svg": "/static/media/eth1.f827adddcf99941a48898b6adf11dcf1.svg",
     "static/media/close.svg": "/static/media/close.bae43592c70f403d963844498955fc8e.svg",
     "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg"
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.176dda53.js"
+    "static/js/main.d60afc36.js"
   ]
 }
