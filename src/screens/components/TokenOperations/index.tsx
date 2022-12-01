@@ -72,11 +72,11 @@ const TokenOperations = ({
 
   const sendAnalyticsEvent = useTxAnalytics(actionCategory, actionType)
 
-
   const { insufficientFunds, disabled, maxAmount } = useValidation(
     actionType,
     gasFee,
-    srcToken
+    srcToken,
+    destToken
   );
   const {
     onResetAmounts,
