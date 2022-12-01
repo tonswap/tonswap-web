@@ -1,6 +1,5 @@
-//https://github.com/tonwhales/ton-nft/blob/main/packages/utils/parseActionsList.ts
 import BN from "bn.js";
-
+import BigNumber from "bignumber.js";
 import { Address, Cell, RawCurrencyCollection, RawMessage, Slice, toNano } from "ton";
 import { colors, TELEGRAM_WEBAPP_PARAM, TEST_MODE, TOKENS_IN_LOCAL_STORAGE } from "consts";
 import { PoolInfo } from "services/api/addresses";
@@ -127,25 +126,23 @@ export function sliceToAddress(s: Slice) {
     return "address";
 }
 
-export function toDecimals(num: number) {
-    return new BN(num).mul(decimals);
-}
-
-export function hexFromNano(str: string) {
-    return bnFmt(hexToBn(str));
-}
-
 export function hexToBn(num: string) {
     return new BN(BigInt(num).toString());
 }
 
-export function bnFmt(num: BN | BigInt) {
+function bnFmt(num: BN | BigInt) {
     let str = num.toString();
     return `${BigInt(str) / BigInt(1e9)}.${BigInt(str) % BigInt(1e9)} `;
 }
 
-export function fromDecimals(num: BN) {
-    return num.div(decimals).toString(10);
+const ten = new BigNumber(10);
+
+export function toDecimals(num: number | string | BN, decimals: number | string): BN {
+    return new BN(BigNumber(num.toString()).multipliedBy(ten.pow(decimals)).toFixed(0));
+}
+
+export function fromDecimals(num: number | string | BN, decimals: number | string) {
+    return BigNumber(num.toString()).div(ten.pow(decimals)).toFixed();
 }
 
 export function stripBoc(bocStr: string) {
@@ -172,10 +169,6 @@ export const getParamsFromUrl = (name: string, search?: string) => {
 
 const isTelegramWebApp = () => {
     return getParamsFromUrl(TELEGRAM_WEBAPP_PARAM);
-    // const result = localStorage.getItem(TELEGRAM_WEBAPP_PARAM);
-    // if (result && isMobile) {
-    //   return true;
-    // }
 };
 
 const getLocalStorageTokens = () => {
@@ -239,20 +232,20 @@ const getActionFromParams = (value: any) => {
     return result.replace("-", " ");
 };
 
-export const toNanoSafe = (value?: string | number): BN => {
+export const toNanoSafe = (value?: string | number, decimals = 9): BN => {
     console.log(value);
 
     if (!value) {
-        return toNano("0");
+        return toDecimals("0", decimals);
     }
 
     let result;
     try {
-        result = toNano(value);
+        result = toDecimals(value, decimals);
     } catch (error) {
         console.log(error);
 
-        result = toNano("0");
+        result = toDecimals("0", decimals);
     }
     return result;
 };

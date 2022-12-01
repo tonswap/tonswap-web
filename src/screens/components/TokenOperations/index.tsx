@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ActionButton, Popup } from "components";
-import { PoolInfo } from "services/api/addresses";
+import { getToken, PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
@@ -183,6 +183,8 @@ const TokenOperations = ({
             destTokenName={destToken.tokenMinter}
             maxAmount={maxAmount}
             disableInputDependency={disableInputDependency}
+            srcDecimals={srcToken.decimals}
+            destDecimals={destToken.decimals}
           />
 
           <Icon icon={icon} color={destToken.color} />
@@ -193,6 +195,8 @@ const TokenOperations = ({
             disableInputDependency={disableInputDependency}
             srcTokenAmount={srcTokenAmount}
             actionType={actionType}
+            srcDecimals={srcToken.decimals}
+            destDecimals={destToken.decimals}
           />
         </Box>
 

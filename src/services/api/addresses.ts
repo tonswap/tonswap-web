@@ -19,6 +19,7 @@ export type PoolInfo = {
     name: string;
     isCustom?: boolean;
     isDisabled?: boolean;
+    decimals: number;
     ammVersion?: number;
 };
 
@@ -40,6 +41,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#CCAAFF",
         name: "Fanzee Token",
         isCustom: true,
+        decimals: 9,
     },
     EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
         name: "Wrapped Solana",
@@ -48,6 +50,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "WSOL",
         image: "https://bafkreiadj3ntztd44xhntqu26kyubn2rihu24if7qncp4npn3pvwacl5wi.ipfs.nftstorage.link/",
         color: "#2fa4b0",
+        decimals: 9,
     },
     "EQALr-K836vMmF5gOBzYmEHlS29-iG6AGsmHFzzgpMiy9ERi": {
         name: "Wrapped NEAR",
@@ -56,7 +59,9 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "WNEAR",
         image: "https://bafkreifbyn4o56paustubq4v77ql62swvayr6ey3reiqrsveneauq2pfvy.ipfs.nftstorage.link/",
         color: "#515151",
+        decimals: 9,
     },
+
     EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE: {
         name: "Hedge coin",
         ammMinter: "EQBROqY6QZCyX9os751a43MOi8kV8tOJKBqNqfhBYKQ_ZwaB",
@@ -64,22 +69,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "HEDGE",
         image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
         color: "#8A6E53",
-    },
-    "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
-        name: "TonexCoin",
-        ammMinter: "EQBLNl0ixeqsDRCGOGEjA9Zsbf7Pjqpjjb0FqBkFjLktXO7E",
-        tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
-        displayName: "TNX",
-        image: "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
-        color: "#234054",
-    },
-    "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
-        name: "Huebel Bolt",
-        ammMinter: "EQBIzHiopIkaXdXdSZ6Sm57kZV0y_5tZjnGO4fTUsMT0lOUz",
-        tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
-        displayName: "BOLT",
-        image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
-        color: "#7c7c7c",
+        decimals: 9,
     },
     EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L: {
         name: "TonTake",
@@ -89,7 +79,27 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         ammVersion: 1.1,
         image: "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
         color: "#83ABCD",
+        decimals: 9,
     },
+    "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
+        name: "TonexCoin",
+        ammMinter: "EQBLNl0ixeqsDRCGOGEjA9Zsbf7Pjqpjjb0FqBkFjLktXO7E",
+        tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
+        displayName: "TNX",
+        image: "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
+        color: "#234054",
+        decimals: 9,
+    },
+    "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
+        name: "Huebel Bolt",
+        ammMinter: "EQBIzHiopIkaXdXdSZ6Sm57kZV0y_5tZjnGO4fTUsMT0lOUz",
+        tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
+        displayName: "BOLT",
+        image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
+        color: "#7c7c7c",
+        decimals: 6,
+    },
+
     "USD Stable Coin": {
         name: "USD Stable Coin",
         displayName: "USDC",
@@ -98,6 +108,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isDisabled: true,
         tokenMinter: "usd-coin",
         ammMinter: "usd-coin",
+        decimals: 9,
     },
     "Wrapped Bitcoin on TON": {
         name: "Wrapped Bitcoin on TON",
@@ -107,6 +118,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isDisabled: true,
         tokenMinter: "bitcoin",
         ammMinter: "bitcoin",
+        decimals: 9,
     },
     "Wrapped Ether on TON": {
         name: "Wrapped Ether on TON",
@@ -116,6 +128,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isDisabled: true,
         tokenMinter: "ethereum",
         ammMinter: "ethereum",
+        decimals: 9,
     },
 };
 
@@ -131,6 +144,7 @@ export const ton: PoolInfo = {
     color: "#1490CD",
     ammMinter: "ton",
     tokenMinter: "ton",
+    decimals: 9,
 };
 
 let isTestNet = true;

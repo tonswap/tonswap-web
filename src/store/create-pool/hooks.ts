@@ -11,8 +11,8 @@ import { useStoreHooks } from "store/hooks";
 import { RootState } from "store/store";
 import { addToken } from "store/tokens/reducer";
 import { useWalletStore } from "store/wallet/hooks";
-import { Address, fromNano } from "ton";
-import { getRandomColor } from "utils";
+import { Address } from "ton";
+import { fromDecimals, getRandomColor } from "utils";
 import { resetState, setJettonAddress, setTokenData, State } from "./reducer";
 
 export function useCreatePoolStore(): State {
@@ -61,6 +61,7 @@ export const useCreatePoolActions = (): {
                         displayName: jettonData.name.toUpperCase(),
                         image: jettonData.image,
                         isCustom: true,
+                        decimals: jettonData.decimals,
                     };
 
                     dispatch(addToken(token));
@@ -68,12 +69,13 @@ export const useCreatePoolActions = (): {
                     navigate(route);
                 } else {
                     const jd = await getTokenBalanceByMinter(address);
-                    let balance = fromNano(jd.balance);
+                    let balance = fromDecimals(jd.balance.toString(), jd.decimals || 9);
                     const token = {
                         balance,
                         name: jettonData.name,
                         image: jettonData.image,
                         symbol: jettonData.symbol,
+                        decimals: jettonData.decimals,
                     };
                     dispatch(setTokenData(token));
                 }
@@ -124,6 +126,7 @@ export const useCreatePoolActions = (): {
                 name: tokenData.name,
                 ammMinter: transactionData.to,
                 tokenMinter: jettonAddress,
+                decimals: 9,
                 color: getRandomColor(),
                 displayName: tokenData.symbol.toUpperCase(),
                 image: tokenData.image,

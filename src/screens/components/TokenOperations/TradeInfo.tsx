@@ -8,6 +8,7 @@ import { PoolInfo } from "services/api/addresses";
 import { ActionType } from "services/wallets/types";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import { fromNano } from "ton";
+import { fromDecimals } from "utils";
 import ShowTradeInfoButton from "./ShowTradeInfoButton";
 import TradeInfoRow from "./TradeInfoRow";
 
@@ -58,7 +59,7 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         if (selectedToken) {
             const data = await API.getPoolInfo(selectedToken?.tokenMinter);
             const deltaX = Number(delta)
-            const X = actionType === ActionType.BUY ? parseFloat(fromNano(data.tonReserves)) : parseFloat(fromNano(data.tokenReserves));
+            const X = actionType === ActionType.BUY ? parseFloat( fromDecimals(data.tonReserves, 9)) : parseFloat(fromDecimals(data.tokenReserves, selectedToken.decimals));
             const tradeFee = 0.003;
             const gamma = 1 - tradeFee;
             const gasFee = GAS_FEE.SWAP;

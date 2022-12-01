@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import SwapCard from "components/SwapCard/index";
 import { useEffect, useRef } from "react";
 import { PoolInfo } from "services/api/addresses";
@@ -10,13 +9,16 @@ import { InInput } from "store/token-operations/reducer";
 import { useWalletStore } from "store/wallet/hooks";
 import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
+import { fromDecimals, toDecimals } from "utils";
 import { calculateTokens } from "./util";
 interface Props {
   token: PoolInfo;
   destTokenName: string;
   getAmountFunc: any;
   maxAmount: string;
-  disableInputDependency?: boolean
+  disableInputDependency?: boolean;
+  srcDecimals: number;
+      destDecimals: number
 }
 
 const SrcToken = ({
@@ -24,7 +26,9 @@ const SrcToken = ({
   getAmountFunc,
   destTokenName,
   maxAmount,
-  disableInputDependency
+  disableInputDependency,
+  srcDecimals,
+        destDecimals,
 }: Props) => {
   const {
     srcTokenAmount,
@@ -50,10 +54,12 @@ const SrcToken = ({
     let result = 0;
     const jetton = token.name === "ton" ? destTokenName : token.tokenMinter;
     try {
+      console.log('-->',balanceRef.current, srcDecimals, destDecimals);
+      
       result = await calculateTokens(
         jetton,
         token.name !== "ton",
-        toNano(balanceRef.current || "0"),
+        toDecimals(balanceRef.current || "0", srcDecimals),
         null,
         getAmountFunc
       );
@@ -73,7 +79,7 @@ const SrcToken = ({
       if (result === 0) {
         return;
       } else {
-        updateDestTokenAmount(fromNano(result));
+        updateDestTokenAmount(fromDecimals(result, destDecimals));
       }
     }
   }, 600);

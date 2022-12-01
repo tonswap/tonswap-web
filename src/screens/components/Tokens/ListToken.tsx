@@ -20,13 +20,17 @@ interface Props {
 
 const ListToken = ({ token, onSelect }: Props) => {
   const classes = useStyles();
-  const { loading, usd } = useUsdValue(
+  let { loading, usd } = useUsdValue(
     token.tokenMinter!,
     "1",
     0,
     token.isDisabled
   );
   const { t } = useTranslation()
+
+  if (!token.isDisabled) {
+    usd = (parseFloat(usd) * (10 ** token.decimals)).toString();  
+  } 
 
   return (
     <StyledToken
@@ -50,7 +54,7 @@ const ListToken = ({ token, onSelect }: Props) => {
           <ContentLoader borderRadius="8px" width={40} height={20} />
         ) : (
           <Typography>
-            <BigNumberDisplay prefix="$" value={usd} decimalScale={7} />
+            <BigNumberDisplay prefix="$" value={usd} decimalScale={6} />
           </Typography>
         )}
       </StyledUsdValue>

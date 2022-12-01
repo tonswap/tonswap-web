@@ -21,6 +21,7 @@
     "@types/react-dom": "^17.0.14",
     "@types/uuid": "^8.3.4",
     "add": "^2.0.6",
+    "bignumber.js": "^9.1.0",
     "bn.js": "^5.2.0",
     "buffer": "^6.0.3",
     "i18next": "^21.9.0",
