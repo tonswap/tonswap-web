@@ -33,15 +33,14 @@ export type PoolInfoRaw = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
-    "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
-        ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
-        tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
-        image: "https://media.fanz.ee/images/91ee938a92934656a01131c569b377b6.png",
-        displayName: "FNZ",
-        color: "#CCAAFF",
-        name: "Fanzee Token",
-        isCustom: true,
-        decimals: 9,
+    "EQC61IQRl0_la95t27xhIpjxZt32vl1QQVF2UgTNuvD18W-4": {
+        ammMinter: "EQDnLbES4CER47LYR45Ti0cw4ScvPUJ3HShtH9FbIFGDACkj",
+        tokenMinter: "EQC61IQRl0_la95t27xhIpjxZt32vl1QQVF2UgTNuvD18W-4",
+        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/usdc.png",
+        displayName: "oUSDC",
+        color: "#3EAAB1",
+        name: "Orbit Bridge TON USD Coin",
+        decimals: 6,
     },
     "EQAW42HutyDem98Be1f27PoXobghh81umTQ-cGgaKVmRLS7-": {
         ammMinter: "EQDXAi23o05pbnxMGIQVFDrZt6fdPeRZlMQ0sPPm0tpEju5I",
@@ -52,7 +51,27 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Orbit Bridge TON Ethereum",
         decimals: 18,
     },
-    EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
+    "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
+        ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
+        tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
+        image: "https://media.fanz.ee/images/91ee938a92934656a01131c569b377b6.png",
+        displayName: "FNZ",
+        color: "#CCAAFF",
+        name: "Fanzee Token",
+        isCustom: true,
+        decimals: 9,
+    },
+    "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
+        ammMinter: "EQB8Fmy0fbDNyEP_j0lZLbJqbEORgyWLEmJPJWMNbPy-vS_7",
+        tokenMinter: "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV",
+        image: "https://bafkreie6ydxbcmq7xqalyxvqo6tq4fo7ecycv5jy2dwafn2yhelcubjaeq.ipfs.nftstorage.link/",
+        displayName: "AMBR",
+        color: "#F8DC7F",
+        name: "Ambra",
+        isCustom: true,
+        decimals: 9,
+    },
+    "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
         name: "Wrapped Solana",
         ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
         tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
@@ -70,17 +89,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#515151",
         decimals: 9,
     },
-
-    EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE: {
-        name: "Hedge coin",
-        ammMinter: "EQBROqY6QZCyX9os751a43MOi8kV8tOJKBqNqfhBYKQ_ZwaB",
-        tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
-        displayName: "HEDGE",
-        image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
-        color: "#8A6E53",
-        decimals: 9,
-    },
-    EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L: {
+    "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L": {
         name: "TonTake",
         ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
         tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
@@ -108,15 +117,13 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#7c7c7c",
         decimals: 9,
     },
-
-    "USD Stable Coin": {
-        name: "USD Stable Coin",
-        displayName: "USDC",
-        image: Usdc,
-        color: "#055fa6",
-        isDisabled: true,
-        tokenMinter: "usd-coin",
-        ammMinter: "usd-coin",
+    "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE": {
+        name: "Hedge coin",
+        ammMinter: "EQBROqY6QZCyX9os751a43MOi8kV8tOJKBqNqfhBYKQ_ZwaB",
+        tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
+        displayName: "HEDGE",
+        image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
+        color: "#8A6E53",
         decimals: 9,
     },
     "Wrapped Bitcoin on TON": {
@@ -127,16 +134,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isDisabled: true,
         tokenMinter: "bitcoin",
         ammMinter: "bitcoin",
-        decimals: 9,
-    },
-    "Wrapped Ether on TON": {
-        name: "Wrapped Ether on TON",
-        displayName: "ETH",
-        image: Eth,
-        color: "#5f73c2",
-        isDisabled: true,
-        tokenMinter: "ethereum",
-        ammMinter: "ethereum",
         decimals: 9,
     },
 };
