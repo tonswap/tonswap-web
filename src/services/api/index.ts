@@ -301,17 +301,10 @@ export const getTokenDollarValue = async (tokenName: string, amount: string): Pr
     ratio = nominator.div(tokenReserves);
     price = new BN(cgPrice * 1e9).mul(ratio);
 
-    console.log("cg =>", cgPrice);
-    console.log("ratio =>", fromDecimals(ratio.toString(), 9));
-    console.log("price =>", fromDecimals(price, 18));
-    console.log("amount =>", amount);
-
     const tonPriceWithAmount = price.mul(new BN(amount.replace(".", "")));
     console.log("tonPriceWithAmount =>", fromDecimals(tonPriceWithAmount, token.decimals));
 
     return fromDecimals(tonPriceWithAmount, token.decimals * 2 + 18);
-
-    return parseFloat(fromDecimals(tonPriceWithAmount, token.decimals + 18)).toFixed(2);
 };
 
 let disabledTokenCache: { [index: string]: number } = {};
@@ -325,7 +318,7 @@ export const fetchDisabledTokensPrice = async (name: string) => {
     );
 
     const result = await coinsResponse.json();
-    let usd = result[name].usd / 1e9;
+    let usd = result[name].usd;
     disabledTokenCache[name] = usd;
     return usd.toFixed(2);
 };
@@ -337,9 +330,11 @@ async function fetchPrice() {
     console.log("cgPromise", cgPromise);
 
     if (cgPromise) {
-        await cgPromise;
+        await new Promise(async (resolve) => {
+            await cgPromise;
+            setTimeout(resolve, 20);
+        });
     }
-    console.log("cgPromise tonpirce", tonPrice);
 
     if (tonPrice) {
         return tonPrice;
@@ -350,7 +345,7 @@ async function fetchPrice() {
     let coinsResponse = await cgPromise;
     const result = await coinsResponse.json();
     tonPrice = parseFloat(result["the-open-network"].usd);
-    setTimeout(() => (tonPrice = 0), 60 * 1000);
+    setTimeout(() => (tonPrice = 0), 60 * 3 * 1000);
     return tonPrice;
 }
 
