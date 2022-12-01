@@ -44,7 +44,7 @@ function QR({ onClose, link, open, adapter }: Props) {
     title = 'Connect Ton Keeper'; 
     qrCode = < QrCodeLogo  size={250} logoImage={"https://tonkeeper.com/assets/logo.svg"} value={link} />
   } else {
-    title = 'Connect Ton hub'; 
+    title = 'Connect Tonhub'; 
   }
 
   return (
