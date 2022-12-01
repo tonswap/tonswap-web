@@ -5,7 +5,7 @@ import { ActionButton, Popup } from "components";
 import { useState } from "react";
 import { PoolInfo } from "services/api/addresses";
 import { Address, fromNano } from "ton";
-import { convertToCurrencySystem, getRandomColor } from "utils";
+import { convertToCurrencySystem, fromDecimals, getRandomColor } from "utils";
 import { getTokenData } from "services/api";
 import { poolStateInit } from "services/api/deploy-pool";
 import * as API from "services/api";
@@ -61,6 +61,7 @@ type Token = {
   ammMinter: string;
   tokenMinter: string;
   symbol: string;
+  decimals: number
 };
 
 type Pool = {
@@ -88,6 +89,7 @@ function CustomToken({ open, onClose }: Props) {
         displayName: tokenData.symbol.toUpperCase(),
         image: tokenData.image,
         isCustom: true,
+        decimals: tokenData.decimals
       };
 
       addToken(newToken);
@@ -120,10 +122,10 @@ function CustomToken({ open, onClose }: Props) {
       if (isDeployed) {
         const poolData = await API.getPoolData(futureAddress);
         setPool({
-          tokenReserves: parseFloat(fromNano(poolData.tokenReserves)).toFixed(
+          tokenReserves: parseFloat(fromDecimals(poolData.tokenReserves, jettonData.decimals)).toFixed(
             2
           ),
-          tonReserves: parseFloat(fromNano(poolData.tonReserves)).toFixed(2),
+          tonReserves: parseFloat(fromDecimals(poolData.tonReserves, 9)).toFixed(2),
         });
       }
 

@@ -9,6 +9,7 @@ import {
 import { InInput } from "store/token-operations/reducer";
 import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
+import { fromDecimals, toDecimals } from "utils";
 import { calculateTokens } from "./util";
 
 interface Props {
@@ -18,9 +19,11 @@ interface Props {
   disableInputDependency?: boolean
   srcTokenAmount: string;
   actionType: ActionType;
+  srcDecimals: number;
+  destDecimals: number;
 }
 
-function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency, srcTokenAmount, actionType }: Props) {
+function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency, srcTokenAmount, actionType, srcDecimals, destDecimals }: Props) {
   const {
     destTokenAmount,
     totalBalances,
@@ -43,15 +46,16 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency,
     }
     let result = 0;
     const jetton = srcTokenName === "ton" ? token.tokenMinter : srcTokenName;
+    
     try {
       result = await calculateTokens(
         jetton,
         srcTokenName !== "ton",
         null,
-        toNano(balanceRef.current || "0"),
+        toDecimals(balanceRef.current || "0", destDecimals ),
         getAmountFunc
       );
-
+      
       if (!balanceRef.current) {
         return;
       }
@@ -64,8 +68,8 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency,
       updateSrcTokenLoading(false);
       if (result === 0) {
         return;
-      } else {
-        updateSrcTokenAmount(fromNano(result));
+      } else { 
+        updateSrcTokenAmount(fromDecimals(result,  srcDecimals));
       }
     }
   }, 600);
@@ -92,7 +96,7 @@ function DestToken({ token, srcTokenName, getAmountFunc, disableInputDependency,
     }
   }, []);
 
-
+  
   return (
     <div style={{ marginBottom: 35 }}>
       <SwapCard

@@ -23,7 +23,7 @@ import {
   StyledLockedToken,
   StyledError,
 } from "./styles";
-import { convertToCurrencySystem } from "utils";
+import { convertToCurrencySystem, fromDecimals } from "utils";
 import TokenPreview from "components/TokenPreview";
 import { useTokensStore } from "store/tokens/hooks";
 import { BN } from "bn.js";
@@ -34,6 +34,7 @@ type Token = {
   name: string;
   image?: string;
   symbol: string;
+  decimals: number;
 };
 
 type Pool = {
@@ -55,6 +56,7 @@ const getTokemByAmmMinter = (
       name: result.name,
       symbol: result.displayName,
       image: result.image,
+      decimals: result.decimals
     };
   }
 };
@@ -79,8 +81,8 @@ const getPool = async (
   let tokenData = getTokemByAmmMinter(poolAddress.toFriendly(), tokens);
   if (!tokenData) {
     const jData = await _getJettonBalance(jettonWalletAddress);
-    const { name, symbol, image } = await getTokenData(jData.jettonMaster!!);
-    tokenData = { name, symbol, image };
+    const { name, symbol, image, decimals } = await getTokenData(jData.jettonMaster!!);
+    tokenData = { name, symbol, image, decimals };
   }
 
   if (!tokenData) {
@@ -92,10 +94,11 @@ const getPool = async (
       name: tokenData.name,
       image: tokenData.image,
       symbol: tokenData.symbol,
+      decimals: tokenData.decimals,
     },
     pool: {
-      tonReserves: Number(fromNano(poolDataRaw.tonReserves)).toFixed(2),
-      tokenReserves: Number(fromNano(poolDataRaw.tokenReserves)).toFixed(2),
+      tonReserves: Number(fromDecimals(poolDataRaw.tonReserves, 9)).toFixed(2),
+      tokenReserves: Number(fromDecimals(poolDataRaw.tokenReserves, tokenData.decimals)).toFixed(2),
       tvl: poolTvl,
       address: ammMinter,
     },

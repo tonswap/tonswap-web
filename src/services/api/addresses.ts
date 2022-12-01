@@ -20,6 +20,7 @@ export type PoolInfo = {
     isCustom?: boolean;
     isDisabled?: boolean;
     decimals: number;
+    ammVersion?: number;
 };
 
 export type PoolInfoRaw = {
@@ -32,6 +33,16 @@ export type PoolInfoRaw = {
 };
 
 export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
+    "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
+        ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
+        tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
+        image: "https://media.fanz.ee/images/91ee938a92934656a01131c569b377b6.png",
+        displayName: "FNZ",
+        color: "#CCAAFF",
+        name: "Fanzee Token",
+        isCustom: true,
+        decimals: 9,
+    },
     EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
         name: "Wrapped Solana",
         ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
@@ -50,18 +61,10 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#515151",
         decimals: 9,
     },
-    "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
-        name: "Huebel Bolt",
-        ammMinter: "EQDaawC8QbsAidBa88rB8Ng4ZqtHxYYXY9fCF3DKoJanOi32",
-        tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
-        displayName: "BOLT",
-        image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
-        color: "#7c7c7c",
-        decimals: 9,
-    },
+
     EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE: {
         name: "Hedge coin",
-        ammMinter: "EQB90pO1r7oIGfEI2f3hlzdm3yfn0yVPvuAvGvhnKqdIcoam",
+        ammMinter: "EQBROqY6QZCyX9os751a43MOi8kV8tOJKBqNqfhBYKQ_ZwaB",
         tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
         displayName: "HEDGE",
         image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
@@ -73,28 +76,30 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
         tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
         displayName: "TAKE",
+        ammVersion: 1.1,
         image: "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
         color: "#83ABCD",
         decimals: 9,
     },
-    EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y: {
-        name: "Tegro Token",
-        ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
-        tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
-        displayName: "TGR",
-        image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
-        color: "#69ABE8",
-        decimals: 9,
-    },
     "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
         name: "TonexCoin",
-        ammMinter: "EQAJb0r7kkjeS3nKUiwmuhScl_eQpAhC5B0aikwaqdbxTPTn",
+        ammMinter: "EQBLNl0ixeqsDRCGOGEjA9Zsbf7Pjqpjjb0FqBkFjLktXO7E",
         tokenMinter: "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp",
         displayName: "TNX",
         image: "https://bafkreiej6elbgpxhx65ej4swf4vlvrxmgavtv3rafq37q7zp5j42tjpn6y.ipfs.nftstorage.link/",
         color: "#234054",
         decimals: 9,
     },
+    "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw": {
+        name: "Huebel Bolt",
+        ammMinter: "EQBIzHiopIkaXdXdSZ6Sm57kZV0y_5tZjnGO4fTUsMT0lOUz",
+        tokenMinter: "EQD0vdSA_NedR9uvbgN9EikRX-suesDxGeFg69XQMavfLqIw",
+        displayName: "BOLT",
+        image: "https://bafkreibl2zdu5enctuaygly4xs2zi6z2tqtyaeb5whpnwzjabryitshroa.ipfs.nftstorage.link/",
+        color: "#7c7c7c",
+        decimals: 6,
+    },
+
     "USD Stable Coin": {
         name: "USD Stable Coin",
         displayName: "USDC",
@@ -139,6 +144,7 @@ export const ton: PoolInfo = {
     color: "#1490CD",
     ammMinter: "ton",
     tokenMinter: "ton",
+    decimals: 9,
 };
 
 let isTestNet = true;

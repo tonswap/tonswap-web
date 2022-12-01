@@ -13,6 +13,7 @@ import { Address, fromNano } from "ton";
 import MainLoader from "components/MainLoader";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
+import { fromDecimals } from "utils";
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -63,10 +64,10 @@ const AddLiquidity = () => {
       const getTokenReserves = async () => {
         try {
           const res = await API.getPoolData(
-            Address.parse(selectedToken.ammMinter!!)
+            Address.parse(selectedToken.ammMinter!!), selectedToken.ammVersion
           );
-          const tokenReserves = fromNano(res.tokenReserves);
-          const tonReserves = fromNano(res.tonReserves);
+          const tokenReserves = fromDecimals(res.tokenReserves, selectedToken?.decimals);
+          const tonReserves = fromDecimals(res.tonReserves, 9);
           if (!res.tokenReserves.isZero() && !res.tonReserves.isZero()) {
             setHaveReserves(true)
           }

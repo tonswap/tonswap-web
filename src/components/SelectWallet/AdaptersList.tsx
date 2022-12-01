@@ -84,6 +84,7 @@ interface Props {
   adapters: Adapter[];
   adapterLoading?: Adapters;
   isLoading?: boolean;
+  title?: string
 }
 
 function AdaptersList({
@@ -93,6 +94,7 @@ function AdaptersList({
   adapters,
   adapterLoading,
   isLoading,
+  title = "Select Wallet"
 }: Props) {
   const { t } = useTranslation()
 
@@ -109,7 +111,7 @@ function AdaptersList({
     <StyledContainer>
       <Fade in={!isLoading}>
         <StyledConnectModalTitle>
-          <Title text="Select Wallet" />
+          <Title text={title} />
         </StyledConnectModalTitle>
       </Fade>
       <Fade in={!isLoading}>
@@ -127,7 +129,7 @@ function AdaptersList({
                   onClick={disabled ? () => { } : () => onSelect(type)}
                 >
                   <StyledIcon>
-                    <img src={icon} />
+                    <img style={{ "borderRadius": "9px" }} src={icon} />
                   </StyledIcon>
                   <StyledListItemRight>
                     <Typography variant="h5">

@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ActionButton } from "components";
-import { PoolInfo } from "services/api/addresses";
+import { ActionButton, Popup } from "components";
+import { getToken, PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
@@ -30,6 +30,7 @@ import { useTranslation } from "react-i18next";
 import TradeInfo from "./TradeInfo";
 import TxLoader from "./TxLoader";
 import { isMobile } from "react-device-detect";
+import { QRCode } from "react-qrcode-logo";
 
 interface Props {
   srcToken: PoolInfo;
@@ -63,6 +64,7 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
+  const [keeperTransactionLink, setKeeperTransactionLink] = useState("");
 
   const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
@@ -103,9 +105,16 @@ const TokenOperations = ({
           source: Address.parse(address!!),
         })
       );
-      await walletService.requestTransaction(adapterId!!, session, txRequest);
+      let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
+      if (typeof deepLinkUrl == "string") {
+        if (isMobile) {
+          window.location.href = deepLinkUrl;
+        } else {
+          setKeeperTransactionLink(deepLinkUrl);
+        }
+      }
       await waiter();
-
+      setKeeperTransactionLink("");
       sendAnalyticsEvent()
       onResetAmounts();
       getTokensBalance(getBalances);
@@ -130,8 +139,26 @@ const TokenOperations = ({
   }
 
   const closeTransactionLoader = () => {
-    setShowTxLoader(false)
+    setShowTxLoader(false);
+    setKeeperTransactionLink("");
   }
+  function onClose() {
+    setKeeperTransactionLink("")
+  }
+
+  function qrCodeComponent() {
+    
+    const el = (
+      <Popup open={true} onClose={onClose}>
+        <StyledContainer>
+          <p>Please Scan using the QR code using TonKeeper</p>
+          < QRCode logoOpacity={0.5} ecLevel={"H"} size={250} value={keeperTransactionLink} />
+        </StyledContainer>
+      </Popup>
+    );
+    return keeperTransactionLink && !isMobile ? el : null;
+  }
+  
 
   return (
     <StyledTokenOperationActions>
@@ -141,7 +168,9 @@ const TokenOperations = ({
         adapterId={adapterId}
         close={closeTransactionLoader}
         confirm={submitTransaction}
-       />
+      />
+      {qrCodeComponent()}
+      
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
@@ -154,6 +183,8 @@ const TokenOperations = ({
             destTokenName={destToken.tokenMinter}
             maxAmount={maxAmount}
             disableInputDependency={disableInputDependency}
+            srcDecimals={srcToken.decimals}
+            destDecimals={destToken.decimals}
           />
 
           <Icon icon={icon} color={destToken.color} />
@@ -164,6 +195,8 @@ const TokenOperations = ({
             disableInputDependency={disableInputDependency}
             srcTokenAmount={srcTokenAmount}
             actionType={actionType}
+            srcDecimals={srcToken.decimals}
+            destDecimals={destToken.decimals}
           />
         </Box>
 
@@ -200,3 +233,13 @@ const TokenOperations = ({
 };
 
 export default TokenOperations;
+
+
+const StyledContainer = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  position: 'relative',
+  overflow: 'hidden',
+  width: 'fit-content'
+});

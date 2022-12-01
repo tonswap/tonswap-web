@@ -126,14 +126,6 @@ export function sliceToAddress(s: Slice) {
     return "address";
 }
 
-export function toDecimals(num: number) {
-    return new BN(num).mul(decimals);
-}
-
-export function hexFromNano(str: string) {
-    return bnFmt(hexToBn(str));
-}
-
 export function hexToBn(num: string) {
     return new BN(BigInt(num).toString());
 }
@@ -145,12 +137,12 @@ function bnFmt(num: BN | BigInt) {
 
 const ten = new BigNumber(10);
 
-export function toDecimalsBN(num: number | string, decimals: number | string) {
-    return new BN(BigNumber(num).multipliedBy(ten.pow(decimals)).toFixed(0));
+export function toDecimals(num: number | string | BN, decimals: number | string): BN {
+    return new BN(BigNumber(num.toString()).multipliedBy(ten.pow(decimals)).toFixed(0));
 }
 
-export function fromDecimals(num: number | string, decimals: number | string) {
-    return BigNumber(num).div(ten.pow(decimals)).toFixed();
+export function fromDecimals(num: number | string | BN, decimals: number | string) {
+    return BigNumber(num.toString()).div(ten.pow(decimals)).toFixed();
 }
 
 export function stripBoc(bocStr: string) {
@@ -240,20 +232,20 @@ const getActionFromParams = (value: any) => {
     return result.replace("-", " ");
 };
 
-export const toNanoSafe = (value?: string | number): BN => {
+export const toNanoSafe = (value?: string | number, decimals = 9): BN => {
     console.log(value);
 
     if (!value) {
-        return toNano("0");
+        return toDecimals("0", decimals);
     }
 
     let result;
     try {
-        result = toNano(value);
+        result = toDecimals(value, decimals);
     } catch (error) {
         console.log(error);
 
-        result = toNano("0");
+        result = toDecimals("0", decimals);
     }
     return result;
 };

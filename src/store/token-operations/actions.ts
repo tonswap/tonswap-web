@@ -3,8 +3,8 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { client, waitForSeqno } from "services/api";
 import { TransactionRequest } from "services/wallets/types";
 import { walletService } from "services/wallets/WalletService";
-import { RootState } from "store/store";
 import { Address, fromNano } from "ton";
+import { fromDecimals } from "utils";
 
 export const getAmounts = createAsyncThunk<
     // Return type of the payload creator
@@ -13,8 +13,8 @@ export const getAmounts = createAsyncThunk<
 >("token-operations/getAmounts", async (getBalances) => {
     const [srcTokenBalance, destTokenBalance] = await getBalances();
 
-    const srcBalance = typeof srcTokenBalance == "object" ? parseFloat(fromNano(srcTokenBalance.balance)) : srcTokenBalance;
-    const destBalance = typeof destTokenBalance == "object" ? parseFloat(fromNano(destTokenBalance.balance)) : destTokenBalance;
+    const srcBalance = typeof srcTokenBalance == "object" ? parseFloat(fromDecimals(srcTokenBalance.balance, srcTokenBalance.decimals)) : srcTokenBalance;
+    const destBalance = typeof destTokenBalance == "object" ? parseFloat(fromDecimals(destTokenBalance.balance, destTokenBalance.decimals)) : destTokenBalance;
     return {
         srcBalance: srcBalance,
         destBalance: destBalance,

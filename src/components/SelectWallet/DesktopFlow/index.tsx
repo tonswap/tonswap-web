@@ -21,14 +21,19 @@ interface Props {
 }
 
 const DesktopFlow = ({ closeModal }: Props) => {
-  const { resetWallet, createWalletSession } = useWalletActions()
+  const { resetWallet, createWalletSession } = useWalletActions();
+  const [ adapter, setAdapter ] = useState<Adapters>(Adapters.TON_HUB);
   const { sessionLink } = useWalletStore()
   const [showQr, setShowQr] = useState(false);
 
   const onSelect = (adapter: Adapters) => {
     resetWallet();
+    setAdapter(adapter);
     createWalletSession(adapter);
     if (adapter === Adapters.TON_HUB) {
+      setShowQr(true);
+    }
+    if (adapter === Adapters.TON_KEEPER) {
       setShowQr(true);
     }
   };
@@ -46,7 +51,8 @@ const DesktopFlow = ({ closeModal }: Props) => {
         open={!showQr}
         select={onSelect}
       />
-      <QR open={showQr} link={sessionLink} onClose={cancel} />
+      
+      <QR open={showQr} adapter={adapter} link={sessionLink} onClose={cancel} />
     </StyledContainer>
   );
 }
