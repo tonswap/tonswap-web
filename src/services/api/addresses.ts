@@ -135,16 +135,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#8A6E53",
         decimals: 9,
     },
-    "Wrapped Bitcoin on TON": {
-        name: "Wrapped Bitcoin on TON",
-        displayName: "WBTC",
-        image: Btc,
-        color: "#E17E06",
-        isDisabled: true,
-        tokenMinter: "bitcoin",
-        ammMinter: "bitcoin",
-        decimals: 9,
-    },
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
