@@ -51,15 +51,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Orbit Bridge TON Ethereum",
         decimals: 18,
     },
-    "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB": {
-        ammMinter: "EQA0b9fTX2eVTV8QfdyGlGUO6uTc2wWOs-7IsxqmU2FuOvvC",
-        tokenMinter: "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB",
-        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/wbtc.png",
-        displayName: "oWBTC",
-        color: "#3EAAB1",
-        name: "Orbit Bridge TON Wrapped BTC",
-        decimals: 8,
-    },
     "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
         ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
         tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
