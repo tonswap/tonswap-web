@@ -57,7 +57,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/wbtc.png",
         displayName: "oWBTC",
         color: "#3EAAB1",
-        name: "Orbit Bridge TON Wrapped BTC",
+        name: "Orbit Bridge TON WBTC",
         decimals: 8,
     },
     "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
@@ -135,6 +135,16 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#8A6E53",
         decimals: 9,
     },
+    "EQDCIEo0HUUYsAV-lTMviOd-GkSXfVPsNZMGjRaNOA_6--FD": {
+        ammMinter: "EQBnzpTFjfpNwkGGM1zPypMAat8QE1knGWHD6JuoUInqBFEA",
+        tokenMinter: "EQDCIEo0HUUYsAV-lTMviOd-GkSXfVPsNZMGjRaNOA_6--FD",
+        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/orc.png",
+        displayName: "oORC",
+        color: "#3EAAB1",
+        name: "Orbit Bridge TON Orbit Chain",
+        decimals: 18,    
+	},
+
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
