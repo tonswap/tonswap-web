@@ -34,7 +34,7 @@ function useValidation(actionType: ActionType, gasFee: GAS_FEE, srcToken: PoolIn
         }
 
         if (actionType === ActionType.REMOVE_LIQUIDITY) {
-            const srcError = toNanoSafe(srcTokenAmount, srcToken.decimals).gt(toNanoSafe(totalBalances.destBalance, destToken.decimals));
+            const srcError = toNanoSafe(srcTokenAmount, srcToken.decimals).gt(toNanoSafe(totalBalances.srcBalance, srcToken.decimals));
 
             const destError = toNanoSafe(destTokenAmount, destToken.decimals).gt(toNanoSafe(totalBalances.destBalance, destToken.decimals));
             insufficientFunds = srcError || destError;
