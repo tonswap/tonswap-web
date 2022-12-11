@@ -126,34 +126,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#7c7c7c",
         decimals: 9,
     },
-    "EQDKXqUJ2YE_NhLehOLZBkSp-mPDI1T7ih1VsGqxJCwNoWg6": {
-        name: "LifeBlood Coin",
-        ammMinter: "EQCq4FMdgxhaKbSCS-vRsrrg-y6n78om3aGwBAPqAmEj5mch",
-        tokenMinter: "EQDKXqUJ2YE_NhLehOLZBkSp-mPDI1T7ih1VsGqxJCwNoWg6",
-        displayName: "LBC",
-        image: "https://bafkreicptoxshksqauofgcau4vexo3gqeogx4sjug66rwj235tly4xpypa.ipfs.nftstorage.link/",
-        color: "#FF6800",
-        decimals: 9,
-    },
-    "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE": {
-        name: "Hedge coin",
-        ammMinter: "EQBROqY6QZCyX9os751a43MOi8kV8tOJKBqNqfhBYKQ_ZwaB",
-        tokenMinter: "EQBiJ8dSbp3_YAb_KuC64zCrFqQTsFbUee5tbzr5el_HEDGE",
-        displayName: "HEDGE",
-        image: "https://bafkreibwhv6xa4aykvxzkjqlhcgswm2lnwlw6w6iabo32ded4blxxodhze.ipfs.nftstorage.link/",
-        color: "#8A6E53",
-        decimals: 9,
-    },
-    "EQDCIEo0HUUYsAV-lTMviOd-GkSXfVPsNZMGjRaNOA_6--FD": {
-        ammMinter: "EQBnzpTFjfpNwkGGM1zPypMAat8QE1knGWHD6JuoUInqBFEA",
-        tokenMinter: "EQDCIEo0HUUYsAV-lTMviOd-GkSXfVPsNZMGjRaNOA_6--FD",
-        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/orc.png",
-        displayName: "oORC",
-        color: "#3EAAB1",
-        name: "Orbit Bridge TON Orbit Chain",
-        decimals: 18,    
-	},
-
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
