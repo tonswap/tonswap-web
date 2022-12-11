@@ -28,10 +28,6 @@ const ListToken = ({ token, onSelect }: Props) => {
   );
   const { t } = useTranslation()
 
-  if (!token.isDisabled) {
-    usd = (parseFloat(usd) * (10 ** token.decimals)).toString();  
-  } 
-
   return (
     <StyledToken
       color={token.color}

@@ -281,11 +281,10 @@ export const getLiquidityAmount = async (srcToken: string, destToken: string, sr
 };
 
 export const getTokenDollarValue = async (tokenName: string, amount: string): Promise<string> => {
-    let ratio = new BN(1);
+    let poolPrice = new BN(1);
     const token = Pools()[tokenName];
     const cgPrice = await fetchPrice();
 
-    let price = new BN(cgPrice);
     if (tokenName == "ton") {
         return (cgPrice * Number(amount)).toFixed(2);
     }
@@ -297,14 +296,9 @@ export const getTokenDollarValue = async (tokenName: string, amount: string): Pr
     const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter), token.ammVersion);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
-    let nominator = toDecimals(tonReserves, token.decimals * 2);
-    ratio = nominator.div(tokenReserves);
-    price = new BN(cgPrice * 1e9).mul(ratio);
-
-    const tonPriceWithAmount = price.mul(new BN(amount.replace(".", "")));
-    console.log("tonPriceWithAmount =>", fromDecimals(tonPriceWithAmount, token.decimals));
-
-    return fromDecimals(tonPriceWithAmount, token.decimals * 2 + 18);
+    poolPrice = tonReserves.mul(new BN(10 ** token.decimals)).div(tokenReserves);
+    let poolPriceUSD = parseFloat(fromNano(poolPrice)) * tonPrice;
+    return (poolPriceUSD * parseFloat(amount)).toFixed(6);
 };
 
 let disabledTokenCache: { [index: string]: number } = {};
@@ -327,8 +321,6 @@ let tonPrice = 0;
 let cgPromise: Promise<Response> | null;
 
 async function fetchPrice() {
-    console.log("cgPromise", cgPromise);
-
     if (cgPromise) {
         await new Promise(async (resolve) => {
             await cgPromise;

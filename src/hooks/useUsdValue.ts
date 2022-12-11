@@ -20,7 +20,7 @@ function useUsdValue(tokenId: string, value?: string, debounce?: number, disable
             (async () => {
                 try {
                     const result = await getUsdAmount(tokenId, value, disabled);
-                    setUsd(result);
+                    setUsd(parseFloat(result).toFixed(4));
                 } catch (error) {
                 } finally {
                     setLoading(false);
