@@ -51,7 +51,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Orbit Bridge TON Ethereum",
         decimals: 18,
     },
-        "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB": {
+    "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB": {
         ammMinter: "EQA0b9fTX2eVTV8QfdyGlGUO6uTc2wWOs-7IsxqmU2FuOvvC",
         tokenMinter: "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB",
         image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/wbtc.png",
@@ -60,6 +60,16 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Orbit Bridge TON WBTC",
         decimals: 8,
     },
+    "EQAwr5lcbQcLKTAg_SQ-dpKWNQZpO1MGnrAs53bf1gkKTVHx": {
+        ammMinter: "EQAoFEOWRZt9rZlJDv60ErW-BlaXsI4Q1yLSAdzqcYuwkg0j",
+        tokenMinter: "EQAwr5lcbQcLKTAg_SQ-dpKWNQZpO1MGnrAs53bf1gkKTVHx",
+        image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/orbs.png",
+        displayName: "oORBS",
+        color: "#3EAAB1",
+        name: "Orbit Bridge TON Orbs",
+        isCustom: true,
+        decimals: 9,
+    },
     "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
         ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
         tokenMinter: "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86",
@@ -67,6 +77,16 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "FNZ",
         color: "#CCAAFF",
         name: "Fanzee Token",
+        isCustom: true,
+        decimals: 9,
+    },
+    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
+        ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
+        tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
+        image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
+        displayName: "TGR",
+        color: "#69ABE8",
+        name: "Tegro Token",
         isCustom: true,
         decimals: 9,
     },
