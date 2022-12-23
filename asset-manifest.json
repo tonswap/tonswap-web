@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.d3c5b039.js",
-    "static/js/554.d19b553e.chunk.js": "/static/js/554.d19b553e.chunk.js",
+    "main.js": "/static/js/main.20f75c79.js",
+    "static/js/554.9c1c1aa6.chunk.js": "/static/js/554.9c1c1aa6.chunk.js",
     "static/js/539.701aadb3.chunk.js": "/static/js/539.701aadb3.chunk.js",
-    "static/js/178.59523a07.chunk.js": "/static/js/178.59523a07.chunk.js",
+    "static/js/178.288e93de.chunk.js": "/static/js/178.288e93de.chunk.js",
     "static/js/960.129568e9.chunk.js": "/static/js/960.129568e9.chunk.js",
     "static/js/271.a94e89ee.chunk.js": "/static/js/271.a94e89ee.chunk.js",
-    "static/js/745.587a18ea.chunk.js": "/static/js/745.587a18ea.chunk.js",
-    "static/js/912.cc73ba45.chunk.js": "/static/js/912.cc73ba45.chunk.js",
+    "static/js/65.413d50ca.chunk.js": "/static/js/65.413d50ca.chunk.js",
+    "static/js/538.27016927.chunk.js": "/static/js/538.27016927.chunk.js",
     "static/js/702.093cb88b.chunk.js": "/static/js/702.093cb88b.chunk.js",
-    "static/js/465.e6537d9f.chunk.js": "/static/js/465.e6537d9f.chunk.js",
+    "static/js/465.64fcdd35.chunk.js": "/static/js/465.64fcdd35.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
@@ -27,6 +27,6 @@
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.d3c5b039.js"
+    "static/js/main.20f75c79.js"
   ]
 }
