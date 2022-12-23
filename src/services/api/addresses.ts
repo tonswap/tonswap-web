@@ -79,15 +79,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isCustom: true,
         decimals: 9,
     },
-    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
-        ammMinter: "EQALD2u-1-Xil8NKZB6XmXjrvZF3gyzwruepJuVEI8PERJ-b",
-        tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
-        image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
-        displayName: "TGR",
-        color: "#69ABE8",
-        name: "Tegro Token",
-        decimals: 9,
-    },
     "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
         ammMinter: "EQB8Fmy0fbDNyEP_j0lZLbJqbEORgyWLEmJPJWMNbPy-vS_7",
         tokenMinter: "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV",
