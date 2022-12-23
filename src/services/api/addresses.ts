@@ -67,7 +67,6 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "oORBS",
         color: "#3EAAB1",
         name: "Orbit Bridge TON Orbs",
-        isCustom: true,
         decimals: 9,
     },
     "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
@@ -81,13 +80,12 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         decimals: 9,
     },
     "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
-        ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
+        ammMinter: "EQALD2u-1-Xil8NKZB6XmXjrvZF3gyzwruepJuVEI8PERJ-b",
         tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
         displayName: "TGR",
         color: "#69ABE8",
         name: "Tegro Token",
-        isCustom: true,
         decimals: 9,
     },
     "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
