@@ -148,7 +148,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
         tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
-        displayName: "TGR Old",
+        displayName: "TGR",
         color: "#69ABE8",
         ammVersion: 1.1,
         name: "Tegro Token",
