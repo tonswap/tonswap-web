@@ -150,7 +150,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
         displayName: "TGR Beta",
         color: "#011527",
-        name: "Tegro Token",
+        name: "Tegro Token Beta",
         decimals: 9,
     },
     "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
@@ -159,7 +159,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
         displayName: "TGR Old",
         color: "#69ABE8",
-	    ammVersion: 1.1,
+	ammVersion: 1.1,
         name: "Tegro Token",
         decimals: 9,
     },
