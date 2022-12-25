@@ -296,7 +296,7 @@ export const getTokenDollarValue = async (tokenName: string, amount: string): Pr
     const lpTokenData = await getPoolData(Address.parse(tokenAmmMinter), token.ammVersion);
     const tokenReserves = lpTokenData.tokenReserves;
     const tonReserves = lpTokenData.tonReserves;
-    poolPrice = tonReserves.mul(new BN(10 ** token.decimals)).div(tokenReserves);
+    poolPrice = tonReserves.mul(new BN(10 ** (token.decimals / 2))).div(tokenReserves.div(new BN(10 ** (token.decimals / 2))));
     let poolPriceUSD = parseFloat(fromNano(poolPrice)) * tonPrice;
     return (poolPriceUSD * parseFloat(amount)).toFixed(6);
 };
