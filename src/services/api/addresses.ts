@@ -51,7 +51,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Orbit Bridge TON Ethereum",
         decimals: 18,
     },
-    "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB": {
+    EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB: {
         ammMinter: "EQA0b9fTX2eVTV8QfdyGlGUO6uTc2wWOs-7IsxqmU2FuOvvC",
         tokenMinter: "EQANasbzD5wdVx0qikebkchrH64zNgsB38oC9PVu7rG16qNB",
         image: "https://raw.githubusercontent.com/orbit-chain/bridge-token-image/main/ton/wbtc.png",
@@ -67,7 +67,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "oORBS",
         color: "#3EAAB1",
         name: "Orbit Bridge TON Orbs",
-        decimals: 9,
+        decimals: 18,
     },
     "EQDCJL0iQHofcBBvFBHdVG233Ri2V4kCNFgfRT-gqAd3Oc86": {
         ammMinter: "EQCiC_tXfU9p5oACQY0naMZi0tZz-1oeKdB1mh3KjvpogFgB",
@@ -79,7 +79,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isCustom: true,
         decimals: 9,
     },
-    "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
+    EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV: {
         ammMinter: "EQB8Fmy0fbDNyEP_j0lZLbJqbEORgyWLEmJPJWMNbPy-vS_7",
         tokenMinter: "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV",
         image: "https://bafkreie6ydxbcmq7xqalyxvqo6tq4fo7ecycv5jy2dwafn2yhelcubjaeq.ipfs.nftstorage.link/",
@@ -89,7 +89,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         isCustom: true,
         decimals: 9,
     },
-    "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW": {
+    EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW: {
         name: "Wrapped Solana",
         ammMinter: "EQCIKZlDpIfc5l9mJOZj2xOeS2Ckfrm6OAcdJCUpM9T__MW6",
         tokenMinter: "EQC4cCygTZPKIP9cCsWx7DW5i5MQPOsEcfKkKwBZKkRCCfaW",
@@ -107,7 +107,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#515151",
         decimals: 9,
     },
-    "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L": {
+    EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L: {
         name: "TonTake",
         ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
         tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
@@ -135,7 +135,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#7c7c7c",
         decimals: 9,
     },
-     "EQDKXqUJ2YE_NhLehOLZBkSp-mPDI1T7ih1VsGqxJCwNoWg6": {
+    "EQDKXqUJ2YE_NhLehOLZBkSp-mPDI1T7ih1VsGqxJCwNoWg6": {
         name: "LifeBlood Coin",
         ammMinter: "EQCq4FMdgxhaKbSCS-vRsrrg-y6n78om3aGwBAPqAmEj5mch",
         tokenMinter: "EQDKXqUJ2YE_NhLehOLZBkSp-mPDI1T7ih1VsGqxJCwNoWg6",
@@ -144,7 +144,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#FF6800",
         decimals: 9,
     },
-    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
+    EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y: {
         ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
         tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
