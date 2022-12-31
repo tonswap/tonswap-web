@@ -60,12 +60,13 @@ export const getTokenBalance = async (token: PoolInfo) => {
 
 export const getLPTokenBalance = async (token: string) => {
     const tokenData = await getToken(client, token, getOwner());
-    return _getJettonBalance(tokenData.lpWallet, Address.parse(tokenData.ammMinter!!));
+    return _getJettonBalance(tokenData.lpWallet, Address.parse(tokenData.tokenMinter!!));
 };
 
 export const getTokensOfLPBalances = async (token: string) => {
     const tokenObject = await getToken(client, token, getOwner());
-    const [jettonData, lpBalance] = await Promise.all([getPoolData(Address.parse(tokenObject.ammMinter!!)), getLPTokenBalance(token)]);
+
+    const [jettonData, lpBalance] = await Promise.all([getPoolData(Address.parse(tokenObject.ammMinter!!), tokenObject.ammVersion), getLPTokenBalance(token)]);
     if (lpBalance.balance.toString() === "0") {
         return [fromDecimals("0", tokenObject.decimals), fromDecimals("0", tokenObject.decimals)];
     }
@@ -384,16 +385,9 @@ export const generateAddLiquidityLink = async (token: string, tonAmount: string,
 
 export const generateRemoveLiquidityLink = async (token: string, tonAmount: number | string) => {
     const tokenData = await getToken(client, token, getOwner());
-    const jettonData = await getPoolData(Address.parse(tokenData.ammMinter!!));
+    const jettonData = await getPoolData(Address.parse(tokenData.ammMinter!!), tokenData.ammVersion);
 
     let shareToRemove = toNano(tonAmount).mul(jettonData.totalSupply).div(jettonData.tonReserves);
-
-    const userLpBalance = (await getLPTokenBalance(token)).balance;
-    // round up 98 and above to use the max lp
-    // if (shareToRemove.mul(new BN(100)).div(userLpBalance).gte(new BN(98))) {
-    //     shareToRemove = userLpBalance;
-    // }
-
     const removeLiquidity = await DexActions.removeLiquidity(shareToRemove, getOwner());
     const boc64 = removeLiquidity.toBoc().toString("base64");
     const tokenObjects: any = await getToken(client, token, getOwner());
