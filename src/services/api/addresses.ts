@@ -116,6 +116,16 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#83ABCD",
         decimals: 9,
     },
+    "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L": {
+        name: "TonTake",
+        ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
+        tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
+        displayName: "TAKEOLD",
+        ammVersion: 1.1,
+        image: "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
+        color: "#83ABCD",
+        decimals: 9,
+    },
     "EQB-ajMyi5-WKIgOHnbOGApfckUGbl6tDk3Qt8PKmb-xLAvp": {
         name: "TonexCoin",
         ammMinter: "EQBLNl0ixeqsDRCGOGEjA9Zsbf7Pjqpjjb0FqBkFjLktXO7E",
