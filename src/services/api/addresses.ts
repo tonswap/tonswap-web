@@ -107,13 +107,12 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#515151",
         decimals: 9,
     },
-    EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L: {
+    "EQBzyesZ3p1WGNrggNSJi6JFK3vr0GhqJp4gxker9oujjcuv": {
         name: "TonTake",
-        ammMinter: "EQABNXuJt9Z-2v6bVeBrCl2tH15uT3M0WTGAKv3Lw5zCQsKu",
-        tokenMinter: "EQAalp4hV8Ygl2lGxkVomZdsqY7McpqV6WBzm6GT8ziCXs_L",
+        ammMinter: "EQASiflLNONDlfvj4ZO6Vt7P1tB7yJ6s8BeW2GEEKODmOU_w",
+        tokenMinter: "EQBzyesZ3p1WGNrggNSJi6JFK3vr0GhqJp4gxker9oujjcuv",
         displayName: "TAKE",
-        ammVersion: 1.1,
-        image: "https://bafkreiayyylejgct6qme2xmnfy4eug3uc4tefyffrw4y3rhcojpq2colga.ipfs.nftstorage.link/",
+        image: "https://bafkreifj24zj44pu6zqq2u2wainycswqpafhwal4ttqhjt4t4yzgibipua.ipfs.nftstorage.link/",
         color: "#83ABCD",
         decimals: 9,
     },
