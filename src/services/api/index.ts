@@ -9,21 +9,17 @@ import { parseJettonOnchainMetadata } from "./deploy-pool";
 import axios from "axios";
 import store from "store/store";
 import { getWalletAddress } from "store/wallet/utils";
-import i18next from "i18next";
-
-let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
-
-if (document.location.href.indexOf("testnet=") > -1) {
-    rpcUrl = "https://testnet.tonhubapi.com/jsonRPC";
-} else if (document.location.href.indexOf("sandbox=") > -1) {
-    rpcUrl = "https://sandbox.tonhubapi.com/jsonRPC";
-}
+import { getHttpEndpoint } from "@orbs-network/ton-access";
 
 /* eslint no-eval: 0 */
-export const client = new TonClient({
-    endpoint: rpcUrl,
-    //apiKey: "j46He&x63GFc",
-});
+export let client: any;
+
+(async () => {
+    const endpoint = await getHttpEndpoint();
+    client = new TonClient({
+        endpoint: endpoint,
+    });
+})();
 
 export enum GAS_FEE {
     SWAP = 0.14,
