@@ -1,5 +1,4 @@
 import { TonhubConnector } from "ton-x";
-
 import { TonhubWalletAdapter } from "./adapters/TonhubWalletAdapter";
 import { TonKeeperWalletAdapter } from "./adapters/TonKeeperWalletAdapter";
 import { TonWalletWalletAdapter } from "./adapters/TonWalletAdapter";
@@ -39,7 +38,7 @@ export class WalletService {
 
 export const walletService = new WalletService();
 
-const tonhubConnector = new TonhubConnector({ network: IS_TESTNET ? "sandbox" : "mainnet" });
+const tonhubConnector = new TonhubConnector({ network: IS_TESTNET ? "testnet" : "mainnet" });
 
 walletService.registerAdapter(Adapters.TON_HUB, new TonhubWalletAdapter(tonhubConnector));
 walletService.registerAdapter(Adapters.TON_WALLET, new TonWalletWalletAdapter());
