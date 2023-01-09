@@ -143,7 +143,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#FF6800",
         decimals: 9,
     },
-    EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y: {
+    "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y": {
         ammMinter: "EQB3jfFvpzv8ZC0CjFgxX4-d1XsoZaVJ3mlfp8EfFdrpqqzt",
         tokenMinter: "EQAvDfWFG0oYX19jwNDNBBL1rKNT9XfaGP9HyTb5nb2Eml6y",
         image: "https://bafkreihafcr35l764lbwllejvdgux2anmhkyi7kab7ytqxn2cjq44ukhoa.ipfs.nftstorage.link/",
@@ -151,6 +151,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         color: "#69ABE8",
         ammVersion: 1.1,
         name: "Tegro Token",
+        decimals: 9,
+    },
+    "EQA5JQIavp8-1053-23xry7B0-18-0uTubhPSX2VhTELe-RP": {
+        ammMinter: "EQAt_yq_KS7I8-EKyC9c6LZ5OzSkDmmZxWMUTb0l7pf94AyZ",
+        tokenMinter: "EQA5JQIavp8-1053-23xry7B0-18-0uTubhPSX2VhTELe-RP",
+        image: "https://bafkreid74uh3urooz4oib7dx5kr7i7zwmpdbx72vdq4ffb3slvhluhegna.ipfs.nftstorage.link/",
+        displayName: "BKN",
+        color: "#EDBC7A",
+        name: "BookN",
         decimals: 9,
     },
 };
