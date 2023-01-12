@@ -162,6 +162,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "BookN",
         decimals: 9,
     },
+        "EQBl3gg6AAdjgjO2ZoNU5Q5EzUIl8XMNZrix8Z5dJmkHUfxI": {
+        ammMinter: "EQB83OCEDal8X493MPol9owHgHpxsAsm2W02iu8uZXckOFGH",
+        tokenMinter: "EQBl3gg6AAdjgjO2ZoNU5Q5EzUIl8XMNZrix8Z5dJmkHUfxI",
+        image: "https://bafkreig3d3barh2mruuygsugy7e2ebtkkazs7hxob6ghcqmcpqg67konca.ipfs.nftstorage.link/",
+        displayName: "LAVE",
+        color: "#CDB8D7",
+        name: "Lavandos",
+        decimals: 9,
+    },
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
