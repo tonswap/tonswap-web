@@ -171,6 +171,15 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         name: "Lavandos",
         decimals: 9,
     },
+        "EQC3ykAU_3T8_8-4WLrk6fUn9vBT-WBR1tWaK10EcTJHHh-X": {
+        ammMinter: "EQC8FFi-LAs6YqY1LP-KQ3wBFRuBfqEFz7eEIwnMuHC_l2e8",
+        tokenMinter: "EQC3ykAU_3T8_8-4WLrk6fUn9vBT-WBR1tWaK10EcTJHHh-X",
+        image: "https://bafkreieebehtfnxssc4o5pwe2h4pgaxtbc6v2zoi4otg43pmhb5ui4l4ge.ipfs.nftstorage.link/",
+        displayName: "TCN",
+        color: "#83C3E4",
+        name: "Toncoin Cash",
+        decimals: 9,
+    },
 };
 
 export let MainNetPools = (): { [key: string]: PoolInfo } => {
