@@ -7,7 +7,7 @@ import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
+import { Typography } from '@mui/material'
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -41,6 +41,7 @@ const Buy = () => {
   }
 
   return (
+    <>
     <TokenOperations
       icon={<SouthRoundedIcon />}
       getTxRequest={getTxRequest}
@@ -56,6 +57,8 @@ const Buy = () => {
       actionType={ActionType.BUY}
       gasFee={API.GAS_FEE.SWAP}
     />
+      <Typography align='center' fontSize={15}>{t('risks-understanding')}</Typography>
+      </>
   );
 };
 

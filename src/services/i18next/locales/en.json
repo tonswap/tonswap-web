@@ -24,7 +24,6 @@
     "liquidity-added": "Liquidity Added",
     "address-copy": "Address copied",
     "check-tonhub": "Please check tonhub wallet for pending notification",
-    "beta-text": "TonSwap is in Beta, use at your own risk",
     "base-error-message": "Oops, something went wrong",
     "coming-soon": "(coming soon)",
     "loading": "Loading...",
@@ -54,6 +53,7 @@
     "max-slippage":"Max Slippage:",
     "price-impact":"Price Impact:",
     "less-info":"Less Info",
-    "more-info":"More Info"
+    "more-info":"More Info",
+    "risks-understanding": "When trading crypto assets, make sure you understand the risks"
   }
 }

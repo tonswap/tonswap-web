@@ -24,7 +24,6 @@
     "liquidity-added": "增加流動性",
     "address-copy": "複製地址",
     "check-tonhub": "請檢查 tonhub 錢包的待處理通知",
-    "beta-text": "TonSwap 目前正在測試版, 請注意風險",
     "base-error-message": "錯誤訊息",
     "coming-soon": "即將上映",
     "loading": "讀取中",
@@ -54,6 +53,7 @@
     "max-slippage":"最大滑點:",
     "price-impact":"價格影響:",
     "less-info":"較少資訊",
-    "more-info":"較多資訊"
+    "more-info":"較多資訊",
+    "risks-understanding": "交易加密資產時，確保您了解風險"
   }
 }

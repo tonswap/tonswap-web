@@ -24,7 +24,6 @@
     "liquidity-added": "Liquidez adicionada",
     "address-copy": "Endereço copiado",
     "check-tonhub": "Por gentileza, verifique a sua carteira do Tonhub para notificações pendentes",
-    "beta-text": "TonSwap está em Beta, use por sua conta e risco",
     "base-error-message": "Wops, algo deu errado",
     "coming-soon": "(Em breve)",
     "loading": "Carregando...",
@@ -54,6 +53,7 @@
     "max-slippage":"Slippage máximo:",
     "price-impact":"Impacto no preço:",
     "less-info":"Menos informações",
-    "more-info":"Mais informações"
+    "more-info":"Mais informações",
+    "risks-understanding": "Ao negociar criptoativos, certifique-se de entender os riscos"
   }
 }

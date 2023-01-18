@@ -12,9 +12,6 @@ import { OperationType } from "store/application/reducer";
 const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
   color: "#6D6D6D",
-  span: {
-    color: "#50A7EA",
-  },
   [theme.breakpoints.down("sm")]: {
     fontSize: 15,
   },
@@ -49,7 +46,6 @@ const LogoWithText = () => {
       <img className={classes.logo} src={TonLogo} alt="" />
       <StyledText>
         <strong>Ton</strong>Swap
-        <span> Beta</span>
       </StyledText>
     </Box>
   );
