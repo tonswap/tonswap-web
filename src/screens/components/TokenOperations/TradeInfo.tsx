@@ -1,4 +1,4 @@
-import { Collapse } from "@mui/material";
+import { Collapse, Typography } from '@mui/material'
 import { styled, Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,10 +7,10 @@ import { GAS_FEE } from "services/api";
 import { PoolInfo } from "services/api/addresses";
 import { ActionType } from "services/wallets/types";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
-import { fromNano } from "ton";
 import { fromDecimals } from "utils";
 import ShowTradeInfoButton from "./ShowTradeInfoButton";
 import TradeInfoRow from "./TradeInfoRow";
+import Fade from '@mui/material/Fade'
 
 interface Props {
     delta?: string;
@@ -45,6 +45,8 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
     const [showInfo, setShowInfo] = useState<boolean>(false);
+    const priceImpactTitle = Number(tradeData?.impact) > 5 ? <span>{t('price-impact')}{' '}<span style={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('warning')}</span></span> : t('price-impact')
+    const priceImpactValue = Number(tradeData?.impact) > 5 ? <span style={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{tradeData?.impact}%</span> : tradeData?.impact + '%'
 
     const onShowInfo = () => {
         setShowInfo(!showInfo);
@@ -84,9 +86,14 @@ const TradeInfo = ({ delta, actionType }: Props) => {
                 <TradeInfoRow title={t('gas-fee')} value={`${tradeData?.gasFee} TON`} />
                 <TradeInfoRow title={t('trade-fee')} value={`${tradeData?.tradeFee}%`} />
                 <TradeInfoRow title={t('max-slippage')} value={`${tradeData?.slippage}%`} />
-                <TradeInfoRow title={t('price-impact')} value={`${tradeData?.impact}%`} />
+                <TradeInfoRow title={priceImpactTitle} value={priceImpactValue} />
             </Collapse>
-        </StyledContainer >
+            {Number(tradeData?.impact) > 5 && !showInfo && <Fade timeout={200} in={!showInfo}>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                    <Typography component='span' sx={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('impact-warning')}</Typography> {priceImpactValue}
+                </Box>
+            </Fade>}
+        </StyledContainer>
 );
 }
 export default TradeInfo;
