@@ -1,7 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
-import { BETA_TEXT, LAYOUT_MAX_WIDTH } from "consts";
+import { LAYOUT_MAX_WIDTH } from "consts";
 import { styled } from "@mui/system";
 import SelectWallet from "components/SelectWallet";
 import { useWalletActions } from "store/wallet/hooks";
@@ -9,9 +9,6 @@ import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
-import { useTranslation } from "react-i18next";
-
-
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -30,22 +27,8 @@ const StyledRoutesContainer = styled(AppGrid)({
   flex: 1,
 });
 
-const StyledBeta = styled(Box)({
-  background: "#FC5F5F",
-  width: "100%",
-  height: 40,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  "& p": {
-    color: "white",
-    fontSize: 12,
-  },
-});
-
 const App = () => {
   const { restoreSession } = useWalletActions();
-  const { t } = useTranslation()
   useWebAppResize();
 
   useEffectOnce(() => {
@@ -54,9 +37,6 @@ const App = () => {
 
   return (
     <>
-      <StyledBeta>
-        <Typography>{t('beta-text')}</Typography>
-      </StyledBeta>
       <StyledAppContainer>
         <Navbar />
         <SelectWallet />

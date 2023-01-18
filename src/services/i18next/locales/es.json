@@ -24,7 +24,6 @@
     "liquidity-added": "Liquidez agregada",
     "address-copy": "Dirección copiada",
     "check-tonhub": "Por favor, revisa la notificación pendiente de tu billetera Tonhub",
-    "beta-text": "TonSwap se encuentra en fase beta, utilízalo bajo tu propio riesgo",
     "base-error-message": "Oops, algo ha salido mal",
     "coming-soon": "(próximamente)",
     "loading": "Cargando...",
@@ -54,6 +53,7 @@
     "max-slippage":"Slippage máximo:",
     "price-impact":"Impacto en el precio:",
     "less-info":"Menos información",
-    "more-info":"Más información"
+    "more-info":"Más información",
+    "risks-understanding": "Antes de operar, asegúrese de comprender los riesgos"
   }
 }
