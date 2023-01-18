@@ -7,13 +7,16 @@ import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import { Typography } from '@mui/material'
+import { Typography, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/styles'
 
 const Buy = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
     useTokenOperationsStore();
   const { totalBalances } = useTokenOperationsStore();
   const { t } = useTranslation()
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const getTxRequest = async () => {
     gaAnalytics.buyTransaction()
@@ -57,7 +60,7 @@ const Buy = () => {
       actionType={ActionType.BUY}
       gasFee={API.GAS_FEE.SWAP}
     />
-      <Typography align='center' fontSize={15}>{t('risks-understanding')}</Typography>
+      <Typography align='center' fontSize={isSmallScreen ? 11.5 : 15}>{t('risks-understanding')}</Typography>
       </>
   );
 };
