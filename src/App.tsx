@@ -9,6 +9,10 @@ import { AppGrid } from "styles/styles";
 import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
+import { useEffect } from 'react'
+import { getHttpEndpoint } from '@orbs-network/ton-access'
+import { TonClient } from 'ton'
+import { setClienT } from 'services/api'
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -34,6 +38,16 @@ const App = () => {
   useEffectOnce(() => {
     restoreSession();
   });
+
+  useEffect(() => {
+    (async () => {
+      const endpoint = await getHttpEndpoint();
+      const _client = new TonClient({
+        endpoint: endpoint,
+      });
+      setClienT(_client)
+    })();
+  }, [])
 
   return (
     <>

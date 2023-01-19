@@ -1,25 +1,18 @@
-import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
+import { Address, Cell, toNano, fromNano, Wallet } from "ton";
 import { cellToString, delay, fromDecimals, hexToBn, toDecimals } from "utils";
 import { DexActions } from "./dex";
 import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
 import BN from "bn.js";
 import { OPS } from "./ops";
-import { BASE_ERROR_MESSAGE, LOCAL_STORAGE_ADDRESS } from "consts";
+import { BASE_ERROR_MESSAGE} from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
-import axios from "axios";
-import store from "store/store";
 import { getWalletAddress } from "store/wallet/utils";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
 
+export const setClienT = (value: any) => {
+    client = value
+}
 /* eslint no-eval: 0 */
 export let client: any;
-
-(async () => {
-    const endpoint = await getHttpEndpoint();
-    client = new TonClient({
-        endpoint: endpoint,
-    });
-})();
 
 export enum GAS_FEE {
     SWAP = 0.14,

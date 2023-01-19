@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import { Typography } from '@mui/material'
 import { fromDecimals } from 'utils'
 import { ton } from 'services/api/addresses'
-import { getPoolData } from 'services/api'
+import { client, getPoolData } from 'services/api'
 import { Address } from 'ton'
 import BN from 'bn.js'
 import useUsdValue from 'hooks/useUsdValue'
@@ -21,20 +21,19 @@ export const PoolInfo = () => {
   const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo?.tonReserves.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
 
-
   useEffect(() => {
     const fetchPoolData = async () => {
-      if(!selectedToken) return
+      if(!selectedToken || !client) return
       const data = await getPoolData(Address.parse(selectedToken.ammMinter))
       setPoolInfo(data)
     }
     fetchPoolData()
-  }, [selectedToken])
+  }, [selectedToken, client])
 
   return (
     <Box sx={{maxWidth: 380, margin: 'auto'}}>
       {poolInfo && <Box sx={{ background: 'rgba(173,216,230,0.6)', borderRadius: 1.5, padding: '8px 16px' }}>
-          <Typography fontSize='12px' align='center'>Pool info</Typography>
+          <Typography fontSize='12px' sx={{fontWeight: 'bold'}} align='center'>Pool info</Typography>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
             <Typography fontSize='12px'>Liquidity (TVL)</Typography>
             <Typography fontSize='12px'>${calculateDecimals(usd)}</Typography>
