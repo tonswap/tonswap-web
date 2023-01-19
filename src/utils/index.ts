@@ -233,8 +233,6 @@ const getActionFromParams = (value: any) => {
 };
 
 export const toNanoSafe = (value?: string | number, decimals = 9): BN => {
-    console.log(value);
-
     if (!value) {
         return toDecimals("0", decimals);
     }

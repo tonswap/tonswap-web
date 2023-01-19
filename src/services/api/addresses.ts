@@ -201,8 +201,6 @@ export function addToken(key: string, pool: PoolInfo) {
 }
 
 async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
-    console.log("fetch and cache");
-
     const res = await fn;
     tokenCache[cacheKey] = res;
     return res;

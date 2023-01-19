@@ -36,6 +36,8 @@ export const useTokenOperationsActions = (): {
   updateSrcTokenLoading: (val: boolean) => void;
   toggleBuyToSell: () => void;
   toggleSellToBuy: () => void;
+  toggleAddLiquidity: () => void;
+  toggleRemoveLiquidity: () => void;
   clearStore: () => void;
   selectToken: (token?: PoolInfo) => void;
   sendTransaction: (txMethod: () =>  Promise<void>) => void;
@@ -122,6 +124,32 @@ export const useTokenOperationsActions = (): {
     dispatch(toggleAction());
   }, [dispatch, selectedToken, navigate]);
 
+  const toggleAddLiquidity = useCallback(() => {
+    if (!selectedToken) {
+      return;
+    }
+    navigate(
+      ROUTES.manageLiquidity.navigateToAddLiquidity.replace(
+        ":id",
+        selectedToken?.tokenMinter
+      )
+    )
+    dispatch(toggleAction());
+  }, [dispatch, selectedToken, navigate]);
+
+  const toggleRemoveLiquidity = useCallback(() => {
+    if (!selectedToken) {
+      return;
+    }
+    navigate(
+      ROUTES.manageLiquidity.navigateToRemoveLiquidity.replace(
+        ":id",
+        selectedToken?.tokenMinter
+      )
+    )
+    dispatch(toggleAction());
+  }, [dispatch, selectedToken, navigate]);
+
 
 
   const sendTransaction = useCallback(
@@ -159,6 +187,8 @@ export const useTokenOperationsActions = (): {
     updateSrcTokenLoading,
     toggleBuyToSell,
     toggleSellToBuy,
+    toggleAddLiquidity,
+    toggleRemoveLiquidity,
     clearStore,
     selectToken,
     sendTransaction,

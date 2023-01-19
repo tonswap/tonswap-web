@@ -107,8 +107,7 @@ function SlidingMenu({ items, action, symbol }: Props) {
         style={{ left: `${left}px`, width: `${width}px` }}
       />
       {items.map((item, index) => {
-        const selected = action === item.text.toLowerCase();
-
+        const selected = action === item.text.toLowerCase().replace('-', ' ');
         return (
           <SlidingMenuItem
             symbol={symbol}
