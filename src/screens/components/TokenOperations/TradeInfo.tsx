@@ -45,8 +45,8 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         useTokenOperationsStore();
     const [tradeData, setTradeData] = useState<TradeInfoData>();
     const [showInfo, setShowInfo] = useState<boolean>(false);
-    const priceImpactTitle = Number(tradeData?.impact) > 5 ? <span>{t('price-impact')}{' '}<span style={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('warning')}</span></span> : t('price-impact')
-    const priceImpactValue = Number(tradeData?.impact) > 5 ? <span style={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{tradeData?.impact}%</span> : tradeData?.impact + '%'
+    const priceImpactTitle = Number(tradeData?.impact) > 5 ? <span>{t('price-impact')}{' '}<span style={{color: '#FC5656', fontSize: 13}}>{t('warning')}</span></span> : t('price-impact')
+    const priceImpactValue = Number(tradeData?.impact) > 5 ? <span style={{color: '#FC5656', fontSize: 13}}>{tradeData?.impact}%</span> : tradeData?.impact + '%'
 
     const onShowInfo = () => {
         setShowInfo(!showInfo);
@@ -83,7 +83,7 @@ const TradeInfo = ({ delta, actionType }: Props) => {
         <StyledContainer className="swap-card">
             {Number(tradeData?.impact) > 5 && !showInfo && <Fade timeout={200} in={!showInfo}>
                 <Box display='flex' alignItems='center' justifyContent='space-between'>
-                    <Typography component='span' sx={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('impact-warning')}</Typography> {priceImpactValue}
+                    <Typography component='span' sx={{color: '#FC5656', fontSize: 13}}>{t('impact-warning')}</Typography> {priceImpactValue}
                 </Box>
             </Fade>}
             <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
