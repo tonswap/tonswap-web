@@ -25,7 +25,7 @@ export const PoolInfo = () => {
   }, [selectedToken])
 
   return (
-    <>
+    <Box sx={{maxWidth: 380, margin: 'auto'}}>
       {poolInfo && <Box sx={{ background: '#ADD8E6', borderRadius: 1.5, padding: '8px 16px', fontSize: '13px!important' }}>
           <Typography align='center'>Pool info</Typography>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
@@ -42,6 +42,6 @@ export const PoolInfo = () => {
           </Box>
         </Box>
       }
-    </>
+    </Box>
   )
 }
