@@ -81,6 +81,11 @@ const TradeInfo = ({ delta, actionType }: Props) => {
 
     return (
         <StyledContainer className="swap-card">
+            {Number(tradeData?.impact) > 5 && !showInfo && <Fade timeout={200} in={!showInfo}>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                    <Typography component='span' sx={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('impact-warning')}</Typography> {priceImpactValue}
+                </Box>
+            </Fade>}
             <ShowTradeInfoButton show={showInfo} changeShow={onShowInfo} />
             <Collapse orientation="vertical" in={showInfo}>
                 <TradeInfoRow title={t('gas-fee')} value={`${tradeData?.gasFee} TON`} />
@@ -88,11 +93,6 @@ const TradeInfo = ({ delta, actionType }: Props) => {
                 <TradeInfoRow title={t('max-slippage')} value={`${tradeData?.slippage}%`} />
                 <TradeInfoRow title={priceImpactTitle} value={priceImpactValue} />
             </Collapse>
-            {Number(tradeData?.impact) > 5 && !showInfo && <Fade timeout={200} in={!showInfo}>
-                <Box display='flex' alignItems='center' justifyContent='space-between'>
-                    <Typography component='span' sx={{color: '#FC5656', fontSize: 13, fontWeight: 'bold'}}>{t('impact-warning')}</Typography> {priceImpactValue}
-                </Box>
-            </Fade>}
         </StyledContainer>
 );
 }
