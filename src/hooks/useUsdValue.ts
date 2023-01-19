@@ -19,8 +19,12 @@ function useUsdValue(tokenId: string, value?: string, debounce?: number, disable
         timeoutRef.current = setTimeout(() => {
             (async () => {
                 try {
-                    const result = await getUsdAmount(tokenId, value, disabled);
-                    setUsd(parseFloat(result).toFixed(4));
+                    let result = parseFloat(await getUsdAmount(tokenId, value, disabled))
+                    setUsd(() => {
+                        if (result > 1) return result.toFixed(2)
+                        else if (result < 0.01) return result.toFixed(6)
+                        else return result.toFixed(4)
+                    })
                 } catch (error) {
                 } finally {
                     setLoading(false);
