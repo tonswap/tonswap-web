@@ -1,21 +1,21 @@
+import { PoolInfo as PoolInfoComponent } from "components/PoolInfo";
 import SlidingMenu from "components/SlidingMenu";
 import useEffectOnce from "hooks/useEffectOnce";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from "react-i18next";
 import { Route, Routes, useParams } from "react-router-dom";
 import { ROUTES } from "router/routes";
 import { Tokens } from "screens/components/Tokens";
 import gaAnalytics from "services/analytics/ga/ga";
-import { PoolInfo } from "services/api/addresses";
+import { PoolInfo } from 'services/api/addresses'
 import { useApplicationActions } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
 import { useTokenOperationsActions, useTokenOperationsStore } from 'store/token-operations/hooks'
 import { StyledTokenOperation } from "styles/styles";
-import { getActionFromParams } from "utils";
+import { getActionFromParams } from 'utils'
 import AddLiquidity from "./AddLiquidity";
 import RemoveLiquidity from "./RemoveLiquidity";
-
 
 function ManageLiquidityScreen() {
   const { selectedToken } = useTokenOperationsStore();
@@ -67,7 +67,10 @@ function ManageLiquidityScreen() {
       <Routes>
         <Route
           path={ROUTES.manageLiquidity.addLiquidity}
-          element={<AddLiquidity />}
+          element={<>
+            <AddLiquidity />
+            <PoolInfoComponent />
+          </>}
         />
         <Route
           path={ROUTES.manageLiquidity.removeLiquidity}
