@@ -74,7 +74,10 @@ function ManageLiquidityScreen() {
         />
         <Route
           path={ROUTES.manageLiquidity.removeLiquidity}
-          element={<RemoveLiquidity />}
+          element={<>
+            <RemoveLiquidity />
+            <PoolInfoComponent />
+          </>}
         />
         <Route
           path={ROUTES.manageLiquidity.tokens}

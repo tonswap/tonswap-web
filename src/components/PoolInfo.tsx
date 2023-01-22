@@ -9,6 +9,7 @@ import BN from 'bn.js'
 import useUsdValue from 'hooks/useUsdValue'
 import { useTokenOperationsStore } from 'store/token-operations/hooks'
 import { useTranslation } from 'react-i18next'
+import { usePoolInfo } from 'hooks/usePoolInfo'
 
 const calculateDecimals = (val: string) => {
   const n = parseFloat(val)
@@ -18,17 +19,12 @@ const calculateDecimals = (val: string) => {
 }
 
 export const PoolInfo = () => {
-  const [poolInfo, setPoolInfo] = useState<{totalSupply: BN, jettonWalletAddress: Address, mintable: string, tonReserves: BN, tokenReserves: BN} | null>(null);
+  const {poolInfo, fetchPoolData} = usePoolInfo()
   const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo?.tonReserves.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
   const {t} = useTranslation()
 
   useEffect(() => {
-    const fetchPoolData = async () => {
-      if(!selectedToken || !client) return
-      const data = await getPoolData(Address.parse(selectedToken.ammMinter), selectedToken.ammVersion)
-      setPoolInfo(data)
-    }
     fetchPoolData()
   }, [selectedToken, client])
 
