@@ -54,6 +54,8 @@
     "price-impact":"價格影響:",
     "less-info":"較少資訊",
     "more-info":"較多資訊",
-    "risks-understanding": "交易前，確保您了解風險"
+    "risks-understanding": "交易前，確保您了解風險",
+    "pool-info": "池信息流動性",
+    "liquidity": "流動性"
   }
 }

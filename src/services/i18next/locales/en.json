@@ -54,6 +54,8 @@
     "price-impact":"Price Impact:",
     "less-info":"Less Info",
     "more-info":"More Info",
-    "risks-understanding": "Before trading, make sure you understand the risks"
+    "risks-understanding": "Before trading, make sure you understand the risks",
+    "pool-info": "Pool info",
+    "liquidity": "Liquidity"
   }
 }

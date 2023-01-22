@@ -8,6 +8,7 @@ import { Address } from 'ton'
 import BN from 'bn.js'
 import useUsdValue from 'hooks/useUsdValue'
 import { useTokenOperationsStore } from 'store/token-operations/hooks'
+import { useTranslation } from 'react-i18next'
 
 const calculateDecimals = (val: string) => {
   const n = parseFloat(val)
@@ -20,6 +21,7 @@ export const PoolInfo = () => {
   const [poolInfo, setPoolInfo] = useState<{totalSupply: BN, jettonWalletAddress: Address, mintable: string, tonReserves: BN, tokenReserves: BN} | null>(null);
   const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo?.tonReserves.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
+  const {t} = useTranslation()
 
   useEffect(() => {
     const fetchPoolData = async () => {
@@ -33,9 +35,9 @@ export const PoolInfo = () => {
   return (
     <Box sx={{maxWidth: 380, margin: 'auto'}}>
       {poolInfo && <Box sx={{ background: 'rgba(173,216,230,0.6)', borderRadius: 1.5, padding: '8px 16px' }}>
-          <Typography fontSize='12px' sx={{fontWeight: 'bold'}} align='center'>Pool info</Typography>
+          <Typography fontSize='12px' sx={{fontWeight: 'bold'}} align='center'>{t('pool-info')}</Typography>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
-            <Typography fontSize='12px'>Liquidity (TVL)</Typography>
+            <Typography fontSize='12px'>{t('liquidity')} (TVL)</Typography>
             <Typography fontSize='12px'>${calculateDecimals(usd)}</Typography>
           </Box>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
