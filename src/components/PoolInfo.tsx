@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
-import { Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { fromDecimals } from 'utils'
 import { ton } from 'services/api/addresses'
 import { client, getPoolData } from 'services/api'
@@ -46,6 +46,7 @@ export const PoolInfo = () => {
           </Box>
         </Box>
       }
+      <Button onClick={() => fetchPoolData()}>Update</Button>
     </Box>
   )
 }

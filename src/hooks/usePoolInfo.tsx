@@ -10,7 +10,6 @@ export const usePoolInfo = () => {
 
   const fetchPoolData = async () => {
     if(!selectedToken || !client) return
-    console.log('%c upd', "background: red")
     const data = await getPoolData(Address.parse(selectedToken.ammMinter), selectedToken.ammVersion)
     setPoolInfo(data)
   }

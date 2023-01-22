@@ -41,9 +41,8 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      const endpoint = await getHttpEndpoint();
       const _client = new TonClient({
-        endpoint: endpoint,
+        endpoint: "https://mainnet.tonhubapi.com/jsonRPC",
       });
       setClienT(_client)
     })();

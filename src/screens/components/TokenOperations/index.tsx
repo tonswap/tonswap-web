@@ -116,7 +116,9 @@ const TokenOperations = ({
         }
       }
       await waiter();
-      onSuccess?.()
+       setTimeout(() => {
+         onSuccess?.()
+       },7000)
       setKeeperTransactionLink("");
       sendAnalyticsEvent()
       onResetAmounts();
