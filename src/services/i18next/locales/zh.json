@@ -56,6 +56,8 @@
     "more-info":"較多資訊",
     "risks-understanding": "交易前，確保您了解風險",
     "pool-info": "池信息流動性",
-    "liquidity": "流動性"
+    "liquidity": "流動性",
+    "warning": "警告",
+    "impact-warning": "價格影響警告!"
   }
 }
