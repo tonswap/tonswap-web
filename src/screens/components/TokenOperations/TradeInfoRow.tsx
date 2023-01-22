@@ -1,8 +1,8 @@
 import { Box, styled, Typography } from "@mui/material";
 
 interface Props {
-    title: string;
-    value: string;
+    title: React.ReactNode;
+    value: React.ReactNode;
 }
 
 const TradeInfoRow = ({ title, value }: Props) => {

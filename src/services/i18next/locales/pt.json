@@ -54,6 +54,8 @@
     "price-impact":"Impacto no preço:",
     "less-info":"Menos informações",
     "more-info":"Mais informações",
-    "risks-understanding": "Antes de negociar, certifique-se de entender os riscos"
+    "risks-understanding": "Antes de negociar, certifique-se de entender os riscos",
+    "warning": "AVISO",
+    "impact-warning": "Aviso de impacto de preço!"
   }
 }
