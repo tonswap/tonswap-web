@@ -7,11 +7,13 @@ import { ActionCategory, ActionType } from "services/wallets/types";
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
+import { usePoolInfo } from 'hooks/usePoolInfo'
 
 
 const RemoveLiquidity = () => {
   const { srcTokenAmount, selectedToken } = useTokenOperationsStore();
   const { t } = useTranslation();
+  const {fetchPoolData} = usePoolInfo()
 
   const getTxRequest = () => {
     gaAnalytics.removeLiquidityTransaction()
@@ -48,6 +50,7 @@ const RemoveLiquidity = () => {
       actionCategory={ActionCategory.MANAGE_LIQUIDITY}
       actionType={ActionType.REMOVE_LIQUIDITY}
       gasFee={API.GAS_FEE.REMOVE_LIQUIDITY}
+      onSuccess={fetchPoolData}
     />
   );
 }

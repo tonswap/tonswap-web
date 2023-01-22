@@ -12,6 +12,7 @@ import MainLoader from "components/MainLoader";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import { fromDecimals } from 'utils'
+import { usePoolInfo } from 'hooks/usePoolInfo'
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -19,6 +20,7 @@ const AddLiquidity = () => {
   const [haveReserves, setHaveReserves] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation()
+  const {fetchPoolData} = usePoolInfo()
 
   const getTxRequest = () => {
     gaAnalytics.addLiquidityTransaction()
@@ -105,6 +107,7 @@ const AddLiquidity = () => {
       actionType={ActionType.ADD_LIQUIDITY}
       gasFee={API.GAS_FEE.ADD_LIQUIDITY}
       disableInputDependency={!haveReserves}
+      onSuccess={fetchPoolData}
     />
   );
 };
