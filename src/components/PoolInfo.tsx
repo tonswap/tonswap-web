@@ -24,7 +24,7 @@ export const PoolInfo = () => {
   useEffect(() => {
     const fetchPoolData = async () => {
       if(!selectedToken || !client) return
-      const data = await getPoolData(Address.parse(selectedToken.ammMinter))
+      const data = await getPoolData(Address.parse(selectedToken.ammMinter), selectedToken.ammVersion)
       setPoolInfo(data)
     }
     fetchPoolData()
