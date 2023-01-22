@@ -14,12 +14,15 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 /* eslint no-eval: 0 */
 export let client: any;
 
-(async () => {
-    const endpoint = await getHttpEndpoint();
-    client = new TonClient({
-        endpoint: endpoint,
-    });
-})();
+
+let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
+
+
+
+client = new TonClient({
+    endpoint: rpcUrl,
+});
+
 
 export enum GAS_FEE {
     SWAP = 0.14,
