@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.ab0d3b56.js",
+    "main.js": "/static/js/main.e5214678.js",
     "static/js/554.9c1c1aa6.chunk.js": "/static/js/554.9c1c1aa6.chunk.js",
     "static/js/604.93afc5a7.chunk.js": "/static/js/604.93afc5a7.chunk.js",
     "static/js/178.288e93de.chunk.js": "/static/js/178.288e93de.chunk.js",
-    "static/js/960.129568e9.chunk.js": "/static/js/960.129568e9.chunk.js",
+    "static/js/960.c8a63da2.chunk.js": "/static/js/960.c8a63da2.chunk.js",
     "static/js/271.a94e89ee.chunk.js": "/static/js/271.a94e89ee.chunk.js",
     "static/js/65.413d50ca.chunk.js": "/static/js/65.413d50ca.chunk.js",
     "static/js/538.27016927.chunk.js": "/static/js/538.27016927.chunk.js",
     "static/js/702.1a032049.chunk.js": "/static/js/702.1a032049.chunk.js",
-    "static/js/465.f8aa7aa5.chunk.js": "/static/js/465.f8aa7aa5.chunk.js",
+    "static/js/465.a02d6ae1.chunk.js": "/static/js/465.a02d6ae1.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
@@ -27,6 +27,6 @@
   },
   "entrypoints": [
     "static/css/main.d4c93c62.css",
-    "static/js/main.ab0d3b56.js"
+    "static/js/main.e5214678.js"
   ]
 }
