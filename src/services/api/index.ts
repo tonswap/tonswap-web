@@ -1,4 +1,4 @@
-import { Address, Cell, toNano, fromNano, Wallet } from "ton";
+import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
 import { cellToString, delay, fromDecimals, hexToBn, toDecimals } from "utils";
 import { DexActions } from "./dex";
 import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
@@ -13,6 +13,16 @@ export const setClienT = (value: any) => {
 }
 /* eslint no-eval: 0 */
 export let client: any;
+
+
+let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
+
+
+
+client = new TonClient({
+    endpoint: rpcUrl,
+});
+
 
 export enum GAS_FEE {
     SWAP = 0.14,
