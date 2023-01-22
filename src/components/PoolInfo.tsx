@@ -20,7 +20,7 @@ const calculateDecimals = (val: string) => {
 
 export const PoolInfo = () => {
   const {poolInfo, fetchPoolData} = usePoolInfo()
-  const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo?.tonReserves.muln(2) || 0, ton.decimals))
+  const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo.tonReserves?.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
   const {t} = useTranslation()
 
@@ -38,15 +38,14 @@ export const PoolInfo = () => {
           </Box>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
             <Typography fontSize='12px'>TON</Typography>
-            <Typography fontSize='12px'>{calculateDecimals(fromDecimals(poolInfo.tonReserves, ton.decimals))}</Typography>
+            <Typography fontSize='12px'>{poolInfo?.tonReserves && calculateDecimals(fromDecimals(poolInfo.tonReserves, ton.decimals))}</Typography>
           </Box>
           <Box display='flex' alignItems='center' justifyContent='space-between' sx={{ width: '100%' }}>
             <Typography fontSize='12px'>{selectedToken?.displayName || "TOKEN"}</Typography>
-            <Typography fontSize='12px'>{selectedToken && calculateDecimals(fromDecimals(poolInfo.tokenReserves, selectedToken.decimals))}</Typography>
+            <Typography fontSize='12px'>{selectedToken && poolInfo?.tokenReserves && calculateDecimals(fromDecimals(poolInfo.tokenReserves, selectedToken.decimals))}</Typography>
           </Box>
         </Box>
       }
-      <Button onClick={() => fetchPoolData()}>Update</Button>
     </Box>
   )
 }
