@@ -17,13 +17,16 @@ const calculateDecimals = (val: string) => {
 }
 
 export const PoolInfo = () => {
-  const {fetchPoolData, poolInfo} = usePoolInfo()
+  const {fetchPoolData, poolInfo, resetPoolInfo} = usePoolInfo()
   const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo.tonReserves?.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
   const {t} = useTranslation()
 
   useEffect(() => {
     fetchPoolData()
+    return () => {
+      resetPoolInfo()
+    }
   }, [selectedToken, client])
 
   return (

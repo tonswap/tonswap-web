@@ -16,10 +16,17 @@ const poolInfoSlice = createSlice({
       state.tonReserves = action.payload.tonReserves
       state.mintable = action.payload.mintable
       state.totalSupply = action.payload.totalSupply
+    },
+    clearPoolInfo(state) {
+      state.tokenReserves = undefined
+      state.jettonWalletAddress = undefined
+      state.tonReserves = undefined
+      state.mintable = undefined
+      state.totalSupply = undefined
     }
   }
 })
 
-export const {setPoolInfo} = poolInfoSlice.actions
+export const {setPoolInfo, clearPoolInfo} = poolInfoSlice.actions
 
 export default poolInfoSlice.reducer
