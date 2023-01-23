@@ -12,7 +12,7 @@ import MainLoader from "components/MainLoader";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import { fromDecimals } from 'utils'
-import { usePoolInfo } from 'hooks/usePoolInfo'
+import { usePoolInfo } from 'store/pool-info/hooks'
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =

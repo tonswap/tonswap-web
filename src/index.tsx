@@ -13,12 +13,10 @@ import { ThemeProvider as MakeStylesProvider } from "@mui/styles";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
 import store from "store/store";
-import { RecoilRoot } from 'recoil'
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <MakeStylesProvider theme={theme}>
-      <RecoilRoot>
       <CssBaseline />
       <Router basename={process.env.PUBLIC_URL}>
         <SnackbarProvider maxSnack={3}>
@@ -27,7 +25,6 @@ ReactDOM.render(
           </Provider>
         </SnackbarProvider>
       </Router>
-      </RecoilRoot>
     </MakeStylesProvider>
   </ThemeProvider>,
   document.getElementById("root")
