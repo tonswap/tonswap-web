@@ -4,6 +4,7 @@ import wallet from "./wallet/reducer";
 import application from "./application/reducer";
 import tokens from "./tokens/reducer";
 import createPool from './create-pool/reducer'
+import poolInfo from './pool-info/reducer'
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     wallet,
     application,
     tokens,
-    createPool
+    createPool,
+    poolInfo
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({}),
 });

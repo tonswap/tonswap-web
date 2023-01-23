@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Box } from '@mui/system'
-import { Button, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import { fromDecimals } from 'utils'
 import { ton } from 'services/api/addresses'
-import { client, getPoolData } from 'services/api'
-import { Address } from 'ton'
-import BN from 'bn.js'
+import { client } from 'services/api'
 import useUsdValue from 'hooks/useUsdValue'
 import { useTokenOperationsStore } from 'store/token-operations/hooks'
 import { useTranslation } from 'react-i18next'
-import { usePoolInfo } from 'hooks/usePoolInfo'
+import { usePoolInfo } from 'store/pool-info/hooks'
 
 const calculateDecimals = (val: string) => {
   const n = parseFloat(val)
@@ -19,7 +17,7 @@ const calculateDecimals = (val: string) => {
 }
 
 export const PoolInfo = () => {
-  const {poolInfo, fetchPoolData} = usePoolInfo()
+  const {fetchPoolData, poolInfo} = usePoolInfo()
   const {usd} = useUsdValue(ton.name, fromDecimals(poolInfo.tonReserves?.muln(2) || 0, ton.decimals))
   const { selectedToken } = useTokenOperationsStore();
   const {t} = useTranslation()

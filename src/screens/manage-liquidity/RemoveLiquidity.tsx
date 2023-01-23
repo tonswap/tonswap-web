@@ -7,7 +7,7 @@ import { ActionCategory, ActionType } from "services/wallets/types";
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import { usePoolInfo } from 'hooks/usePoolInfo'
+import { usePoolInfo } from 'store/pool-info/hooks'
 
 
 const RemoveLiquidity = () => {
