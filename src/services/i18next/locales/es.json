@@ -55,6 +55,8 @@
     "less-info":"Menos información",
     "more-info":"Más información",
     "risks-understanding": "Antes de operar, asegúrese de comprender los riesgos",
+    "pool-info": "Liquidez de la información del pool",
+    "liquidity": "Liquidez",
     "warning": "ADVERTENCIA",
     "impact-warning": "Advertencia de impacto de precio!"
   }

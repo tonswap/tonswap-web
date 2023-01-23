@@ -55,6 +55,8 @@
     "less-info":"Less Info",
     "more-info":"More Info",
     "risks-understanding": "Before trading, make sure you understand the risks",
+    "pool-info": "Pool info",
+    "liquidity": "Liquidity",
     "warning": "WARNING",
     "impact-warning": "Price Impact warning!"
   }

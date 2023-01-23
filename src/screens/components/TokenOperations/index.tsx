@@ -45,6 +45,7 @@ interface Props {
   actionType: ActionType;
   gasFee: GAS_FEE;
   disableInputDependency?: boolean;
+  onSuccess?: any
 }
 
 const TokenOperations = ({
@@ -60,6 +61,7 @@ const TokenOperations = ({
   actionType,
   gasFee,
   disableInputDependency,
+  onSuccess
 }: Props) => {
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
@@ -114,6 +116,9 @@ const TokenOperations = ({
         }
       }
       await waiter();
+       setTimeout(() => {
+         onSuccess?.()
+       },7000)
       setKeeperTransactionLink("");
       sendAnalyticsEvent()
       onResetAmounts();

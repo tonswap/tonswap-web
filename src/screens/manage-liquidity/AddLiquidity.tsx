@@ -1,19 +1,18 @@
 import { ton } from "services/api/addresses";
-import { SvgIcon } from "@mui/material";
 import TokenOperations from "screens/components/TokenOperations";
 import * as API from "services/api";
-import { ReactComponent as Plus } from "assets/images/shared/plus.svg";
 import { useTokenOperationsStore } from "store/token-operations/hooks";
 import useTokenFromParams from "hooks/useTokenFromParams";
 import { ActionCategory, ActionType } from "services/wallets/types";
 import BN from "bn.js";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useEffect, useState } from "react";
-import { Address, fromNano } from "ton";
+import { Address } from "ton";
 import MainLoader from "components/MainLoader";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import { fromDecimals } from "utils";
+import { fromDecimals } from 'utils'
+import { usePoolInfo } from 'store/pool-info/hooks'
 
 const AddLiquidity = () => {
   const { srcTokenAmount, destTokenAmount, selectedToken } =
@@ -21,6 +20,7 @@ const AddLiquidity = () => {
   const [haveReserves, setHaveReserves] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation()
+  const {fetchPoolData} = usePoolInfo()
 
   const getTxRequest = () => {
     gaAnalytics.addLiquidityTransaction()
@@ -107,6 +107,7 @@ const AddLiquidity = () => {
       actionType={ActionType.ADD_LIQUIDITY}
       gasFee={API.GAS_FEE.ADD_LIQUIDITY}
       disableInputDependency={!haveReserves}
+      onSuccess={fetchPoolData}
     />
   );
 };
