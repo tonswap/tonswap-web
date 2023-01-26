@@ -41,6 +41,7 @@ export enum Adapters {
     TON_HUB = "tonhub",
     TON_WALLET = "ton-wallet",
     TON_KEEPER = "ton-keeper",
+    OPENMASK = 'openmask'
 }
 
 export interface Adapter {
@@ -50,6 +51,7 @@ export interface Adapter {
     mobileCompatible: boolean;
     description: string;
     disabled?: boolean;
+    tonConnect?: boolean
 }
 
 export enum ActionCategory {

@@ -10,9 +10,11 @@ import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
 import { useEffect } from 'react'
-import { getHttpEndpoint } from '@orbs-network/ton-access'
 import { TonClient } from 'ton'
 import { setClienT } from 'services/api'
+import { getSupportedWallets } from 'services/wallets/adapters/TonConnectAdapter'
+import { adapters } from 'services/wallets/config'
+import { Adapters } from 'services/wallets/types'
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -47,6 +49,25 @@ const App = () => {
       setClienT(_client)
     })();
   }, [])
+
+  useEffect(() => {
+    const fetchTonConnectDevices = async () => {
+      const supportedWallets = await getSupportedWallets()
+      supportedWallets.map((w) => {
+        adapters.push({
+          name: w.name,
+          type: w.name === 'OpenMask' ? Adapters.OPENMASK : Adapters.TON_KEEPER,
+          icon: w.imageUrl,
+          mobileCompatible: w.name !== 'OpenMask',
+          description: w.name === 'OpenMask'
+            ? 'TON Wallet Plugin for Google Chrome'
+            : 'A mobile wallet in your pocket',
+          tonConnect: true,
+        })
+      })
+    }
+    fetchTonConnectDevices()
+  },[])
 
   return (
     <>

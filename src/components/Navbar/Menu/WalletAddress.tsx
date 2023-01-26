@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import SelectLanguage from "./SelectLanguage";
 import { isTelegramWebApp } from "utils";
+import { disconnectTC } from 'services/wallets/adapters/TonConnectAdapter'
 
 const StyledIconButton = styled("button")({
   cursor: "pointer",
@@ -51,6 +52,7 @@ const WalletAddress = observer(() => {
 
   const onDisconnect = () => {
     resetWallet();
+    disconnectTC();
     setShowDisconnect(false);
     gaAnalytics.disconnect();
   };
