@@ -1,7 +1,14 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
-import { Wallet } from "services/wallets/types";
-import { awaitWalletReadiness, resetWallet, setConnecting, setSession, updateWallet } from "./actions";
+import { Adapter, Wallet } from 'services/wallets/types'
+import {
+    awaitWalletReadiness,
+    fetchTonConnectWallets,
+    resetWallet,
+    setConnecting,
+    setSession,
+    updateWallet,
+} from './actions'
+import { adapters } from 'services/wallets/config'
 
 interface State {
     address?: string;
@@ -11,6 +18,9 @@ interface State {
     adapterId?: string;
     sessionLink?: string;
     connecting: boolean;
+    tonConnectWallets?: Adapter[]
+    allWallets?: Adapter[]
+    mobileWallets?: Adapter[]
 }
 
 const initialState: State = {
@@ -61,8 +71,15 @@ const reducer = createReducer(initialState, (builder) => {
             localStorage.setItem("wallet:adapter-id", adapterId);
             localStorage.setItem("wallet:session", JSON.stringify({ ...state.session, address: wallet.address }));
             state.connecting = false;
-        });
+        })
 
+      .addCase(fetchTonConnectWallets.fulfilled, (state, action) => {
+          state.tonConnectWallets = action.payload
+          const _allWallets = [...adapters, ...action.payload]
+          state.allWallets = _allWallets
+
+          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
+      })
     // Or, you can reference the .type field:
     // if using TypeScript, the action type cannot be inferred that way
 });

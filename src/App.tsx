@@ -12,9 +12,8 @@ import './services/i18next/i18n';
 import { useEffect } from 'react'
 import { TonClient } from 'ton'
 import { setClienT } from 'services/api'
-import { getSupportedWallets } from 'services/wallets/adapters/TonConnectAdapter'
-import { adapters } from 'services/wallets/config'
-import { Adapters } from 'services/wallets/types'
+import { useDispatch } from 'react-redux'
+import { fetchTonConnectWallets } from 'store/wallet/actions'
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -35,6 +34,7 @@ const StyledRoutesContainer = styled(AppGrid)({
 
 const App = () => {
   const { restoreSession } = useWalletActions();
+  const dispatch = useDispatch<any>()
   useWebAppResize();
 
   useEffectOnce(() => {
@@ -48,26 +48,8 @@ const App = () => {
       });
       setClienT(_client)
     })();
+    dispatch(fetchTonConnectWallets())
   }, [])
-
-  useEffect(() => {
-    const fetchTonConnectDevices = async () => {
-      const supportedWallets = await getSupportedWallets()
-      supportedWallets.map((w) => {
-        adapters.push({
-          name: w.name,
-          type: w.name === 'OpenMask' ? Adapters.OPENMASK : Adapters.TON_KEEPER,
-          icon: w.imageUrl,
-          mobileCompatible: w.name !== 'OpenMask',
-          description: w.name === 'OpenMask'
-            ? 'TON Wallet Plugin for Google Chrome'
-            : 'A mobile wallet in your pocket',
-          tonConnect: true,
-        })
-      })
-    }
-    fetchTonConnectDevices()
-  },[])
 
   return (
     <>

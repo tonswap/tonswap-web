@@ -40,13 +40,13 @@ export interface TransactionDetails {
   message?: Cell;
 }
 
-export const connector = new TonConnect({ manifestUrl: "https://tonverifier.live/tonconnect-manifest.json"}); // add storage if needed
+export const connector = new TonConnect({ manifestUrl: "https://tonverifier.live/tonconnect-manifest.json"});
 
  export async function disconnectTC(): Promise<void> {
   await connector.disconnect();
 }
 
-export const getSupportedWallets = async () => await connector.getWallets();
+export const getTonConnectWallets = async () => await connector.getWallets();
 
 function isInjected(walletInfo: WalletInfo): walletInfo is WalletInfoInjected {
   return "jsBridgeKey" in walletInfo && "injected" in walletInfo && walletInfo.injected;
@@ -57,14 +57,7 @@ function isRemote(walletInfo: WalletInfo): walletInfo is WalletInfoRemote {
 }
 
 export async function connect(walletInfo: any, config: any): Promise<Wallet> {
-  if (!walletInfo) {
-  const wallets = await connector.getWallets();
-  walletInfo = wallets.find((w) => w.name === "Tonkeeper");
-  if (!walletInfo) {
-    throw new Error("Tonkeeper wallet not found");
-  }
-}
-const getWalletP = new Promise<Wallet>((resolve, reject) => {
+  const getWalletP = new Promise<Wallet>((resolve, reject) => {
   connector.onStatusChange((wallet) => {
     try {
       if (wallet) {
@@ -100,7 +93,7 @@ return getWalletP;
 }
 
 
-async function requestTransaction(
+export async function requestTonConnectTransaction(
   request: TransactionDetails,
   onSuccess?: (() => void) | undefined
 ): Promise<void> {

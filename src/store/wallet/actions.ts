@@ -1,6 +1,7 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Adapters, Wallet } from "services/wallets/types";
+import { Adapter, Adapters, Wallet } from 'services/wallets/types'
 import { walletService } from "services/wallets/WalletService";
+import { getTonConnectWallets } from 'services/wallets/adapters/TonConnectAdapter'
 
 export const onWalletConnect = createAction<{
     wallet: Wallet;
@@ -17,6 +18,7 @@ export const awaitWalletReadiness = createAsyncThunk<
     { wallet: Wallet; adapterId: Adapters },
     { adapterId: Adapters; session: string | {} }
 >("wallet/createWalletSession", async ({ adapterId, session }, thunkApi) => {
+
     const wallet = await walletService.awaitReadiness(adapterId, session);
     if (!wallet) {
         thunkApi.dispatch(resetWallet);
@@ -27,3 +29,24 @@ export const awaitWalletReadiness = createAsyncThunk<
         adapterId,
     };
 });
+
+export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
+  "wallet/fetchTonConnectWallets", async () => {
+      const supportedWallets = await getTonConnectWallets()
+      const result = supportedWallets.map((w) => {
+          return {
+              name: w.name,
+              type: w.name === 'OpenMask' ? Adapters.OPENMASK : Adapters.TON_KEEPER,
+              icon: w.imageUrl,
+              mobileCompatible: w.name !== 'OpenMask',
+              description: w.name === 'OpenMask'
+                ? 'TON Wallet Plugin for Google Chrome'
+                : 'A mobile wallet in your pocket',
+              tonConnect: true,
+              walletInfo: w,
+          }
+      })
+
+    return result
+  }
+)

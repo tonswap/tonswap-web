@@ -1,4 +1,5 @@
 import { StateInit } from "ton";
+import { WalletInfo } from '@tonconnect/sdk'
 
 export interface TransactionRequest {
     /** Destination */
@@ -52,6 +53,8 @@ export interface Adapter {
     description: string;
     disabled?: boolean;
     tonConnect?: boolean
+    //Only for TonConnect
+    walletInfo?: WalletInfo
 }
 
 export enum ActionCategory {
