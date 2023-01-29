@@ -219,7 +219,7 @@ export async function getPoolInfo(token: string) {
     return getPoolData(tokenObjects.ammMinter, tokenObjects.ammVersion);
 }
 //tokenReserves -> Liquidity
-export async function getPoolData(ammMinter: Address, version = 1.1) {
+export async function getPoolData(ammMinter: Address, version = 1.2) {
     let command = version == 1.1 ? "get_jetton_data" : "get_pool_data";
     let res = await client.callGetMethod(ammMinter, command, []);
 
