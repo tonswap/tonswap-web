@@ -7,21 +7,21 @@ import { OPS } from "./ops";
 import { BASE_ERROR_MESSAGE} from "consts";
 import { parseJettonOnchainMetadata } from "./deploy-pool";
 import { getWalletAddress } from "store/wallet/utils";
+import { getHttpEndpoint } from "@orbs-network/ton-access";
 
 export const setClienT = (value: any) => {
     client = value
 }
+
 /* eslint no-eval: 0 */
 export let client: any;
 
-
-let rpcUrl = "https://mainnet.tonhubapi.com/jsonRPC";
-
-
-
-client = new TonClient({
-    endpoint: rpcUrl,
-});
+(async () => {
+    const endpoint = await getHttpEndpoint();
+    client = new TonClient({
+        endpoint: endpoint,
+    });
+})();
 
 
 export enum GAS_FEE {
@@ -112,7 +112,9 @@ export async function _getJettonBalance(jettonWallet: Address, minterAddress?: A
 
 export const getTokenBalanceByMinter = async (minterAddress: Address) => {
     let cell = new Cell();
+    let user = Address.parse("EQC9hxkJ9YQVhonPhlIMVMjvojVZlz3cSwggy9EsUUgywsRY");
     cell.bits.writeAddress(getOwner());
+
     const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
     const jettonWallet = await callWithRetry(minterAddress, "get_wallet_address", [["tvm.Slice", b64data]]);
 
@@ -120,6 +122,26 @@ export const getTokenBalanceByMinter = async (minterAddress: Address) => {
     return _getJettonBalance(jettonWalletAddress, minterAddress);
     // jettonWalletAddress = Address.parse("kQBaIvo07zP5git3cfVmImayYzTfhKT3L2wZmE2qBIVbaCXv");
 };
+
+
+export const getTokenBalanceByMinterForUser = async (minterAddress: Address, user: Address) => {
+    let cell = new Cell();
+    cell.bits.writeAddress(user);
+    const b64data = bytesToBase64(await cell.toBoc({ idx: false }));
+    const jettonWallet = await callWithRetry(minterAddress, "get_wallet_address", [["tvm.Slice", b64data]]);
+    
+    let jettonWalletAddress = bytesToAddress(jettonWallet.stack[0][1].bytes);
+    console.log('jettonWallet:', jettonWalletAddress.toFriendly());
+    return _getJettonBalance(jettonWalletAddress, minterAddress);
+    // jettonWalletAddress = Address.parse("kQBaIvo07zP5git3cfVmImayYzTfhKT3L2wZmE2qBIVbaCXv");
+};
+
+
+//@ts-ignore
+window.getTokenBalanceByMinterForUser = getTokenBalanceByMinterForUser;
+
+//@ts-ignore
+window.Address = Address;
 
 export const getTonBalance = async () => {
     const balance = await client.getBalance(getOwner());
@@ -197,7 +219,7 @@ export async function getPoolInfo(token: string) {
     return getPoolData(tokenObjects.ammMinter, tokenObjects.ammVersion);
 }
 //tokenReserves -> Liquidity
-export async function getPoolData(ammMinter: Address, version = 1.2) {
+export async function getPoolData(ammMinter: Address, version = 1.1) {
     let command = version == 1.1 ? "get_jetton_data" : "get_pool_data";
     let res = await client.callGetMethod(ammMinter, command, []);
 
