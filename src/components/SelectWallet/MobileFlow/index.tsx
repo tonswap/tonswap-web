@@ -52,7 +52,7 @@ const MobileFlow = observer(({ closeModal }: Props) => {
         adapters={wallets || []}
         onClose={closeModal}
         open={true}
-        select={selectWallet}
+        select={openDeepLink}
         isLoading={false}
       />
     </StyledContainer>
