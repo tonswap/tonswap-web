@@ -108,7 +108,6 @@ const TokenOperations = ({
     const selectedAdapter = useSelectedAdapter()
 
     const submitTransaction = async () => {
-      debugger
         const tx = async () => {
           const txRequest = await getTxRequest();
 
@@ -119,13 +118,21 @@ const TokenOperations = ({
           )
           if(!selectedAdapter?.tonConnect) {
             let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
-            console.log(deepLinkUrl)
+            if(typeof deepLinkUrl === 'string') {
+              if(isMobile) {
+                window.location.href = deepLinkUrl
+              } else {
+                setKeeperTransactionLink(deepLinkUrl)
+              }
+            }
           } else {
             const result = await requestTonConnectTransaction(txRequest)
-            console.log(result)
           }
           await waiter();
         }
+        setKeeperTransactionLink('')
+      sendAnalyticsEvent()
+      getTokensBalance(getBalances)
       sendTransaction(tx)
     }
 
