@@ -22,6 +22,7 @@ interface Props {
 const MobileFlow = observer(({ closeModal }: Props) => {
   const {selectWallet, session} = useWalletSelect()
   const selectedAdapter = useSelectedAdapter()
+  const wallets = useSelector((state: RootState) => state.wallet.allWallets)
 
   const openDeepLink = () => {
     if (session) {
@@ -48,7 +49,7 @@ const MobileFlow = observer(({ closeModal }: Props) => {
     <StyledContainer style={{ width: "100%" }}>
       <AdaptersList
         adapterLoading={selectedAdapter ? selectedAdapter.type : undefined}
-        adapters={selectedAdapter ? [selectedAdapter] : []}
+        adapters={wallets || []}
         onClose={closeModal}
         open={true}
         select={selectWallet}
