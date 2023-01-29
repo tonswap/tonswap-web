@@ -320,7 +320,7 @@ export const fetchDisabledTokensPrice = async (name: string) => {
 let tonPrice = 0;
 let cgPromise: Promise<Response> | null;
 
-async function fetchPrice() {
+export async function fetchPrice() {
     if (cgPromise) {
         await new Promise(async (resolve) => {
             await cgPromise;
