@@ -49,10 +49,10 @@ const MobileFlow = observer(({ closeModal }: Props) => {
     <StyledContainer style={{ width: "100%" }}>
       <AdaptersList
         adapterLoading={selectedAdapter ? selectedAdapter.type : undefined}
-        adapters={wallets || []}
+        adapters={wallets}
         onClose={closeModal}
         open={true}
-        select={openDeepLink}
+        select={selectWallet}
         isLoading={false}
       />
     </StyledContainer>
