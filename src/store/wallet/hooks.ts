@@ -3,16 +3,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Adapter, Adapters } from 'services/wallets/types'
 import { walletService } from 'services/wallets/WalletService'
 import { RootState } from 'store/store'
-import { awaitWalletReadiness, resetWallet, setConnecting, updateWallet } from './actions'
+import { awaitWalletReadiness, resetWallet, setAdapter, setConnecting, updateWallet } from './actions'
 import { connect } from 'services/wallets/adapters/TonConnectAdapter'
 
 export const useWalletStore = () => {
   return useSelector((state: RootState) => state.wallet)
 }
 
+export const useSelectedAdapter = () => {
+  return useSelector((state: RootState) => state.wallet.adapter)
+}
+
+
 export const useWalletSelect = () => {
   const dispatch = useDispatch<any>()
-  const [adapter, setAdapter] = useState<Adapter | null>(null)
   const [session, setSession] = useState<null | string>(null)
   const { resetWallet } = useWalletActions()
   const wallets = useSelector((state:RootState) => state.wallet.allWallets)
@@ -25,8 +29,8 @@ export const useWalletSelect = () => {
     resetWallet()
     const adapter:Adapter | null = wallets?.find((wallet) => wallet.type === adapterId) || null
     if(!adapter) return
-    setAdapter(adapter)
 
+    dispatch(setAdapter(adapter))
     if (!supportsTonConnect) {
       const _session: string | {} = await walletService.createSession(adapterId)
       dispatch(awaitWalletReadiness({ adapterId, session: _session }))
@@ -47,7 +51,7 @@ export const useWalletSelect = () => {
     })
     dispatch(updateWallet({ wallet, adapterId: Adapters.TON_KEEPER }))
   }
-  return { selectWallet, session, resetWallet: _resetWallet, adapter }
+  return { selectWallet, session, resetWallet: _resetWallet }
 }
 
 export const useWalletActions = (): {

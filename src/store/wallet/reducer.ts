@@ -6,6 +6,7 @@ import {
     resetWallet,
     setConnecting,
     setSession,
+    setAdapter,
     updateWallet,
 } from './actions'
 import { adapters } from 'services/wallets/config'
@@ -21,6 +22,7 @@ interface State {
     tonConnectWallets?: Adapter[]
     allWallets?: Adapter[]
     mobileWallets?: Adapter[]
+    adapter?: Adapter
 }
 
 const initialState: State = {
@@ -80,6 +82,9 @@ const reducer = createReducer(initialState, (builder) => {
 
           state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
       })
+        .addCase(setAdapter, (state, action) => {
+            state.adapter = action.payload
+        })
     // Or, you can reference the .type field:
     // if using TypeScript, the action type cannot be inferred that way
 });

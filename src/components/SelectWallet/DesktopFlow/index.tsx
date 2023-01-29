@@ -2,7 +2,7 @@ import { styled } from '@mui/styles'
 import { Box } from '@mui/material'
 import QR from './QR'
 import AdaptersList from '../AdaptersList'
-import { useWalletSelect } from 'store/wallet/hooks'
+import { useSelectedAdapter, useWalletSelect } from 'store/wallet/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/store'
 
@@ -20,7 +20,8 @@ interface Props {
 }
 
 const DesktopFlow = ({ closeModal }: Props) => {
-  const {selectWallet, session, adapter} = useWalletSelect()
+  const {selectWallet, session} = useWalletSelect()
+  const adapter = useSelectedAdapter()
   const wallets = useSelector((state: RootState) => state.wallet.allWallets)
 
   return (

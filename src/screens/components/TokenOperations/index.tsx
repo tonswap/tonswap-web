@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ActionButton, Popup } from "components";
-import { getToken, PoolInfo } from "services/api/addresses";
+import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
@@ -11,14 +11,14 @@ import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
-import { useWalletStore } from "store/wallet/hooks";
+import { useSelectedAdapter, useWalletStore } from 'store/wallet/hooks'
 import {
   useIsExpandedView,
   useWalletModalToggle,
 } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
-import { ActionCategory, ActionType, Adapters } from "services/wallets/types";
+import { ActionCategory, ActionType, Adapters } from 'services/wallets/types'
 import { client, GAS_FEE, waitForSeqno } from "services/api";
 import { Address } from "ton";
 import SuccessModal from "./SuccessModal";
@@ -27,10 +27,10 @@ import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import TradeInfo from "./TradeInfo";
 import TxLoader from "./TxLoader";
 import { isMobile } from "react-device-detect";
 import { QRCode } from "react-qrcode-logo";
+import { requestTonConnectTransaction } from 'services/wallets/adapters/TonConnectAdapter'
 
 interface Props {
   srcToken: PoolInfo;
@@ -99,34 +99,67 @@ const TokenOperations = ({
     }
   };
 
-  const submitTransaction = async () => {
-    const tx = async () => {
-      const txRequest = await getTxRequest();
-      const waiter = await waitForSeqno(
-        client.openWalletFromAddress({
-          source: Address.parse(address!!),
-        })
-      );
-      let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
-      if (typeof deepLinkUrl == "string") {
-        if (isMobile) {
-          window.location.href = deepLinkUrl;
-        } else {
-          setKeeperTransactionLink(deepLinkUrl);
-        }
-      }
-      await waiter();
-       setTimeout(() => {
-         onSuccess?.()
-       },7000)
-      setKeeperTransactionLink("");
-      sendAnalyticsEvent()
-      onResetAmounts();
-      getTokensBalance(getBalances);
-    };
+  //create hook for submitting transactions}
+  //check adapter type
+  //according to adapter type use exact requestTransaction
+  //hook returns status (pending, error, success)
 
-    sendTransaction(tx);
+  const useSubmitTransaction = () => {
+    const selectedAdapter = useSelectedAdapter()
+
+    const submitTransaction = async () => {
+      debugger
+        const tx = async () => {
+          const txRequest = await getTxRequest();
+
+          const waiter = await waitForSeqno(
+            client.openWalletFromAddress({
+              source: Address.parse(address!!),
+            })
+          )
+          if(!selectedAdapter?.tonConnect) {
+            let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
+            console.log(deepLinkUrl)
+          } else {
+            const result = await requestTonConnectTransaction(txRequest)
+            console.log(result)
+          }
+          await waiter();
+        }
+      sendTransaction(tx)
+    }
+
+    return submitTransaction
   }
+
+  const submitTransaction = useSubmitTransaction()
+
+  // const submitTransaction = async () => {
+  //   const tx = async () => {
+  //     const txRequest = await getTxRequest();
+  //     const waiter = await waitForSeqno(
+  //       client.openWalletFromAddress({
+  //         source: Address.parse(address!!),
+  //       })
+  //     );
+  //     let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
+  //     if (typeof deepLinkUrl == "string") {
+  //       if (isMobile) {
+  //         window.location.href = deepLinkUrl;
+  //       } else {
+  //         setKeeperTransactionLink(deepLinkUrl);
+  //       }
+  //     }
+  //     await waiter();
+  //      setTimeout(() => {
+  //        onSuccess?.()
+  //      },7000)
+  //     setKeeperTransactionLink("");
+  //     sendAnalyticsEvent()
+  //     onResetAmounts();
+  //     getTokensBalance(getBalances);
+  //   };
+  // }
 
   useEffect(() => {
     if (address && refreshAmountsOnActionChange) {

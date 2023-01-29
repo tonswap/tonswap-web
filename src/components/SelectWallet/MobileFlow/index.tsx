@@ -2,7 +2,9 @@ import { styled } from "@mui/styles";
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import AdaptersList from "../AdaptersList";
-import { useWalletSelect } from 'store/wallet/hooks'
+import { useSelectedAdapter, useWalletSelect } from 'store/wallet/hooks'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store/store'
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -18,7 +20,8 @@ interface Props {
 }
 
 const MobileFlow = observer(({ closeModal }: Props) => {
-  const {selectWallet, session, adapter: selectedAdapter} = useWalletSelect()
+  const {selectWallet, session} = useWalletSelect()
+  const selectedAdapter = useSelectedAdapter()
 
   const openDeepLink = () => {
     if (session) {

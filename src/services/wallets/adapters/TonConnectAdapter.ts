@@ -1,9 +1,9 @@
 import TonConnect, {
-  IStorage,
+  IStorage, SendTransactionResponse,
   WalletInfo,
   WalletInfoInjected,
   WalletInfoRemote,
-} from "@tonconnect/sdk";
+} from '@tonconnect/sdk'
 import { Address, Cell, StateInit } from 'ton'
 import BN from 'bn.js'
 
@@ -34,8 +34,8 @@ export interface Wallet {
 }
 
 export interface TransactionDetails {
-  to: Address;
-  value: BN;
+  to: string;
+  value: string;
   stateInit?: StateInit;
   message?: Cell;
 }
@@ -88,21 +88,20 @@ if (!connector.connected) {
     throw new Error("Unknown wallet type");
   }
 }
-
 return getWalletP;
 }
 
 
 export async function requestTonConnectTransaction(
   request: TransactionDetails,
-  onSuccess?: (() => void) | undefined
-): Promise<void> {
-  await connector.sendTransaction({
+  // onSuccess?: (() => void) | undefined
+): Promise<SendTransactionResponse> {
+  return connector.sendTransaction({
     validUntil: Date.now() + 5 * 60 * 1000,
     messages: [
       {
-        address: request.to.toFriendly(),
-        amount: request.value.toString(),
+        address: request.to,
+        amount: request.value,
         stateInit: request.stateInit
           ? stateInitToBuffer(request.stateInit).toString("base64")
           : undefined,
@@ -111,5 +110,5 @@ export async function requestTonConnectTransaction(
     ],
   });
 
-  onSuccess?.();
+  // onSuccess?.();
 }

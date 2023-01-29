@@ -9,6 +9,7 @@ export const onWalletConnect = createAction<{
 }>("wallet/onWalletConnect");
 export const resetWallet = createAction("wallet/resetWallet");
 export const setConnecting = createAction<boolean>("wallet/setConnecting");
+export const setAdapter = createAction<Adapter>("wallet/setAdapter")
 
 export const setSession = createAction<string | {}>("wallet/setSession");
 export const updateWallet = createAction<any>("wallet/updateWallet");
