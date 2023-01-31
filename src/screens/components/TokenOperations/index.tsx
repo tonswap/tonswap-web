@@ -85,6 +85,7 @@ const TokenOperations = ({
     getTokensBalance,
     resetTokensBalance,
     sendTransaction,
+    sendTonConnectTransaction,
   } = useTokenOperationsActions();
   const { t } = useTranslation();
 
@@ -99,74 +100,45 @@ const TokenOperations = ({
     }
   };
 
-  //create hook for submitting transactions}
-  //check adapter type
-  //according to adapter type use exact requestTransaction
-  //hook returns status (pending, error, success)
-
   const useSubmitTransaction = () => {
     const selectedAdapter = useSelectedAdapter()
 
     const submitTransaction = async () => {
-        const tx = async () => {
-          const txRequest = await getTxRequest();
+      const txRequest = await getTxRequest();
 
-          const waiter = await waitForSeqno(
-            client.openWalletFromAddress({
-              source: Address.parse(address!!),
-            })
-          )
-          if(!selectedAdapter?.tonConnect) {
-            let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
-            if(typeof deepLinkUrl === 'string') {
-              if(isMobile) {
-                window.location.href = deepLinkUrl
-              } else {
-                setKeeperTransactionLink(deepLinkUrl)
-              }
+      const waiter = await waitForSeqno(
+        client.openWalletFromAddress({
+          source: Address.parse(address!!),
+        })
+      )
+
+      if(!selectedAdapter?.tonConnect) {
+        const tx = async () => {
+          let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
+          if (typeof deepLinkUrl === 'string') {
+            if (isMobile) {
+              window.location.href = deepLinkUrl
+            } else {
+              setKeeperTransactionLink(deepLinkUrl)
             }
-          } else {
-            const result = await requestTonConnectTransaction(txRequest)
           }
-          await waiter();
         }
-        setKeeperTransactionLink('')
+        sendTransaction(tx)
+        await waiter();
+      } else {
+        sendTonConnectTransaction(async () => await requestTonConnectTransaction(txRequest))
+        await waiter();
+      }
+
+      setKeeperTransactionLink('')
       sendAnalyticsEvent()
       getTokensBalance(getBalances)
-      sendTransaction(tx)
     }
 
     return submitTransaction
   }
 
   const submitTransaction = useSubmitTransaction()
-
-  // const submitTransaction = async () => {
-  //   const tx = async () => {
-  //     const txRequest = await getTxRequest();
-  //     const waiter = await waitForSeqno(
-  //       client.openWalletFromAddress({
-  //         source: Address.parse(address!!),
-  //       })
-  //     );
-  //     let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
-  //     if (typeof deepLinkUrl == "string") {
-  //       if (isMobile) {
-  //         window.location.href = deepLinkUrl;
-  //       } else {
-  //         setKeeperTransactionLink(deepLinkUrl);
-  //       }
-  //     }
-  //     await waiter();
-  //      setTimeout(() => {
-  //        onSuccess?.()
-  //      },7000)
-  //     setKeeperTransactionLink("");
-  //     sendAnalyticsEvent()
-  //     onResetAmounts();
-  //     getTokensBalance(getBalances);
-  //   };
-  // }
 
   useEffect(() => {
     if (address && refreshAmountsOnActionChange) {

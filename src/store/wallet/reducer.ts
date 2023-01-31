@@ -5,7 +5,7 @@ import {
     fetchTonConnectWallets,
     resetWallet,
     setConnecting,
-    setSession,
+    setTonHubSession,
     setAdapter,
     updateWallet,
 } from './actions'
@@ -55,8 +55,9 @@ const reducer = createReducer(initialState, (builder) => {
             state.wallet = payload.wallet;
             state.adapterId = payload.adapterId;
             state.address = payload.wallet.address;
+            state.connecting = false
         })
-        .addCase(setSession, (state, action) => {
+        .addCase(setTonHubSession, (state, action) => {
             const { payload } = action;
             const session = typeof payload === "string" ? JSON.parse(payload) : payload;
             state.session = session;
@@ -70,8 +71,10 @@ const reducer = createReducer(initialState, (builder) => {
             state.wallet = wallet;
             state.adapterId = adapterId;
             state.address = wallet.address;
-            localStorage.setItem("wallet:adapter-id", adapterId);
-            localStorage.setItem("wallet:session", JSON.stringify({ ...state.session, address: wallet.address }));
+            if(!!state.session && adapterId) {
+                localStorage.setItem("wallet:adapter-id", adapterId);
+                localStorage.setItem("wallet:session", JSON.stringify({ ...state.session, address: wallet.address }));
+            }
             state.connecting = false;
         })
 

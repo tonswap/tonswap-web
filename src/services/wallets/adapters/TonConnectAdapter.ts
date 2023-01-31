@@ -5,7 +5,6 @@ import TonConnect, {
   WalletInfoRemote,
 } from '@tonconnect/sdk'
 import { Address, Cell, StateInit } from 'ton'
-import BN from 'bn.js'
 
 export const getWallets = () => {
   return connector.getWallets()
@@ -43,7 +42,14 @@ export interface TransactionDetails {
 export const connector = new TonConnect({ manifestUrl: "https://tonverifier.live/tonconnect-manifest.json"});
 
  export async function disconnectTC(): Promise<void> {
-  await connector.disconnect();
+   localStorage.removeItem('ton-connect-storage_bridge-connection')
+   localStorage.removeItem('ton-connect-storage_http-bridge-gateway')
+
+   try {
+     await connector.disconnect();
+   } catch (e) {
+     console.log(e)
+   }
 }
 
 export const getTonConnectWallets = async () => await connector.getWallets();
@@ -94,8 +100,8 @@ return getWalletP;
 
 export async function requestTonConnectTransaction(
   request: TransactionDetails,
-  // onSuccess?: (() => void) | undefined
 ): Promise<SendTransactionResponse> {
+  await connector.restoreConnection()
   return connector.sendTransaction({
     validUntil: Date.now() + 5 * 60 * 1000,
     messages: [
@@ -109,6 +115,4 @@ export async function requestTonConnectTransaction(
       },
     ],
   });
-
-  // onSuccess?.();
 }

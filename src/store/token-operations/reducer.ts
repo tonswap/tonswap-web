@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PoolInfo } from "services/api/addresses";
 
-import { getAmounts, onSendTransaction } from "./actions";
+import { getAmounts, onSendTonConnectTransaction, onSendTransaction } from './actions'
 
 interface TxConfirmation {
   destTokenAmount: string;
@@ -134,7 +134,23 @@ const WalletOperationSlice = createSlice({
       .addCase(onSendTransaction.fulfilled, (state, action) => {
         state.txPending = false;
         state.txSuccess = true;
-      });
+      })
+      .addCase(onSendTonConnectTransaction.pending, (state, action) => {
+        state.txPending = true;
+        state.txConfirmation = {
+          destTokenAmount: state.destTokenAmount,
+          srcTokenAmount: state.srcTokenAmount,
+          tokenName: state.selectedToken?.displayName,
+        };
+      })
+      .addCase(onSendTonConnectTransaction.rejected, (state, action) => {
+        state.txError = action.error.message;
+        state.txPending = false;
+      })
+      .addCase(onSendTonConnectTransaction.fulfilled, (state, action) => {
+        state.txPending = false;
+        state.txSuccess = true;
+    })
   },
 });
 

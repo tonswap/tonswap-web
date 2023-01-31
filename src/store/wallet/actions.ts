@@ -11,11 +11,10 @@ export const resetWallet = createAction("wallet/resetWallet");
 export const setConnecting = createAction<boolean>("wallet/setConnecting");
 export const setAdapter = createAction<Adapter>("wallet/setAdapter")
 
-export const setSession = createAction<string | {}>("wallet/setSession");
+export const setTonHubSession = createAction<string | {}>("wallet/setTonHubSession");
 export const updateWallet = createAction<any>("wallet/updateWallet");
 
 export const awaitWalletReadiness = createAsyncThunk<
-    // Return type of the payload creator
     { wallet: Wallet; adapterId: Adapters },
     { adapterId: Adapters; session: string | {} }
 >("wallet/createWalletSession", async ({ adapterId, session }, thunkApi) => {

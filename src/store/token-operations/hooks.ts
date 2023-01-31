@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ROUTES } from "router/routes";
 import { RootState } from "store/store";
@@ -18,9 +18,10 @@ import {
   toggleAction,
 } from "./reducer";
 
-import { getAmounts, onSendTransaction } from "./actions";
+import { getAmounts, onSendTransaction, onSendTonConnectTransaction } from "./actions";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { PoolInfo } from "services/api/addresses";
+import { SendTransactionResponse } from '@tonconnect/sdk'
 
 export const useTokenOperationsStore = () => {
   return useSelector((state: RootState) => state.tokenOperations);
@@ -41,6 +42,7 @@ export const useTokenOperationsActions = (): {
   clearStore: () => void;
   selectToken: (token?: PoolInfo) => void;
   sendTransaction: (txMethod: () =>  Promise<void>) => void;
+  sendTonConnectTransaction: (res: () => Promise<SendTransactionResponse>) => void;
   hideTxError: () => void;
   closeSuccessModal: () => void;
   onInputChange: (inInput :InInput) => void;
@@ -161,6 +163,15 @@ export const useTokenOperationsActions = (): {
     [dispatch]
   );
 
+  const sendTonConnectTransaction = useCallback(
+    (
+      res: () => Promise<SendTransactionResponse>
+    ) => {
+      dispatch(onSendTonConnectTransaction(res));
+    },
+    [dispatch]
+  );
+
 
   const onInputChange = useCallback(
     (inInput: InInput) => {
@@ -192,6 +203,7 @@ export const useTokenOperationsActions = (): {
     clearStore,
     selectToken,
     sendTransaction,
+    sendTonConnectTransaction,
     hideTxError,
     closeSuccessModal,
     onInputChange

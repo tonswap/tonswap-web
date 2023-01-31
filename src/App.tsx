@@ -4,16 +4,16 @@ import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
 import { styled } from "@mui/system";
 import SelectWallet from "components/SelectWallet";
-import { useWalletActions } from "store/wallet/hooks";
+import { useWalletActions, useWalletStore } from 'store/wallet/hooks'
 import { AppGrid } from "styles/styles";
-import useEffectOnce from "hooks/useEffectOnce";
 import { useWebAppResize } from "store/application/hooks";
 import './services/i18next/i18n';
 import { useEffect } from 'react'
 import { TonClient } from 'ton'
 import { setClienT } from 'services/api'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchTonConnectWallets } from 'store/wallet/actions'
+import { RootState } from 'store/store'
 
 const StyledAppContainer = styled(Box)({
   display: "flex",
@@ -33,13 +33,11 @@ const StyledRoutesContainer = styled(AppGrid)({
 });
 
 const App = () => {
-  const { restoreSession } = useWalletActions();
+  const { restoreSession, restoreAdapter } = useWalletActions();
+  const { adapterId } = useWalletStore();
+  const wallets = useSelector((state: RootState) => state.wallet.allWallets)
   const dispatch = useDispatch<any>()
   useWebAppResize();
-
-  useEffectOnce(() => {
-    restoreSession();
-  });
 
   useEffect(() => {
     (async () => {
@@ -49,7 +47,12 @@ const App = () => {
       setClienT(_client)
     })();
     dispatch(fetchTonConnectWallets())
+    restoreSession();
   }, [])
+
+  useEffect(() => {
+    !!wallets?.length && restoreAdapter(adapterId!)
+  }, [wallets])
 
   return (
     <>

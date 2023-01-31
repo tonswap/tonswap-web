@@ -1,10 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import gaAnalytics from "services/analytics/ga/ga";
-import { client, waitForSeqno } from "services/api";
-import { TransactionRequest } from "services/wallets/types";
-import { walletService } from "services/wallets/WalletService";
-import { Address, fromNano } from "ton";
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fromDecimals } from "utils";
+import { SendTransactionResponse } from '@tonconnect/sdk'
 
 export const getAmounts = createAsyncThunk<
     // Return type of the payload creator
@@ -28,3 +24,9 @@ export const onSendTransaction = createAsyncThunk<
 >("token-operations/sendTransaction", async (txMethod) => {
     await txMethod();
 });
+
+export const onSendTonConnectTransaction = createAsyncThunk<
+  any, () => Promise<SendTransactionResponse>
+  >("token-operations/sendTonConnectTransaction", async (res) => {
+      await res()
+})
