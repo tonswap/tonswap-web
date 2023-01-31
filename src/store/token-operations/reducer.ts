@@ -152,7 +152,7 @@ const WalletOperationSlice = createSlice({
         state.txSuccess = true;
     })
   },
-});
+})
 
 export const {
   resetState,
