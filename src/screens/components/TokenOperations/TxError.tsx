@@ -9,6 +9,10 @@ import ErrorIcon from "assets/images/shared/error.png";
 import { useEffect, useState } from "react";
 import { delay } from "utils";
 
+const errorCleaner = (error: string) => {
+  return error.replace('[TON_CONNECT_SDK_ERROR]', '')
+}
+
 function TxError() {
   const { txError } = useTokenOperationsStore();
   const { hideTxError } = useTokenOperationsActions();
@@ -30,9 +34,9 @@ function TxError() {
 
   return (
     <Popup open={open} onClose={onClose} maxWidth={400}>
-      <StyledContent>
+      <StyledContent sx={{minWidth: 240}}>
       <img src={ErrorIcon} className="icon" />
-        <Typography>{txError}</Typography>
+        <Typography>{txError && errorCleaner(txError)}</Typography>
       </StyledContent>
     </Popup>
   );
