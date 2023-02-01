@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PoolInfo } from "services/api/addresses";
 
-import { getAmounts, onSendTonConnectTransaction, onSendTransaction } from './actions'
+import { getAmounts, onSendTonConnectTransaction, onSendTransaction, onSetTransactionStatusManually } from './actions'
 
 interface TxConfirmation {
   destTokenAmount: string;
@@ -151,6 +151,9 @@ const WalletOperationSlice = createSlice({
         state.txPending = false;
         state.txSuccess = true;
     })
+      .addCase(onSetTransactionStatusManually, (state, action) => {
+        state.txPending = action.payload
+      })
   },
 })
 

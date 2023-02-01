@@ -13,10 +13,12 @@ export const useSubmitTransaction = () => {
     getTokensBalance,
     sendTransaction,
     sendTonConnectTransaction,
+    setTransactionStatus,
   } = useTokenOperationsActions();
   const { address, adapterId, session } = useWalletStore();
 
   const submitTransaction = async (getTxRequest: () => any, sendAnalyticsEvent: () => (undefined | void), getBalances: () => Promise<any>, setKeeperTransactionLink: Dispatch<SetStateAction<string>>) => {
+    setTransactionStatus(true)
     const txRequest = await getTxRequest();
 
     const waiter = await waitForSeqno(

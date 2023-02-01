@@ -18,7 +18,7 @@ import {
   toggleAction,
 } from "./reducer";
 
-import { getAmounts, onSendTransaction, onSendTonConnectTransaction } from "./actions";
+import { getAmounts, onSendTransaction, onSendTonConnectTransaction, onSetTransactionStatusManually } from './actions'
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { PoolInfo } from "services/api/addresses";
 import { SendTransactionResponse } from '@tonconnect/sdk'
@@ -43,6 +43,7 @@ export const useTokenOperationsActions = (): {
   selectToken: (token?: PoolInfo) => void;
   sendTransaction: (txMethod: () =>  Promise<void>) => void;
   sendTonConnectTransaction: (res: () => Promise<SendTransactionResponse>) => void;
+  setTransactionStatus: (status: boolean) => void;
   hideTxError: () => void;
   closeSuccessModal: () => void;
   onInputChange: (inInput :InInput) => void;
@@ -188,6 +189,13 @@ export const useTokenOperationsActions = (): {
     [dispatch]
   );
 
+  const setTransactionStatus = useCallback(
+    (status: boolean) => {
+    dispatch(onSetTransactionStatusManually(status))
+  },
+    [dispatch]
+  )
+
   return {
     onResetAmounts,
     updateSrcTokenAmount,
@@ -206,6 +214,7 @@ export const useTokenOperationsActions = (): {
     sendTonConnectTransaction,
     hideTxError,
     closeSuccessModal,
-    onInputChange
+    onInputChange,
+    setTransactionStatus
   };
 };

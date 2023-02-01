@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { fromDecimals } from "utils";
 import { SendTransactionResponse } from '@tonconnect/sdk'
 
@@ -16,6 +16,8 @@ export const getAmounts = createAsyncThunk<
         destBalance: destBalance,
     };
 });
+
+export const onSetTransactionStatusManually = createAction<boolean>('token-operations/setTransactionStatusManually')
 
 export const onSendTransaction = createAsyncThunk<
     // Return type of the payload creator
