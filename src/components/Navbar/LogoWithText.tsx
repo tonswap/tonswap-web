@@ -8,6 +8,7 @@ import { ROUTES } from "router/routes";
 import useNavigateWithParams from "hooks/useNavigateWithParams";
 import { useApplicationStore } from "store/application/hooks";
 import { OperationType } from "store/application/reducer";
+import { APP_VERSION } from 'consts'
 
 const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
@@ -16,6 +17,8 @@ const StyledText = styled(Typography)(({ theme }) => ({
     fontSize: 15,
   },
 }));
+
+const showVersionPlug = () => (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.includes('netlify.app') || window.location.hostname.includes('ngrok.io')) ? APP_VERSION : ''
 
 const LogoWithText = () => {
   const classes = useStyles();
@@ -45,7 +48,8 @@ const LogoWithText = () => {
     >
       <img className={classes.logo} src={TonLogo} alt="" />
       <StyledText>
-        <strong>Ton</strong>Swap
+        <strong>Ton</strong>Swap{' '}
+        <span style={{fontSize: 11}}>{showVersionPlug()}</span>
       </StyledText>
     </Box>
   );

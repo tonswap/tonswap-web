@@ -16,10 +16,12 @@
     "token-added-pool": "{{token}} agregado a la piscina",
     "token-removed-pool": "{{token}} eliminado de la piscina",
     "ton-paid": "Toncoin pagado",
+    "token-sold": "{{token}} Vendido",
     "ton-received": "Toncoin recibido",
     "ton-removed-pool": "Toncoin eliminado de la piscina",
     "ton-added-pool": "Toncoin agregado a la piscina",
     "purchase-confirmation": "Confirmación de compra",
+    "sell-confirmation": "Confirmación de venta",
     "liquidity-removed": "Liquidez eliminada",
     "liquidity-added": "Liquidez agregada",
     "address-copy": "Dirección copiada",
@@ -58,6 +60,7 @@
     "pool-info": "Liquidez de la información del pool",
     "liquidity": "Liquidez",
     "warning": "ADVERTENCIA",
-    "impact-warning": "Advertencia de impacto de precio!"
+    "impact-warning": "Advertencia de impacto de precio!",
+    "pending-transaction": "Verifique su billetera {{adapter}} para transacciones pendientes"
   }
 }

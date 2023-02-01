@@ -1,11 +1,10 @@
 import { styled } from "@mui/styles";
-import { Box, Link } from "@mui/material";
+import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { adapters } from "services/wallets/config";
-import { Adapters } from "services/wallets/types";
 import AdaptersList from "../AdaptersList";
-import { useWalletActions, useWalletStore } from "store/wallet/hooks";
+import { useSelectedAdapter, useWalletSelect } from 'store/wallet/hooks'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store/store'
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -21,46 +20,22 @@ interface Props {
 }
 
 const MobileFlow = observer(({ closeModal }: Props) => {
-  
-  const { sessionLink } = useWalletStore();
-  const { createWalletSession } = useWalletActions();
-  const [selectedAdapter, setSelectedAdapter] = useState<
-    Adapters | undefined
-    >();
-  
-  const filteredAdapters = useMemo(
-    () => adapters.filter((m) => m.mobileCompatible),
-    []
-  );
-
-  const onSelect = async (adapter: Adapters) => {
-   
-    await createWalletSession(adapter);
-    setSelectedAdapter(adapters.find((m) => m.type === adapter)?.type);
-  };
+  const {selectWallet, session} = useWalletSelect()
+  const selectedAdapter = useSelectedAdapter()
+  const wallets = useSelector((state: RootState) => state.wallet.allWallets)
 
   const openDeepLink = () => {
-    if (sessionLink) {
-      window.location.href = sessionLink;
+    if (session) {
+      window.location.href = session;
     }
   }
 
-  const createSessions = async () => {
-    // const tonhub = await createWalletSession(Adapters.TON_HUB)
-    // const tonkeeper = await createWalletSession(Adapters.TON_KEEPER) 
-  }
+  if (session) {
 
-  useEffect(() => {
-
-   // createSessions()
-  }, []);
-  if (sessionLink && selectedAdapter) {
-
-    const currentAdapter =  filteredAdapters.filter((a) => a.type == selectedAdapter )
     return (<StyledContainer style={{ width: "100%", display:"flex" }}>
       <AdaptersList
-        adapterLoading={selectedAdapter}
-        adapters={currentAdapter}
+        adapterLoading={selectedAdapter ? selectedAdapter.type : undefined}
+        adapters={selectedAdapter ? [selectedAdapter] : []}
         onClose={closeModal}
         open={true}
         select={openDeepLink}
@@ -73,11 +48,11 @@ const MobileFlow = observer(({ closeModal }: Props) => {
   return (
     <StyledContainer style={{ width: "100%" }}>
       <AdaptersList
-        adapterLoading={selectedAdapter}
-        adapters={filteredAdapters}
+        adapterLoading={selectedAdapter ? selectedAdapter.type : undefined}
+        adapters={wallets || []}
         onClose={closeModal}
         open={true}
-        select={onSelect}
+        select={selectWallet}
         isLoading={false}
       />
     </StyledContainer>

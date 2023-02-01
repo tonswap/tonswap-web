@@ -1,36 +1,33 @@
 import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ActionButton, Popup } from "components";
-import { getToken, PoolInfo } from "services/api/addresses";
+import { ActionButton } from "components";
+import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
 import DestToken from "./DestToken";
 import SrcToken from "./SrcToken";
-import { walletService } from "services/wallets/WalletService";
 import {
   useTokenOperationsActions,
   useTokenOperationsStore,
 } from "store/token-operations/hooks";
-import { useWalletStore } from "store/wallet/hooks";
+import { useWalletStore } from 'store/wallet/hooks'
 import {
   useIsExpandedView,
   useWalletModalToggle,
 } from "store/application/hooks";
 import { StyledTokenOperationActions } from "styles/styles";
 import Icon from "./Icon";
-import { ActionCategory, ActionType, Adapters } from "services/wallets/types";
-import { client, GAS_FEE, waitForSeqno } from "services/api";
-import { Address } from "ton";
+import { ActionCategory, ActionType, Adapters } from 'services/wallets/types'
+import { GAS_FEE } from "services/api";
 import SuccessModal from "./SuccessModal";
 import useValidation from "./useValidation";
 import TxError from "./TxError";
 import useTxAnalytics from "./useTxAnalytics";
 import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
-import TradeInfo from "./TradeInfo";
 import TxLoader from "./TxLoader";
 import { isMobile } from "react-device-detect";
-import { QRCode } from "react-qrcode-logo";
+import { useSubmitTransaction } from 'hooks/useSubmitTransaction'
 
 interface Props {
   srcToken: PoolInfo;
@@ -66,7 +63,6 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
-  const [keeperTransactionLink, setKeeperTransactionLink] = useState("");
 
   const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
@@ -81,52 +77,21 @@ const TokenOperations = ({
     destToken
   );
   const {
-    onResetAmounts,
     getTokensBalance,
     resetTokensBalance,
-    sendTransaction,
   } = useTokenOperationsActions();
   const { t } = useTranslation();
+  const submitTransaction = useSubmitTransaction()
 
-
-
+  const submitInternalTransaction = () => submitTransaction(getTxRequest, sendAnalyticsEvent, getBalances)
 
   const onSubmit = () => {
     if ( adapterId === Adapters.TON_HUB && isMobile) {
       setShowTxLoader(true)
     } else {
-      submitTransaction()
+      submitInternalTransaction()
     }
   };
-
-  const submitTransaction = async () => {
-    const tx = async () => {
-      const txRequest = await getTxRequest();
-      const waiter = await waitForSeqno(
-        client.openWalletFromAddress({
-          source: Address.parse(address!!),
-        })
-      );
-      let deepLinkUrl = await walletService.requestTransaction(adapterId!!, session, txRequest);
-      if (typeof deepLinkUrl == "string") {
-        if (isMobile) {
-          window.location.href = deepLinkUrl;
-        } else {
-          setKeeperTransactionLink(deepLinkUrl);
-        }
-      }
-      await waiter();
-       setTimeout(() => {
-         onSuccess?.()
-       },7000)
-      setKeeperTransactionLink("");
-      sendAnalyticsEvent()
-      onResetAmounts();
-      getTokensBalance(getBalances);
-    };
-
-    sendTransaction(tx);
-  }
 
   useEffect(() => {
     if (address && refreshAmountsOnActionChange) {
@@ -145,25 +110,7 @@ const TokenOperations = ({
 
   const closeTransactionLoader = () => {
     setShowTxLoader(false);
-    setKeeperTransactionLink("");
   }
-  function onClose() {
-    setKeeperTransactionLink("")
-  }
-
-  function qrCodeComponent() {
-    
-    const el = (
-      <Popup open={true} onClose={onClose}>
-        <StyledContainer>
-          <p>Please Scan using the QR code using TonKeeper</p>
-          < QRCode logoOpacity={0.5} ecLevel={"H"} size={250} value={keeperTransactionLink} />
-        </StyledContainer>
-      </Popup>
-    );
-    return keeperTransactionLink && !isMobile ? el : null;
-  }
-  
 
   return (
     <StyledTokenOperationActions>
@@ -172,10 +119,8 @@ const TokenOperations = ({
         open={showTxLoader}
         adapterId={adapterId}
         close={closeTransactionLoader}
-        confirm={submitTransaction}
+        confirm={submitInternalTransaction}
       />
-      {qrCodeComponent()}
-      
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box
@@ -208,7 +153,7 @@ const TokenOperations = ({
         <Box className={classes.button}>
           {!address ? (
             <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
-          ) : insufficientFunds ? (
+          ) : insufficientFunds && !address.length ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
               onClick={() => { }}
@@ -225,7 +170,7 @@ const TokenOperations = ({
           ) : (
             <ActionButton
               isLoading={showTxLoader || txPending}
-              isDisabled={disabled || insufficientFunds}
+              isDisabled={disabled || insufficientFunds || !address?.length}
               onClick={onSubmit}
             >
               {submitButtonText}

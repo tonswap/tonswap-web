@@ -16,10 +16,12 @@
     "token-added-pool": "{{token}}添加進池 ",
     "token-removed-pool": "{{token}} 從池中移除",
     "ton-paid": "Toncoin 支付",
+    "token-sold": "{{token}} 賣",
     "ton-received": "Toncoin 收到",
     "ton-removed-pool": "Toncoin 從池中移除",
     "ton-added-pool": "Toncoin 添加進池",
     "purchase-confirmation": "購買確認",
+    "sell-confirmation": "銷售確認",
     "liquidity-removed": "流動性移除",
     "liquidity-added": "增加流動性",
     "address-copy": "複製地址",
@@ -58,6 +60,7 @@
     "pool-info": "池信息流動性",
     "liquidity": "流動性",
     "warning": "警告",
-    "impact-warning": "價格影響警告!"
+    "impact-warning": "價格影響警告!",
+    "pending-transaction": "請檢查您的 {{adapter}} 錢包是否有待處理的交易"
   }
 }
