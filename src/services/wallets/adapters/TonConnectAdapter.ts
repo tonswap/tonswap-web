@@ -39,7 +39,7 @@ export interface TransactionDetails {
   message?: Cell;
 }
 
-export const connector = new TonConnect({ manifestUrl: "https://tonswap.org/manifest.json"});
+export const connector = new TonConnect({ manifestUrl: "https://tonswap.org/tonswap-manifest.json"});
 
  export async function disconnectTC(): Promise<void> {
    localStorage.removeItem('ton-connect-storage_bridge-connection')
