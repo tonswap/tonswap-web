@@ -29,6 +29,7 @@ import TxLoader from "./TxLoader";
 import { isMobile } from "react-device-detect";
 import { QRCode } from "react-qrcode-logo";
 import { useSubmitTransaction } from 'hooks/useSubmitTransaction'
+import { getWalletAddress } from 'store/wallet/utils'
 
 interface Props {
   srcToken: PoolInfo;
@@ -79,11 +80,8 @@ const TokenOperations = ({
     destToken
   );
   const {
-    onResetAmounts,
     getTokensBalance,
     resetTokensBalance,
-    sendTransaction,
-    sendTonConnectTransaction,
   } = useTokenOperationsActions();
   const { t } = useTranslation();
   const submitTransaction = useSubmitTransaction()
@@ -122,7 +120,8 @@ const TokenOperations = ({
   }
 
   function qrCodeComponent() {
-    
+    const address = getWalletAddress();
+
     const el = (
       <Popup open={true} onClose={onClose}>
         <StyledContainer>
@@ -178,7 +177,7 @@ const TokenOperations = ({
         <Box className={classes.button}>
           {!address ? (
             <ActionButton onClick={onConnect}>{t('connect-wallet')}</ActionButton>
-          ) : insufficientFunds ? (
+          ) : insufficientFunds && !address.length ? (
             <ActionButton
               isDisabled={disabled || insufficientFunds}
               onClick={() => { }}
@@ -195,7 +194,7 @@ const TokenOperations = ({
           ) : (
             <ActionButton
               isLoading={showTxLoader || txPending}
-              isDisabled={disabled || insufficientFunds}
+              isDisabled={disabled || insufficientFunds || !address?.length}
               onClick={onSubmit}
             >
               {submitButtonText}
