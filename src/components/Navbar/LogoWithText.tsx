@@ -18,6 +18,8 @@ const StyledText = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const showVersionPlug = () => (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.includes('netlify.app') || window.location.hostname.includes('ngrok.io')) ? APP_VERSION : ''
+
 const LogoWithText = () => {
   const classes = useStyles();
   const {  selectedToken } = useTokenOperationsStore();
@@ -47,8 +49,7 @@ const LogoWithText = () => {
       <img className={classes.logo} src={TonLogo} alt="" />
       <StyledText>
         <strong>Ton</strong>Swap{' '}
-        {(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.includes('netlify.app') || window.location.hostname.includes('ngrok.io')) &&
-          <span style={{fontSize: 11}}>{APP_VERSION}</span>}
+        <span style={{fontSize: 11}}>{showVersionPlug()}</span>
       </StyledText>
     </Box>
   );

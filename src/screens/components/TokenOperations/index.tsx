@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ActionButton, Popup } from "components";
+import { ActionButton } from "components";
 import { PoolInfo } from "services/api/addresses";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import { useStyles } from "./styles";
@@ -27,9 +27,7 @@ import gaAnalytics from "services/analytics/ga/ga";
 import { useTranslation } from "react-i18next";
 import TxLoader from "./TxLoader";
 import { isMobile } from "react-device-detect";
-import { QRCode } from "react-qrcode-logo";
 import { useSubmitTransaction } from 'hooks/useSubmitTransaction'
-import { getWalletAddress } from 'store/wallet/utils'
 
 interface Props {
   srcToken: PoolInfo;
@@ -65,7 +63,6 @@ const TokenOperations = ({
   const expanded = useIsExpandedView();
   const classes = useStyles({ color: srcToken?.color || "", expanded });
   const [showTxLoader, setShowTxLoader] = useState<boolean>(false);
-  const [keeperTransactionLink, setKeeperTransactionLink] = useState("");
 
   const { txPending, srcTokenAmount } = useTokenOperationsStore();
   const toggleModal = useWalletModalToggle();
@@ -86,7 +83,7 @@ const TokenOperations = ({
   const { t } = useTranslation();
   const submitTransaction = useSubmitTransaction()
 
-  const submitInternalTransaction = () => submitTransaction(getTxRequest, sendAnalyticsEvent, getBalances, setKeeperTransactionLink)
+  const submitInternalTransaction = () => submitTransaction(getTxRequest, sendAnalyticsEvent, getBalances)
 
   const onSubmit = () => {
     if ( adapterId === Adapters.TON_HUB && isMobile) {
@@ -113,26 +110,7 @@ const TokenOperations = ({
 
   const closeTransactionLoader = () => {
     setShowTxLoader(false);
-    setKeeperTransactionLink("");
   }
-  function onClose() {
-    setKeeperTransactionLink("")
-  }
-
-  function qrCodeComponent() {
-    const address = getWalletAddress();
-
-    const el = (
-      <Popup open={true} onClose={onClose}>
-        <StyledContainer>
-          <p>Please Scan using the QR code using TonKeeper</p>
-          < QRCode logoOpacity={0.5} ecLevel={"H"} size={250} value={keeperTransactionLink} />
-        </StyledContainer>
-      </Popup>
-    );
-    return keeperTransactionLink && !isMobile ? el : null;
-  }
-  
 
   return (
     <StyledTokenOperationActions>
@@ -143,8 +121,6 @@ const TokenOperations = ({
         close={closeTransactionLoader}
         confirm={submitInternalTransaction}
       />
-      {qrCodeComponent()}
-      
       <SuccessModal actionType={actionType} />
       <Box className={classes.content}>
         <Box

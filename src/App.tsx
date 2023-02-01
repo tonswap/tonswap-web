@@ -40,6 +40,7 @@ const App = () => {
   const { restoreSession, restoreAdapter } = useWalletActions();
   const { adapterId } = useWalletStore();
   const wallets = useSelector((state: RootState) => state.wallet.allWallets)
+  const walletsLength = wallets?.length
   const dispatch = useDispatch<any>()
   const { txPending } = useTokenOperationsStore();
   const adapter = useSelectedAdapter()
@@ -58,8 +59,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    !!wallets?.length && restoreAdapter(adapterId!)
-  }, [wallets])
+    walletsLength && restoreAdapter(adapterId!)
+  }, [walletsLength])
 
   return (
     <>

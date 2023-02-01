@@ -17,7 +17,7 @@ export const useSubmitTransaction = () => {
   } = useTokenOperationsActions();
   const { address, adapterId, session } = useWalletStore();
 
-  const submitTransaction = async (getTxRequest: () => any, sendAnalyticsEvent: () => (undefined | void), getBalances: () => Promise<any>, setKeeperTransactionLink: Dispatch<SetStateAction<string>>) => {
+  const submitTransaction = async (getTxRequest: () => any, sendAnalyticsEvent: () => (undefined | void), getBalances: () => Promise<any>) => {
     setTransactionStatus(true)
     const txRequest = await getTxRequest();
 
@@ -32,8 +32,6 @@ export const useSubmitTransaction = () => {
         if (typeof deepLinkUrl === 'string') {
           if (isMobile) {
             window.location.href = deepLinkUrl
-          } else {
-            setKeeperTransactionLink(deepLinkUrl)
           }
         }
       }
@@ -47,7 +45,6 @@ export const useSubmitTransaction = () => {
       await waiter();
     }
 
-    setKeeperTransactionLink('')
     sendAnalyticsEvent()
     getTokensBalance(getBalances)
   }
