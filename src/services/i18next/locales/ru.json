@@ -16,10 +16,12 @@
     "token-added-pool": "{{token}} добавлен в пул",
     "token-removed-pool": "{{token}} удален из пула",
     "ton-paid": "TON оплачено",
+    "token-sold": "{{token}} продано",
     "ton-received": "TON получено",
     "ton-removed-pool": "TON удален из пула",
     "ton-added-pool": "TON добавлен в пул",
     "purchase-confirmation": "Подтверждение покупки",
+    "sell-confirmation": "Подтверждение продажи",
     "liquidity-removed": "Ликвидность удалена",
     "liquidity-added": "Добавлена ​​ликвидность",
     "address-copy": "Адрес скопирован",
@@ -58,6 +60,7 @@
     "pool-info": "Информация о пуле",
     "liquidity": "Ликвидность",
     "warning": "ПРЕДУПРЕЖДЕНИЕ",
-    "impact-warning": "Предупреждение о влиянии цены!"
+    "impact-warning": "Предупреждение о влиянии цены!",
+    "pending-transaction": "Пожалуйста, проверьте ваш {{adapter}} кошелек на наличие ожидающих транзакции"
   }
 }

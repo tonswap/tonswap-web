@@ -38,6 +38,9 @@ export const useSubmitTransaction = () => {
       sendTransaction(tx)
       await waiter();
     } else {
+      if(isMobile) {
+        window.location.href = `https://app.tonkeeper.com`
+      }
       sendTonConnectTransaction(async () => await requestTonConnectTransaction(txRequest))
       await waiter();
     }
