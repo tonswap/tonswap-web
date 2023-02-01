@@ -1,18 +1,12 @@
-import { styled } from "@mui/styles";
-import {
-  ListItem,
-  List,
-  ListItemButton,
-  Box,
-  Typography,
-  Fade,
-} from "@mui/material";
-import Title from "./Title";
-import { Theme } from "@mui/material/styles";
-import { Adapter, Adapters } from "services/wallets/types";
-import CircularProgress from "@mui/material/CircularProgress";
-import gaAnalytics from "services/analytics/ga/ga";
-import { useTranslation } from "react-i18next";
+import { styled } from '@mui/styles'
+import { Box, Fade, List, ListItem, ListItemButton, Typography } from '@mui/material'
+import Title from './Title'
+import { Theme } from '@mui/material/styles'
+import { Adapter, Adapters } from 'services/wallets/types'
+import CircularProgress from '@mui/material/CircularProgress'
+import gaAnalytics from 'services/analytics/ga/ga'
+import { useTranslation } from 'react-i18next'
+import { isMobile } from 'react-device-detect'
 
 const StyledListItem = styled(ListItem)(
   ({ disabled }: { disabled?: boolean }) => ({
@@ -78,7 +72,7 @@ const StyledIcon = styled(Box)({
 });
 
 interface Props {
-  select: (adapter: Adapters) => void;
+  select: (adapter: Adapters, supportsTonConnect?: boolean) => void;
   open: boolean;
   onClose: () => void;
   adapters: Adapter[];
@@ -97,9 +91,10 @@ function AdaptersList({
   title = "Select Wallet"
 }: Props) {
   const { t } = useTranslation()
+  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible) : adapters
 
-  const onSelect = (adapter: Adapters) => {
-    select(adapter)
+  const onSelect = (adapter: Adapters, supportsTonConnect?: boolean) => {
+    select(adapter, supportsTonConnect)
     gaAnalytics.selectWallet(adapter)
   }
 
@@ -116,17 +111,21 @@ function AdaptersList({
       </Fade>
       <Fade in={!isLoading}>
         <StyledList>
-          {adapters.map((adapter) => {
-            const { type, icon, name, description, disabled } = adapter;
+          {adaptersToShow.map((adapter) => {
+            const { type, icon, name, description, disabled, tonConnect } = adapter;
             return (
               <StyledListItem
                 disablePadding
                 key={type}
-                disabled={disabled}
                 style={{ pointerEvents: isLoading ? "none" : "all" }}
               >
                 <StyledListItemButton
-                  onClick={disabled ? () => { } : () => onSelect(type)}
+                  onClick={() => {
+                    //@ts-ignore
+                    type === Adapters.OPENMASK && window.ton && !window.ton.isOpenMask
+                      ? window.open('https://www.openmask.app/', "_blank")
+                      : onSelect(type, tonConnect)
+                  }}
                 >
                   <StyledIcon>
                     <img style={{ "borderRadius": "9px" }} src={icon} />

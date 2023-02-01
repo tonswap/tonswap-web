@@ -16,10 +16,12 @@
     "token-added-pool": "{{token}} adicionado a pool",
     "token-removed-pool": "{{token}} removido da pool",
     "ton-paid": "Toncoin Pago",
+    "token-sold": "{{token}} Vendido",
     "ton-received": "Toncoin Recebido",
     "ton-removed-pool": "Toncoin removido da pool",
     "ton-added-pool": "Toncoin adicionado a pool",
     "purchase-confirmation": "Confirmação de compra",
+    "sell-confirmation": "Confirmação de venda",
     "liquidity-removed": "Liquidez removida",
     "liquidity-added": "Liquidez adicionada",
     "address-copy": "Endereço copiado",
@@ -58,6 +60,7 @@
     "pool-info": "Liquidez das informações do pool",
     "liquidity": "Liquidez",
     "warning": "AVISO",
-    "impact-warning": "Aviso de impacto de preço!"
+    "impact-warning": "Aviso de impacto de preço!",
+    "pending-transaction": "Por favor, verifique sua carteira {{adapter}} para transações pendentes"
   }
 }

@@ -40,9 +40,9 @@ function SuccessModal({ actionType }: Props) {
         );
       case ActionType.SELL:
         return (
-          <Container title={t('purchase-confirmation')}>
+          <Container title={t('sell-confirmation')}>
             <Box className="row">
-              <Typography>{t('token-received', { token: txConfirmation.tokenName })}</Typography>
+              <Typography>{t('token-sold', { token: txConfirmation.tokenName })}</Typography>
               <Typography>
                 <BigNumberDisplay value={txConfirmation.srcTokenAmount} />{" "}
               </Typography>

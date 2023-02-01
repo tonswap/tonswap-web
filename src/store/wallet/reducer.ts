@@ -1,7 +1,15 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
-import { Wallet } from "services/wallets/types";
-import { awaitWalletReadiness, resetWallet, setConnecting, setSession, updateWallet } from "./actions";
+import { Adapter, Wallet } from 'services/wallets/types'
+import {
+    awaitWalletReadiness,
+    fetchTonConnectWallets,
+    resetWallet,
+    setConnecting,
+    setTonHubSession,
+    setAdapter,
+    updateWallet,
+} from './actions'
+import { adapters } from 'services/wallets/config'
 
 interface State {
     address?: string;
@@ -11,6 +19,10 @@ interface State {
     adapterId?: string;
     sessionLink?: string;
     connecting: boolean;
+    tonConnectWallets?: Adapter[]
+    allWallets?: Adapter[]
+    mobileWallets?: Adapter[]
+    adapter?: Adapter
 }
 
 const initialState: State = {
@@ -43,8 +55,9 @@ const reducer = createReducer(initialState, (builder) => {
             state.wallet = payload.wallet;
             state.adapterId = payload.adapterId;
             state.address = payload.wallet.address;
+            state.connecting = false
         })
-        .addCase(setSession, (state, action) => {
+        .addCase(setTonHubSession, (state, action) => {
             const { payload } = action;
             const session = typeof payload === "string" ? JSON.parse(payload) : payload;
             state.session = session;
@@ -58,11 +71,23 @@ const reducer = createReducer(initialState, (builder) => {
             state.wallet = wallet;
             state.adapterId = adapterId;
             state.address = wallet.address;
-            localStorage.setItem("wallet:adapter-id", adapterId);
-            localStorage.setItem("wallet:session", JSON.stringify({ ...state.session, address: wallet.address }));
+            if(!!state.session && adapterId) {
+                localStorage.setItem("wallet:adapter-id", adapterId);
+                localStorage.setItem("wallet:session", JSON.stringify({ ...state.session, address: wallet.address }));
+            }
             state.connecting = false;
-        });
+        })
 
+      .addCase(fetchTonConnectWallets.fulfilled, (state, action) => {
+          state.tonConnectWallets = action.payload
+          const _allWallets = [...adapters, ...action.payload]
+          state.allWallets = _allWallets
+
+          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
+      })
+        .addCase(setAdapter, (state, action) => {
+            state.adapter = action.payload
+        })
     // Or, you can reference the .type field:
     // if using TypeScript, the action type cannot be inferred that way
 });

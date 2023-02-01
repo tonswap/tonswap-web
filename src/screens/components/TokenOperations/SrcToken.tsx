@@ -7,10 +7,10 @@ import {
 } from "store/token-operations/hooks";
 import { InInput } from "store/token-operations/reducer";
 import { useWalletStore } from "store/wallet/hooks";
-import { fromNano, toNano } from "ton";
 import { useDebouncedCallback } from "use-debounce";
 import { fromDecimals, toDecimals } from "utils";
 import { calculateTokens } from "./util";
+
 interface Props {
   token: PoolInfo;
   destTokenName: string;
@@ -35,7 +35,8 @@ const SrcToken = ({
     totalBalances,
     srcLoading,
     srcAvailableAmountLoading,
-    inInput
+    inInput,
+    txSuccess
   } = useTokenOperationsStore();
 
   const { address } = useWalletStore();
@@ -107,8 +108,12 @@ const SrcToken = ({
     }
   }, []);
 
-
-  
+  useEffect(() => {
+    if(txSuccess) {
+      updateSrcTokenAmount('');
+      updateDestTokenAmount('');
+    }
+  }, [txSuccess])
 
   return (
     <SwapCard
