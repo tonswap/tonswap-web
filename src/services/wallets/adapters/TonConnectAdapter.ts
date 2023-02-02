@@ -39,7 +39,9 @@ export interface TransactionDetails {
   message?: Cell;
 }
 
-export const connector = new TonConnect({ manifestUrl: "https://tonswap.org/tonswap-manifest.json"});
+// TODO revert to the link below after pr is approved
+//"https://tonswap.org/tonswap-manifest.json"
+export const connector = new TonConnect({ manifestUrl: "https://tonverifier.live/tonconnect-manifest.json"});
 
  export async function disconnectTC(): Promise<void> {
    localStorage.removeItem('ton-connect-storage_bridge-connection')
@@ -102,17 +104,16 @@ export async function requestTonConnectTransaction(
   request: TransactionDetails,
 ): Promise<SendTransactionResponse> {
   await connector.restoreConnection()
+
+  const message = {
+    address: request.to,
+    amount: request.value,
+    //@ts-ignore
+    payload: request.payload,
+  }
+
   return connector.sendTransaction({
     validUntil: Date.now() + 5 * 60 * 1000,
-    messages: [
-      {
-        address: request.to,
-        amount: request.value,
-        stateInit: request.stateInit
-          ? stateInitToBuffer(request.stateInit).toString("base64")
-          : undefined,
-        payload: request.message ? request.message.toBoc().toString("base64") : undefined,
-      },
-    ],
+    messages: [message],
   });
 }
