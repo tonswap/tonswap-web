@@ -78,7 +78,7 @@ export const PoolInfo = () => {
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    fetchExtendedData()
+    expanded && fetchExtendedData()
   }, [expanded])
 
   useEffect(() => {
