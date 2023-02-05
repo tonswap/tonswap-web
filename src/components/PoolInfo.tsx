@@ -77,14 +77,14 @@ export const PoolInfo = () => {
 
   useEffect(() => {
     !!wallet && expanded && fetchExtendedData()
-  }, [expanded])
+  }, [expanded, wallet])
 
   useEffect(() => {
     fetchPoolData()
     return () => {
       resetPoolInfo()
     }
-  }, [selectedToken, wallet])
+  }, [selectedToken])
 
   return (
     <Box sx={{ maxWidth: 380, margin: 'auto' }}>

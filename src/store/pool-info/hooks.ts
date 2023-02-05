@@ -6,8 +6,11 @@ import { ton } from 'services/api/addresses'
 import { fromDecimals } from 'utils'
 import { setPoolInfo, setTokenDetails } from 'store/pool-info/actions'
 import { clearPoolInfo } from 'store/pool-info/reducer'
+import { useEffect } from 'react'
+import { useWalletStore } from 'store/wallet/hooks'
 
 export const usePoolInfo = () => {
+  const { wallet } = useWalletStore()
   const { selectedToken } = useTokenOperationsStore()
   const poolInfo = useSelector((state: RootState) => state.poolInfo)
   const { usd } = useUsdValue(ton.name, fromDecimals(poolInfo.tonReserves?.muln(2) || 0, ton.decimals))
@@ -15,9 +18,8 @@ export const usePoolInfo = () => {
 
   const fetchPoolData = async () => {
     selectedToken?.ammMinter &&
-    usd &&
     selectedToken?.tokenMinter &&
-    dispatch(setPoolInfo({ ammMinter: selectedToken.ammMinter, ammVersion: selectedToken.ammVersion || 1.2, usd: usd }))
+    dispatch(setPoolInfo({ ammMinter: selectedToken.ammMinter, ammVersion: selectedToken.ammVersion || 1.2, usd: usd, tokenDecimals: selectedToken.decimals }))
   }
 
   const fetchExtendedData = () => {
@@ -37,6 +39,11 @@ export const usePoolInfo = () => {
       tokenReserves: poolInfo.tokenReserves,
     }))
   }
+
+  useEffect(() => {
+    if(!!parseFloat(usd) && wallet?.address) fetchExtendedData()
+    else if(!!parseFloat(usd)) fetchPoolData()
+  }, [usd])
 
   const resetPoolInfo = () => dispatch(clearPoolInfo())
 

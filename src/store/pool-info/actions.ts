@@ -21,8 +21,9 @@ export const setPoolInfo = createAsyncThunk<{
     ammMinter: string,
     ammVersion: number,
     usd: string,
+    tokenDecimals: number
   }>('poolInfo/setPoolInfo', async ({
-  ammVersion, ammMinter, usd
+  ammVersion, ammMinter, usd, tokenDecimals
 }, thunkAPI) => {
   const poolData = await getPoolData(Address.parse(ammMinter), ammVersion)
   const { name } = await getTokenData(Address.parse(ammMinter))
@@ -35,12 +36,13 @@ export const setPoolInfo = createAsyncThunk<{
     tonReserves: poolData.tonReserves,
     tokenReserves: poolData.tokenReserves,
 
+    //calculateDecimals(fromDecimals(poolInfo.tokenReserves, selectedToken.decimals))
     extendedInfo: {
       liquidity: usd,
       lpTokenName: name,
       totalLPTokenAmount: calculateTotalLPSupply(poolData.totalSupply),
-      poolTonAmount: new BN(poolData.tonReserves).toString(),
-      poolTokenAmount: new BN(poolData.tokenReserves).toString(),
+      poolTonAmount: calculateDecimals(fromDecimals(poolData.tonReserves, ton.decimals)),
+      poolTokenAmount: calculateDecimals(fromDecimals(poolData.tokenReserves, tokenDecimals)),
     }
   }
 })
