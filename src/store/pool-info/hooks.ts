@@ -1,24 +1,23 @@
 import { useTokenOperationsStore } from 'store/token-operations/hooks'
-import { client, getPoolData } from 'services/api'
-import { Address } from 'ton'
-import { setPoolInfo, clearPoolInfo } from 'store/pool-info/reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store/store'
 import useUsdValue from 'hooks/useUsdValue'
 import { ton } from 'services/api/addresses'
 import { fromDecimals } from 'utils'
-import { setTokenDetails } from 'store/pool-info/actions'
+import { setPoolInfo, setTokenDetails } from 'store/pool-info/actions'
+import { clearPoolInfo } from 'store/pool-info/reducer'
 
 export const usePoolInfo = () => {
-  const { selectedToken } = useTokenOperationsStore();
+  const { selectedToken } = useTokenOperationsStore()
   const poolInfo = useSelector((state: RootState) => state.poolInfo)
   const { usd } = useUsdValue(ton.name, fromDecimals(poolInfo.tonReserves?.muln(2) || 0, ton.decimals))
   const dispatch = useDispatch<any>()
 
   const fetchPoolData = async () => {
-    if (!selectedToken || !client) return
-    const data = await getPoolData(Address.parse(selectedToken.ammMinter), selectedToken.ammVersion)
-    dispatch(setPoolInfo(data))
+    selectedToken?.ammMinter &&
+    usd &&
+    selectedToken?.tokenMinter &&
+    dispatch(setPoolInfo({ ammMinter: selectedToken.ammMinter, ammVersion: selectedToken.ammVersion || 1.2, usd: usd, tokenMinter: selectedToken.tokenMinter }))
   }
 
   const fetchExtendedData = () => {
@@ -38,7 +37,6 @@ export const usePoolInfo = () => {
       tokenReserves: poolInfo.tokenReserves,
     }))
   }
-
 
   const resetPoolInfo = () => dispatch(clearPoolInfo())
 

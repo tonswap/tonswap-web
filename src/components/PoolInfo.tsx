@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Typography } from '@mui/material'
 import { ton } from 'services/api/addresses'
-import { client } from 'services/api'
 import { useTokenOperationsStore } from 'store/token-operations/hooks'
 import { useTranslation } from 'react-i18next'
 import { usePoolInfo } from 'store/pool-info/hooks'
@@ -74,11 +73,10 @@ export const PoolInfo = () => {
   const { wallet } = useWalletStore()
   const { selectedToken } = useTokenOperationsStore()
   const { t } = useTranslation()
-  const { txSuccess } = useTokenOperationsStore()
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    expanded && fetchExtendedData()
+    !!wallet && expanded && fetchExtendedData()
   }, [expanded])
 
   useEffect(() => {
@@ -86,7 +84,7 @@ export const PoolInfo = () => {
     return () => {
       resetPoolInfo()
     }
-  }, [selectedToken, client, wallet, txSuccess])
+  }, [selectedToken, wallet])
 
   return (
     <Box sx={{ maxWidth: 380, margin: 'auto' }}>
@@ -116,7 +114,7 @@ export const PoolInfo = () => {
           </PoolInfoCenteringWrapper>
         </AccordionSummary>
         <AccordionDetails>
-          {poolInfo.extendedInfo.isLoading
+          {poolInfo.isLoading
             ? <Box sx={{display: 'flex', alignItems: "center", justifyContent: 'center'}}>
               <CircularProgress size={20} />
             </Box>

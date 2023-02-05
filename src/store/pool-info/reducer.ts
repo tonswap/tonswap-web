@@ -1,7 +1,7 @@
 import BN from 'bn.js'
 import { Address } from 'ton'
 import { createSlice } from '@reduxjs/toolkit'
-import { setTokenDetails } from 'store/pool-info/actions'
+import { setPoolInfo, setTokenDetails } from 'store/pool-info/actions'
 
 export interface PoolInfoExtended {
   liquidity?: string
@@ -14,7 +14,6 @@ export interface PoolInfoExtended {
   userTonAmount?: string
   userTokenAmount?: string
   userUSDValueAmount?: string
-  isLoading?: boolean
 }
 
 export interface IPoolInfo {
@@ -23,6 +22,8 @@ export interface IPoolInfo {
   mintable?: string,
   tonReserves?: BN,
   tokenReserves?: BN
+
+  isLoading?: boolean
 
   extendedInfo: PoolInfoExtended
 }
@@ -33,25 +34,39 @@ const poolInfoSlice = createSlice({
   name: 'poolInfo',
   initialState,
   reducers: {
-    setPoolInfo(state, action) {
-      state.tokenReserves = action.payload.tokenReserves
-      state.jettonWalletAddress = action.payload.jettonWalletAddress
-      state.tonReserves = action.payload.tonReserves
-      state.mintable = action.payload.mintable
-      state.totalSupply = action.payload.totalSupply
-    },
     clearPoolInfo(state) {
       state.tokenReserves = undefined
       state.jettonWalletAddress = undefined
       state.tonReserves = undefined
       state.mintable = undefined
       state.totalSupply = undefined
+      state.extendedInfo = {}
+
+      state.isLoading = false
     },
   },
   extraReducers: (builder) => {
     builder
+    .addCase(setPoolInfo.pending, (state) => {
+      state.isLoading = true
+    })
+    .addCase(setPoolInfo.fulfilled, (state, action) => {
+      state.tokenReserves = action.payload.tokenReserves
+      state.jettonWalletAddress = action.payload.jettonWalletAddress
+      state.tonReserves = action.payload.tonReserves
+      state.mintable = action.payload.mintable
+      state.totalSupply = action.payload.totalSupply
+
+      state.extendedInfo.liquidity = action.payload.extendedInfo?.liquidity
+      state.extendedInfo.lpTokenName = action.payload.extendedInfo?.lpTokenName
+      state.extendedInfo.totalLPTokenAmount = action.payload.extendedInfo?.totalLPTokenAmount
+      state.extendedInfo.userTonAmount = action.payload.extendedInfo?.userTonAmount
+      state.extendedInfo.userTokenAmount = action.payload.extendedInfo?.userTokenAmount
+
+      state.isLoading = false
+    })
     .addCase(setTokenDetails.pending, (state) => {
-      state.extendedInfo.isLoading = true
+      state.isLoading = true
     })
     .addCase(setTokenDetails.fulfilled, (state, action) => {
       const {
@@ -64,7 +79,7 @@ const poolInfoSlice = createSlice({
         poolTokenAmount,
         poolTonAmount,
         userUSDValueAmount,
-        userShareOfLiquidityPool
+        userShareOfLiquidityPool,
       } = action.payload
       state.extendedInfo.lpTokenName = lpTokenName
       state.extendedInfo.userLPTokenAmount = userLPTokenAmount
@@ -76,11 +91,11 @@ const poolInfoSlice = createSlice({
       state.extendedInfo.poolTokenAmount = poolTokenAmount
       state.extendedInfo.userUSDValueAmount = userUSDValueAmount
       state.extendedInfo.userShareOfLiquidityPool = userShareOfLiquidityPool
-      state.extendedInfo.isLoading = false
+      state.isLoading = false
     })
   },
 })
 
-export const { setPoolInfo, clearPoolInfo } = poolInfoSlice.actions
+export const { clearPoolInfo } = poolInfoSlice.actions
 
 export default poolInfoSlice.reducer

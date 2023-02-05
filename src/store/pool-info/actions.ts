@@ -1,17 +1,60 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
-import { IPoolInfo, PoolInfoExtended } from 'store/pool-info/reducer'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { PoolInfoExtended } from 'store/pool-info/reducer'
 import { calculateDecimals } from 'components/PoolInfo'
-import { fetchPrice, getLPTokenBalance, getTokenData, getTokensOfLPBalances } from 'services/api'
+import { fetchPrice, getLPTokenBalance, getPoolData, getTokenData, getTokensOfLPBalances } from 'services/api'
 import { fromDecimals } from 'utils'
 import { Address } from 'ton'
 import BN from 'bn.js'
 import BigNumber from 'bignumber.js'
 import { ton } from 'services/api/addresses'
 
-export const setPoolInfo = createAction<IPoolInfo>('poolInfo/setPoolInfo')
+export const setPoolInfo = createAsyncThunk<{
+  totalSupply?: BN,
+  jettonWalletAddress?: Address,
+  mintable?: string,
+  tonReserves?: BN,
+  tokenReserves?: BN,
 
-export const setTokenDetails = createAsyncThunk<
-  PoolInfoExtended,
+  extendedInfo?: PoolInfoExtended
+},
+  {
+    ammMinter: string,
+    ammVersion: number,
+    usd: string,
+    tokenMinter: string,
+  }>('poolInfo/setPoolInfo', async ({
+  ammVersion, ammMinter, usd, tokenMinter
+}, thunkAPI) => {
+    let poolBalances: string[] = []
+  const poolData = await getPoolData(Address.parse(ammMinter), ammVersion)
+  const { name } = await getTokenData(Address.parse(ammMinter))
+  const calculateTotalLPSupply = (total: BN) => new BigNumber(new BigNumber(total.toString()).div(new BigNumber(10).pow(9))).toString()
+  const calculateUserShare = async () => await getTokensOfLPBalances(tokenMinter)
+  try {
+      //error because of unlogged (wallet is checked couple of layers below)
+      poolBalances = await calculateUserShare()
+  } catch (e) {
+    console.log(e)
+  }
+
+  return {
+    totalSupply: poolData.totalSupply,
+    jettonWalletAddress: poolData.jettonWalletAddress,
+    mintable: poolData.mintable,
+    tonReserves: poolData.tonReserves,
+    tokenReserves: poolData.tokenReserves,
+
+    extendedInfo: {
+      liquidity: usd,
+      lpTokenName: name,
+      totalLPTokenAmount: calculateTotalLPSupply(poolData.totalSupply),
+      userTonAmount: poolBalances?.[0],
+      userTokenAmount: poolBalances?.[1],
+    }
+  }
+})
+
+export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
   {
     tokenMinter: string,
     ammMinter: string,
@@ -27,7 +70,7 @@ export const setTokenDetails = createAsyncThunk<
   totalSupply,
   tonReserves,
   tokenReserves,
-  tokenDecimals
+  tokenDecimals,
 }, thunkAPI) => {
 
   let tokenData: PoolInfoExtended = {}
