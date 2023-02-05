@@ -17,7 +17,7 @@ export const usePoolInfo = () => {
     selectedToken?.ammMinter &&
     usd &&
     selectedToken?.tokenMinter &&
-    dispatch(setPoolInfo({ ammMinter: selectedToken.ammMinter, ammVersion: selectedToken.ammVersion || 1.2, usd: usd, tokenMinter: selectedToken.tokenMinter }))
+    dispatch(setPoolInfo({ ammMinter: selectedToken.ammMinter, ammVersion: selectedToken.ammVersion || 1.2, usd: usd }))
   }
 
   const fetchExtendedData = () => {

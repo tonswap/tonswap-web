@@ -21,20 +21,12 @@ export const setPoolInfo = createAsyncThunk<{
     ammMinter: string,
     ammVersion: number,
     usd: string,
-    tokenMinter: string,
   }>('poolInfo/setPoolInfo', async ({
-  ammVersion, ammMinter, usd, tokenMinter
+  ammVersion, ammMinter, usd
 }, thunkAPI) => {
-    let poolBalances: string[] = []
   const poolData = await getPoolData(Address.parse(ammMinter), ammVersion)
   const { name } = await getTokenData(Address.parse(ammMinter))
   const calculateTotalLPSupply = (total: BN) => new BigNumber(new BigNumber(total.toString()).div(new BigNumber(10).pow(9))).toString()
-  // const calculateUserShare = async () => await getTokenData(Address.parse(tokenMinter))
-  try {
-      // poolBalances = await calculateUserShare()
-  } catch (e) {
-    console.log(e)
-  }
 
   return {
     totalSupply: poolData.totalSupply,
@@ -47,8 +39,8 @@ export const setPoolInfo = createAsyncThunk<{
       liquidity: usd,
       lpTokenName: name,
       totalLPTokenAmount: calculateTotalLPSupply(poolData.totalSupply),
-      userTonAmount: poolBalances?.[0],
-      userTokenAmount: poolBalances?.[1],
+      poolTonAmount: new BN(poolData.tonReserves).toString(),
+      poolTokenAmount: new BN(poolData.tokenReserves).toString(),
     }
   }
 })

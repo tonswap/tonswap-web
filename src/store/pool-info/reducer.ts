@@ -60,8 +60,8 @@ const poolInfoSlice = createSlice({
       state.extendedInfo.liquidity = action.payload.extendedInfo?.liquidity
       state.extendedInfo.lpTokenName = action.payload.extendedInfo?.lpTokenName
       state.extendedInfo.totalLPTokenAmount = action.payload.extendedInfo?.totalLPTokenAmount
-      state.extendedInfo.userTonAmount = action.payload.extendedInfo?.userTonAmount
-      state.extendedInfo.userTokenAmount = action.payload.extendedInfo?.userTokenAmount
+      state.extendedInfo.poolTonAmount = action.payload.extendedInfo?.poolTonAmount
+      state.extendedInfo.poolTokenAmount = action.payload.extendedInfo?.poolTokenAmount
 
       state.isLoading = false
     })
