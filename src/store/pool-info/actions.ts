@@ -29,10 +29,9 @@ export const setPoolInfo = createAsyncThunk<{
   const poolData = await getPoolData(Address.parse(ammMinter), ammVersion)
   const { name } = await getTokenData(Address.parse(ammMinter))
   const calculateTotalLPSupply = (total: BN) => new BigNumber(new BigNumber(total.toString()).div(new BigNumber(10).pow(9))).toString()
-  const calculateUserShare = async () => await getTokensOfLPBalances(tokenMinter)
+  // const calculateUserShare = async () => await getTokenData(Address.parse(tokenMinter))
   try {
-      //error because of unlogged (wallet is checked couple of layers below)
-      poolBalances = await calculateUserShare()
+      // poolBalances = await calculateUserShare()
   } catch (e) {
     console.log(e)
   }
