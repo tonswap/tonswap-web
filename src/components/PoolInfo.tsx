@@ -11,9 +11,40 @@ import { useWalletStore } from 'store/wallet/hooks'
 import { styled } from '@mui/styles'
 import CircularProgress from '@mui/material/CircularProgress'
 
+const ComponentWrapper = styled(Box)({
+  maxWidth: 380,
+  margin: 'auto',
+})
+
+const PoolInfoAccordion = styled(Accordion)({
+  background: 'linear-gradient(180deg, #F3F3F3 0%, #F9F9F9 100%)',
+  boxShadow: 'none',
+  borderRadius: '12px !important',
+  '.MuiAccordionSummary-content': {
+    marginTop: 0,
+    marginBottom: '0',
+  },
+  '.MuiAccordionSummary-root': {
+    height: '44px', minHeight: '0 !important',
+  },
+})
+
+const PoolInfoAccordionSummary = styled(AccordionSummary)({
+  '.Mui-expanded': {
+    minHeight: '44px !important',
+  },
+})
+
+const CenteringBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
 const StyledAvatar = styled(Avatar)({
   width: 22,
   height: 22,
+  marginRight: 8,
 })
 
 const PoolInfoLine = styled(Box)({
@@ -56,22 +87,6 @@ const PoolInfoTitle = styled(PoolInfoText)({
   textAlign: 'center',
 })
 
-export const calculateDecimals = (val: string) => {
-  const n = parseFloat(val)
-  let result: string
-  if (n > 1) {
-    result = n.toFixed(2)
-  } else if (n < 0.01) {
-    result = n.toFixed(6)
-  } else {
-    result = n.toFixed(4)
-  }
-  if(parseFloat(result) > 999) {
-    result = parseInt(result).toLocaleString('en-US')
-  }
-  return result
-}
-
 export const PoolInfo = () => {
   const {
     fetchPoolData,
@@ -96,24 +111,9 @@ export const PoolInfo = () => {
   }, [selectedToken])
 
   return (
-    <Box sx={{ maxWidth: 380, margin: 'auto' }}>
-      <Accordion sx={{
-        background: 'linear-gradient(180deg, #F3F3F3 0%, #F9F9F9 100%)',
-        boxShadow: 'none',
-        borderRadius: '12px !important',
-        '.MuiAccordionSummary-content': {
-          marginTop: 0,
-          marginBottom: '0',
-        },
-        '.MuiAccordionSummary-root': {
-          height: '44px', minHeight: '0 !important',
-        },
-      }}>
-        <AccordionSummary onClick={() => setExpanded(prevState => !prevState)} sx={{
-          '.Mui-expanded': {
-            minHeight: '44px !important',
-          },
-        }}>
+    <ComponentWrapper>
+      <PoolInfoAccordion>
+        <PoolInfoAccordionSummary onClick={() => setExpanded(prevState => !prevState)}>
           <PoolInfoCenteringWrapper>
             <PoolInfoTitle>{t('pool-info')}</PoolInfoTitle>
             {expanded
@@ -121,12 +121,12 @@ export const PoolInfo = () => {
               : <ExpandMoreIcon sx={{ color: 'black' }} />
             }
           </PoolInfoCenteringWrapper>
-        </AccordionSummary>
+        </PoolInfoAccordionSummary>
         <AccordionDetails>
           {poolInfo.isLoading
-            ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            ? <CenteringBox>
               <CircularProgress size={20} />
-            </Box>
+            </CenteringBox>
             : <Box>
               <PoolInfoLineWrapper>
                 <PoolInfoText>{t('liquidity')} (TVL)</PoolInfoText>
@@ -138,7 +138,7 @@ export const PoolInfo = () => {
               </PoolInfoLineWrapper>
               <PoolInfoLineWrapper>
                 <PoolInfoLine>
-                  {ton?.image && <StyledAvatar src={ton.image} alt="token" sx={{ marginRight: 1 }} />}
+                  {ton?.image && <StyledAvatar src={ton.image} alt="token" />}
                   <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>TON</PoolInfoText>
                 </PoolInfoLine>
                 <PoolInfoText>{poolInfo.extendedInfo.poolTonAmount}</PoolInfoText>
@@ -146,7 +146,7 @@ export const PoolInfo = () => {
               <PoolInfoLineWrapper>
                 <PoolInfoLine>
                   {selectedToken?.image &&
-                      <StyledAvatar src={selectedToken.image} alt="token" sx={{ marginRight: 1 }} />}
+                      <StyledAvatar src={selectedToken.image} alt="token" />}
                   <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>
                     {selectedToken?.displayName || 'TOKEN'}
                   </PoolInfoText>
@@ -156,10 +156,10 @@ export const PoolInfo = () => {
 
               {wallet && <> <Box sx={{ width: '100%', height: 1, borderBottom: '1px solid #E4E4E4' }} my={2} />
                   <Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PoolInfoTitle mb={1}>Your current LP position</PoolInfoTitle></Box>
+                      <CenteringBox><PoolInfoTitle mb={1}>Your current LP position</PoolInfoTitle></CenteringBox>
                     {
                       !parseFloat(poolInfo.extendedInfo.userShareOfLiquidityPool!)
-                        ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PoolInfoPlug>No Liquidity</PoolInfoPlug></Box>
+                        ? <CenteringBox><PoolInfoPlug>No Liquidity</PoolInfoPlug></CenteringBox>
                         : <Box>
                           <PoolInfoLineWrapper>
                             <PoolInfoText>{poolInfo.extendedInfo.lpTokenName}</PoolInfoText>
@@ -171,7 +171,7 @@ export const PoolInfo = () => {
                           </PoolInfoLineWrapper>
                           <PoolInfoLineWrapper>
                             <PoolInfoLine>
-                              {ton?.image && <StyledAvatar src={ton.image} alt="token" sx={{ marginRight: 1 }} />}
+                              {ton?.image && <StyledAvatar src={ton.image} alt="token" />}
                               <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>TON</PoolInfoText>
                             </PoolInfoLine>
                             <PoolInfoText>{poolInfo.extendedInfo.userTonAmount}</PoolInfoText>
@@ -179,7 +179,7 @@ export const PoolInfo = () => {
                           <PoolInfoLineWrapper>
                             <PoolInfoLine>
                               {selectedToken?.image &&
-                                  <StyledAvatar src={selectedToken.image} alt="token" sx={{ marginRight: 1 }} />}
+                                  <StyledAvatar src={selectedToken.image} alt="token" />}
                               <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>
                                 {selectedToken?.displayName || 'TOKEN'}
                               </PoolInfoText>
@@ -198,7 +198,7 @@ export const PoolInfo = () => {
               </>}
             </Box>}
         </AccordionDetails>
-      </Accordion>
-    </Box>
+      </PoolInfoAccordion>
+    </ComponentWrapper>
   )
 }

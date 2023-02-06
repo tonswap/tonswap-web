@@ -248,6 +248,22 @@ export const toNanoSafe = (value?: string | number, decimals = 9): BN => {
     return result;
 };
 
+export const calculateDecimals = (val: string) => {
+    const n = parseFloat(val)
+    let result: string
+    if (n > 1) {
+        result = n.toFixed(2)
+    } else if (n < 0.01) {
+        result = n.toFixed(6)
+    } else {
+        result = n.toFixed(4)
+    }
+    if(parseFloat(result) > 999) {
+        result = parseInt(result).toLocaleString('en-US')
+    }
+    return result
+}
+
 export {
     delay,
     splitToGroups,

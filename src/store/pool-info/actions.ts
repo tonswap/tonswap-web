@@ -1,8 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { PoolInfoExtended } from 'store/pool-info/reducer'
-import { calculateDecimals } from 'components/PoolInfo'
 import { fetchPrice, getLPTokenBalance, getPoolData, getTokenData, getTokensOfLPBalances } from 'services/api'
-import { fromDecimals } from 'utils'
+import { calculateDecimals, fromDecimals } from 'utils'
 import { Address } from 'ton'
 import BN from 'bn.js'
 import BigNumber from 'bignumber.js'
@@ -36,9 +35,8 @@ export const setPoolInfo = createAsyncThunk<{
     tonReserves: poolData.tonReserves,
     tokenReserves: poolData.tokenReserves,
 
-    //calculateDecimals(fromDecimals(poolInfo.tokenReserves, selectedToken.decimals))
     extendedInfo: {
-      liquidity: usd,
+      liquidity: calculateDecimals(usd),
       lpTokenName: name,
       totalLPTokenAmount: calculateDecimals(calculateTotalLPSupply(poolData.totalSupply)),
       poolTonAmount: calculateDecimals(fromDecimals(poolData.tonReserves, ton.decimals)),
@@ -97,7 +95,7 @@ export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
   tokenData.userTokenAmount = calculateDecimals(poolBalances[1])
 
   tokenData.lpTokenName = name
-  tokenData.liquidity = usd
+  tokenData.liquidity = calculateDecimals(usd)
 
   tokenData.poolTonAmount = calculateTonAmountInPool()
   tokenData.poolTokenAmount = calculateSelectedTokenAmount()
