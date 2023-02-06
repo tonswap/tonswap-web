@@ -40,6 +40,10 @@ const PoolInfoText = styled(Typography)({
   fontWeight: 400,
   letterSpacing: '-0.15px',
   fontFamily: 'Roboto',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  maxWidth: 150,
 })
 
 const PoolInfoPlug = styled(PoolInfoText)({
@@ -54,13 +58,18 @@ const PoolInfoTitle = styled(PoolInfoText)({
 
 export const calculateDecimals = (val: string) => {
   const n = parseFloat(val)
+  let result: string
   if (n > 1) {
-    return n.toFixed(2)
+    result = n.toFixed(2)
   } else if (n < 0.01) {
-    return n.toFixed(6)
+    result = n.toFixed(6)
   } else {
-    return n.toFixed(4)
+    result = n.toFixed(4)
   }
+  if(parseFloat(result) > 1000) {
+    result = parseFloat(result).toLocaleString('en-US')
+  }
+  return result
 }
 
 export const PoolInfo = () => {
@@ -115,7 +124,7 @@ export const PoolInfo = () => {
         </AccordionSummary>
         <AccordionDetails>
           {poolInfo.isLoading
-            ? <Box sx={{display: 'flex', alignItems: "center", justifyContent: 'center'}}>
+            ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CircularProgress size={20} />
             </Box>
             : <Box>
@@ -144,47 +153,49 @@ export const PoolInfo = () => {
                 </PoolInfoLine>
                 <PoolInfoText>{poolInfo.extendedInfo.poolTokenAmount}</PoolInfoText>
               </PoolInfoLineWrapper>
-              <Box sx={{ width: '100%', height: 1, borderBottom: '1px solid #E4E4E4' }} my={2} />
-              <Box>
-                <PoolInfoTitle mb={1}>Your current LP position</PoolInfoTitle>
-                {
-                  !wallet
-                    ? <PoolInfoPlug>No liquidity provided yet</PoolInfoPlug>
-                    : <Box>
-                      <PoolInfoLineWrapper>
-                        <PoolInfoText>{poolInfo.extendedInfo.lpTokenName}</PoolInfoText>
-                        <PoolInfoText>{poolInfo.extendedInfo.userLPTokenAmount}</PoolInfoText>
-                      </PoolInfoLineWrapper>
-                      <PoolInfoLineWrapper>
-                        <PoolInfoText>Share of liquidity pool</PoolInfoText>
-                        <PoolInfoText>{poolInfo.extendedInfo.userShareOfLiquidityPool}%</PoolInfoText>
-                      </PoolInfoLineWrapper>
-                      <PoolInfoLineWrapper>
-                        <PoolInfoLine>
-                          {ton?.image && <StyledAvatar src={ton.image} alt="token" sx={{ marginRight: 1 }} />}
-                          <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>TON</PoolInfoText>
-                        </PoolInfoLine>
-                        <PoolInfoText>{poolInfo.extendedInfo.userTonAmount}</PoolInfoText>
-                      </PoolInfoLineWrapper>
-                      <PoolInfoLineWrapper>
-                        <PoolInfoLine>
-                          {selectedToken?.image &&
-                              <StyledAvatar src={selectedToken.image} alt="token" sx={{ marginRight: 1 }} />}
-                          <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>
-                            {selectedToken?.displayName || 'TOKEN'}
-                          </PoolInfoText>
-                        </PoolInfoLine>
-                        <PoolInfoText>{poolInfo.extendedInfo.userTokenAmount}</PoolInfoText>
-                      </PoolInfoLineWrapper>
-                      <PoolInfoLineWrapper>
-                        <PoolInfoText>USD value</PoolInfoText>
-                        <PoolInfoText>
-                          ${poolInfo.extendedInfo.userUSDValueAmount}
-                        </PoolInfoText>
-                      </PoolInfoLineWrapper>
-                    </Box>
-                }
-              </Box>
+
+              {wallet && <> <Box sx={{ width: '100%', height: 1, borderBottom: '1px solid #E4E4E4' }} my={2} />
+                  <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PoolInfoTitle mb={1}>Your current LP position</PoolInfoTitle></Box>
+                    {
+                      !parseFloat(poolInfo.extendedInfo.userShareOfLiquidityPool!)
+                        ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PoolInfoPlug>No Liquidity</PoolInfoPlug></Box>
+                        : <Box>
+                          <PoolInfoLineWrapper>
+                            <PoolInfoText>{poolInfo.extendedInfo.lpTokenName}</PoolInfoText>
+                            <PoolInfoText>{poolInfo.extendedInfo.userLPTokenAmount}</PoolInfoText>
+                          </PoolInfoLineWrapper>
+                          <PoolInfoLineWrapper>
+                            <PoolInfoText>Share of liquidity pool</PoolInfoText>
+                            <PoolInfoText>{poolInfo.extendedInfo.userShareOfLiquidityPool}%</PoolInfoText>
+                          </PoolInfoLineWrapper>
+                          <PoolInfoLineWrapper>
+                            <PoolInfoLine>
+                              {ton?.image && <StyledAvatar src={ton.image} alt="token" sx={{ marginRight: 1 }} />}
+                              <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>TON</PoolInfoText>
+                            </PoolInfoLine>
+                            <PoolInfoText>{poolInfo.extendedInfo.userTonAmount}</PoolInfoText>
+                          </PoolInfoLineWrapper>
+                          <PoolInfoLineWrapper>
+                            <PoolInfoLine>
+                              {selectedToken?.image &&
+                                  <StyledAvatar src={selectedToken.image} alt="token" sx={{ marginRight: 1 }} />}
+                              <PoolInfoText sx={{ display: 'flex', alignItems: 'center' }}>
+                                {selectedToken?.displayName || 'TOKEN'}
+                              </PoolInfoText>
+                            </PoolInfoLine>
+                            <PoolInfoText>{poolInfo.extendedInfo.userTokenAmount}</PoolInfoText>
+                          </PoolInfoLineWrapper>
+                          <PoolInfoLineWrapper>
+                            <PoolInfoText>USD value</PoolInfoText>
+                            <PoolInfoText>
+                              ${poolInfo.extendedInfo.userUSDValueAmount}
+                            </PoolInfoText>
+                          </PoolInfoLineWrapper>
+                        </Box>
+                    }
+                  </Box>
+              </>}
             </Box>}
         </AccordionDetails>
       </Accordion>

@@ -40,7 +40,7 @@ export const setPoolInfo = createAsyncThunk<{
     extendedInfo: {
       liquidity: usd,
       lpTokenName: name,
-      totalLPTokenAmount: calculateTotalLPSupply(poolData.totalSupply),
+      totalLPTokenAmount: calculateDecimals(calculateTotalLPSupply(poolData.totalSupply)),
       poolTonAmount: calculateDecimals(fromDecimals(poolData.tonReserves, ton.decimals)),
       poolTokenAmount: calculateDecimals(fromDecimals(poolData.tokenReserves, tokenDecimals)),
     }
@@ -102,7 +102,7 @@ export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
   tokenData.poolTonAmount = calculateTonAmountInPool()
   tokenData.poolTokenAmount = calculateSelectedTokenAmount()
 
-  tokenData.totalLPTokenAmount = calculateTotalLPSupply(totalSupply)
+  tokenData.totalLPTokenAmount = calculateDecimals(calculateTotalLPSupply(totalSupply))
 
   tokenData.userShareOfLiquidityPool = calculateUserShareOfLiquidityPool()
   tokenData.userUSDValueAmount = calculateUSDValue()
