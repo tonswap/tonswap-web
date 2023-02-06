@@ -66,8 +66,8 @@ export const calculateDecimals = (val: string) => {
   } else {
     result = n.toFixed(4)
   }
-  if(parseFloat(result) > 1000) {
-    result = parseFloat(result).toLocaleString('en-US')
+  if(parseFloat(result) > 999) {
+    result = parseInt(result).toLocaleString('en-US')
   }
   return result
 }
