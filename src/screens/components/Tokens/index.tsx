@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, TextField } from '@mui/material'
 import { Title } from "components";
 import { useStyles } from "./styles";
 import Fade from "@mui/material/Fade";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from 'react'
 import ListToken from "./ListToken";
 import CustomToken from "./CustomToken";
 import { useTokensStore } from "store/tokens/hooks";
@@ -14,6 +14,9 @@ interface Props {
   title: string;
   onTokenSelect: (token: PoolInfo) => void;
 }
+
+//check SearchInput for logic
+//test jetton EQBLMMLPNQ7VTND3YGZuNMiGiOIdUaNE0R4819ETHj3QUA4l
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
   const classes = useStyles();
@@ -27,6 +30,10 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     clearStore();
   }, []);
 
+  const onSearch = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  }
+
   return (
     <Fade in timeout={300}>
       <Box className={classes.root}>
@@ -39,14 +46,9 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
         </StyledTitle>
         <Box className={classes.lists}>
           <StyledContainer>
-            {/* <Grid item sm={4} md={3}>
-              <StyledAddTokenButton onClick={() => setAddTokenModal(true)}>
-                <AddIcon style={{ fontSize: 30 }} />
-                <StyledAddTokenButtonText>
-                  Import Token
-                </StyledAddTokenButtonText>
-              </StyledAddTokenButton>
-            </Grid> */}
+            <Box>
+              <TextField sx={{width: '100%', marginBottom: 1}} label="Search" variant="standard" onChange={onSearch} />
+            </Box>
             {tokens.map((token: PoolInfo) => {
               return (
                 <ListToken
