@@ -20,18 +20,17 @@ const PoolInfoAccordion = styled(Accordion)({
   background: 'linear-gradient(180deg, #F3F3F3 0%, #F9F9F9 100%)',
   boxShadow: 'none',
   borderRadius: '12px !important',
-  '.MuiAccordionSummary-content': {
-    marginTop: 0,
-    marginBottom: '0',
-  },
-  '.MuiAccordionSummary-root': {
-    height: '44px', minHeight: '0 !important',
+  '.MuiButtonBase-root .MuiAccordionSummary-root .Mui-expanded': {
+    height: '20px',
+    minHeight: '0 !important',
   },
 })
 
 const PoolInfoAccordionSummary = styled(AccordionSummary)({
+  margin: '0 !important',
   '.Mui-expanded': {
-    minHeight: '44px !important',
+    height: '24px !important',
+    margin: '0 !important',
   },
 })
 
@@ -122,12 +121,12 @@ export const PoolInfo = () => {
             }
           </PoolInfoCenteringWrapper>
         </PoolInfoAccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{paddingTop: 0}}>
           {poolInfo.isLoading
             ? <CenteringBox>
               <CircularProgress size={20} />
             </CenteringBox>
-            : <Box>
+            : <Box sx={{marginTop: -2}}>
               <PoolInfoLineWrapper>
                 <PoolInfoText>{t('liquidity')} (TVL)</PoolInfoText>
                 <PoolInfoText>${poolInfo.extendedInfo.liquidity}</PoolInfoText>
