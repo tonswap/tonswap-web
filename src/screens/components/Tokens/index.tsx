@@ -16,6 +16,7 @@ import search from 'assets/images/shared/search.svg'
 import clear from 'assets/images/shared/clear.svg'
 import flexingDuck from 'assets/images/drawings/flexing-duck.svg'
 import FullPageLoader from 'components/FullPageLoader'
+import { isMobile } from 'react-device-detect'
 
 interface Props {
   title: string;
@@ -33,6 +34,8 @@ const useJettonSearch = () => {
   const [userJettons, setUserJettons] = useState<any>(JSON.parse(localStorage.getItem('userJettons') || '[]'))
 
   const getUserJettons = () => JSON.parse(localStorage.getItem('userJettons') || '[]')
+
+  const onClear = () => setJettonAddress('')
 
   const onSubmit = async (address: string) => {
     let jettonAddress
@@ -87,6 +90,8 @@ const useJettonSearch = () => {
         setLoading(false)
         setError('Address is incorrect')
         return
+      } finally {
+        isMobile && setLoading(false)
       }
     }
   }
@@ -98,7 +103,7 @@ const useJettonSearch = () => {
   }
 
   return {
-    onDigitEnter, error, loading, foundJetton, onKeyPress, userJettons, onClose, onAddToLS,
+    onDigitEnter, error, loading, foundJetton, onKeyPress, jettonAddress, userJettons, onClose, onAddToLS, onClear,
   }
 }
 
@@ -117,12 +122,18 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     onDigitEnter,
     onAddToLS,
     userJettons,
+    onClear,
+    jettonAddress,
   } = useJettonSearch()
   const [allTokens, setAllTokens] = useState([...userJettons, ...tokens])
 
   useEffect(() => {
     setAllTokens([...userJettons, ...tokens])
   }, [userJettons, tokens])
+
+  useEffect(() => {
+    setAllTokens([...userJettons, ...tokens].filter((token) => token.displayName.toLowerCase().includes(jettonAddress.toLowerCase())))
+  }, [jettonAddress])
 
   useEffect(() => {
     selectToken(undefined)
@@ -144,15 +155,15 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-                <Typography>Jetton not found</Typography>
-                <img src={flexingDuck} alt="Flexing duck" width={119} height={108} />
+                <Typography sx={{ marginBottom: 3 }}>Jetton not found</Typography>
+                <img style={{ marginBottom: 24 }} src={flexingDuck} alt="Flexing duck" width={119} height={108} />
                 <Button sx={{ width: 225, height: 50, background: '#50A7EA', color: '#fff' }}
                         onClick={onClose}>Close</Button>
             </Box>
         </Popup>}
         {!!foundJetton && <Popup open={!!foundJetton} onClose={onClose}>
             <Box px={2} sx={{
-              minWidth: 250,
+              minWidth: 150,
               width: '100%',
               maxWidth: 461,
               minHeight: 200,
@@ -171,10 +182,18 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                         token={foundJetton}
                     />
                 </Box>
-                <Box>
-                    <Button sx={{ width: 142, height: 50, background: '#50A7EA', color: '#fff', marginRight: 2 }}
+                <Box sx={{ display: 'flex', width: '100%' }}>
+                    <Button sx={{
+                      flex: 1,
+                      maxWidth: 142,
+                      height: 50,
+                      background: '#50A7EA',
+                      color: '#fff',
+                      marginRight: 2,
+                    }}
                             onClick={onClose}>Cancel</Button>
-                    <Button sx={{ width: 225, height: 50, background: '#50A7EA', color: '#fff' }} onClick={onAddToLS}>Add
+                    <Button sx={{ flex: 1, maxWidth: 225, height: 50, background: '#50A7EA', color: '#fff' }}
+                            onClick={onAddToLS}>Add
                         to list</Button>
                 </Box>
             </Box>
@@ -209,12 +228,14 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                     border: 'none',
                     outline: 'none',
                   }}
+                  value={jettonAddress}
                   placeholder="Enter Jetton symbol or address"
                   onChange={onDigitEnter}
-                  onKeyDown={onKeyPress}
+                  onKeyDown={(e) => {
+                    onKeyPress(e)
+                  }}
                 />
-                <IconButton onClick={() => {
-                }}>
+                <IconButton onClick={onClear}>
                   <img src={clear} alt="Clear icon" width={24} height={24} />
                 </IconButton>
               </Box>
@@ -225,6 +246,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                   key={token.tokenMinter}
                   onSelect={() => onTokenSelect(token)}
                   token={token}
+                  custom={userJettons.find((jetton: any) => jetton.displayName === token.displayName)}
                 />
               )
             })
@@ -253,31 +275,3 @@ const StyledTitle = styled(Box)({
   zIndex: 1,
   paddingBottom: 10,
 })
-
-/*
-                sx={{
-                  width: '100%',
-                  marginBottom: 1,
-                  '& label.Mui-focused': {
-                    color: 'green',
-                    borderRadius: 12,
-                  },
-                  '& .MuiInput-underline:after': {
-                    borderBottomColor: 'green',
-                  },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      height: 40,
-                      borderColor: 'red',
-                      borderRadius: '12px',
-                      paddingLeft: 2,
-                    },
-                    '&:hover fieldset': {
-                      borderColor: 'yellow',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: 'green',
-                    },
-                  },
-              }}
- */
