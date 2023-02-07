@@ -58,6 +58,10 @@
     "pool-info": "Liquidez de la información del pool",
     "liquidity": "Liquidez",
     "warning": "ADVERTENCIA",
-    "impact-warning": "Advertencia de impacto de precio!"
+    "impact-warning": "Advertencia de impacto de precio!",
+    "your-current-lp": "Su posición actual de LP",
+    "share-of-pool": "Cuota de fondo de liquidez",
+    "value": "valor",
+    "no-liquidity": "Sin liquidez"
   }
 }
