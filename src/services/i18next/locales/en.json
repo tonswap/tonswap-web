@@ -58,6 +58,10 @@
     "pool-info": "Pool info",
     "liquidity": "Liquidity",
     "warning": "WARNING",
-    "impact-warning": "Price Impact warning!"
+    "impact-warning": "Price Impact warning!",
+    "your-current-lp": "Your current LP position",
+    "share-of-pool": "Share of liquidity pool",
+    "value": "value",
+    "no-liquidity": "No liquidity"
   }
 }
