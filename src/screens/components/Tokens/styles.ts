@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const StyledImage = styled(Avatar)({
-  width: 43,
-  height: 43,
+  width: 40,
+  height: 40,
 })
 
 
@@ -36,16 +36,11 @@ export const StyledUsdValue = styled(Box)({
 })
 
 export const StyledToken = styled(Box)(({color}:{color: string}) => ({
-  overflow: "hidden",
-  position: "relative",
   transition: "0.2s all",
   background: color,
   borderRadius: 12,
-  display: "flex",
-  gap:14,
-  alignItems: "center",
-  justifyContent: "flex-start",
-  padding: '8px 20px 8px 14px',
+  padding: '6px',
+
   "& p": {
     fontSize: 14,
     fontWeight: 500,
@@ -80,6 +75,7 @@ export const StyledTokenTexts = styled(Box)({
  display:'flex',
  flexDirection:'column',
  alignItems:'flex-start',
+  justifySelf: 'flex-start',
  "& .symbol": {
     fontWeight: 500,
     fontSize: 17
