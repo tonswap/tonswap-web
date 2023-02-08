@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography } from '@mui/material'
+import { Box, Button, IconButton, Input, Typography } from '@mui/material'
 import { Popup, StyledDialogContent, Title } from 'components'
 import { useStyles } from './styles'
 import Fade from '@mui/material/Fade'
@@ -210,8 +210,9 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 padding: '0 12px',
               }}>
                 <img src={search} alt="Search icon" width={28} height={28} style={{ marginRight: 8 }} />
-                <input
-                  style={{
+                <Input
+                  disableUnderline
+                  sx={{
                     width: '100%',
                     height: '100%',
                     border: 'none',

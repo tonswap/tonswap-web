@@ -59,7 +59,7 @@ export const useTokenSearch = () => {
     setJettonAddress(e.target.value)
   }
 
-  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement |HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && jettonAddress.length === 48) {
       setLoading(true)
       try {
