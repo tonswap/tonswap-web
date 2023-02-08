@@ -256,6 +256,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
               )
             })
             }
+            {!allTokens?.length && <Typography sx={{textAlign: 'center'}}>Nothing was found</Typography>}
           </StyledContainer>
         </Box>
       </Box>
