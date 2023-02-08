@@ -84,6 +84,7 @@ const PoolInfoPlug = styled(PoolInfoText)({
 const PoolInfoTitle = styled(PoolInfoText)({
   fontWeight: 700,
   textAlign: 'center',
+  maxWidth: 350,
 })
 
 export const PoolInfo = () => {
@@ -96,11 +97,12 @@ export const PoolInfo = () => {
   const { wallet } = useWalletStore()
   const { selectedToken } = useTokenOperationsStore()
   const { t } = useTranslation()
+  const {totalBalances} = useTokenOperationsStore()
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     !!wallet && expanded && fetchExtendedData()
-  }, [expanded, wallet])
+  }, [expanded, wallet, totalBalances])
 
   useEffect(() => {
     fetchPoolData()
@@ -155,17 +157,17 @@ export const PoolInfo = () => {
 
               {wallet && <> <Box sx={{ width: '100%', height: 1, borderBottom: '1px solid #E4E4E4' }} my={2} />
                   <Box>
-                      <CenteringBox><PoolInfoTitle mb={1}>Your current LP position</PoolInfoTitle></CenteringBox>
+                      <CenteringBox><PoolInfoTitle mb={1}>{t('your-current-lp')}</PoolInfoTitle></CenteringBox>
                     {
                       !parseFloat(poolInfo.extendedInfo.userShareOfLiquidityPool!)
-                        ? <CenteringBox><PoolInfoPlug>No Liquidity</PoolInfoPlug></CenteringBox>
+                        ? <CenteringBox><PoolInfoPlug>{t('no-liquidity')}</PoolInfoPlug></CenteringBox>
                         : <Box>
                           <PoolInfoLineWrapper>
                             <PoolInfoText>{poolInfo.extendedInfo.lpTokenName}</PoolInfoText>
                             <PoolInfoText>{poolInfo.extendedInfo.userLPTokenAmount}</PoolInfoText>
                           </PoolInfoLineWrapper>
                           <PoolInfoLineWrapper>
-                            <PoolInfoText>Share of liquidity pool</PoolInfoText>
+                            <PoolInfoText>{t('share-of-pool')}</PoolInfoText>
                             <PoolInfoText>{poolInfo.extendedInfo.userShareOfLiquidityPool}%</PoolInfoText>
                           </PoolInfoLineWrapper>
                           <PoolInfoLineWrapper>
@@ -186,7 +188,7 @@ export const PoolInfo = () => {
                             <PoolInfoText>{poolInfo.extendedInfo.userTokenAmount}</PoolInfoText>
                           </PoolInfoLineWrapper>
                           <PoolInfoLineWrapper>
-                            <PoolInfoText>USD value</PoolInfoText>
+                            <PoolInfoText>USD {t('value')}</PoolInfoText>
                             <PoolInfoText>
                               ${poolInfo.extendedInfo.userUSDValueAmount}
                             </PoolInfoText>
