@@ -1,111 +1,24 @@
-import { Box, Button, IconButton, Popover, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, Typography } from '@mui/material'
 import { Popup, Title } from 'components'
 import { useStyles } from './styles'
 import Fade from '@mui/material/Fade'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ListToken from './ListToken'
 import CustomToken from './CustomToken'
 import { useTokensStore } from 'store/tokens/hooks'
 import { styled } from '@mui/system'
 import { useTokenOperationsActions } from 'store/token-operations/hooks'
 import { PoolInfo } from 'services/api/addresses'
-import { Address } from 'ton'
-import { getTokenData } from 'services/api'
-import { poolStateInit } from 'services/api/deploy-pool'
 import search from 'assets/images/shared/search.svg'
 import clear from 'assets/images/shared/clear.svg'
 import flexingDuck from 'assets/images/drawings/flexing-duck.svg'
 import FullPageLoader from 'components/FullPageLoader'
-import { isMobile } from 'react-device-detect'
+import { useTokenSearch } from 'hooks/useTokenSearch'
+import debounce from 'lodash.debounce'
 
 interface Props {
   title: string;
   onTokenSelect: (token: PoolInfo) => void;
-}
-
-//check SearchInput for logic
-//test jetton EQBLMMLPNQ7VTND3YGZuNMiGiOIdUaNE0R4819ETHj3QUA4l
-
-const useJettonSearch = () => {
-  const [jettonAddress, setJettonAddress] = useState<string>('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [foundJetton, setFoundJetton] = useState<any>()
-  const [userJettons, setUserJettons] = useState<any>(JSON.parse(localStorage.getItem('userJettons') || '[]'))
-
-  const getUserJettons = () => JSON.parse(localStorage.getItem('userJettons') || '[]')
-
-  const onClear = () => setJettonAddress('')
-
-  const onSubmit = async (address: string) => {
-    let jettonAddress
-    let jettonData
-    let ammMinterAddress
-
-    try {
-      jettonAddress = Address.parse(address)
-      jettonData = await getTokenData(jettonAddress)
-      const { futureAddress } = await poolStateInit(jettonAddress, 0)
-      ammMinterAddress = futureAddress
-    } catch (e) {
-      setError('Jetton was not found')
-      setLoading(false)
-      return
-    }
-
-    const newUserJetton = {
-      name: jettonData.name,
-      ammMinter: ammMinterAddress.toFriendly(),
-      tokenMinter: address,
-      color: '#c1c1c1',
-      displayName: jettonData.name.toUpperCase(),
-      image: jettonData.image,
-      isCustom: true,
-      decimals: jettonData.decimals,
-    }
-
-    setFoundJetton(newUserJetton)
-  }
-
-  const onAddToLS = () => {
-    let updatedJettons: any[] = getUserJettons()
-    updatedJettons = [...updatedJettons.filter((jetton) => jetton.tokenMinter !== foundJetton.tokenMinter), foundJetton]
-    window.localStorage.setItem('userJettons', JSON.stringify(updatedJettons))
-    setUserJettons(getUserJettons())
-    onClose()
-  }
-
-  const onDigitEnter = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setError(null)
-    setJettonAddress(e.target.value)
-  }
-
-  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && jettonAddress.length === 48) {
-      setLoading(true)
-      try {
-        Address.parse(jettonAddress)
-        onSubmit(jettonAddress)
-      } catch (e) {
-        setLoading(false)
-        setError('Address is incorrect')
-        return
-      } finally {
-        isMobile && setLoading(false)
-      }
-    }
-  }
-
-  const onClose = () => {
-    setError(null)
-    setFoundJetton(null)
-    setLoading(false)
-    setJettonAddress('')
-  }
-
-  return {
-    onDigitEnter, error, loading, foundJetton, onKeyPress, jettonAddress, userJettons, onClose, onAddToLS, onClear,
-  }
 }
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
@@ -125,7 +38,8 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     userJettons,
     onClear,
     jettonAddress,
-  } = useJettonSearch()
+    onSetError,
+  } = useTokenSearch()
   const [allTokens, setAllTokens] = useState([...userJettons, ...tokens])
 
   useEffect(() => {
@@ -140,6 +54,20 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     selectToken(undefined)
     clearStore()
   }, [])
+
+  const checkInput = () => {
+    if(!allTokens?.length && jettonAddress.length < 5 && jettonAddress.length > 0) {
+      onSetError('Nothing was found')
+    }
+  }
+
+  const debouncedSearchHandler = useCallback(debounce(checkInput, 1000)
+  , [allTokens, jettonAddress])
+
+  useEffect(() => {
+    debouncedSearchHandler()
+    return () => debouncedSearchHandler.cancel()
+  },[jettonAddress, allTokens])
 
   return (
     <Fade in timeout={300}>
@@ -156,7 +84,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-                <Typography sx={{ marginBottom: 3 }}>Jetton not found</Typography>
+                <Typography sx={{ marginBottom: 3 }}>{error}</Typography>
                 <img style={{ marginBottom: 24 }} src={flexingDuck} alt="Flexing duck" width={119} height={108} />
                 <Button sx={{ width: 225, height: 50, background: '#50A7EA', color: '#fff' }}
                         onClick={onClose}>Close</Button>
@@ -221,10 +149,10 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 borderRadius: '12px',
                 padding: '0 12px',
                 'input:focus::placeholder': {
-                color: 'transparent',
-              },
+                  color: 'transparent',
+                },
               }}>
-                <img src={search} alt="Search icon" width={28} height={28} style={{marginRight: 8}} />
+                <img src={search} alt="Search icon" width={28} height={28} style={{ marginRight: 8 }} />
                 <input
                   style={{
                     width: '100%',
@@ -236,9 +164,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                   value={jettonAddress}
                   placeholder="Enter Jetton symbol or address"
                   onChange={onDigitEnter}
-                  onKeyDown={(e) => {
-                    onKeyPress(e)
-                  }}
+                  onKeyDown={onKeyPress}
                 />
                 <IconButton onClick={onClear}>
                   <img src={clear} alt="Clear icon" width={24} height={24} />
@@ -256,7 +182,6 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
               )
             })
             }
-            {!allTokens?.length && <Typography sx={{textAlign: 'center'}}>Nothing was found</Typography>}
           </StyledContainer>
         </Box>
       </Box>
