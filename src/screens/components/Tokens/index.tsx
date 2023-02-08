@@ -1,5 +1,5 @@
 import { Box, Button, IconButton, Typography } from '@mui/material'
-import { Popup, Title } from 'components'
+import { Popup, StyledDialogContent, Title } from 'components'
 import { useStyles } from './styles'
 import Fade from '@mui/material/Fade'
 import { useCallback, useEffect, useState } from 'react'
@@ -15,10 +15,72 @@ import flexingDuck from 'assets/images/drawings/flexing-duck.svg'
 import FullPageLoader from 'components/FullPageLoader'
 import { useTokenSearch } from 'hooks/useTokenSearch'
 import debounce from 'lodash.debounce'
+import Dialog from '@mui/material/Dialog'
+import { isMobile } from 'react-device-detect'
 
 interface Props {
   title: string;
   onTokenSelect: (token: PoolInfo) => void;
+}
+
+const PopupContentWrapper = styled(StyledDialogContent)(({isMobile}: {isMobile: boolean}) => ({
+  padding: isMobile ? '5px' : "15px",
+  paddingBottom: isMobile? '20px' : '25px',
+  paddingTop: '15px',
+}))
+
+interface IMobilePopup {
+  open: boolean
+  onClose: () => void
+  children: React.ReactNode
+  maxWidth?: number
+  minWidth?: number
+  backgroundColor?: string,
+  flexibleSpacings?: boolean
+}
+
+const MobilePopup = ({
+  open,
+  onClose,
+  maxWidth,
+  minWidth,
+  backgroundColor = 'rgba(48, 48, 48, 0.8)',
+  flexibleSpacings = true,
+  children,
+}: IMobilePopup) => {
+
+  return (
+    <Dialog
+      fullWidth
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        style: {
+          width: '100%',
+          height: '100%',
+          maxWidth: 'unset',
+          background: 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      }}
+      BackdropProps={{
+        style: {
+          backgroundColor,
+        },
+      }}
+    >
+      <PopupContentWrapper isMobile={flexibleSpacings ? isMobile : false} maxWidth={maxWidth} minWidth={minWidth}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+          <IconButton onClick={onClose} sx={{padding: 0}}>
+            <img src={clear} width={24} height={24} alt="Close icon" />
+          </IconButton>
+        </Box>
+        <Box>{children}</Box>
+      </PopupContentWrapper>
+    </Dialog>
+  )
 }
 
 export const Tokens = ({ title, onTokenSelect }: Props) => {
@@ -56,29 +118,26 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
   }, [])
 
   const checkInput = () => {
-    if(!allTokens?.length && jettonAddress.length < 5 && jettonAddress.length > 0) {
-      onSetError('Nothing was found')
+    if (!allTokens?.length && jettonAddress.length <= 5 && jettonAddress.length > 0) {
+      onSetError('Jetton not found')
     }
   }
 
   const debouncedSearchHandler = useCallback(debounce(checkInput, 1000)
-  , [allTokens, jettonAddress])
+    , [allTokens, jettonAddress])
 
   useEffect(() => {
     debouncedSearchHandler()
     return () => debouncedSearchHandler.cancel()
-  },[jettonAddress, allTokens])
+  }, [jettonAddress, allTokens])
 
   return (
     <Fade in timeout={300}>
       <Box className={classes.root}>
-        {!!error && <Popup open={!!error} onClose={onClose}>
+        {!!error && <MobilePopup flexibleSpacings={false} open={!!error} onClose={onClose}>
             <Box sx={{
-              minWidth: 250,
-              width: '100%',
-              maxWidth: 461,
-              minHeight: 200,
-              maxHeight: 274,
+              width: isMobile ? 280 : 461,
+              height: 274,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -89,22 +148,23 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 <Button sx={{ width: 225, height: 50, background: '#50A7EA', color: '#fff' }}
                         onClick={onClose}>Close</Button>
             </Box>
-        </Popup>}
-        {!!foundJetton && <Popup open={!!foundJetton} onClose={onClose}>
+        </MobilePopup>}
+        {!!foundJetton && <MobilePopup open={!!foundJetton} onClose={onClose}>
             <Box px={2} sx={{
-              minWidth: 150,
+              padding: '0 8px',
+              minWidth: isMobile ? 300 : 460,
               width: '100%',
               maxWidth: 461,
-              minHeight: 200,
               maxHeight: 274,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-                <Typography>Jetton pool found</Typography>
-                <Box sx={{ width: '100%' }}>
+                <Typography sx={{marginBottom: 2}}>Jetton pool found</Typography>
+                <Box mb={3} sx={{ width: '100%' }}>
                     <ListToken
+                        custom
                         key={foundJetton.tokenMinter}
                         onSelect={() => {
                         }}
@@ -121,12 +181,12 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                       marginRight: 2,
                     }}
                             onClick={onClose}>Cancel</Button>
-                    <Button sx={{ flex: 1, maxWidth: 225, height: 50, background: '#50A7EA', color: '#fff' }}
+                    <Button sx={{ flex: 2, height: 50, background: '#50A7EA', color: '#fff' }}
                             onClick={onAddToLS}>Add
                         to list</Button>
                 </Box>
             </Box>
-        </Popup>}
+        </MobilePopup>}
         <FullPageLoader open={loading}>
           <Typography>Searching for Jetton</Typography>
         </FullPageLoader>
@@ -148,9 +208,6 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 border: '1px solid #AEAEAE',
                 borderRadius: '12px',
                 padding: '0 12px',
-                'input:focus::placeholder': {
-                  color: 'transparent',
-                },
               }}>
                 <img src={search} alt="Search icon" width={28} height={28} style={{ marginRight: 8 }} />
                 <input
@@ -164,7 +221,9 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                   value={jettonAddress}
                   placeholder="Enter Jetton symbol or address"
                   onChange={onDigitEnter}
-                  onKeyDown={onKeyPress}
+                  onKeyDown={(e) => {
+                    onKeyPress(e)
+                  }}
                 />
                 <IconButton onClick={onClear}>
                   <img src={clear} alt="Clear icon" width={24} height={24} />
