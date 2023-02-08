@@ -100,6 +100,7 @@ const useJettonSearch = () => {
     setError(null)
     setFoundJetton(null)
     setLoading(false)
+    setJettonAddress('')
   }
 
   return {
@@ -219,14 +220,18 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
                 border: '1px solid #AEAEAE',
                 borderRadius: '12px',
                 padding: '0 12px',
+                'input:focus::placeholder': {
+                color: 'transparent',
+              },
               }}>
-                <img src={search} alt="Search icon" width={24} height={24} />
+                <img src={search} alt="Search icon" width={28} height={28} style={{marginRight: 8}} />
                 <input
                   style={{
                     width: '100%',
                     height: '100%',
                     border: 'none',
                     outline: 'none',
+                    fontSize: 14,
                   }}
                   value={jettonAddress}
                   placeholder="Enter Jetton symbol or address"
