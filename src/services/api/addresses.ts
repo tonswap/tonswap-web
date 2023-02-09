@@ -1,13 +1,6 @@
 import { Cell, TonClient, Address } from "ton";
 import Ton from "assets/images/tokens/ton.svg";
 
-import DinoKorn from "assets/images/tokens/DinoKorn.png";
-import KittyKorn from "assets/images/tokens/KittyKorn.png";
-import Btc from "assets/images/tokens/btc1.svg";
-import Eth from "assets/images/tokens/eth1.svg";
-import Uni from "assets/images/tokens/uni1.svg";
-import Usdc from "assets/images/tokens/usdc.svg";
-
 import { localStorageTokensToObject } from "utils";
 
 export type PoolInfo = {

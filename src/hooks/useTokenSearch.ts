@@ -1,98 +1,90 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect } from 'react'
 import { Address } from 'ton'
-import { getTokenData } from 'services/api'
-import { poolStateInit } from 'services/api/deploy-pool'
 import { isMobile } from 'react-device-detect'
+import debounce from 'lodash.debounce'
+import { useTokenOperationsActions } from 'store/token-operations/hooks'
+import { useTokensStore } from 'store/tokens/hooks'
+import { useDispatch } from 'react-redux'
+import {
+  onAddressChange,
+  onSetError,
+  onSetFoundJetton,
+  onSetIsLoading,
+  onSetUsersTokens,
+  onSetAllTokens, onResetFoundJetton,
+} from 'store/tokens/actions'
 
 export const useTokenSearch = () => {
-  const [jettonAddress, setJettonAddress] = useState<string>('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [foundJetton, setFoundJetton] = useState<any>()
-  const [userJettons, setUserJettons] = useState<any>(JSON.parse(localStorage.getItem('userJettons') || '[]'))
+  const { selectToken } = useTokenOperationsActions()
+  const { clearStore } = useTokenOperationsActions()
+  const { officialTokens, userTokens, allTokens, address } = useTokensStore()
+  const dispatch = useDispatch<any>()
 
-  const getUserJettons = () => JSON.parse(localStorage.getItem('userJettons') || '[]')
+  const onClear = () => dispatch(onAddressChange(''))
 
-  const onSetError = (val: string | null) => setError(val)
-  const onClear = () => setJettonAddress('')
+  const onDigitEnter = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => dispatch(onAddressChange(e.target.value))
 
-  const onSubmit = async (address: string) => {
-    let jettonAddress
-    let jettonData
-    let ammMinterAddress
-
-    try {
-      jettonAddress = Address.parse(address)
-      jettonData = await getTokenData(jettonAddress)
-      const { futureAddress } = await poolStateInit(jettonAddress, 0)
-      ammMinterAddress = futureAddress
-    } catch (e) {
-      setError('Jetton not found')
-      setLoading(false)
-      return
-    }
-
-    const newUserJetton = {
-      name: jettonData.name,
-      ammMinter: ammMinterAddress.toFriendly(),
-      tokenMinter: address,
-      color: '#c1c1c1',
-      displayName: jettonData.name.toUpperCase(),
-      image: jettonData.image,
-      isCustom: true,
-      decimals: jettonData.decimals,
-    }
-
-    setFoundJetton(newUserJetton)
-  }
-
-  const onAddToLS = () => {
-    let updatedJettons: any[] = getUserJettons()
-    updatedJettons = [...updatedJettons.filter((jetton) => jetton.tokenMinter !== foundJetton.tokenMinter), foundJetton]
-    window.localStorage.setItem('userJettons', JSON.stringify(updatedJettons))
-    setUserJettons(getUserJettons())
+  const onAddToLocalStorage = () => {
+    dispatch(onSetUsersTokens())
     onClose()
   }
 
-  const onDigitEnter = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setError(null)
-    setJettonAddress(e.target.value)
+  const onClose = () => {
+    dispatch(onSetError(null))
+    dispatch(onSetIsLoading(false))
+    dispatch(onAddressChange(''))
+    dispatch(onResetFoundJetton())
   }
 
-  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement |HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && jettonAddress.length === 48) {
-      setLoading(true)
+
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && address.length === 48) {
+      dispatch(onSetIsLoading(true))
       try {
-        Address.parse(jettonAddress)
-        onSubmit(jettonAddress)
+        Address.parse(address)
+        dispatch(onSetFoundJetton({ address: address }))
       } catch (e) {
-        setLoading(false)
-        setError('Address is incorrect')
+        dispatch(onSetIsLoading(false))
+        dispatch(onSetError('Address is incorrect'))
         return
       } finally {
-        isMobile && setLoading(false)
+        isMobile && dispatch(onSetIsLoading(false))
       }
     }
   }
 
-  const onClose = () => {
-    setError(null)
-    setFoundJetton(null)
-    setLoading(false)
-    setJettonAddress('')
+  useEffect(() => {
+    dispatch(onSetAllTokens([...userTokens, ...officialTokens]))
+  }, [userTokens, officialTokens])
+
+  useEffect(() => {
+    dispatch(onSetAllTokens([...userTokens, ...officialTokens].filter((token) => token.displayName.toLowerCase().includes(address.toLowerCase()))))
+  }, [address])
+
+  useEffect(() => {
+    selectToken(undefined)
+    clearStore()
+  }, [])
+
+  const checkInput = () => {
+    if (!allTokens?.length && address.length <= 5 && address.length > 0) {
+      dispatch(onSetError('Jetton not found'))
+    }
   }
+
+  const debouncedSearchHandler = useCallback(debounce(checkInput, 1000)
+    , [allTokens, address])
+
+  useEffect(() => {
+    debouncedSearchHandler()
+    return () => debouncedSearchHandler.cancel()
+  }, [address, allTokens])
 
   return {
     onDigitEnter,
-    error,
-    onSetError,
-    loading,
-    foundJetton,
     onKeyPress,
-    jettonAddress,
-    userJettons,
     onClose,
-    onAddToLS,
+    onAddToLocalStorage,
     onClear,
   }
 }

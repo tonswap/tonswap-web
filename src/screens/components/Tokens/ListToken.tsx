@@ -43,7 +43,7 @@ const ListToken = ({ token, onSelect, custom }: Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        border: custom ? '1px solid #BDCBC5' : 'none',
+        border: custom ? '1px solid #fff' : 'none',
         padding: '2px 14px',
         borderRadius: '10px',
       }}>

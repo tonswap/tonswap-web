@@ -1,34 +1,33 @@
-import { Box, Fade, Typography } from "@mui/material";
-import { ActionButton } from "components";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ROUTES } from "router/routes";
-import { getPoolData, getTokenData, _getJettonBalance } from "services/api";
-import { Address, fromNano } from "ton";
-import { getUsdAmount } from "screens/components/TokenOperations/util";
-import TonIcon from "assets/images/tokens/ton.svg";
-import DefaultTokenIcon from "assets/images/shared/default-token-image.png";
-import Loader from "./Loader";
-import { observer } from "mobx-react-lite";
-import { PoolInfo } from "services/api/addresses";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Box, Fade, Typography } from '@mui/material'
+import { ActionButton } from 'components'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { ROUTES } from 'router/routes'
+import { _getJettonBalance, getPoolData, getTokenData } from 'services/api'
+import { Address } from 'ton'
+import { getUsdAmount } from 'screens/components/TokenOperations/util'
+import TonIcon from 'assets/images/tokens/ton.svg'
+import DefaultTokenIcon from 'assets/images/shared/default-token-image.png'
+import Loader from './Loader'
+import { PoolInfo } from 'services/api/addresses'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import {
   StyledContainer,
-  StyledHeader,
-  StyledPoolTokens,
-  StyledPoolActions,
   StyledDetails,
+  StyledError,
+  StyledHeader,
+  StyledLockedToken,
+  StyledPoolActions,
+  StyledPoolTokens,
   StyledReserves,
   StyledTvl,
-  StyledLockedToken,
-  StyledError,
-} from "./styles";
-import { convertToCurrencySystem, fromDecimals } from "utils";
-import TokenPreview from "components/TokenPreview";
-import { useTokensStore } from "store/tokens/hooks";
-import { BN } from "bn.js";
-import useNavigateWithParams from "hooks/useNavigateWithParams";
-import { useTranslation } from "react-i18next";
+} from './styles'
+import { convertToCurrencySystem, fromDecimals } from 'utils'
+import TokenPreview from 'components/TokenPreview'
+import { useTokensStore } from 'store/tokens/hooks'
+import { BN } from 'bn.js'
+import useNavigateWithParams from 'hooks/useNavigateWithParams'
+import { useTranslation } from 'react-i18next'
 
 type Token = {
   name: string;
@@ -111,7 +110,7 @@ const PoolScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();
   const [pool, setPool] = useState<Pool | undefined>();
-  const { tokens } = useTokensStore()
+  const { officialTokens } = useTokensStore()
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -119,7 +118,7 @@ const PoolScreen = () => {
     if (ammMinter) {
       (async () => {
         try {
-          const data = await getPool(ammMinter, tokens);
+          const data = await getPool(ammMinter, officialTokens);
           setToken(data.token)
           setPool(data.pool)
         } catch (error) {
@@ -129,7 +128,7 @@ const PoolScreen = () => {
         }
       })();
     }
-  }, [ammMinter, tokens]);
+  }, [ammMinter, officialTokens]);
 
   if (isLoading) {
     return (
