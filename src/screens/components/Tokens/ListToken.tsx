@@ -19,9 +19,10 @@ interface Props {
   token: PoolInfo;
   onSelect: () => void;
   custom?: boolean
+  clickDisabled?: boolean
 }
 
-const ListToken = ({ token, onSelect, custom }: Props) => {
+const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
   const classes = useStyles()
   let { loading, usd } = useUsdValue(
     token.tokenMinter!,
@@ -32,16 +33,27 @@ const ListToken = ({ token, onSelect, custom }: Props) => {
   const isDisabled = (token.isDisabled || !parseFloat(usd)) && !window.location.href.includes('manage-liquidity')
   const { t } = useTranslation()
   const [showError, setShowError] = useState<string | null>(null)
+
+  const onClick = () => {
+    if(clickDisabled) {
+      return
+    }else if(isDisabled) {
+      setShowError('Trading pool is empty. Try again later')
+      return
+    }
+    else {
+      onSelect()
+    }
+  }
+
   return (
     <>
       {!!showError && <ErrorTokenDialog error={showError} onClose={() => setShowError(null)} />}
       <StyledToken
         color={token.color}
-        onClick={isDisabled ? () => {
-          setShowError('Trading pool is empty. Try again later')
-        } : onSelect}
+        onClick={onClick}
         style={{
-          cursor: isDisabled ? '' : 'pointer',
+          cursor: isDisabled || clickDisabled ? 'default' : 'pointer',
           position: 'relative',
         }}
       >

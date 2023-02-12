@@ -2,10 +2,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TOKENS_IN_LOCAL_STORAGE } from 'consts'
 import { PoolInfo } from 'services/api/addresses'
-import { getTokens, poolInfoStringify } from './utils'
+import { getOfficialTokens, getUsersTokens, poolInfoStringify } from './utils'
 import { onSetFoundJetton } from 'store/tokens/actions'
-
-const getUserJettons = () => JSON.parse(localStorage.getItem('userJettons') || '[]')
 
 export type State = {
   allTokens: PoolInfo[];
@@ -19,8 +17,8 @@ export type State = {
 
 const initialState = {
   allTokens: [],
-  officialTokens: getTokens(),
-  userTokens: getUserJettons(),
+  officialTokens: getOfficialTokens(),
+  userTokens: getUsersTokens(),
   address: '',
   error: null,
   isLoading: false,
@@ -33,15 +31,15 @@ const TokensSlice = createSlice({
   reducers: {
     addToken(state, action: PayloadAction<PoolInfo>) {
       const pool = action.payload;
-      const tokenExist = state.officialTokens.find(
+      const tokenExist = state.userTokens.find(
         (m) => m.ammMinter === pool.ammMinter
       );
       if (tokenExist) {
         return;
       }
       pool.isCustom = true;
-      state.officialTokens.push(pool);
-      const customTokens = state.officialTokens.filter((it) => {
+      state.userTokens.push(pool);
+      const customTokens = state.userTokens.filter((it) => {
         return it.isCustom;
       });
       localStorage.setItem(
@@ -59,12 +57,12 @@ const TokensSlice = createSlice({
       state.error = action.payload
     },
     onSetUsersTokens(state) {
-      let updatedJettons: PoolInfo[] = getUserJettons()
+      let updatedJettons: PoolInfo[] = getUsersTokens()
       if(!state.foundJetton) return
-      updatedJettons = [...updatedJettons.filter((jetton) => jetton.tokenMinter !== state.foundJetton?.tokenMinter), state.foundJetton]
-      window.localStorage.setItem('userJettons', JSON.stringify(updatedJettons))
+      updatedJettons = [state.foundJetton, ...updatedJettons.filter((jetton) => jetton.tokenMinter !== state.foundJetton?.tokenMinter)]
+      window.localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, JSON.stringify(updatedJettons))
 
-      state.userTokens = getUserJettons()
+      state.userTokens = getUsersTokens()
     },
     onSetAllTokens(state, action) {
       state.allTokens = action.payload

@@ -14,7 +14,7 @@ export const useTokensActions = (): {
   addToken: (token: PoolInfo) => void;
   getTokenById: (id: string) => PoolInfo | undefined;
 } => {
-  const {officialTokens} = useTokensStore()
+  const {officialTokens, userTokens} = useTokensStore()
   const dispatch = useDispatch();
 
   const add = useCallback(
@@ -27,9 +27,9 @@ export const useTokensActions = (): {
   
   const getTokenById = useCallback(
     (id: string) => {
-      return officialTokens.find(t => t.tokenMinter === id)
+      return [...officialTokens, ...userTokens].find(t => t.tokenMinter === id)
     },
-    [officialTokens]
+    [userTokens, officialTokens]
   );
 
   

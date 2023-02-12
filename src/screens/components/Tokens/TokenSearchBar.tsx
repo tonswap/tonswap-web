@@ -5,6 +5,8 @@ import clear from 'assets/images/shared/clear.svg'
 import { styled } from '@mui/system'
 import { useTokenSearch } from 'hooks/useTokenSearch'
 import { useTokensStore } from 'store/tokens/hooks'
+import { ErrorTokenDialog } from 'screens/components/Tokens/TokenDialogs/ErrorTokenDialog'
+import { SuccessTokenDialog } from 'screens/components/Tokens/TokenDialogs/SuccessTokenDialog'
 
 export const TokenSearchBar = () => {
   const {
@@ -12,10 +14,13 @@ export const TokenSearchBar = () => {
     onDigitEnter,
     onClear,
   } = useTokenSearch()
-  const { address } = useTokensStore()
+  const { address, error, foundJetton } = useTokensStore()
+  const { onClose, onAddToLocalStorage, } = useTokenSearch()
 
   return (
     <Box sx={{ width: '100%' }}>
+      {!!error && <ErrorTokenDialog error={error} onClose={onClose} />}
+      {!!foundJetton && <SuccessTokenDialog onClose={onClose} foundJetton={foundJetton} onAddToLocalStorage={onAddToLocalStorage} />}
       <ContentContainer>
         <img src={search} alt="Search icon" width={28} height={28} style={{ marginRight: 8 }} />
         <StyledInput

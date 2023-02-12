@@ -2,6 +2,7 @@ import { Cell, TonClient, Address } from "ton";
 import Ton from "assets/images/tokens/ton.svg";
 
 import { localStorageTokensToObject } from "utils";
+import { PoolInfo } from 'components/PoolInfo'
 
 export type PoolInfo = {
     ammMinter: string;
@@ -148,9 +149,19 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     },
 };
 
-export let MainNetPools = (): { [key: string]: PoolInfo } => {
-    return { ...MainNetPoolsRoot, ...localStorageTokensToObject() };
+export let MainNetPools = (): { [key: string]: PoolInfo } => MainNetPoolsRoot;
+
+export const UsersPools = (): { [key: string]: PoolInfo } => {
+    return  {...localStorageTokensToObject()}
 };
+
+export const TemporaryPool = (): { [key: string]: PoolInfo } => {
+    const temporaryPool = JSON.parse(localStorage.getItem('foundJetton') || '{}')
+    const result: any = {}
+    result[temporaryPool?.tokenMinter] = temporaryPool
+    return result
+}
+
 
 export const ton: PoolInfo = {
     isCustom: false,

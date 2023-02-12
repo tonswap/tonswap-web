@@ -172,7 +172,7 @@ const isTelegramWebApp = () => {
 };
 
 const getLocalStorageTokens = () => {
-    const tokenFromLocalStorage = localStorage.getItem('userJettons');
+    const tokenFromLocalStorage = localStorage.getItem(TOKENS_IN_LOCAL_STORAGE);
 
     if (tokenFromLocalStorage && Array.isArray(JSON.parse(tokenFromLocalStorage))) {
         return JSON.parse(tokenFromLocalStorage);

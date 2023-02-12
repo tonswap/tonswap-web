@@ -17,9 +17,8 @@ import {
 export const useTokenSearch = () => {
   const { selectToken } = useTokenOperationsActions()
   const { clearStore } = useTokenOperationsActions()
-  const { officialTokens, userTokens, allTokens, address } = useTokensStore()
+  const { officialTokens, userTokens, allTokens, address, foundJetton } = useTokensStore()
   const dispatch = useDispatch<any>()
-
   const onClear = () => dispatch(onAddressChange(''))
 
   const onDigitEnter = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => dispatch(onAddressChange(e.target.value))
@@ -60,6 +59,14 @@ export const useTokenSearch = () => {
   useEffect(() => {
     dispatch(onSetAllTokens([...userTokens, ...officialTokens].filter((token) => token.displayName.toLowerCase().includes(address.toLowerCase()))))
   }, [address])
+
+  useEffect(() => {
+    if(!foundJetton) {
+      localStorage.removeItem('foundJetton')
+    } else {
+      localStorage.setItem('foundJetton', JSON.stringify(foundJetton))
+    }
+  }, [foundJetton])
 
   useEffect(() => {
     selectToken(undefined)

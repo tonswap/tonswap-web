@@ -50,6 +50,7 @@ export const SuccessTokenDialog: React.FC<ISuccessTokenDialog> = ({
         <Typography sx={{ marginBottom: 2 }}>Jetton pool found</Typography>
         <Box mb={3} sx={{ width: '100%' }}>
           <ListToken
+            clickDisabled
             custom
             key={foundJetton.tokenMinter}
             onSelect={() => {

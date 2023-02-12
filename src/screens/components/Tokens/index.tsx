@@ -9,9 +9,6 @@ import { useTokensStore } from 'store/tokens/hooks'
 import { styled } from '@mui/system'
 import { PoolInfo } from 'services/api/addresses'
 import FullPageLoader from 'components/FullPageLoader'
-import { useTokenSearch } from 'hooks/useTokenSearch'
-import { ErrorTokenDialog } from 'screens/components/Tokens/TokenDialogs/ErrorTokenDialog'
-import { SuccessTokenDialog } from 'screens/components/Tokens/TokenDialogs/SuccessTokenDialog'
 import { TokenSearchBar } from 'screens/components/Tokens/TokenSearchBar'
 
 interface Props {
@@ -22,14 +19,11 @@ interface Props {
 export const Tokens = ({ title, onTokenSelect }: Props) => {
   const classes = useStyles()
   const [addTokenModal, setAddTokenModal] = useState(false)
-  const { onClose, onAddToLocalStorage, } = useTokenSearch()
-  const { foundJetton, allTokens, isLoading, error, userTokens } = useTokensStore()
+  const { allTokens, isLoading, userTokens } = useTokensStore()
 
   return (
     <Fade in timeout={300}>
       <Box className={classes.root}>
-        {!!error && <ErrorTokenDialog error={error} onClose={onClose} />}
-        {!!foundJetton && <SuccessTokenDialog onClose={onClose} foundJetton={foundJetton} onAddToLocalStorage={onAddToLocalStorage} />}
         <FullPageLoader open={isLoading}>
           <Typography>Searching for Jetton</Typography>
         </FullPageLoader>
