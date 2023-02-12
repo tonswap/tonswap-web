@@ -1,5 +1,3 @@
-import BN from 'bn.js'
-import { Address } from 'ton'
 import { createSlice } from '@reduxjs/toolkit'
 import { setPoolInfo, setTokenDetails } from 'store/pool-info/actions'
 
@@ -47,6 +45,9 @@ const poolInfoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    .addCase(setPoolInfo.rejected, (state) => {
+      state.isLoading = false
+    })
     .addCase(setPoolInfo.pending, (state) => {
       state.isLoading = true
     })

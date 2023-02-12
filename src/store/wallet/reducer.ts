@@ -1,5 +1,4 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { LOCAL_STORAGE_ADDRESS } from "consts";
 import { Wallet } from "services/wallets/types";
 import { awaitWalletReadiness, resetWallet, setConnecting, setSession, updateWallet } from "./actions";
 
