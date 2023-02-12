@@ -20,10 +20,6 @@ export const useWalletSelect = () => {
   const [localSession, setLocalSession] = useState<null | string>(null)
   const { resetWallet } = useWalletActions()
   const wallets = useSelector((state: RootState) => state.wallet.allWallets)
-  const _resetWallet = () => {
-    setLocalSession(null)
-    resetWallet()
-  }
 
   const selectWallet = async (adapterId: Adapters, supportsTonConnect?: boolean) => {
     resetWallet()
@@ -57,7 +53,7 @@ export const useWalletSelect = () => {
     })
     dispatch(updateWallet({ wallet, adapterId: Adapters.TON_KEEPER }))
   }
-  return { selectWallet, session: localSession, resetWallet: _resetWallet }
+  return { selectWallet, session: localSession }
 }
 
 export const useWalletActions = (): {
