@@ -61,6 +61,10 @@
     "liquidity": "流動性",
     "warning": "警告",
     "impact-warning": "價格影響警告!",
-    "pending-transaction": "請檢查您的 {{adapter}} 錢包是否有待處理的交易"
+    "pending-transaction": "請檢查您的 {{adapter}} 錢包是否有待處理的交易",
+    "your-current-lp": "您當前的 LP 職位",
+    "share-of-pool": "流動資金池份額",
+    "value": "價值",
+    "no-liquidity": "無流動性"
   }
 }

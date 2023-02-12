@@ -61,6 +61,10 @@
     "liquidity": "Liquidez",
     "warning": "ADVERTENCIA",
     "impact-warning": "Advertencia de impacto de precio!",
-    "pending-transaction": "Verifique su billetera {{adapter}} para transacciones pendientes"
+    "pending-transaction": "Verifique su billetera {{adapter}} para transacciones pendientes",
+    "your-current-lp": "Su posición actual de LP",
+    "share-of-pool": "Cuota de fondo de liquidez",
+    "value": "valor",
+    "no-liquidity": "Sin liquidez"
   }
 }
