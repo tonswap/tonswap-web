@@ -8,11 +8,11 @@ import BigNumber from 'bignumber.js'
 import { ton } from 'services/api/addresses'
 
 export const setPoolInfo = createAsyncThunk<{
-  totalSupply?: BN,
-  jettonWalletAddress?: Address,
+  totalSupply?: string,
+  jettonWalletAddress?: string,
   mintable?: string,
-  tonReserves?: BN,
-  tokenReserves?: BN,
+  tonReserves?: string,
+  tokenReserves?: string,
 
   extendedInfo?: PoolInfoExtended
 },
@@ -29,11 +29,11 @@ export const setPoolInfo = createAsyncThunk<{
   const calculateTotalLPSupply = (total: BN) => new BigNumber(new BigNumber(total.toString()).div(new BigNumber(10).pow(9))).toString()
 
   return {
-    totalSupply: poolData.totalSupply,
-    jettonWalletAddress: poolData.jettonWalletAddress,
+    totalSupply: poolData.totalSupply.toString(),
+    jettonWalletAddress: poolData.jettonWalletAddress.toString(),
     mintable: poolData.mintable,
-    tonReserves: poolData.tonReserves,
-    tokenReserves: poolData.tokenReserves,
+    tonReserves: poolData.tonReserves.toString(),
+    tokenReserves: poolData.tokenReserves.toString(),
 
     extendedInfo: {
       liquidity: calculateDecimals(usd),
@@ -50,9 +50,9 @@ export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
     tokenMinter: string,
     ammMinter: string,
     usd: string,
-    totalSupply: BN,
-    tonReserves: BN,
-    tokenReserves: BN,
+    totalSupply: string,
+    tonReserves: string,
+    tokenReserves: string,
     tokenDecimals: number,
   }>('poolInfo/setTokenDetails', async ({
   tokenMinter,
@@ -85,7 +85,7 @@ export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
 
   const calculateUSDValue = () => calculateDecimals((parseFloat(calculateDecimals(poolBalances[0])) * 2 * tonPrice).toString())
 
-  const calculateUserShareOfLiquidityPool = () => calculateDecimals((new BigNumber(userLPTokenAmount).div(calculateTotalLPSupply(totalSupply)).multipliedBy(100)).toString())
+  const calculateUserShareOfLiquidityPool = () => calculateDecimals((new BigNumber(userLPTokenAmount).div(calculateTotalLPSupply(new BN(totalSupply))).multipliedBy(100)).toString())
 
   tokenData.userLPTokenAmount = userLPTokenAmount
   const poolBalances = await calculateUserShare()
@@ -100,7 +100,7 @@ export const setTokenDetails = createAsyncThunk<PoolInfoExtended,
   tokenData.poolTonAmount = calculateTonAmountInPool()
   tokenData.poolTokenAmount = calculateSelectedTokenAmount()
 
-  tokenData.totalLPTokenAmount = calculateDecimals(calculateTotalLPSupply(totalSupply))
+  tokenData.totalLPTokenAmount = calculateDecimals(calculateTotalLPSupply(new BN(totalSupply)))
 
   tokenData.userShareOfLiquidityPool = calculateUserShareOfLiquidityPool()
   tokenData.userUSDValueAmount = calculateUSDValue()

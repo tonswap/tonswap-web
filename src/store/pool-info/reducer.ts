@@ -16,19 +16,19 @@ export interface PoolInfoExtended {
   userUSDValueAmount?: string
 }
 
-export interface IPoolInfo {
-  totalSupply?: BN,
-  jettonWalletAddress?: Address,
+interface IStore {
+  totalSupply?: string,
+  jettonWalletAddress?: string,
   mintable?: string,
-  tonReserves?: BN,
-  tokenReserves?: BN
+  tonReserves?: string,
+  tokenReserves?: string
 
   isLoading?: boolean
 
   extendedInfo: PoolInfoExtended
 }
 
-const initialState: IPoolInfo = { extendedInfo: {} }
+const initialState: IStore = { extendedInfo: {} }
 
 const poolInfoSlice = createSlice({
   name: 'poolInfo',
@@ -63,6 +63,9 @@ const poolInfoSlice = createSlice({
       state.extendedInfo.poolTonAmount = action.payload.extendedInfo?.poolTonAmount
       state.extendedInfo.poolTokenAmount = action.payload.extendedInfo?.poolTokenAmount
 
+      state.isLoading = false
+    })
+    .addCase(setTokenDetails.rejected, (state) => {
       state.isLoading = false
     })
     .addCase(setTokenDetails.pending, (state) => {

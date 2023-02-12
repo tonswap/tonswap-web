@@ -176,7 +176,7 @@ export const ton: PoolInfo = {
 
 let isTestNet = true;
 export const Pools = () => {
-    return MainNetPools();
+    return { ...MainNetPools(), ...UsersPools() };
 };
 
 const tokenCache: { [key: string]: Address } = {};
@@ -194,7 +194,6 @@ async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
 
 export async function getToken(client: TonClient, token: string, owner: Address) {
     const jettonWalletKey = `${token}:jettonWallet:${owner}`;
-
     const jettonWallet = tokenCache[jettonWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].tokenMinter!!)), jettonWalletKey));
     const lpWalletKey = `${token}:lpWallet`;
     const lpWallet = tokenCache[lpWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].ammMinter!!)), lpWalletKey));
