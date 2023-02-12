@@ -116,7 +116,7 @@ function AdaptersList({
             return (
               <StyledListItem
                 disablePadding
-                key={type}
+                key={name}
                 style={{ pointerEvents: isLoading ? "none" : "all" }}
               >
                 <StyledListItemButton
