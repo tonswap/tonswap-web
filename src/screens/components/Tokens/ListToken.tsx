@@ -52,10 +52,7 @@ const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
       <StyledToken
         color={token.color}
         onClick={onClick}
-        style={{
-          cursor: isDisabled || clickDisabled ? 'default' : 'pointer',
-          position: 'relative',
-        }}
+        style={{ position: 'relative' }}
       >
         {isDisabled && <Box sx={{
           cursor: 'default',
@@ -66,7 +63,7 @@ const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
           height: '100%',
           borderRadius: '12px',
           zIndex: 9,
-          background: !parseFloat(usd) ? 'rgba(0,0,0, .5)' : 'none',
+          background: !parseFloat(usd) && !loading ? 'rgba(0,0,0, .5)' : 'none',
         }} />}
         <Box sx={{
           display: 'flex',
