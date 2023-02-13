@@ -18,16 +18,14 @@ export function poolInfoStringify(pools: PoolInfo[]) {
     return JSON.stringify(list);
 }
 
-export const getOfficialTokens = (): PoolInfo[] => {
+export const getTokens = (): PoolInfo[] => {
     const pools = MainNetPools();
-    const result = Object.keys(pools).map((key) => {
+    const usersPools = JSON.parse(localStorage.getItem(TOKENS_IN_LOCAL_STORAGE) || '[]')
+
+    return [...usersPools, ...Object.keys(pools).map((key) => {
         return {
             ...pools[key],
             name: pools[key].name,
         };
-    });
-    return result;
-    // }
+    })]
 };
-
-export const getUsersTokens = () => JSON.parse(localStorage.getItem(TOKENS_IN_LOCAL_STORAGE) || '[]')

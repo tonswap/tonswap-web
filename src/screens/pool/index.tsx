@@ -110,7 +110,7 @@ const PoolScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState<Token | undefined>();
   const [pool, setPool] = useState<Pool | undefined>();
-  const { officialTokens } = useTokensStore()
+  const { tokens } = useTokensStore()
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const PoolScreen = () => {
     if (ammMinter) {
       (async () => {
         try {
-          const data = await getPool(ammMinter, officialTokens);
+          const data = await getPool(ammMinter, tokens);
           setToken(data.token)
           setPool(data.pool)
         } catch (error) {
@@ -128,7 +128,7 @@ const PoolScreen = () => {
         }
       })();
     }
-  }, [ammMinter, officialTokens]);
+  }, [ammMinter, tokens]);
 
   if (isLoading) {
     return (

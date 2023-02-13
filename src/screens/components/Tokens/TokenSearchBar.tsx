@@ -3,34 +3,26 @@ import { Box, IconButton, Input } from '@mui/material'
 import search from 'assets/images/shared/search.svg'
 import clear from 'assets/images/shared/clear.svg'
 import { styled } from '@mui/system'
-import { useTokenSearch } from 'hooks/useTokenSearch'
-import { useTokensStore } from 'store/tokens/hooks'
-import { ErrorTokenDialog } from 'screens/components/Tokens/TokenDialogs/ErrorTokenDialog'
-import { SuccessTokenDialog } from 'screens/components/Tokens/TokenDialogs/SuccessTokenDialog'
 
-export const TokenSearchBar = () => {
-  const {
-    onKeyPress,
-    onDigitEnter,
-    onClear,
-  } = useTokenSearch()
-  const { address, error, foundJetton } = useTokensStore()
-  const { onClose, onAddToLocalStorage, } = useTokenSearch()
+interface ITokenSearchBar {
+  searchText: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onKeyPress: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => Promise<void>
+  onClear: () => void
+}
+
+export const TokenSearchBar: React.FC<ITokenSearchBar> = ({searchText, onChange, onKeyPress, onClear}) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {!!error && <ErrorTokenDialog error={error} onClose={onClose} />}
-      {!!foundJetton && <SuccessTokenDialog onClose={onClose} foundJetton={foundJetton} onAddToLocalStorage={onAddToLocalStorage} />}
       <ContentContainer>
         <img src={search} alt="Search icon" width={28} height={28} style={{ marginRight: 8 }} />
         <StyledInput
           disableUnderline
-          value={address}
+          value={searchText}
           placeholder="Enter Jetton symbol or address"
-          onChange={onDigitEnter}
-          onKeyDown={(e) => {
-            onKeyPress(e)
-          }}
+          onChange={onChange}
+          onKeyDown={onKeyPress}
         />
         <IconButton onClick={onClear}>
           <img src={clear} alt="Clear icon" width={24} height={24} />
