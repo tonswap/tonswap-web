@@ -70,7 +70,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "FNZ",
         color: "#CCAAFF",
         name: "Fanzee Token",
-        isCustom: true,
+        isCustom: false,
         decimals: 9,
     },
     "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
@@ -80,7 +80,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "AMBR",
         color: "#F8BD58",
         name: "Ambra",
-        isCustom: true,
+        isCustom: false,
         decimals: 9,
     },
     "EQBl3gg6AAdjgjO2ZoNU5Q5EzUIl8XMNZrix8Z5dJmkHUfxI": {
