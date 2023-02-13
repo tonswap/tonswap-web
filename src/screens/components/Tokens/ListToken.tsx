@@ -81,7 +81,7 @@ const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
           </Box>}
           <StyledTokenTexts>
             <Typography className="symbol">
-              {token.displayName} {token.isDisabled ? t('coming-soon') : ''}
+              {token.displayName}
             </Typography>
             <Typography className="name">{token.name}</Typography>
           </StyledTokenTexts>

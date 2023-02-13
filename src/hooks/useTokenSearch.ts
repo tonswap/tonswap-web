@@ -37,6 +37,9 @@ export const useTokenSearch = () => {
 
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if(!!officialTokens.find((token) => token.tokenMinter === address)) {
+      return
+    }
     if (e.key === 'Enter' && address.length === 48) {
       dispatch(onSetIsLoading(true))
       try {
@@ -57,7 +60,7 @@ export const useTokenSearch = () => {
   }, [userTokens, officialTokens])
 
   useEffect(() => {
-    dispatch(onSetAllTokens([...userTokens, ...officialTokens].filter((token) => token.displayName.toLowerCase().includes(address.toLowerCase()))))
+    dispatch(onSetAllTokens([...userTokens, ...officialTokens].filter((token) => token.displayName.toLowerCase().includes(address.toLowerCase()) || token.tokenMinter === address)))
   }, [address])
 
   useEffect(() => {

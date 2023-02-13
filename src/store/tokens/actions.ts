@@ -47,9 +47,8 @@ export const onSetFoundJetton = createAsyncThunk<PoolInfo | null,
   }
 })
 
-
 export const onSetUsersTokens = createAction('tokens/onSetUsersTokens')
 
 export const onSetAllTokens = createAction<PoolInfo[]>('tokens/onSetAllTokens')
 
-export const onResetFoundJetton =createAction('tokens/onResetFoundJetton')
+export const onResetFoundJetton = createAction('tokens/onResetFoundJetton')
