@@ -35,9 +35,8 @@ export const useTokenSearch = () => {
     dispatch(onResetFoundJetton())
   }
 
-
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if(!!officialTokens.find((token) => token.tokenMinter === address)) {
+    if (!!allTokens.find((token) => token.tokenMinter === address)) {
       return
     }
     if (e.key === 'Enter' && address.length === 48) {
@@ -64,7 +63,7 @@ export const useTokenSearch = () => {
   }, [address])
 
   useEffect(() => {
-    if(!foundJetton) {
+    if (!foundJetton) {
       localStorage.removeItem('foundJetton')
     } else {
       localStorage.setItem('foundJetton', JSON.stringify(foundJetton))
