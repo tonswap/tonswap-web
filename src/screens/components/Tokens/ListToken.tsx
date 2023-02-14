@@ -3,7 +3,6 @@ import { Box } from '@mui/system'
 import BigNumberDisplay from 'components/BigNumberDisplay'
 import ContentLoader from 'components/ContentLoader'
 import useUsdValue from 'hooks/useUsdValue'
-import { useTranslation } from 'react-i18next'
 import { PoolInfo } from 'services/api/addresses'
 import {
   StyledImage,
@@ -29,7 +28,6 @@ const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
     token.isDisabled,
   )
   const isDisabled = (token.isDisabled || !parseFloat(usd)) && !window.location.href.includes('manage-liquidity')
-  const { t } = useTranslation()
   const [showError, setShowError] = useState<string | null>(null)
 
   const onClick = () => {
