@@ -4,6 +4,7 @@ import { isMobile } from 'react-device-detect'
 import flexingDuck from 'assets/images/drawings/flexing-duck.svg'
 import { AppPopup } from 'components/AppPopup'
 import { styled } from '@mui/styles'
+import { useTranslation } from 'react-i18next'
 
 interface IErrorTokenDialog {
   error: string
@@ -27,12 +28,14 @@ const DialogButton = styled(Button)({
 })
 
 export const ErrorTokenDialog: React.FC<IErrorTokenDialog> = ({ error, onClose }) => {
+  const {t} = useTranslation()
+
   return (
     <AppPopup flexibleSpacings={false} open={!!error} onClose={onClose}>
       <ContentWrapper isMobile={isMobile}>
-        <Typography variant='h5' sx={{ marginBottom: 3 }}>{error}</Typography>
+        <Typography variant='h5' sx={{ marginBottom: 3 }}>{t(error)}</Typography>
         <img style={{ marginBottom: 24 }} src={flexingDuck} alt="Flexing duck" width={119} height={108} />
-        <DialogButton onClick={onClose}>Close</DialogButton>
+        <DialogButton onClick={onClose}>{t('close-button')}</DialogButton>
       </ContentWrapper>
     </AppPopup>
   )

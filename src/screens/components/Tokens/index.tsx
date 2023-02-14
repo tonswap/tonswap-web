@@ -22,6 +22,7 @@ import * as API from 'services/api'
 import ReactConfetti from 'react-confetti'
 import { useWindowSize } from 'hooks/useWindowSize'
 import { isMobile } from 'react-device-detect'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   title: string;
@@ -32,10 +33,6 @@ const createToken = async (address: string) => {
   const jettonAddress = Address.parse(address)
   const jettonData = await getTokenData(jettonAddress)
   const { futureAddress } = await poolStateInit(jettonAddress, 0)
-
-  // debugger
-  // const res = await API.getPoolData(futureAddress, jettonData.ammVersion);
-  // console.log(res)
 
   return {
     name: jettonData.name,
@@ -86,7 +83,7 @@ const useTokenSearch = () => {
       return
     }
     if (e.key === 'Enter' && searchText?.length !== 48) {
-      setError('Address is incorrect')
+      setError('incorrect-address')
     }
     if (e.key === 'Enter' && searchText?.length === 48) {
       setIsLoading(true)
@@ -97,10 +94,10 @@ const useTokenSearch = () => {
         setFoundToken(foundToken)
       } catch (error: any) {
         if(error?.message.includes('Got exit_code: -13')) {
-          setError('Pool not found')
+          setError('pool-not-found')
           return
         }
-        setError('Address is incorrect')
+        setError('incorrect-address')
       } finally {
         setIsLoading(false)
       }
@@ -110,7 +107,7 @@ const useTokenSearch = () => {
   const checkInput = () => {
     if (searchText.length <= 5 && searchText.length > 0) {
       !tokens.filter((token) => token.tokenMinter === searchText || token.displayName.toLowerCase().includes(searchText.toLowerCase())).length &&
-      setError('Jetton not found')
+      setError('jetton-not-found')
     }
   }
 
@@ -156,6 +153,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     onClose,
   } = useTokenSearch()
   const {width, height} = useWindowSize()
+  const {t} = useTranslation()
 
   return (
     <Fade in timeout={300}>
@@ -174,7 +172,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
             recycle={false}
         />}
         <FullPageLoader open={isLoading}>
-          <Typography>Searching for Jetton</Typography>
+          <Typography>{t('searching-for-jetton')}</Typography>
         </FullPageLoader>
 
         <StyledTitle>

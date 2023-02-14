@@ -3,6 +3,7 @@ import { Box, IconButton, Input } from '@mui/material'
 import search from 'assets/images/shared/search.svg'
 import clear from 'assets/images/shared/clear.svg'
 import { styled } from '@mui/system'
+import { useTranslation } from 'react-i18next'
 
 interface ITokenSearchBar {
   searchText: string
@@ -12,6 +13,7 @@ interface ITokenSearchBar {
 }
 
 export const TokenSearchBar: React.FC<ITokenSearchBar> = ({searchText, onChange, onKeyPress, onClear}) => {
+  const { t } = useTranslation()
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -20,7 +22,7 @@ export const TokenSearchBar: React.FC<ITokenSearchBar> = ({searchText, onChange,
         <StyledInput
           disableUnderline
           value={searchText}
-          placeholder="Enter Jetton symbol or address"
+          placeholder={t('search-placeholder')}
           onChange={onChange}
           onKeyDown={onKeyPress}
         />
