@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.1d143319.css",
-    "main.js": "/static/js/main.99a02247.js",
+    "main.js": "/static/js/main.d12f7fc7.js",
     "static/js/718.2382f903.chunk.js": "/static/js/718.2382f903.chunk.js",
     "static/js/604.1aac3d22.chunk.js": "/static/js/604.1aac3d22.chunk.js",
     "static/js/245.f9902fbe.chunk.js": "/static/js/245.f9902fbe.chunk.js",
     "static/js/960.bac828c5.chunk.js": "/static/js/960.bac828c5.chunk.js",
     "static/js/772.3ccc277d.chunk.js": "/static/js/772.3ccc277d.chunk.js",
     "static/js/645.486259fc.chunk.js": "/static/js/645.486259fc.chunk.js",
-    "static/js/595.869b0b80.chunk.js": "/static/js/595.869b0b80.chunk.js",
+    "static/js/595.3b34b5d2.chunk.js": "/static/js/595.3b34b5d2.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
     "static/media/flexing-duck.svg": "/static/media/flexing-duck.e17b0dc8fc75e959094fe92accfcb6ce.svg",
     "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
@@ -28,6 +28,6 @@
   },
   "entrypoints": [
     "static/css/main.1d143319.css",
-    "static/js/main.99a02247.js"
+    "static/js/main.d12f7fc7.js"
   ]
 }
