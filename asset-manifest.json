@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.d4c93c62.css",
-    "main.js": "/static/js/main.c2a70f4b.js",
-    "static/js/554.dc3c5692.chunk.js": "/static/js/554.dc3c5692.chunk.js",
-    "static/js/604.3aa239f7.chunk.js": "/static/js/604.3aa239f7.chunk.js",
-    "static/js/178.026c4d7e.chunk.js": "/static/js/178.026c4d7e.chunk.js",
-    "static/js/843.98978953.chunk.js": "/static/js/843.98978953.chunk.js",
-    "static/js/65.413d50ca.chunk.js": "/static/js/65.413d50ca.chunk.js",
-    "static/js/538.93818420.chunk.js": "/static/js/538.93818420.chunk.js",
-    "static/js/366.48e704d2.chunk.js": "/static/js/366.48e704d2.chunk.js",
-    "static/js/465.67ec15b3.chunk.js": "/static/js/465.67ec15b3.chunk.js",
+    "main.css": "/static/css/main.1d143319.css",
+    "main.js": "/static/js/main.99a02247.js",
+    "static/js/718.2382f903.chunk.js": "/static/js/718.2382f903.chunk.js",
+    "static/js/604.1aac3d22.chunk.js": "/static/js/604.1aac3d22.chunk.js",
+    "static/js/245.f9902fbe.chunk.js": "/static/js/245.f9902fbe.chunk.js",
+    "static/js/960.bac828c5.chunk.js": "/static/js/960.bac828c5.chunk.js",
+    "static/js/772.3ccc277d.chunk.js": "/static/js/772.3ccc277d.chunk.js",
+    "static/js/645.486259fc.chunk.js": "/static/js/645.486259fc.chunk.js",
+    "static/js/595.869b0b80.chunk.js": "/static/js/595.869b0b80.chunk.js",
     "static/media/tonhub.png": "/static/media/tonhub.a222cde6645afb15181c.png",
+    "static/media/flexing-duck.svg": "/static/media/flexing-duck.e17b0dc8fc75e959094fe92accfcb6ce.svg",
     "static/media/tonkeeper.svg": "/static/media/tonkeeper.4ccc22675b860e475a040cb16093d30b.svg",
     "static/media/default-token-image.png": "/static/media/default-token-image.7f04508e9bb03b76f258.png",
     "static/media/chrome.svg": "/static/media/chrome.167f7ab746641de40862642e809305c6.svg",
@@ -21,11 +21,13 @@
     "static/media/wallet-address.svg": "/static/media/wallet-address.57b60a11e4d5fd39eac76f18f88060ee.svg",
     "static/media/wallet.svg": "/static/media/wallet.fc714ee09ee6021c6120c77726ed285d.svg",
     "static/media/github.svg": "/static/media/github.2e4ee8dda7d31aa473b58b3329948d73.svg",
+    "static/media/search.svg": "/static/media/search.a87f18033e15d7c82b8db88724091db7.svg",
     "static/media/close.svg": "/static/media/close.bae43592c70f403d963844498955fc8e.svg",
-    "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg"
+    "static/media/ton-logo.svg": "/static/media/ton-logo.7a380671780c3353900722237a105ecd.svg",
+    "static/media/clear.svg": "/static/media/clear.b20146948950204e3336802ef47ff914.svg"
   },
   "entrypoints": [
-    "static/css/main.d4c93c62.css",
-    "static/js/main.c2a70f4b.js"
+    "static/css/main.1d143319.css",
+    "static/js/main.99a02247.js"
   ]
 }
