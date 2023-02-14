@@ -1,14 +1,9 @@
 import { Cell, TonClient, Address } from "ton";
 import Ton from "assets/images/tokens/ton.svg";
 
-import DinoKorn from "assets/images/tokens/DinoKorn.png";
-import KittyKorn from "assets/images/tokens/KittyKorn.png";
-import Btc from "assets/images/tokens/btc1.svg";
-import Eth from "assets/images/tokens/eth1.svg";
-import Uni from "assets/images/tokens/uni1.svg";
-import Usdc from "assets/images/tokens/usdc.svg";
-
 import { localStorageTokensToObject } from "utils";
+import { PoolInfo } from 'components/PoolInfo'
+import { FOUND_JETTON } from 'consts'
 
 export type PoolInfo = {
     ammMinter: string;
@@ -76,7 +71,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "FNZ",
         color: "#CCAAFF",
         name: "Fanzee Token",
-        isCustom: true,
+        isCustom: false,
         decimals: 9,
     },
     "EQCcLAW537KnRg_aSPrnQJoyYjOZkzqYp6FVmRUvN1crSazV": {
@@ -86,7 +81,7 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
         displayName: "AMBR",
         color: "#F8BD58",
         name: "Ambra",
-        isCustom: true,
+        isCustom: false,
         decimals: 9,
     },
     "EQBl3gg6AAdjgjO2ZoNU5Q5EzUIl8XMNZrix8Z5dJmkHUfxI": {
@@ -155,9 +150,19 @@ export const MainNetPoolsRoot: { [key: string]: PoolInfo } = {
     },
 };
 
-export let MainNetPools = (): { [key: string]: PoolInfo } => {
-    return { ...MainNetPoolsRoot, ...localStorageTokensToObject() };
+export let MainNetPools = (): { [key: string]: PoolInfo } => MainNetPoolsRoot;
+
+export const UsersPools = (): { [key: string]: PoolInfo } => {
+    return  {...localStorageTokensToObject()}
 };
+
+export const TemporaryPool = (): { [key: string]: PoolInfo } => {
+    const temporaryPool = JSON.parse(localStorage.getItem(FOUND_JETTON) || '{}')
+    const result: any = {}
+    result[temporaryPool?.tokenMinter] = temporaryPool
+    return result
+}
+
 
 export const ton: PoolInfo = {
     isCustom: false,
@@ -172,7 +177,7 @@ export const ton: PoolInfo = {
 
 let isTestNet = true;
 export const Pools = () => {
-    return MainNetPools();
+    return { ...MainNetPools(), ...UsersPools() };
 };
 
 const tokenCache: { [key: string]: Address } = {};
@@ -190,7 +195,6 @@ async function fetchAndCache(fn: Promise<Address>, cacheKey: string) {
 
 export async function getToken(client: TonClient, token: string, owner: Address) {
     const jettonWalletKey = `${token}:jettonWallet:${owner}`;
-
     const jettonWallet = tokenCache[jettonWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].tokenMinter!!)), jettonWalletKey));
     const lpWalletKey = `${token}:lpWallet`;
     const lpWallet = tokenCache[lpWalletKey] || (await fetchAndCache(resolveJettonWallet(client, owner, Address.parse(Pools()[token].ammMinter!!)), lpWalletKey));

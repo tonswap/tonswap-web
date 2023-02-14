@@ -27,7 +27,7 @@ const TokensSlice = createSlice({
         return;
       }
       pool.isCustom = true;
-      state.tokens.push(pool);
+      state.tokens = [pool, ...state.tokens];
       const customTokens = state.tokens.filter((it) => {
         return it.isCustom;
       });

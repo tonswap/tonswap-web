@@ -264,6 +264,14 @@ export const calculateDecimals = (val: string) => {
     return result
 }
 
+const getUserTokensFromLocalStorage = () => JSON.parse(localStorage.getItem(TOKENS_IN_LOCAL_STORAGE) || '[]')
+
+const addUserTokenToLocalStorage = (foundToken: PoolInfo) => {
+    let usersTokens = getUserTokensFromLocalStorage()
+    usersTokens = [foundToken, ...usersTokens.filter((token: PoolInfo) => token.tokenMinter !== foundToken?.tokenMinter)]
+    window.localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, JSON.stringify(usersTokens))
+}
+
 export {
     delay,
     splitToGroups,
@@ -277,4 +285,6 @@ export {
     getLocalStorageTokens,
     convertToCurrencySystem,
     getActionFromParams,
+  getUserTokensFromLocalStorage,
+  addUserTokenToLocalStorage
 };
