@@ -2,7 +2,6 @@
   font-size: 12px !important;
 }
 .MuiDialog-paper {
-  // background: transparent !important;
   box-shadow: none !important;
 }
 * {
@@ -25,24 +24,19 @@ button {
 
 
 body, html{
-  // min-height: -webkit-fill-available;
-
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 body{
   display: flex;
   flex-direction: column;
-  // height: 100vh;
   min-height: -webkit-fill-available;
 }
 #root{
   display: flex;
   flex-direction: column;
   flex:1
-}
-
-
-input{
-  caret-color : white!important;
 }
 
 .MuiCircularProgress-root{

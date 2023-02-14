@@ -65,6 +65,16 @@
     "your-current-lp": "Su posición actual de LP",
     "share-of-pool": "Cuota de fondo de liquidez",
     "value": "valor",
-    "no-liquidity": "Sin liquidez"
+    "no-liquidity": "Sin liquidez",
+    "search-placeholder": "Ingrese el símbolo o la dirección de Jetton",
+    "searching-for-jetton": "Buscando a Jetton",
+    "jetton-not-found": "Jettón no encontrado",
+    "empty-pool-warning": "Advertencia: la piscina está actualmente vacía",
+    "pool-not-found": "Piscina no encontrada",
+    "pool-found": "Piscina Jetton encontrada!",
+    "close-button": "Cerca",
+    "cancel-button": "Cancelar",
+    "add-button": "Agregar a la lista",
+    "incorrect-address": "La dirección es incorrecta"
   }
 }

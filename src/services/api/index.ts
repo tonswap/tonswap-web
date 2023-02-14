@@ -1,7 +1,7 @@
 import { Address, Cell, toNano, TonClient, fromNano, Wallet } from "ton";
 import { cellToString, delay, fromDecimals, hexToBn, toDecimals } from "utils";
 import { DexActions } from "./dex";
-import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools } from "./addresses";
+import { bytesToAddress, bytesToBase64, getToken, PoolInfo, Pools, TemporaryPool, UsersPools } from './addresses'
 import BN from "bn.js";
 import { OPS } from "./ops";
 import { BASE_ERROR_MESSAGE} from "consts";
@@ -304,7 +304,8 @@ export const getLiquidityAmount = async (srcToken: string, destToken: string, sr
 
 export const getTokenDollarValue = async (tokenName: string, amount: string): Promise<string> => {
     let poolPrice = new BN(1);
-    const token = Pools()[tokenName];
+    const pools = {...Pools(), ...UsersPools(), ...TemporaryPool()}
+    const token = pools[tokenName];
     const cgPrice = await fetchPrice();
 
     if (tokenName == "ton") {
@@ -380,7 +381,6 @@ export const generateSellLink = async (token: string, tokenAmount: string, tonAm
 
 export const generateBuyLink = async (token: string, tonAmount: string, tokenAmount: string) => {
     // 0.5% slippage
-    //TODO add slippage explicit
     const tokenObjects = await getToken(client, token, getOwner());
     let transfer = await DexActions.swapTon(toNano(tonAmount), toDecimals(tokenAmount, tokenObjects.decimals).mul(new BN(995)).div(new BN(1000)));
     const boc64 = transfer.toBoc().toString("base64");

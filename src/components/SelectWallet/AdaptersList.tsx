@@ -111,7 +111,7 @@ function AdaptersList({
       </Fade>
       <Fade in={!isLoading}>
         <StyledList>
-          {adaptersToShow.map((adapter) => {
+          {adaptersToShow.filter((adapter) => adapter.type !== Adapters.MYTONWALLET).map((adapter) => {
             const { type, icon, name, description, disabled, tonConnect } = adapter;
             return (
               <StyledListItem

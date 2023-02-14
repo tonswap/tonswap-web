@@ -1,4 +1,5 @@
-import { MainNetPools, PoolInfo } from "services/api/addresses";
+import { MainNetPools, PoolInfo } from 'services/api/addresses'
+import { TOKENS_IN_LOCAL_STORAGE } from 'consts'
 
 export function poolInfoStringify(pools: PoolInfo[]) {
     let list = pools.map((pi) => {
@@ -19,13 +20,12 @@ export function poolInfoStringify(pools: PoolInfo[]) {
 
 export const getTokens = (): PoolInfo[] => {
     const pools = MainNetPools();
-    const result = Object.keys(pools).map((key) => {
+    const usersPools = JSON.parse(localStorage.getItem(TOKENS_IN_LOCAL_STORAGE) || '[]')
+
+    return [...usersPools, ...Object.keys(pools).map((key) => {
         return {
             ...pools[key],
             name: pools[key].name,
         };
-    });
-
-    return result;
-    // }
+    })]
 };

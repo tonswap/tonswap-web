@@ -3,7 +3,6 @@ import Dialog from "@mui/material/Dialog";
 import { Box, styled } from "@mui/system";
 import { ReactNode } from "react";
 import { isMobile } from "react-device-detect";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useIsExpandedView } from "store/application/hooks";
 import CloseImg from "assets/images/shared/close.svg";
 
@@ -102,7 +101,7 @@ const StyledClose = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-const StyledDialogContent = styled(Box)(
+export const StyledDialogContent = styled(Box)(
   ({ maxWidth, minWidth }: { maxWidth?: number, minWidth?: number }) => ({
     padding: "30px 15px 30px 15px",
     position: "relative",

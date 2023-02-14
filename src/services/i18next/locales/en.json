@@ -65,6 +65,16 @@
     "value": "value",
     "no-liquidity": "No liquidity",
     "impact-warning": "Price Impact warning!",
-    "pending-transaction": "Please check your {{adapter}} wallet for pending transaction"
+    "pending-transaction": "Please check your {{adapter}} wallet for pending transaction",
+    "search-placeholder": "Enter Jetton symbol or address",
+    "searching-for-jetton": "Searching for Jetton",
+    "jetton-not-found": "Jetton not found",
+    "empty-pool-warning": "Warning: Pool is currently empty",
+    "pool-not-found": "Pool not found",
+    "pool-found": "Jetton pool found!",
+    "close-button": "Close",
+    "cancel-button": "Cancel",
+    "add-button": "Add to list",
+    "incorrect-address": "Address is incorrect"
   }
 }
