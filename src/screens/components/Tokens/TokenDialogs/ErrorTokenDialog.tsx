@@ -30,7 +30,7 @@ export const ErrorTokenDialog: React.FC<IErrorTokenDialog> = ({ error, onClose }
   return (
     <AppPopup flexibleSpacings={false} open={!!error} onClose={onClose}>
       <ContentWrapper isMobile={isMobile}>
-        <Typography sx={{ marginBottom: 3 }}>{error}</Typography>
+        <Typography variant='h5' sx={{ marginBottom: 3 }}>{error}</Typography>
         <img style={{ marginBottom: 24 }} src={flexingDuck} alt="Flexing duck" width={119} height={108} />
         <DialogButton onClick={onClose}>Close</DialogButton>
       </ContentWrapper>

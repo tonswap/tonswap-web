@@ -49,3 +49,5 @@ export const isDebug = () => getParamsFromUrl("beta") || localStorage["debug"];
 export const DECIMALS_LIMIT = 9;
 
 export const BASE_ERROR_MESSAGE = "Oops, something went wrong";
+
+export const FOUND_JETTON = 'foundJetton'

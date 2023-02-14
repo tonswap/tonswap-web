@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
-import { LAYOUT_MAX_WIDTH } from "consts";
+import { FOUND_JETTON, LAYOUT_MAX_WIDTH } from 'consts'
 import { Grid } from "@mui/material";
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
-import { styled } from "@mui/system";
+import { Box, styled } from '@mui/system'
 import { AppGrid } from "styles/styles";
 import { isTelegramWebApp } from "utils";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,9 @@ const StyledAppBar = styled(AppBar)({
 
 const StyledWrapper = styled(AppGrid)({});
 
+// const StyledToolbar = styled(Toolbar)(({transparent} : {transparent: boolean}) => ({
+//   background: transparent ? "rgba(0,0,0,0)" : 'white'
+// }))
 const StyledToolbar = styled(Toolbar)({
   background: "white",
 });
@@ -56,6 +59,7 @@ export const Navbar = observer(() => {
         }}
       >
         <StyledToolbar
+          // transparent={!!window.localStorage.getItem(FOUND_JETTON)}
           style={{
             width: "100%",
             justifyContent: "space-between",

@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material'
 import { Title } from 'components'
 import { useStyles } from './styles'
 import Fade from '@mui/material/Fade'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ListToken from './ListToken'
 import { styled } from '@mui/system'
 import { PoolInfo } from 'services/api/addresses'
@@ -11,17 +11,42 @@ import { TokenSearchBar } from 'screens/components/Tokens/TokenSearchBar'
 import { Address } from 'ton'
 import { getTokenData } from 'services/api'
 import { poolStateInit } from 'services/api/deploy-pool'
-import debounce from 'lodash.debounce'
 import { useTokenOperationsActions } from 'store/token-operations/hooks'
-import { TOKENS_IN_LOCAL_STORAGE } from 'consts'
 import { ErrorTokenDialog } from 'screens/components/Tokens/TokenDialogs/ErrorTokenDialog'
 import { SuccessTokenDialog } from 'screens/components/Tokens/TokenDialogs/SuccessTokenDialog'
 import { useTokensActions, useTokensStore } from 'store/tokens/hooks'
 import { useDispatch } from 'react-redux'
+import { addUserTokenToLocalStorage } from 'utils'
+import { FOUND_JETTON } from 'consts'
+import * as API from 'services/api'
+import ReactConfetti from 'react-confetti'
+import { useWindowSize } from 'hooks/useWindowSize'
+import { isMobile } from 'react-device-detect'
 
 interface Props {
   title: string;
   onTokenSelect: (token: PoolInfo) => void;
+}
+
+const createToken = async (address: string) => {
+  const jettonAddress = Address.parse(address)
+  const jettonData = await getTokenData(jettonAddress)
+  const { futureAddress } = await poolStateInit(jettonAddress, 0)
+
+  // debugger
+  // const res = await API.getPoolData(futureAddress, jettonData.ammVersion);
+  // console.log(res)
+
+  return {
+    name: jettonData.name,
+    ammMinter: futureAddress.toFriendly(),
+    tokenMinter: address,
+    color: '#c1c1c1',
+    displayName: jettonData.name.toUpperCase(),
+    image: jettonData.image,
+    isCustom: true,
+    decimals: jettonData.decimals,
+  }
 }
 
 const useTokenSearch = () => {
@@ -50,42 +75,9 @@ const useTokenSearch = () => {
     if (!foundToken) {
       return
     }
-    let usersTokens: PoolInfo[] = JSON.parse(localStorage.getItem(TOKENS_IN_LOCAL_STORAGE) || '[]')
-    usersTokens = [foundToken, ...usersTokens.filter((token) => token.tokenMinter !== foundToken?.tokenMinter)]
-
-    window.localStorage.setItem(TOKENS_IN_LOCAL_STORAGE, JSON.stringify(usersTokens))
-
+    addUserTokenToLocalStorage(foundToken)
     onClose()
     dispatch(addToken(foundToken))
-  }
-
-  const verifyFoundToken = async (address: string): Promise<PoolInfo | null> => {
-    let jettonAddress
-    let jettonData
-    let ammMinterAddress
-
-    try {
-      jettonAddress = Address.parse(address)
-      jettonData = await getTokenData(jettonAddress)
-      const { futureAddress } = await poolStateInit(jettonAddress, 0)
-      ammMinterAddress = futureAddress
-
-    } catch (error) {
-      setError('Jetton not found')
-      setIsLoading(false)
-      return null
-    }
-
-    return {
-      name: jettonData.name,
-      ammMinter: ammMinterAddress.toFriendly(),
-      tokenMinter: address,
-      color: '#c1c1c1',
-      displayName: jettonData.name.toUpperCase(),
-      image: jettonData.image,
-      isCustom: true,
-      decimals: jettonData.decimals,
-    }
   }
 
   const onKeyPress = async (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,14 +85,21 @@ const useTokenSearch = () => {
     if (tokens.find((token) => token.tokenMinter === e.target.value)) {
       return
     }
+    if (e.key === 'Enter' && searchText?.length !== 48) {
+      setError('Address is incorrect')
+    }
     if (e.key === 'Enter' && searchText?.length === 48) {
       setIsLoading(true)
       try {
         Address.parse(searchText)
-        const token = await verifyFoundToken(searchText)
-        setFoundToken(token)
-      } catch (error) {
-        setIsLoading(false)
+        const foundToken = await createToken(searchText)
+        await API.getPoolData(Address.parse(foundToken.ammMinter));
+        setFoundToken(foundToken)
+      } catch (error: any) {
+        if(error?.message.includes('Got exit_code: -13')) {
+          setError('Pool not found')
+          return
+        }
         setError('Address is incorrect')
       } finally {
         setIsLoading(false)
@@ -115,18 +114,13 @@ const useTokenSearch = () => {
     }
   }
 
-  const debouncedSearchHandler = useCallback(debounce(checkInput, 1000), [tokens, searchText])
-
-  useEffect(() => {
-    debouncedSearchHandler()
-    return () => debouncedSearchHandler.cancel()
-  }, [tokens, searchText])
+  useDebounce(checkInput)
 
   useEffect(() => {
     if (!foundToken) {
-      localStorage.removeItem('foundJetton')
+      localStorage.removeItem(FOUND_JETTON)
     } else {
-      localStorage.setItem('foundJetton', JSON.stringify(foundToken))
+      localStorage.setItem(FOUND_JETTON, JSON.stringify(foundToken))
     }
   }, [foundToken])
 
@@ -161,6 +155,7 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
     onKeyPress,
     onClose,
   } = useTokenSearch()
+  const {width, height} = useWindowSize()
 
   return (
     <Fade in timeout={300}>
@@ -170,6 +165,13 @@ export const Tokens = ({ title, onTokenSelect }: Props) => {
             onClose={onClose}
             foundJetton={foundToken}
             onAddToLocalStorage={onTokenAddToLocalStorage}
+        />}
+        {!!foundToken && <ReactConfetti
+            width={width}
+            height={height}
+            numberOfPieces={isMobile ? 100 : 200}
+            style={{zIndex: 9999}}
+            recycle={false}
         />}
         <FullPageLoader open={isLoading}>
           <Typography>Searching for Jetton</Typography>
@@ -217,6 +219,22 @@ const StyledTitle = styled(Box)({
   position: 'sticky',
   top: 54,
   background: 'white',
-  zIndex: 1,
+  zIndex: 10,
   paddingBottom: 10,
 })
+
+function useDebounce(value: Function) {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+  useEffect(
+    () => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value)
+      }, 1000)
+      return () => {
+        clearTimeout(handler)
+      }
+    },
+    [value, 1000],
+  )
+  return debouncedValue
+}

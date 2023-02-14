@@ -4,6 +4,8 @@ import { Box, Button, Typography } from '@mui/material'
 import { isMobile } from 'react-device-detect'
 import ListToken from 'screens/components/Tokens/ListToken'
 import { styled } from '@mui/styles'
+import useUsdValue from 'hooks/useUsdValue'
+import { PoolInfo } from 'services/api/addresses'
 
 interface ISuccessTokenDialog {
   foundJetton: any
@@ -44,11 +46,18 @@ export const SuccessTokenDialog: React.FC<ISuccessTokenDialog> = ({
   onAddToLocalStorage,
   onClose,
 }) => {
+  let { loading, usd } = useUsdValue(
+    foundJetton.tokenMinter!,
+    '1',
+    0,
+    foundJetton.isDisabled,
+  )
+
   return (
     <AppPopup open={!!foundJetton} onClose={onClose}>
       <ContentWrapper isMobile={isMobile} px={2}>
-        <Typography sx={{ marginBottom: 2 }}>Jetton pool found</Typography>
-        <Box mb={3} sx={{ width: '100%' }}>
+        <Typography variant="h5" sx={{ marginBottom: 2 }}>Jetton pool found!</Typography>
+        <Box mb={2} sx={{ width: '100%' }}>
           <ListToken
             clickDisabled
             custom
@@ -58,6 +67,11 @@ export const SuccessTokenDialog: React.FC<ISuccessTokenDialog> = ({
             token={foundJetton}
           />
         </Box>
+        {!loading && !parseFloat(usd) && <Box mb={2} sx={{ display: 'flex', width: '100%' }}>
+            <Typography>
+                Warning: Pool is currently empty
+            </Typography>
+        </Box>}
         <Box sx={{ display: 'flex', width: '100%' }}>
           <DialogCancelButton onClick={onClose}>Cancel</DialogCancelButton>
           <DialogSubmitButton onClick={onAddToLocalStorage}>Add to list</DialogSubmitButton>

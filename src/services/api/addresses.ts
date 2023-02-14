@@ -3,6 +3,7 @@ import Ton from "assets/images/tokens/ton.svg";
 
 import { localStorageTokensToObject } from "utils";
 import { PoolInfo } from 'components/PoolInfo'
+import { FOUND_JETTON } from 'consts'
 
 export type PoolInfo = {
     ammMinter: string;
@@ -156,7 +157,7 @@ export const UsersPools = (): { [key: string]: PoolInfo } => {
 };
 
 export const TemporaryPool = (): { [key: string]: PoolInfo } => {
-    const temporaryPool = JSON.parse(localStorage.getItem('foundJetton') || '{}')
+    const temporaryPool = JSON.parse(localStorage.getItem(FOUND_JETTON) || '{}')
     const result: any = {}
     result[temporaryPool?.tokenMinter] = temporaryPool
     return result

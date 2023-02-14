@@ -10,7 +10,6 @@ import {
   StyledToken,
   StyledTokenTexts,
   StyledUsdValue,
-  useStyles,
 } from './styles'
 import { useState } from 'react'
 import { ErrorTokenDialog } from 'screens/components/Tokens/TokenDialogs/ErrorTokenDialog'
@@ -23,7 +22,6 @@ interface Props {
 }
 
 const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
-  const classes = useStyles()
   let { loading, usd } = useUsdValue(
     token.tokenMinter!,
     '1',
@@ -63,7 +61,7 @@ const ListToken = ({ token, onSelect, custom, clickDisabled }: Props) => {
           height: '100%',
           borderRadius: '12px',
           zIndex: 9,
-          background: !parseFloat(usd) && !loading ? 'rgba(0,0,0, .5)' : 'none',
+          background: !clickDisabled && isDisabled && !parseFloat(usd) && !loading ? 'rgba(0,0,0, .5)' : 'none',
         }} />}
         <Box sx={{
           display: 'flex',
