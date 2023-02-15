@@ -29,7 +29,7 @@ export const useWalletSelect = () => {
     if (!adapter) {
       return
     }
-
+    // debugger
     dispatch(setAdapter(adapter))
     if (!supportsTonConnect) {
       const _session: string | {} = await walletService.createSession(adapterId)
@@ -69,6 +69,7 @@ export const useWalletActions = (): {
   }, [dispatch])
 
   const restoreAdapter = (adapterId: string) => {
+    // debugger
     const adapter: Adapter | null = wallets?.find((wallet) => wallet.type === adapterId) || null
     if (!adapter) {
       return
@@ -77,6 +78,7 @@ export const useWalletActions = (): {
   }
 
   const restoreSession = useCallback(async () => {
+    // debugger
     const adapterId = localStorage.getItem('wallet:adapter-id')
     const session = localStorage.getItem('wallet:session')
 

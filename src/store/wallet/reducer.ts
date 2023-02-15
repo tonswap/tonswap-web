@@ -51,6 +51,7 @@ const reducer = createReducer(initialState, (builder) => {
             localStorage.removeItem("wallet:session");
         })
         .addCase(updateWallet, (state, action) => {
+            // debugger
             const { payload } = action;
             state.wallet = payload.wallet;
             state.adapterId = payload.adapterId;
@@ -58,6 +59,7 @@ const reducer = createReducer(initialState, (builder) => {
             state.connecting = false
         })
         .addCase(setTonHubSession, (state, action) => {
+            // debugger
             const { payload } = action;
             const session = typeof payload === "string" ? JSON.parse(payload) : payload;
             state.session = session;
@@ -86,6 +88,7 @@ const reducer = createReducer(initialState, (builder) => {
           state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
       })
         .addCase(setAdapter, (state, action) => {
+            // debugger
             state.adapter = action.payload
         })
     // Or, you can reference the .type field:

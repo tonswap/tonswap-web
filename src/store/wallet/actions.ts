@@ -31,17 +31,17 @@ export const awaitWalletReadiness = createAsyncThunk<{ wallet: Wallet; adapterId
   }
 })
 
-const defineWalletType: any = (name: string) => {
-  if (name === 'OpenMask') {
-    return Adapters.OPENMASK
-  }
-  if (name === 'TonKeeper') {
-    return Adapters.TON_KEEPER
-  }
-  if (name === 'MyTonWallet') {
-    return Adapters.MYTONWALLET
-  }
-}
+// const defineWalletType: any = (name: string) => {
+//   if (name === 'OpenMask') {
+//     return Adapters.OPENMASK
+//   }
+//   if (name === 'TonKeeper') {
+//     return Adapters.TON_KEEPER
+//   }
+//   if (name === 'MyTonWallet') {
+//     return Adapters.MYTONWALLET
+//   }
+// }
 
 const defineWalletDescription: any = (name: string) => {
   if (name === 'OpenMask') {
@@ -68,7 +68,8 @@ export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
     const result = supportedWallets.map((w) => {
       return {
         name: w.name,
-        type: defineWalletType(w.name),
+        //@ts-ignore
+        type: w.jsBridgeKey,
         icon: w.imageUrl,
         mobileCompatible: defineIsMobileCompatible(w.name),
         description: defineWalletDescription(w.name),
@@ -76,7 +77,6 @@ export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
         walletInfo: w,
       }
     })
-
     return result
   },
 )

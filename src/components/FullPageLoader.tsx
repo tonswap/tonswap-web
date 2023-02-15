@@ -23,7 +23,7 @@ const StyledContainer = styled(Box)({
 function FullPageLoader({ open, children }: Props) {
   const { adapterId } = useWalletStore();
   const { t } = useTranslation();
-  const showReminderInLoader = !isMobile && adapterId === Adapters.TON_HUB;
+  // const showReminderInLoader = !isMobile && adapterId === Adapters.TON_HUB;
 
   return (
     <Backdrop
@@ -37,11 +37,11 @@ function FullPageLoader({ open, children }: Props) {
       <StyledContainer>
         <CircularProgress color="inherit" />
         {children}
-        {showReminderInLoader && (
-          <Typography>
-            {t('check-tonhub')}
-          </Typography>
-        )}
+        {/*{showReminderInLoader && (*/}
+        {/*  <Typography>*/}
+        {/*    {t('check-tonhub')}*/}
+        {/*  </Typography>*/}
+        {/*)}*/}
       </StyledContainer>
     </Backdrop>
   );

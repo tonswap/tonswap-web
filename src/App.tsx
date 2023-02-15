@@ -59,8 +59,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    walletsLength && restoreAdapter(adapterId!)
-  }, [walletsLength])
+    adapterId && walletsLength && restoreAdapter(adapterId)
+  }, [walletsLength, adapterId])
 
   return (
     <>
