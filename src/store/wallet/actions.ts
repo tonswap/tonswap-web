@@ -31,18 +31,6 @@ export const awaitWalletReadiness = createAsyncThunk<{ wallet: Wallet; adapterId
   }
 })
 
-// const defineWalletType: any = (name: string) => {
-//   if (name === 'OpenMask') {
-//     return Adapters.OPENMASK
-//   }
-//   if (name === 'TonKeeper') {
-//     return Adapters.TON_KEEPER
-//   }
-//   if (name === 'MyTonWallet') {
-//     return Adapters.MYTONWALLET
-//   }
-// }
-
 const defineWalletDescription: any = (name: string) => {
   if (name === 'OpenMask') {
     return 'TON Wallet Plugin for Google Chrome'
@@ -65,7 +53,7 @@ const defineIsMobileCompatible: any = (name: string) => {
 export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
   'wallet/fetchTonConnectWallets', async () => {
     const supportedWallets = await getTonConnectWallets()
-    const result = supportedWallets.map((w) => {
+    return supportedWallets.map((w) => {
       return {
         name: w.name,
         //@ts-ignore
@@ -77,6 +65,5 @@ export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
         walletInfo: w,
       }
     })
-    return result
   },
 )

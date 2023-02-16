@@ -11,13 +11,6 @@ let adapters: Adapter[] = [
         description: "Crypto wallet for Toncoin",
         tonConnect: false,
     },
-    // {
-    //     name: "Google Chrome Plugin",
-    //     type: Adapters.TON_WALLET,
-    //     icon: ChromeExtImg,
-    //     mobileCompatible: false,
-    //     description: "TON Wallet Plugin for Google Chrome",
-    // },
 ];
 
 export { adapters };

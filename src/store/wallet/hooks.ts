@@ -102,7 +102,7 @@ export const useWalletActions = (): {
       )
       return
     }
-
+debugger
     if (tcBridgeConnection.jsBridgeKey === Adapters.OPENMASK) {
       const accounts = await window.ton?.send('ton_requestAccounts')
       dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.OPENMASK }))
@@ -114,9 +114,8 @@ export const useWalletActions = (): {
       dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.MYTONWALLET }))
       return
     }
-    if (tcBridgeConnection && tcBridgeGateway) {
-      const session = JSON.parse(tcBridgeConnection)
-      const wallet: Wallet = { address: Address.parse(session.connectEvent.payload.items[0].address).toFriendly() }
+    if (tcBridgeConnection?.session && tcBridgeGateway?.length) {
+      const wallet: Wallet = { address: Address.parse(tcBridgeConnection.connectEvent.payload.items[0].address).toFriendly() }
       dispatch(updateWallet({ wallet, adapterId: Adapters.TON_KEEPER }))
       return
     }

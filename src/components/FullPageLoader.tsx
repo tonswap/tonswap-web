@@ -1,12 +1,8 @@
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { styled, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { ReactNode } from "react";
-import { isMobile } from "react-device-detect";
-import { Adapters } from "services/wallets/types";
-import { useWalletStore } from "store/wallet/hooks";
-import { useTranslation } from "react-i18next";
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
+import { styled } from '@mui/material'
+import { Box } from '@mui/system'
+import { ReactNode } from 'react'
 
 interface Props {
   open: boolean;
@@ -21,9 +17,6 @@ const StyledContainer = styled(Box)({
 });
 
 function FullPageLoader({ open, children }: Props) {
-  const { adapterId } = useWalletStore();
-  const { t } = useTranslation();
-  // const showReminderInLoader = !isMobile && adapterId === Adapters.TON_HUB;
 
   return (
     <Backdrop
@@ -37,11 +30,6 @@ function FullPageLoader({ open, children }: Props) {
       <StyledContainer>
         <CircularProgress color="inherit" />
         {children}
-        {/*{showReminderInLoader && (*/}
-        {/*  <Typography>*/}
-        {/*    {t('check-tonhub')}*/}
-        {/*  </Typography>*/}
-        {/*)}*/}
       </StyledContainer>
     </Backdrop>
   );
