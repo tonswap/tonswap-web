@@ -29,7 +29,6 @@ export const useWalletSelect = () => {
     if (!adapter) {
       return
     }
-    // debugger
     dispatch(setAdapter(adapter))
     if (!supportsTonConnect) {
       const _session: string | {} = await walletService.createSession(adapterId)
@@ -44,6 +43,16 @@ export const useWalletSelect = () => {
       const accounts = await window.ton?.send('ton_requestAccounts')
       dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.OPENMASK }))
       localStorage.setItem('ton-connect-storage_bridge-connection', '{"type":"injected","jsBridgeKey":"openmask"}')
+      return
+    }
+    if (adapterId === Adapters.MYTONWALLET && (window as any).myTonWallet.isMyTonWallet) {
+      debugger
+      const wallet = await connect(adapter.walletInfo, {
+        onSessionLinkReady: (val: string) => {
+          setLocalSession(val)
+        },
+      })
+      dispatch(updateWallet({ wallet, adapterId: Adapters.MYTONWALLET }))
       return
     }
     const wallet = await connect(adapter.walletInfo, {
@@ -69,7 +78,6 @@ export const useWalletActions = (): {
   }, [dispatch])
 
   const restoreAdapter = (adapterId: string) => {
-    // debugger
     const adapter: Adapter | null = wallets?.find((wallet) => wallet.type === adapterId) || null
     if (!adapter) {
       return
@@ -78,11 +86,10 @@ export const useWalletActions = (): {
   }
 
   const restoreSession = useCallback(async () => {
-    // debugger
     const adapterId = localStorage.getItem('wallet:adapter-id')
     const session = localStorage.getItem('wallet:session')
 
-    const tcBridgeConnection = localStorage.getItem('ton-connect-storage_bridge-connection')
+    const tcBridgeConnection = JSON.parse(localStorage.getItem('ton-connect-storage_bridge-connection') || '{}')
     const tcBridgeGateway = localStorage.getItem('ton-connect-storage_http-bridge-gateway')
 
     if (adapterId && session) {
@@ -96,9 +103,15 @@ export const useWalletActions = (): {
       return
     }
 
-    if (tcBridgeConnection && !tcBridgeGateway) {
+    if (tcBridgeConnection.jsBridgeKey === Adapters.OPENMASK) {
       const accounts = await window.ton?.send('ton_requestAccounts')
       dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.OPENMASK }))
+      return
+    }
+    if (tcBridgeConnection.jsBridgeKey === Adapters.MYTONWALLET) {
+      //@ts-ignore
+      const accounts = await window.myTonWallet.send('requestAccounts')
+      dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.MYTONWALLET }))
       return
     }
     if (tcBridgeConnection && tcBridgeGateway) {
