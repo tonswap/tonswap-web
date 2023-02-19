@@ -3,7 +3,7 @@ import { getParamsFromUrl } from "utils";
 const LAYOUT_MAX_WIDTH = "1200px";
 const TELEGRAM_WEBAPP_PARAM = "tg";
 const APP_NAME = "TonSwap";
-const APP_VERSION = '1.0.13'
+const APP_VERSION = '1.0.14'
 const TEST_MODE = "test-mode";
 const TON_WALLET_EXTENSION_URL =
   "https://chrome.google.com/webstore/detail/ton-wallet/nphplpgoakhhjchkkhmiggakijnkhfnd";

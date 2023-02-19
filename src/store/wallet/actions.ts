@@ -32,7 +32,7 @@ export const awaitWalletReadiness = createAsyncThunk<{ wallet: Wallet; adapterId
 })
 
 const defineWalletDescription: any = (name: string) => {
-  if (name === 'OpenMask') {
+  if (name === 'OpenMask' || name === 'MyTonWallet') {
     return 'TON Wallet Plugin for Google Chrome'
   }
   return 'A mobile wallet in your pocket'

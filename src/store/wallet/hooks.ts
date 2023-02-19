@@ -24,7 +24,6 @@ export const useWalletSelect = () => {
   const wallets = useSelector((state: RootState) => state.wallet.allWallets)
 
   const selectWallet = async (adapterId: Adapters, supportsTonConnect?: boolean) => {
-    debugger
     resetWallet()
     disconnectTC()
     const adapter: Adapter | null = findAdapter(wallets, adapterId)
@@ -111,7 +110,7 @@ export const useWalletActions = (): {
     }
     if (tcBridgeConnection.jsBridgeKey === Adapters.MYTONWALLET) {
       //@ts-ignore
-      const accounts = await window.myTonWallet.send('requestAccounts')
+      const accounts = await window.myTonWallet.send('ton_requestAccounts')
       dispatch(updateWallet({ wallet: { address: accounts[0] }, adapterId: Adapters.MYTONWALLET }))
       return
     }
