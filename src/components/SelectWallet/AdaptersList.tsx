@@ -1,5 +1,5 @@
 import { styled } from '@mui/styles'
-import { Box, Button, Fade, List, ListItem, ListItemButton, Typography } from '@mui/material'
+import { Box, Fade, List, ListItem, ListItemButton, Typography } from '@mui/material'
 import Title from './Title'
 import { Theme } from '@mui/material/styles'
 import { Adapter, Adapters } from 'services/wallets/types'
@@ -7,7 +7,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import gaAnalytics from 'services/analytics/ga/ga'
 import { useTranslation } from 'react-i18next'
 import { isMobile } from 'react-device-detect'
-import { useWalletSelect } from 'store/wallet/hooks'
 
 const StyledList = styled(List)({
   width: '100%',
@@ -96,6 +95,23 @@ function AdaptersList({
     return null
   }
 
+  const onAdapterSelect = (type: Adapters, tonConnect?: boolean) => {
+    //@ts-ignore
+    if (type === Adapters.OPENMASK && !window.ton.isOpenMask) {
+      window.open('https://www.openmask.app/', '_blank')
+      return
+    }
+    //@ts-ignore
+    if(type === Adapters.MYTONWALLET && !window.myTonWallet.isMyTonWallet) {
+      window.open('https://mytonwallet.io/', '_blank')
+      return
+    }
+    if (type === Adapters.TONSAFE && isMobile) {
+      return
+    }
+    onSelect(type, tonConnect)
+  }
+
   return (
     <StyledContainer>
       <Fade in={!isLoading}>
@@ -111,28 +127,25 @@ function AdaptersList({
               <ListItem
                 disablePadding
                 key={name}
+                disabled={adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile}
                 style={{ pointerEvents: isLoading ? 'none' : 'all' }}
                 sx={{
                   width: '100%',
                   background: 'white',
                   borderRadius: '12px',
-                  border: title === 'Select Wallet' ? '': '1px solid #007AFE'
+                  border: title === 'Select Wallet' ? '' : '1px solid #007AFE',
                 }}
               >
                 <StyledListItemButton
-                  onClick={() => {
-                    //@ts-ignore
-                    type === Adapters.OPENMASK && window.ton && !window.ton.isOpenMask
-                      ? window.open('https://www.openmask.app/', '_blank')
-                      : onSelect(type, tonConnect)
-                  }}
+                  onClick={() => onAdapterSelect(type, tonConnect)}
                 >
                   <StyledIcon>
                     <img style={{ 'borderRadius': '9px' }} src={icon} />
                   </StyledIcon>
                   <StyledListItemRight>
-                    <Typography variant="h5" sx={{color: title === 'Select Wallet' ? '':'#007AFE !important'}}>
-                      {title === 'Tap to connect' && 'Connect'} {name} <small>{disabled ? t('coming-soon') : ''}</small>
+                    <Typography variant="h5" sx={{ color: title === 'Select Wallet' ? '' : '#007AFE !important' }}>
+                      {title === 'Tap to connect' && 'Connect'} {name} {' '}
+                      <small>{disabled || adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile ? t('coming-soon') : ''}</small>
                     </Typography>
                     {title !== 'Tap to connect' && <Typography>{description}</Typography>}
                   </StyledListItemRight>
