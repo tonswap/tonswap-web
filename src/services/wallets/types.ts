@@ -43,7 +43,8 @@ export enum Adapters {
     TON_WALLET = "ton-wallet",
     TON_KEEPER = "tonkeeper",
     OPENMASK = 'openmask',
-    MYTONWALLET = 'mytonwallet'
+    MYTONWALLET = 'mytonwallet',
+    TONSAFE = 'tonsafe'
 }
 
 export interface Adapter {

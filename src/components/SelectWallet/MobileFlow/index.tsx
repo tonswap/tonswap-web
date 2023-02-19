@@ -40,7 +40,7 @@ const MobileFlow = observer(({ closeModal }: Props) => {
         open={true}
         select={openDeepLink}
         isLoading={false}
-        title={"Click to connect"}
+        title={"Tap to connect"}
       />
     </StyledContainer>)
   }

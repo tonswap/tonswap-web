@@ -54,10 +54,15 @@ export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
   'wallet/fetchTonConnectWallets', async () => {
     const supportedWallets = await getTonConnectWallets()
     return supportedWallets.map((w) => {
+      //@ts-ignore
+      let _type  = w.jsBridgeKey
+      if(w.name.toLowerCase() === Adapters.TONSAFE) {
+        _type = Adapters.TONSAFE
+      }
+
       return {
         name: w.name,
-        //@ts-ignore
-        type: w.jsBridgeKey,
+        type: _type,
         icon: w.imageUrl,
         mobileCompatible: defineIsMobileCompatible(w.name),
         description: defineWalletDescription(w.name),

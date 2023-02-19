@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { Adapter, Wallet } from 'services/wallets/types'
+import { Adapter, Adapters, Wallet } from 'services/wallets/types'
 import {
     awaitWalletReadiness,
     fetchTonConnectWallets,
@@ -83,7 +83,7 @@ const reducer = createReducer(initialState, (builder) => {
           const _allWallets = [...adapters, ...action.payload]
           state.allWallets = _allWallets
 
-          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
+          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible || wallet.name.toLowerCase() === Adapters.TONSAFE)
       })
         .addCase(setAdapter, (state, action) => {
             state.adapter = action.payload

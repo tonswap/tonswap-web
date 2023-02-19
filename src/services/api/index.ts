@@ -86,7 +86,6 @@ function getOwner() {
 export async function _getJettonBalance(jettonWallet: Address, minterAddress?: Address) {
     try {
         console.log(`_getJettonBalance::  jettonWallet at ${jettonWallet.toFriendly()}`);
-
         let res = await client.callGetMethod(jettonWallet, "get_wallet_data", []);
         const balance = hexToBn(res.stack[0][1]);
         const walletOwner = bytesToAddress(res.stack[1][1].bytes);
@@ -100,7 +99,6 @@ export async function _getJettonBalance(jettonWallet: Address, minterAddress?: A
         };
     } catch (e) {
         console.log(e);
-
         return {
             balance: new BN(0),
             walletOwner: getOwner(),
