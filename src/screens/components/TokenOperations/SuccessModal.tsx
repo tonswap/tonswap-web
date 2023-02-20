@@ -106,7 +106,7 @@ function SuccessModal({ actionType }: Props) {
 
   return (
     <Popup open={txSuccess} onClose={allowActions ? closeSuccessModal : undefined} maxWidth={400}>
-      <DelayedRender setAllowActions={setAllowActions} waitBeforeShow={45000}>
+      <DelayedRender setAllowActions={setAllowActions} waitBeforeShow={13000}>
         {createComponent()}
       </DelayedRender>
     </Popup>
