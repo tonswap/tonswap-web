@@ -83,7 +83,8 @@ const reducer = createReducer(initialState, (builder) => {
           const _allWallets = [...adapters, ...action.payload]
           state.allWallets = _allWallets
 
-          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible || wallet.name.toLowerCase() === Adapters.TONSAFE)
+          //          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible || wallet.name.toLowerCase() === Adapters.TONSAFE)
+          state.mobileWallets = _allWallets.filter((wallet) => wallet.mobileCompatible)
       })
         .addCase(setAdapter, (state, action) => {
             state.adapter = action.payload

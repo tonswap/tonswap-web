@@ -84,7 +84,8 @@ function AdaptersList({
   title = 'Select Wallet',
 }: Props) {
   const { t } = useTranslation()
-  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible || adapter.name.toLowerCase() === Adapters.TONSAFE) : adapters
+  //  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible || adapter.name.toLowerCase() === Adapters.TONSAFE) : adapters
+  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible) : adapters
 
   const onSelect = (adapter: Adapters, supportsTonConnect?: boolean) => {
     select(adapter, supportsTonConnect)
@@ -106,7 +107,8 @@ function AdaptersList({
       window.open('https://mytonwallet.io/', '_blank')
       return
     }
-    if (type === Adapters.TONSAFE && isMobile) {
+    //    if (type === Adapters.TONSAFE && isMobile) {
+    if (type === Adapters.TONSAFE) {
       return
     }
     onSelect(type, tonConnect)
@@ -123,11 +125,12 @@ function AdaptersList({
         <StyledList>
           {adaptersToShow.map((adapter) => {
             const { type, icon, name, description, disabled, tonConnect } = adapter
+            {/* disabled={adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile} */}
             return (
               <ListItem
                 disablePadding
                 key={name}
-                disabled={adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile}
+                disabled={adapter.name.toLowerCase() === Adapters.TONSAFE}
                 style={{ pointerEvents: isLoading ? 'none' : 'all' }}
                 sx={{
                   width: '100%',
@@ -145,7 +148,8 @@ function AdaptersList({
                   <StyledListItemRight>
                     <Typography variant="h5" sx={{ color: title === 'Select Wallet' ? '' : '#007AFE !important' }}>
                       {title === 'Tap to connect' && 'Connect'} {name} {' '}
-                      <small>{disabled || adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile ? t('coming-soon') : ''}</small>
+                      {/*                      <small>{disabled || adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile ? t('coming-soon') : ''}</small>*/}
+                      <small>{disabled ? t('coming-soon') : ''}</small>
                     </Typography>
                     {title !== 'Tap to connect' && <Typography>{description}</Typography>}
                   </StyledListItemRight>

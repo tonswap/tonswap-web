@@ -34,7 +34,6 @@ export function Popup({
   minWidth
 }: Props) {
   const expanded = useIsExpandedView();
-
   return isMobile ? (
     <SwipeableDrawer
       anchor="bottom"
@@ -52,9 +51,9 @@ export function Popup({
       }}
     >
       <StyledDrawer expanded={expanded}>
-        <StyledClose onClick={onClose} style={{ top: 14, right: 14 }}>
+        {typeof onClose !== 'undefined' && <StyledClose onClick={onClose} style={{ top: 14, right: 14 }}>
           <img src={CloseImg} />
-        </StyledClose>
+        </StyledClose>}
         {children}
       </StyledDrawer>
     </SwipeableDrawer>
@@ -82,9 +81,9 @@ export function Popup({
       }}
     >
       <StyledDialogContent maxWidth={maxWidth} minWidth={minWidth}>
-        <StyledClose onClick={onClose} style={{ top: -50, right: -40 }}>
+        {typeof onClose !== 'undefined' &&<StyledClose onClick={onClose} style={{ top: -50, right: -40 }}>
           <img src={CloseImg} />
-        </StyledClose>
+        </StyledClose>}
         <StyledChildren>{children}</StyledChildren>
       </StyledDialogContent>
     </Dialog>

@@ -68,6 +68,7 @@ export const fetchTonConnectWallets = createAsyncThunk<Adapter[]>(
         description: defineWalletDescription(w.name),
         tonConnect: true,
         walletInfo: w,
+        disabled: _type === Adapters.TONSAFE
       }
     })
   },
