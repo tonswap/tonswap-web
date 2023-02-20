@@ -1,12 +1,10 @@
 import {useTheme } from '@mui/styles';
 import { Box } from "@mui/material";
-import QRCode from "react-qr-code";
 import { QRCode as QrCodeLogo } from "react-qrcode-logo";
 import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
 import Title from "../Title";
 import { styled } from '@mui/system';
-import { Adapter, Adapters } from 'services/wallets/types';
 
 const StyledContainer = styled(Box)({
   display: "flex",
@@ -27,34 +25,26 @@ const StyledQrBox = styled(Box)({
 });
 
 interface Props {
-  onClose: () => void;
   link?: string;
   open: boolean;
-  adapter: Adapters
+  title?: string
+  image?: string
 }
 
-function QR({ onClose, link, open, adapter }: Props) {
+function QR({ link, open, title, image }: Props) {
   const theme = useTheme()
   if (!open) {
     return null;
   }
-  let title = '';
-  let qrCode = <QRCode style={{ width: "100%", height: "100%" }} value={link!} />;
-  if (adapter == Adapters.TON_KEEPER) {
-    title = 'Connect Ton Keeper'; 
-    qrCode = < QrCodeLogo  size={250} logoImage={"https://tonkeeper.com/assets/logo.svg"} value={link} />
-  } else {
-    title = 'Connect Tonhub'; 
-  }
 
   return (
     <StyledContainer>
-      <Title text={title} />
+      <Title text={`Connect ${title}`} />
       <StyledQrBox>
         {link ? (
           <Fade in={true}>
             <Box>
-              {qrCode}
+              <QrCodeLogo size={250} logoImage={image} logoWidth={50} logoHeight={50} value={link} removeQrCodeBehindLogo />
             </Box>
           </Fade>
         ) : (

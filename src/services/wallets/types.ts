@@ -1,4 +1,5 @@
 import { StateInit } from "ton";
+import { WalletInfo } from '@tonconnect/sdk'
 
 export interface TransactionRequest {
     /** Destination */
@@ -40,7 +41,10 @@ export interface TonWalletProvider {
 export enum Adapters {
     TON_HUB = "tonhub",
     TON_WALLET = "ton-wallet",
-    TON_KEEPER = "ton-keeper",
+    TON_KEEPER = "tonkeeper",
+    OPENMASK = 'openmask',
+    MYTONWALLET = 'mytonwallet',
+    TONSAFE = 'tonsafe'
 }
 
 export interface Adapter {
@@ -50,6 +54,9 @@ export interface Adapter {
     mobileCompatible: boolean;
     description: string;
     disabled?: boolean;
+    tonConnect?: boolean
+    //Only for TonConnect
+    walletInfo?: WalletInfo
 }
 
 export enum ActionCategory {

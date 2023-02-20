@@ -1,84 +1,71 @@
-import { styled } from "@mui/styles";
-import {
-  ListItem,
-  List,
-  ListItemButton,
-  Box,
-  Typography,
-  Fade,
-} from "@mui/material";
-import Title from "./Title";
-import { Theme } from "@mui/material/styles";
-import { Adapter, Adapters } from "services/wallets/types";
-import CircularProgress from "@mui/material/CircularProgress";
-import gaAnalytics from "services/analytics/ga/ga";
-import { useTranslation } from "react-i18next";
-
-const StyledListItem = styled(ListItem)(
-  ({ disabled }: { disabled?: boolean }) => ({
-    background: "white",
-    width: "100%",
-  })
-);
+import { styled } from '@mui/styles'
+import { Box, Fade, List, ListItem, ListItemButton, Typography } from '@mui/material'
+import Title from './Title'
+import { Theme } from '@mui/material/styles'
+import { Adapter, Adapters } from 'services/wallets/types'
+import CircularProgress from '@mui/material/CircularProgress'
+import gaAnalytics from 'services/analytics/ga/ga'
+import { useTranslation } from 'react-i18next'
+import { isMobile } from 'react-device-detect'
 
 const StyledList = styled(List)({
-  width: "100%",
-  gap: "5px",
-  display: "flex",
-  flexDirection: "column",
-});
+  width: '100%',
+  gap: '5px',
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 const StyledListItemButton = styled(ListItemButton)({
   paddingLeft: 10,
-});
+})
 
 const StyledContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
-  width: "100%",
+  width: '100%',
   position: 'relative',
-  "& .MuiCircularProgress-root": {
+  '& .MuiCircularProgress-root': {
     position: 'absolute',
     left: '40%',
     top: '50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
   },
-}));
+}))
 
 const StyledConnectModalTitle = styled(Box)({
-  paddingLeft: "10px",
-});
+  paddingLeft: '10px',
+})
 const StyledListItemRight = styled(Box)(({ theme }: { theme: Theme }) => ({
-  "& h5": {
+  '& h5': {
     color: theme.palette.secondary.main,
-    fontSize: "18px",
-    fontWeight: "500",
-    marginBottom: "5px",
+    fontSize: '18px',
+    fontWeight: '500',
+    marginBottom: '5px',
   },
 
-  "& p": {
+  '& p': {
     color: theme.palette.secondary.main,
-    fontSize: "14px",
-    opacity: "0.7",
+    fontSize: '14px',
+    opacity: '0.7',
   },
-}));
+}))
 const StyledIcon = styled(Box)({
-  width: "40px",
-  height: "40px",
-  marginRight: "24px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  "& img": {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
+  width: '40px',
+  height: '40px',
+  marginRight: '24px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
-  "& .MuiCircularProgress-root": {
+  '& .MuiCircularProgress-root': {
     zoom: 0.85,
   },
-});
+})
 
 interface Props {
-  select: (adapter: Adapters) => void;
+  select: (adapter: Adapters, supportsTonConnect?: boolean) => void;
   open: boolean;
   onClose: () => void;
   adapters: Adapter[];
@@ -94,17 +81,37 @@ function AdaptersList({
   adapters,
   adapterLoading,
   isLoading,
-  title = "Select Wallet"
+  title = 'Select Wallet',
 }: Props) {
   const { t } = useTranslation()
+  //  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible || adapter.name.toLowerCase() === Adapters.TONSAFE) : adapters
+  const adaptersToShow = isMobile ? adapters.filter((adapter) => adapter.mobileCompatible) : adapters
 
-  const onSelect = (adapter: Adapters) => {
-    select(adapter)
+  const onSelect = (adapter: Adapters, supportsTonConnect?: boolean) => {
+    select(adapter, supportsTonConnect)
     gaAnalytics.selectWallet(adapter)
   }
 
   if (!open) {
-    return null;
+    return null
+  }
+
+  const onAdapterSelect = (type: Adapters, tonConnect?: boolean) => {
+    //@ts-ignore
+    if (type === Adapters.OPENMASK && !window.ton.isOpenMask) {
+      window.open('https://www.openmask.app/', '_blank')
+      return
+    }
+    //@ts-ignore
+    if(type === Adapters.MYTONWALLET && !window.myTonWallet.isMyTonWallet) {
+      window.open('https://mytonwallet.io/', '_blank')
+      return
+    }
+    //    if (type === Adapters.TONSAFE && isMobile) {
+    if (type === Adapters.TONSAFE) {
+      return
+    }
+    onSelect(type, tonConnect)
   }
 
   return (
@@ -116,36 +123,45 @@ function AdaptersList({
       </Fade>
       <Fade in={!isLoading}>
         <StyledList>
-          {adapters.map((adapter) => {
-            const { type, icon, name, description, disabled } = adapter;
+          {adaptersToShow.map((adapter) => {
+            const { type, icon, name, description, disabled, tonConnect } = adapter
+            {/* disabled={adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile} */}
             return (
-              <StyledListItem
+              <ListItem
                 disablePadding
-                key={type}
-                disabled={disabled}
-                style={{ pointerEvents: isLoading ? "none" : "all" }}
+                key={name}
+                disabled={adapter.name.toLowerCase() === Adapters.TONSAFE}
+                style={{ pointerEvents: isLoading ? 'none' : 'all' }}
+                sx={{
+                  width: '100%',
+                  background: 'white',
+                  borderRadius: '12px',
+                  border: title === 'Select Wallet' ? '' : '1px solid #007AFE',
+                }}
               >
                 <StyledListItemButton
-                  onClick={disabled ? () => { } : () => onSelect(type)}
+                  onClick={() => onAdapterSelect(type, tonConnect)}
                 >
                   <StyledIcon>
-                    <img style={{ "borderRadius": "9px" }} src={icon} />
+                    <img style={{ 'borderRadius': '9px' }} src={icon} />
                   </StyledIcon>
                   <StyledListItemRight>
-                    <Typography variant="h5">
-                      {name} <small>{disabled ? t('coming-soon') : ""}</small>
+                    <Typography variant="h5" sx={{ color: title === 'Select Wallet' ? '' : '#007AFE !important' }}>
+                      {title === 'Tap to connect' && 'Connect'} {name} {' '}
+                      {/*                      <small>{disabled || adapter.name.toLowerCase() === Adapters.TONSAFE && isMobile ? t('coming-soon') : ''}</small>*/}
+                      <small>{disabled ? t('coming-soon') : ''}</small>
                     </Typography>
-                    <Typography>{description}</Typography>
+                    {title !== 'Tap to connect' && <Typography>{description}</Typography>}
                   </StyledListItemRight>
                 </StyledListItemButton>
-              </StyledListItem>
-            );
+              </ListItem>
+            )
           })}
         </StyledList>
       </Fade>
       {isLoading && <CircularProgress />}
     </StyledContainer>
-  );
+  )
 }
 
-export default AdaptersList;
+export default AdaptersList

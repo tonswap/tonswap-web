@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Address, Cell, contractAddress, toNano, TonClient, beginDict, beginCell, StateInit, Slice } from "ton";
-import { getTokenData, _getJettonBalance } from ".";
+import { getTokenData } from ".";
 import { Sha256 } from "@aws-crypto/sha256-js";
 import { walletService } from "services/wallets/WalletService";
 import { TransactionRequest } from "services/wallets/types";
