@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from '@mui/material'
 import AppRoutes from "router/Router";
 import { Navbar } from "components";
 import { LAYOUT_MAX_WIDTH } from "consts";
