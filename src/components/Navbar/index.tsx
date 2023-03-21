@@ -5,7 +5,7 @@ import { useStyles } from "./styles";
 import LogoWithText from "./LogoWithText";
 import Menu from "./Menu";
 import { FOUND_JETTON, LAYOUT_MAX_WIDTH } from 'consts'
-import { Grid } from "@mui/material";
+import { Grid, Typography } from '@mui/material'
 import { observer } from "mobx-react";
 import WalletAddress from "./Menu/WalletAddress";
 import MenuToggle from "./MenuToggle";
@@ -34,7 +34,6 @@ export const Navbar = observer(() => {
   const [open, setOpen] = useState(false);
   const { i18n } = useTranslation();
 
-
   const onMenuToggleClick = () => {
     setOpen(true);
     gaAnalytics.openMenu()
@@ -58,8 +57,12 @@ export const Navbar = observer(() => {
           maxWidth: LAYOUT_MAX_WIDTH,
         }}
       >
+        <Box py={.5} sx={{width: '100%', textAlign: 'center', background: '#E23D5B', color: '#fff'}}>
+          <Typography variant='body1'>
+            TonSwap is ceasing operations. LPs - please remove liquidity ASAP
+          </Typography>
+        </Box>
         <StyledToolbar
-          // transparent={!!window.localStorage.getItem(FOUND_JETTON)}
           style={{
             width: "100%",
             justifyContent: "space-between",

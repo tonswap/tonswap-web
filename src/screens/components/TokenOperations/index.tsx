@@ -1,36 +1,29 @@
-import { Box, styled } from "@mui/material";
-import { useEffect, useState } from "react";
-import { ActionButton, Popup } from "components";
-import { getToken, PoolInfo } from "services/api/addresses";
-import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import { useStyles } from "./styles";
-import DestToken from "./DestToken";
-import SrcToken from "./SrcToken";
-import { walletService } from "services/wallets/WalletService";
-import {
-  useTokenOperationsActions,
-  useTokenOperationsStore,
-} from "store/token-operations/hooks";
-import { useWalletStore } from "store/wallet/hooks";
-import {
-  useIsExpandedView,
-  useWalletModalToggle,
-} from "store/application/hooks";
-import { StyledTokenOperationActions } from "styles/styles";
-import Icon from "./Icon";
-import { ActionCategory, ActionType, Adapters } from "services/wallets/types";
-import { client, GAS_FEE, waitForSeqno } from "services/api";
-import { Address } from "ton";
-import SuccessModal from "./SuccessModal";
-import useValidation from "./useValidation";
-import TxError from "./TxError";
-import useTxAnalytics from "./useTxAnalytics";
-import gaAnalytics from "services/analytics/ga/ga";
-import { useTranslation } from "react-i18next";
-import TradeInfo from "./TradeInfo";
-import TxLoader from "./TxLoader";
-import { isMobile } from "react-device-detect";
-import { QRCode } from "react-qrcode-logo";
+import { Box, styled } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { ActionButton, Popup } from 'components'
+import { PoolInfo } from 'services/api/addresses'
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
+import { useStyles } from './styles'
+import DestToken from './DestToken'
+import SrcToken from './SrcToken'
+import { walletService } from 'services/wallets/WalletService'
+import { useTokenOperationsActions, useTokenOperationsStore } from 'store/token-operations/hooks'
+import { useWalletStore } from 'store/wallet/hooks'
+import { useIsExpandedView, useWalletModalToggle } from 'store/application/hooks'
+import { StyledTokenOperationActions } from 'styles/styles'
+import Icon from './Icon'
+import { ActionCategory, ActionType, Adapters } from 'services/wallets/types'
+import { client, GAS_FEE, waitForSeqno } from 'services/api'
+import { Address } from 'ton'
+import SuccessModal from './SuccessModal'
+import useValidation from './useValidation'
+import TxError from './TxError'
+import useTxAnalytics from './useTxAnalytics'
+import gaAnalytics from 'services/analytics/ga/ga'
+import { useTranslation } from 'react-i18next'
+import TxLoader from './TxLoader'
+import { isMobile } from 'react-device-detect'
+import { QRCode } from 'react-qrcode-logo'
 
 interface Props {
   srcToken: PoolInfo;
@@ -225,7 +218,7 @@ const TokenOperations = ({
           ) : (
             <ActionButton
               isLoading={showTxLoader || txPending}
-              isDisabled={disabled || insufficientFunds}
+              isDisabled={disabled || insufficientFunds || actionType === ActionType.ADD_LIQUIDITY}
               onClick={onSubmit}
             >
               {submitButtonText}
