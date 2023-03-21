@@ -63,7 +63,6 @@ export const Navbar = observer(() => {
           </Typography>
         </Box>
         <StyledToolbar
-          // transparent={!!window.localStorage.getItem(FOUND_JETTON)}
           style={{
             width: "100%",
             justifyContent: "space-between",
